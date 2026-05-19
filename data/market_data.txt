@@ -1,0 +1,16 @@
+BTC market summary:
+
+Price dropped 12% over the last 7 days.
+
+Technical indicators:
+- RSI: 27
+- MACD: bearish crossover
+- Volume: increasing during sell-off
+- 50-day MA below 200-day MA
+
+Short-term momentum remains negative.
+
+However, oversold conditions may indicate potential short-term rebound.
+
+Fear & Greed Index:
+22 (Extreme Fear)

@@ -1,0 +1,81 @@
+[
+  {
+    "agent_id": "Financial_Agent",
+    "signal": "BUY",
+    "confidence": 0.85,
+    "belief_vector": {
+      "direction": 1,
+      "strength": 0.85
+    },
+    "evidence_chunks": [
+      {
+        "id": "financial_chunk_001",
+        "content": "BlackRock Bitcoin ETF recorded strong institutional inflows this quarter.\n\nRevenue from crypto-related financial products increased 18% year-over-year.\nOperating margin improved from 21% to 28%.\n\nManagement stated that demand from institutional investors remains strong despite short-term volatility.",
+        "metadata": {
+          "source": "financial_report.txt",
+          "page": 1,
+          "timestamp": "2026-05-19"
+        }
+      }
+    ],
+    "logic_path": "The financial evidence presents a strong bullish case driven by successful institutional adoption and operational efficiency. Key indicators include strong institutional inflows into the BlackRock Bitcoin ETF, coupled with a significant 18% year-over-year revenue increase and improved operating margins (21% to 28%). Management's optimistic tone regarding sustained demand and the planned expansion into Asian markets during Q3 reinforce a positive long-term outlook. While risks such as SEC regulatory tightening and macroeconomic uncertainty exist, the current operational performance metrics are overwhelmingly positive.",
+    "metadata": {
+      "source_type": "financial_report",
+      "entropy": 0.2,
+      "redundancy_score": 0.1,
+      "recency_weight": 0.9
+    }
+  },
+  {
+    "agent_id": "Market_Agent",
+    "signal": "NEUTRAL",
+    "confidence": 0.35,
+    "belief_vector": {
+      "direction": 0,
+      "strength": 0.35
+    },
+    "evidence_chunks": [
+      {
+        "id": "market_chunk_001",
+        "content": "BTC market summary:\n\nPrice dropped 12% over the last 7 days.\n\nTechnical indicators:\n- RSI: 27\n- MACD: bearish crossover\n- Volume: increasing during sell-off\n- 50-day MA below 200-day MA\n\nShort-term momentum remains negative.\n\nHowever, oversold conditions may indicate potential short-term rebound.\n\nFear & Greed Index:\n22 (Extreme Fear)\n",
+        "metadata": {
+          "source": "market_data.txt",
+          "timestamp": "2026-05-19"
+        }
+      }
+    ],
+    "logic_path": "The market is in a confirmed long-term bearish trend (50/200 MA, MACD). However, the extreme oversold condition (RSI 27) suggests that immediate selling pressure may be exhausted, indicating a potential short-term rebound opportunity. The conflicting signals between the dominant downtrend and the oversold bounce possibility lead to a cautious NEUTRAL stance.",
+    "metadata": {
+      "source_type": "market_data",
+      "entropy": 0.3,
+      "redundancy_score": 0.05,
+      "recency_weight": 0.98
+    }
+  },
+  {
+    "agent_id": "Sentiment_Agent",
+    "signal": "SELL",
+    "confidence": 0.35,
+    "belief_vector": {
+      "direction": -1,
+      "strength": 0.35
+    },
+    "evidence_chunks": [
+      {
+        "id": "sentiment_chunk_001",
+        "content": "Breaking News:\n\nThe SEC announced a proposal for stricter regulation on cryptocurrency ETF disclosures.\n\nSocial media reaction across Reddit and Twitter shows increasing investor fear.\n\nTrending narratives include:\n- \"institutional exit from crypto\"\n- \"ETF crackdown\"\n- \"market crash incoming\"\n\nSeveral large crypto influencers posted bearish predictions within the same 6-hour period.\n\nNews clustering analysis detected heavy reposting of identical bearish narratives across multiple platforms.\n\nSome analysts argue the market reaction may be exaggerated due to social amplification rather than new fundamental information.\n\nOverall sentiment remains highly negative and emotionally amplified.\n",
+        "metadata": {
+          "source": "sentiment_news.txt",
+          "timestamp": "2026-05-19"
+        }
+      }
+    ],
+    "logic_path": "The underlying negative fundamental news (SEC regulation) drives a bearish sentiment. However, the signal is heavily tempered by the observation that the market reaction appears disproportionately amplified and driven by herd mentality (heavy reposting, emotional narratives), leading to a low-to-moderate confidence in the immediate market impact.",
+    "metadata": {
+      "source_type": "social_media",
+      "entropy": 0.6,
+      "redundancy_score": 0.4,
+      "recency_weight": 0.95
+    }
+  }
+]

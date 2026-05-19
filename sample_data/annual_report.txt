@@ -1,0 +1,15 @@
+--- BITCOIN PROTOCOL SEMI-ANNUAL FINANCIAL REPORT (Q2 2026) ---
+
+1. Overview
+The Bitcoin network has shown unprecedented network activity and fundamentals in the first half of 2026. On-chain transaction counts have increased by 22% compared to Q1 2026. Hashrate continues to secure new all-time highs of over 680 EH/s.
+
+2. On-Chain Metrics & Network Revenue
+- Active Addresses (Daily Average): 950,000 (+8% YoY)
+- Total Transaction Fees: 14,200 BTC (+45% YoY due to Runes and Ordinals adoption)
+- Mining Revenue (Subsidy + Fees): $4.2B USD equivalent
+
+3. Market Moat & Macro Valuation
+Institutional adoption of spot BTC ETFs has stabilized, accounting for 5.2% of the total circulating supply. The overall fundamental sentiment remains strongly bullish due to decreased liquid supply on exchanges and increased long-term holder accumulation patterns.
+
+4. Conclusion
+Financial indicators suggest strong network health, sustainable miner profitability post-halving, and high institutional demand. Recommendation is to continue accumulation with strong support.
