@@ -18,7 +18,7 @@
         }
       }
     ],
-    "logic_path": "The financial evidence presents a strong bullish case driven by successful institutional adoption and operational efficiency. Key indicators include strong institutional inflows into the BlackRock Bitcoin ETF, coupled with a significant 18% year-over-year revenue increase and improved operating margins (21% to 28%). Management's optimistic tone regarding sustained demand and the planned expansion into Asian markets during Q3 reinforce a positive long-term outlook. While risks such as SEC regulatory tightening and macroeconomic uncertainty exist, the current operational performance metrics are overwhelmingly positive.",
+    "logic_path": "The financial evidence presents a strong positive outlook driven by successful operational metrics and market adoption. Key indicators include strong institutional inflows into the BlackRock Bitcoin ETF, a significant 18% year-over-year increase in revenue from crypto products, and improved operating margins (21% to 28%). Management's optimism regarding sustained institutional demand, coupled with plans for geographic expansion (Asia ETF offerings in Q3) and analyst observations of increasing trading volume and liquidity, collectively outweigh the noted short-term risks (SEC tightening, macroeconomic uncertainty).",
     "metadata": {
       "source_type": "financial_report",
       "entropy": 0.2,
@@ -29,10 +29,10 @@
   {
     "agent_id": "Market_Agent",
     "signal": "NEUTRAL",
-    "confidence": 0.35,
+    "confidence": 0.4,
     "belief_vector": {
       "direction": 0,
-      "strength": 0.35
+      "strength": 0.4
     },
     "evidence_chunks": [
       {
@@ -44,7 +44,7 @@
         }
       }
     ],
-    "logic_path": "The market is in a confirmed long-term bearish trend (50/200 MA, MACD). However, the extreme oversold condition (RSI 27) suggests that immediate selling pressure may be exhausted, indicating a potential short-term rebound opportunity. The conflicting signals between the dominant downtrend and the oversold bounce possibility lead to a cautious NEUTRAL stance.",
+    "logic_path": "The market exhibits a strong underlying bearish structure (50/200 MA alignment, MACD crossover) confirmed by the price drop and increasing selling volume. However, the RSI has entered extreme oversold territory (27), suggesting that immediate downward pressure may be exhausted and a short-term technical rebound is statistically probable. The conflicting signals between the dominant bearish trend structure and the extreme oversold momentum warrant a neutral stance, awaiting confirmation of reversal or continuation.",
     "metadata": {
       "source_type": "market_data",
       "entropy": 0.3,
@@ -55,10 +55,10 @@
   {
     "agent_id": "Sentiment_Agent",
     "signal": "SELL",
-    "confidence": 0.35,
+    "confidence": 0.45,
     "belief_vector": {
       "direction": -1,
-      "strength": 0.35
+      "strength": 0.45
     },
     "evidence_chunks": [
       {
@@ -70,7 +70,7 @@
         }
       }
     ],
-    "logic_path": "The underlying negative fundamental news (SEC regulation) drives a bearish sentiment. However, the signal is heavily tempered by the observation that the market reaction appears disproportionately amplified and driven by herd mentality (heavy reposting, emotional narratives), leading to a low-to-moderate confidence in the immediate market impact.",
+    "logic_path": "The primary driver is the SEC's proposal for stricter regulation, which introduces fundamental uncertainty. This negative news has been amplified into widespread investor fear and crash narratives across social media. While the collective sentiment is strongly bearish, the heavy reposting of identical narratives and analyst skepticism regarding the market's reaction limits the confidence level, indicating herd behavior rather than a confirmed fundamental shift.",
     "metadata": {
       "source_type": "social_media",
       "entropy": 0.6,

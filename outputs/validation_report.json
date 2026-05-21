@@ -1,0 +1,13 @@
+{
+  "conflict_score": 0.4711,
+  "metrics": {
+    "mean_pairwise_kl": 0.5915,
+    "decision_variance": 0.2906
+  },
+  "conflict_detected": true,
+  "conflict_categories": [
+    "Signal Conflict"
+  ],
+  "root_cause_analysis": "**CORE DISCREPANCY:**\nThe agents are operating on fundamentally mismatched time horizons: the Financial Agent utilizes lagged, structural performance data (QoQ reports), while the Market and Sentiment Agents are processing high-velocity, real-time volatility signals.\n\n**DATA ASYMMETRY ANALYSIS:**\nThe BUY signal is based on robust, slow-moving fundamental health metrics (margin expansion, institutional inflows). This contrasts sharply with the Market Agent's observation of immediate technical distress (bearish MA alignment, extreme oversold RSI) and the Sentiment Agent's capture of high-frequency regulatory risk noise. The informational friction arises from applying long-term operational success metrics to a short-term, high-volatility market cycle.\n\n**CONFLICT STATE:**\nThe system is in a state of predictive ambiguity, where strong fundamental support (BUY) is being overwhelmed by immediate technical exhaustion and regulatory uncertainty (NEUTRAL/SELL).",
+  "trigger_debate_module": true
+}

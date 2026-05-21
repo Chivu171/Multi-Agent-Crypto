@@ -1,0 +1,89 @@
+# main.py
+
+import json
+import os
+from agents.financial_agent import run as financial_run
+from agents.market_agent import run as market_run
+from agents.sentiment_agent import run as sentiment_run
+from agents.validator_agent import ValidatorAgent
+
+def main():
+    print("=" * 60)
+    print("🚀 KÍCH HOẠT HỆ THỐNG PHÂN TÍCH TÀI CHÍNH MULTI-AGENT CRYPTO")
+    print("=" * 60)
+
+    # 1. Thu thập ý kiến độc lập từ các Specialist Agents (Heuristic Reasoning Layer)
+    print("\n[Step 1] Thu thập nhận định độc lập từ các Specialist Agents...")
+    
+    try:
+        financial_output = financial_run()
+        print(f"  - Financial Agent: {financial_output['signal']} (Confidence: {financial_output['confidence']})")
+    except Exception as e:
+        print(f"  - ERROR Financial Agent: {e}")
+        financial_output = None
+        
+    try:
+        market_output = market_run()
+        print(f"  - Market Agent: {market_output['signal']} (Confidence: {market_output['confidence']})")
+    except Exception as e:
+        print(f"  - ERROR Market Agent: {e}")
+        market_output = None
+
+    try:
+        sentiment_output = sentiment_run()
+        print(f"  - Sentiment Agent: {sentiment_output['signal']} (Confidence: {sentiment_output['confidence']})")
+    except Exception as e:
+        print(f"  - ERROR Sentiment Agent: {e}")
+        sentiment_output = None
+
+    all_outputs = [o for o in [financial_output, market_output, sentiment_output] if o is not None]
+
+    if not all_outputs:
+        print("\n[!] Không thể kết nối tới LLM Server (LM Studio).")
+        print("    Tự động kích hoạt cơ chế dự phòng: Tải dữ liệu từ 'outputs/logs.json'...")
+        try:
+            with open("outputs/logs.json", "r", encoding="utf-8") as f:
+                all_outputs = json.load(f)
+            print("    [✓] Đã tải thành công dữ liệu dự phòng từ logs.json.")
+        except Exception as e:
+            print(f"    [✗] Lỗi tải dữ liệu dự phòng: {e}")
+            print("\n[FATAL] Không thu thập được đầu ra từ bất kỳ Agent nào. Dừng pipeline.")
+            return
+
+    # Lưu vết lịch sử raw outputs (chỉ khi chạy thành công từ agents)
+    if financial_output or market_output or sentiment_output:
+        os.makedirs("outputs", exist_ok=True)
+        with open("outputs/logs.json", "w", encoding="utf-8") as f:
+            json.dump(all_outputs, f, indent=2, ensure_ascii=False)
+        print("  -> Đã lưu thô outputs của 3 Agent vào 'outputs/logs.json'")
+
+    # 2. Khởi chạy Validator Agent (Algorithmic Conflict Core & RCA Layer)
+    print("\n[Step 2] Khởi chạy Validator Agent thẩm định mâu thuẫn hệ thống...")
+    
+    # Khởi tạo Validator: alpha = 0.6, threshold = 0.4
+    # Nếu không thể kết nối LLM, tự động fallback
+    validator = ValidatorAgent(alpha=0.6, threshold=0.4, use_llm=True)
+    
+    validation_result = validator.evaluate_pipeline(all_outputs)
+    
+    print("\n[KẾT QUẢ KIỂM ĐỊNH TOÁN HỌC & LOGIC]:")
+    print(f"  - Chỉ số mâu thuẫn lai (Conflict Score): {validation_result['conflict_score']}")
+    print(f"  - Sai biệt phân phối (Mean Pairwise KL): {validation_result['metrics']['mean_pairwise_kl']}")
+    print(f"  - Phương sai quyết định (Decision Variance): {validation_result['metrics']['decision_variance']}")
+    print(f"  - Phát hiện mâu thuẫn vượt ngưỡng (Conflict Detected): {validation_result['conflict_detected']}")
+    print(f"  - Phân loại loại hình mâu thuẫn (Conflict Categories): {validation_result['conflict_categories']}")
+    print(f"  - Kích hoạt Debate Module (Trigger Debate): {validation_result['trigger_debate_module']}")
+
+    print("\n[BÁO CÁO PHÂN TÍCH NGUYÊN NHÂN RỄ CỐT - RCA REPORT]:")
+    print("-" * 60)
+    print(validation_result['root_cause_analysis'])
+    print("-" * 60)
+
+    # 3. Lưu báo cáo kiểm định để phục vụ vẽ đồ thị
+    with open("outputs/validation_report.json", "w", encoding="utf-8") as f:
+        json.dump(validation_result, f, indent=2, ensure_ascii=False)
+    print("\n  -> Báo cáo thẩm định chi tiết đã được lưu vào 'outputs/validation_report.json'")
+    print("=" * 60)
+
+if __name__ == "__main__":
+    main()
