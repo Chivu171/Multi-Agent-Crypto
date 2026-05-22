@@ -6,6 +6,9 @@ from typing import List, Dict, Any, Tuple
 from utils.llm import ask_llm  # Tận dụng LLM layer đã hoàn thành ở Thứ 3
 from utils.prompts import VALIDATOR_AGENT_PROMPT
 
+# Import DebateAgent for conditional debate integration
+from agents.debate_agent import DebateAgent
+
 class ValidatorAgent:
     def __init__(self, alpha: float = 0.6, threshold: float = 0.4, use_llm: bool = True):
         """
@@ -55,14 +58,13 @@ class ValidatorAgent:
             for j in range(n):
                 if i != j:
                     kl_scores.append(self._kl_divergence(belief_distributions[i], belief_distributions[j]))
-        mean_kl = float(np.mean(kl_scores)) if kl_scores else 0.0
+        mean_kl = float(np.mean(kl_scores)) if kl_scores else 0.0 # -> 0 : tương đồg, -> vô hạn: không tương đồng
 
         # 2. Tính Variance của các quyết định thực tế
-        variance_score = float(np.var(raw_vectors))
+        variance_score = float(np.var(raw_vectors)) # -> 0 : tương đồng, -> 1 : không tương đồng
 
         # 3. Hybrid Conflict Score
         conflict_score = float(self.alpha * mean_kl + (1 - self.alpha) * variance_score)
-        
         return conflict_score, mean_kl, variance_score
 
     def classify_conflict(self, agents_output: List[Dict[str, Any]], conflict_score: float) -> List[str]:
@@ -140,15 +142,25 @@ class ValidatorAgent:
         
         # 2. Phát hiện biến số biên
         conflict_detected = conflict_score >= self.threshold
-
+        
         # 3. Phân loại cấu trúc và RCA
         conflict_categories = self.classify_conflict(agents_output, conflict_score)
         
         rca_report = "N/A - System in state of consensus."
         if conflict_detected:
             rca_report = self.run_root_cause_analysis(agents_output, conflict_categories)
+        
+        # 4. Conditional Debate Trigger – run debate if conflict detected
+        debate_updated_outputs = None
+        if conflict_detected:
+            print("\n[Step 3] Khởi chạy Debate Module...")
 
-        # 4. [Task 3] Conditional Debate Trigger Output
+            # Instantiate DebateAgent with user‑specified preferences (3 rounds, alpha 0.8)
+            debate_agent = DebateAgent(rounds=3, alpha=0.8)
+            debate_updated_outputs = debate_agent.run_debate(agents_output)
+            # Optionally, you could re‑evaluate conflict after debate – omitted for brevity
+        
+        # 5. Assemble final result
         return {
             "conflict_score": round(conflict_score, 4),
             "metrics": {
@@ -158,5 +170,6 @@ class ValidatorAgent:
             "conflict_detected": conflict_detected,
             "conflict_categories": conflict_categories,
             "root_cause_analysis": rca_report,
-            "trigger_debate_module": conflict_detected
+            "trigger_debate_module": conflict_detected,
+            "debate_updated_outputs": debate_updated_outputs
         }

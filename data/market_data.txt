@@ -1,16 +1,9 @@
-BTC market summary:
+BITCOIN MARKET DATA TICKER (REAL-TIME)
+Symbol: BTC/USDT | Timeframe: H4 | Date: May 21, 2026 (17:00 PM)
 
-Price dropped 12% over the last 7 days.
-
-Technical indicators:
-- RSI: 27
-- MACD: bearish crossover
-- Volume: increasing during sell-off
-- 50-day MA below 200-day MA
-
-Short-term momentum remains negative.
-
-However, oversold conditions may indicate potential short-term rebound.
-
-Fear & Greed Index:
-22 (Extreme Fear)
+1. Price Action: BTC vừa chạm mốc $98,500 nhưng nhanh chóng bị đẩy lùi (Reject) tạo nến Pinbar với râu trên dài. 
+2. RSI (14): Chỉ số sức mạnh tương đối đang ở mức 84.5. Đây là vùng Quá Mua (Overbought) cực đại trên khung Daily và H4.
+3. Liquidation Heatmap: Hệ thống ghi nhận cụm thanh lý lệnh Long (Long Liquidation) trị giá gần 800 triệu USD tập trung tại vùng giá $91,000 - $92,500.
+4. Funding Rate: Tỷ lệ Funding trên các sàn phái sinh (Binance, Bybit) đang dương rất cao (0.05%), cho thấy phe Long đang quá hưng phấn và thị trường dễ bị tổn thương bởi một cú "Long Squeeze" (giết Long).
+5. Volume: Khối lượng giao dịch giảm dần khi giá tiệm cận $100,000, cho thấy lực mua đuổi cạn kiệt.
+Ket luan: Rui ro dieu chinh ngan han cao. Can trong mot cu giam tu 5-10% de thanh loc thi truong.

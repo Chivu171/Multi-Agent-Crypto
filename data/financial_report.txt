@@ -1,19 +1,9 @@
-BlackRock Bitcoin ETF recorded strong institutional inflows this quarter.
+BAO CAO PHAN TICH ON-CHAIN BITCOIN (QUARTERLY UPDATE)
+Date: 2024-Q4 (Updated: May 15, 2026)
+Source: Glassnode / CryptoQuant Institutional
 
-Revenue from crypto-related financial products increased 18% year-over-year.
-Operating margin improved from 21% to 28%.
-
-Management stated that demand from institutional investors remains strong despite short-term volatility.
-
-The company plans to expand digital asset exposure through additional ETF offerings in Asia during Q3.
-
-Analysts noted:
-- increasing trading volume
-- stronger long-term adoption signals
-- improving liquidity conditions
-
-Risk factors:
-- possible SEC regulatory tightening
-- short-term macroeconomic uncertainty
-
-Overall management tone during earnings call remained optimistic.
+1. Accumulation Trend Score: Chỉ số tích lũy của các thực thể cá voi (Whales > 1k BTC) duy trì ở mức 0.85 trong 30 ngày qua. Đây là mức tích lũy cao nhất kể từ chu kỳ 2021.
+2. Exchange Reserve: Lượng BTC trên tất cả các sàn giao dịch tập trung (CEX) giảm xuống còn 1.8 triệu BTC, mức thấp nhất trong 5 năm. Điều này tạo ra một "Supply Shock" (cú sốc cung) tiềm tàng.
+3. MVRV Z-Score: Hiện đạt mức 2.1, cho thấy BTC vẫn chưa đi vào vùng quá nhiệt vĩ mô (vùng đỏ thường bắt đầu từ 6.0).
+4. Miner Behavior: Các thợ đào đang giữ lại (HODL) 95% lượng BTC khai thác mới, không có dấu hiệu bán tháo để trang trải chi phí vận hành.
+Ket luan: Xu huong dai han la Cuc ky Tich cuc (Strong Bullish). Gia muc tieu chu ky ky vong: $120,000 - $150,000.

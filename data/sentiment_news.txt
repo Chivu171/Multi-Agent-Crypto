@@ -1,18 +1,9 @@
-Breaking News:
+SENTIMENT AGGREGATOR & NEWS FEED
+Period: Last 24 Hours | Source: X (Twitter), Reddit, Reuters
 
-The SEC announced a proposal for stricter regulation on cryptocurrency ETF disclosures.
-
-Social media reaction across Reddit and Twitter shows increasing investor fear.
-
-Trending narratives include:
-- "institutional exit from crypto"
-- "ETF crackdown"
-- "market crash incoming"
-
-Several large crypto influencers posted bearish predictions within the same 6-hour period.
-
-News clustering analysis detected heavy reposting of identical bearish narratives across multiple platforms.
-
-Some analysts argue the market reaction may be exaggerated due to social amplification rather than new fundamental information.
-
-Overall sentiment remains highly negative and emotionally amplified.
+1. Social Media Buzz: Từ khóa "BTC 100K" đạt Top Trending toàn cầu. Tuy nhiên, tỷ lệ bình luận tiêu cực về việc "Chính phủ Mỹ có thể bán 10,000 BTC từ kho lưu trữ Silk Road" đang tăng nhanh (chiếm 40% thảo luận).
+2. News Headline 1: Reuters đưa tin Fed có khả năng giữ nguyên lãi suất cao hơn dự kiến, gây áp lực lên tài sản rủi ro.
+3. News Headline 2: Một KOL nổi tiếng với 5 triệu follower vừa đăng bài "Bitcoin is going to zero", tạo ra sự hoảng loạn (FUD) trong cộng đồng nhà đầu tư nhỏ lẻ.
+4. Fear & Greed Index: 82 (Extreme Greed) - Tham lam tột độ.
+5. Bot Activity: Phát hiện 15,000 tài khoản bot liên tục spam nội dung "Buy the dip" và "Sell now" xen kẽ nhau trên các diễn đàn Crypto lớn.
+Ket luan: Tam ly thi truong dang o trang thai "Hỗn loạn hưng phấn" (Chaotic Euphoria). Khong co su dong thuan giua cac nhom tin tuc.

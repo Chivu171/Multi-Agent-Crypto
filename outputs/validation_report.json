@@ -1,13 +1,94 @@
 {
-  "conflict_score": 0.4711,
+  "conflict_score": 0.5772,
   "metrics": {
-    "mean_pairwise_kl": 0.5915,
-    "decision_variance": 0.2906
+    "mean_pairwise_kl": 0.7383,
+    "decision_variance": 0.3356
   },
   "conflict_detected": true,
   "conflict_categories": [
     "Signal Conflict"
   ],
-  "root_cause_analysis": "**CORE DISCREPANCY:**\nThe agents are operating on fundamentally mismatched time horizons: the Financial Agent utilizes lagged, structural performance data (QoQ reports), while the Market and Sentiment Agents are processing high-velocity, real-time volatility signals.\n\n**DATA ASYMMETRY ANALYSIS:**\nThe BUY signal is based on robust, slow-moving fundamental health metrics (margin expansion, institutional inflows). This contrasts sharply with the Market Agent's observation of immediate technical distress (bearish MA alignment, extreme oversold RSI) and the Sentiment Agent's capture of high-frequency regulatory risk noise. The informational friction arises from applying long-term operational success metrics to a short-term, high-volatility market cycle.\n\n**CONFLICT STATE:**\nThe system is in a state of predictive ambiguity, where strong fundamental support (BUY) is being overwhelmed by immediate technical exhaustion and regulatory uncertainty (NEUTRAL/SELL).",
-  "trigger_debate_module": true
+  "root_cause_analysis": "**CORE DISCREPANCY:**\nThe agents exhibit a critical temporal mismatch between macro-structural accumulation signals and micro-term volatility indicators. The Financial Agent models long-cycle commitment (supply shock), while the Market Agent registers short-term tactical exhaustion (price rejection).\n\n**DATA ASYMMETRY ANALYSIS:**\nThe bullish projection relies on low-frequency, high-integrity on-chain metrics (Accumulation Trend Score), which are inherently lagged. Conversely, the bearish signal is derived from high-frequency, immediate price action data (H4 Pinbar), leading to a divergence between structural health and transient market noise.\n\n**CONFLICT STATE:**\nThe system is in a state of informational friction, where deep-cycle conviction conflicts with immediate market fragility. The Sentiment Agent confirms this high-entropy environment, preventing directional convergence.",
+  "trigger_debate_module": true,
+  "debate_updated_outputs": [
+    {
+      "agent_id": "Financial_Agent",
+      "signal": "BUY",
+      "confidence": 0.06958019021010783,
+      "belief_vector": {
+        "direction": 1,
+        "strength": 0.9
+      },
+      "evidence_chunks": [
+        {
+          "id": "financial_chunk_001",
+          "content": "BAO CAO PHAN TICH ON-CHAIN BITCOIN (QUARTERLY UPDATE)\nDate: 2024-Q4 (Updated: May 15, 2026)\nSource: Glassnode / CryptoQuant Institutional\n\n1. Accumulation Trend Score: Chỉ số tích lũy của các thực thể cá voi (Whales > 1k BTC) duy trì ở mức 0.85 trong 30 ngày qua. Đây là mức tích lũy cao nhất kể từ c",
+          "metadata": {
+            "source": "financial_report.txt",
+            "page": 1,
+            "timestamp": "2026-05-19"
+          }
+        }
+      ],
+      "logic_path": "The analysis presents a unanimous bullish case based on sustained accumulation and supply contraction. The Accumulation Trend Score at 0.85 indicates strong belief from large holders (Whales). This is reinforced by the lowest 5-year Exchange Reserve level, suggesting a potential 'Supply Shock' due to reduced immediate sellable supply. Furthermore, Miner Behavior confirms commitment by holding 95% of newly mined BTC, indicating no short-term selling pressure. The MVRV Z-Score (2.1) suggests the market is accumulating but has not yet entered an overheated phase, allowing for further upside toward the projected $120k-$150k target.",
+      "metadata": {
+        "source_type": "financial_report",
+        "entropy": 0.2,
+        "redundancy_score": 0.1,
+        "recency_weight": 0.9
+      }
+    },
+    {
+      "agent_id": "Market_Agent",
+      "signal": "SELL",
+      "confidence": 0.040051131778322466,
+      "belief_vector": {
+        "direction": -1,
+        "strength": 0.5
+      },
+      "evidence_chunks": [
+        {
+          "id": "market_chunk_001",
+          "content": "BITCOIN MARKET DATA TICKER (REAL-TIME)\nSymbol: BTC/USDT | Timeframe: H4 | Date: May 21, 2026 (17:00 PM)\n\n1. Price Action: BTC vừa chạm mốc $98,500 nhưng nhanh chóng bị đẩy lùi (Reject) tạo nến Pinbar với râu trên dài. \n2. RSI (14): Chỉ số sức mạnh tương đối đang ở mức 84.5. Đây là vùng Quá Mua (Overbought) cực đại trên khung Daily và H4.\n3. Liquidation Heatmap: Hệ thống ghi nhận cụm thanh lý lệnh Long (Long Liquidation) trị giá gần 800 triệu USD tập trung tại vùng giá $91,000 - $92,500.\n4. Funding Rate: Tỷ lệ Funding trên các sàn phái sinh (Binance, Bybit) đang dương rất cao (0.05%), cho thấy phe Long đang quá hưng phấn và thị trường dễ bị tổn thương bởi một cú \"Long Squeeze\" (giết Long).\n5. Volume: Khối lượng giao dịch giảm dần khi giá tiệm cận $100,000, cho thấy lực mua đuổi cạn kiệt.\nKet luan: Rui ro dieu chinh ngan han cao. Can trong mot cu giam tu 5-10% de thanh loc thi truong.",
+          "metadata": {
+            "source": "market_data.txt",
+            "timestamp": "2026-05-19"
+          }
+        }
+      ],
+      "logic_path": "The market exhibits extreme bullish exhaustion signals (RSI > 80, high positive funding rate) combined with immediate price rejection at highs ($98.5k Pinbar). This confluence indicates severe fragility and high probability of a short-term correction or 'Long Squeeze' into overhead resistance.",
+      "metadata": {
+        "source_type": "market_data",
+        "entropy": 0.3,
+        "redundancy_score": 0.05,
+        "recency_weight": 0.98
+      }
+    },
+    {
+      "agent_id": "Sentiment_Agent",
+      "signal": "NEUTRAL",
+      "confidence": 0.047316687862758174,
+      "belief_vector": {
+        "direction": 0,
+        "strength": 0.4
+      },
+      "evidence_chunks": [
+        {
+          "id": "sentiment_chunk_001",
+          "content": "SENTIMENT AGGREGATOR & NEWS FEED\nPeriod: Last 24 Hours | Source: X (Twitter), Reddit, Reuters\n\n1. Social Media Buzz: Từ khóa \"BTC 100K\" đạt Top Trending toàn cầu. Tuy nhiên, tỷ lệ bình luận tiêu cực về việc \"Chính phủ Mỹ có thể bán 10,000 BTC từ kho lưu trữ Silk Road\" đang tăng nhanh (chiếm 40% thảo luận).\n2. News Headline 1: Reuters đưa tin Fed có khả năng giữ nguyên lãi suất cao hơn dự kiến, gây áp lực lên tài sản rủi ro.\n3. News Headline 2: Một KOL nổi tiếng với 5 triệu follower vừa đăng bài \"Bitcoin is going to zero\", tạo ra sự hoảng loạn (FUD) trong cộng đồng nhà đầu tư nhỏ lẻ.\n4. Fear & Greed Index: 82 (Extreme Greed) - Tham lam tột độ.\n5. Bot Activity: Phát hiện 15,000 tài khoản bot liên tục spam nội dung \"Buy the dip\" và \"Sell now\" xen kẽ nhau trên các diễn đàn Crypto lớn.\nKet luan: Tam ly thi truong dang o trang thai \"Hỗn loạn hưng phấn\" (Chaotic Euphoria). Khong co su dong thuan giua cac nhom tin tuc.",
+          "metadata": {
+            "source": "sentiment_news.txt",
+            "timestamp": "2026-05-19"
+          }
+        }
+      ],
+      "logic_path": "The market is experiencing 'Chaotic Euphoria,' characterized by extreme highs (100K buzz, Greed Index 82) conflicting directly with severe bearish pressures (Hawkish Fed stance, rumors of institutional selling). The presence of high noise levels from bots and conflicting narratives prevents a clear directional bias, necessitating a cautious, neutral stance to manage risk.",
+      "metadata": {
+        "source_type": "social_media",
+        "entropy": 0.6,
+        "redundancy_score": 0.4,
+        "recency_weight": 0.95
+      }
+    }
+  ]
 }

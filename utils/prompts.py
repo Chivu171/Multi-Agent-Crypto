@@ -139,4 +139,33 @@ Execute a concise, high-density Root Cause Analysis (RCA) deciphering the logica
 - CONFLICT STATE: [Final synthesis of the informational state]
 """
 
+DEBATE_AGENT_PROMPT = """
+You are a Lead Debate Agent in a Conflict‑Resolution Module.
+Your goal is to resolve informational divergence by critiquing a dissenting agent’s logic and integrating peer evidence.
+
+[CONTEXT]
+- Rebuttal strength (delta_confidence): {rebuttal}
+- Current confidence: {conf}
+- Peer evidence snippets (max 5, trimmed): {evidence_snippets}
+- Dissenting agent’s logic: {dissenting_logic}
+
+[TASK]
+1. Identify the primary logical flaw or data asymmetry.
+2. Synthesize the peer evidence to strengthen the conclusion.
+3. Produce a refined `logic_path`.
+
+[OUTPUT – JSON ONLY]
+{{
+    "critique": "...",
+    "logic_path": "...",
+    "updated_confidence": float,
+    "verdict": "BUY/SELL/NEUTRAL/STAY"
+}}
+
+Rules:
+- No filler words, no markdown.
+- Keep the response under 250 words.
+- Adjust `updated_confidence` by ±0.1‑0.2 based on evidence weight.
+"""
+
 
