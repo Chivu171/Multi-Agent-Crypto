@@ -1,9 +1,8 @@
-SENTIMENT AGGREGATOR & NEWS FEED
-Period: Last 24 Hours | Source: X (Twitter), Reddit, Reuters
-
-1. Social Media Buzz: Từ khóa "BTC 100K" đạt Top Trending toàn cầu. Tuy nhiên, tỷ lệ bình luận tiêu cực về việc "Chính phủ Mỹ có thể bán 10,000 BTC từ kho lưu trữ Silk Road" đang tăng nhanh (chiếm 40% thảo luận).
-2. News Headline 1: Reuters đưa tin Fed có khả năng giữ nguyên lãi suất cao hơn dự kiến, gây áp lực lên tài sản rủi ro.
-3. News Headline 2: Một KOL nổi tiếng với 5 triệu follower vừa đăng bài "Bitcoin is going to zero", tạo ra sự hoảng loạn (FUD) trong cộng đồng nhà đầu tư nhỏ lẻ.
-4. Fear & Greed Index: 82 (Extreme Greed) - Tham lam tột độ.
-5. Bot Activity: Phát hiện 15,000 tài khoản bot liên tục spam nội dung "Buy the dip" và "Sell now" xen kẽ nhau trên các diễn đàn Crypto lớn.
-Ket luan: Tam ly thi truong dang o trang thai "Hỗn loạn hưng phấn" (Chaotic Euphoria). Khong co su dong thuan giua cac nhom tin tuc.
+SENTIMENT AGGREGATOR - 24H LAST (25/05/2026)
+Social Buzz: Từ khóa "Bitcoin Strategic Reserve" và "SpaceX BTC" đang trending mạnh sau các tin tức thể chế tuần này. Tranh cãi về chính sách Fed và lãi suất tháng 6 vẫn áp đảo trên X (Twitter) và Telegram.
+Tin tức 1 (23/05): SEC trì hoãn vô thời hạn framework "innovation exemption" cho tokenized stock — gây dip nhẹ và tâm lý bất an về pháp lý trong cộng đồng crypto.
+Tin tức 2 (22/05): SpaceX tiết lộ nắm giữ $1,29 tỷ BTC trong hồ sơ IPO — tín hiệu tích lũy thể chế mạnh, củng cố câu chuyện BTC là "kho giá trị kỹ thuật số."
+Tin tức 3 (21/05): Các nhà lập pháp Mỹ thúc đẩy dự luật Strategic Bitcoin Reserve, nhắm mục tiêu biến BTC thành tài sản dự trữ quốc gia — tín hiệu bullish dài hạn nhưng chưa tác động ngay đến giá.
+Fear & Greed Index: 25 (Fear) — Thị trường đang ở vùng sợ hãi, nhưng đã cải thiện so với mức Extreme Fear kéo dài 46 ngày liên tiếp trước đó. Sentiment hiện tại là GREED trên khung ngắn hạn (theo cfgi.io), tạo phân kỳ với khung ngày.
+KẾT LUẬN: Tâm lý thị trường "Phân kỳ Thể chế vs Bán lẻ." Thể chế (SpaceX, BlackRock, Lawmakers) tích lũy và ủng hộ BTC dài hạn — trong khi nhà đầu tư bán lẻ vẫn đứng ngoài do lo ngại Fed và dòng ETF đảo chiều. Thiếu catalyst ngắn hạn để bứt phá.
+ 

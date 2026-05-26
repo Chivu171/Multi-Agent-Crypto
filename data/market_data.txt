@@ -1,9 +1,7 @@
-BITCOIN MARKET DATA TICKER (REAL-TIME)
-Symbol: BTC/USDT | Timeframe: H4 | Date: May 21, 2026 (17:00 PM)
-
-1. Price Action: BTC vừa chạm mốc $98,500 nhưng nhanh chóng bị đẩy lùi (Reject) tạo nến Pinbar với râu trên dài. 
-2. RSI (14): Chỉ số sức mạnh tương đối đang ở mức 84.5. Đây là vùng Quá Mua (Overbought) cực đại trên khung Daily và H4.
-3. Liquidation Heatmap: Hệ thống ghi nhận cụm thanh lý lệnh Long (Long Liquidation) trị giá gần 800 triệu USD tập trung tại vùng giá $91,000 - $92,500.
-4. Funding Rate: Tỷ lệ Funding trên các sàn phái sinh (Binance, Bybit) đang dương rất cao (0.05%), cho thấy phe Long đang quá hưng phấn và thị trường dễ bị tổn thương bởi một cú "Long Squeeze" (giết Long).
-5. Volume: Khối lượng giao dịch giảm dần khi giá tiệm cận $100,000, cho thấy lực mua đuổi cạn kiệt.
-Ket luan: Rui ro dieu chinh ngan han cao. Can trong mot cu giam tu 5-10% de thanh loc thi truong.
+MARKET DATA TICKER - BTC/USDT (H4) - 25/05/2026
+Price Action: BTC tiếp tục bị từ chối mạnh tại vùng $82.000–$82.800, tạo chuỗi nến phân phối liên tiếp. Giá hiện dao động quanh $76.000–$77.000, nằm dưới cả EMA 50 ngày ($76.716) và EMA 200 ngày ($83.513).
+RSI (14): Đang ở mức ~46 trên khung ngày, tiếp tục trong vùng Neutral-Bearish. Đà tăng bị chặn rõ rệt sau khi thất bại lấy lại $78.152.
+Liquidation Heatmap: Đợt Long Squeeze ngày 11–13/5 đã thanh lý ~$109,7 triệu lệnh long (tỷ lệ long bị thanh lý gấp 11,8 lần short). Vùng $75.000–$76.500 vẫn là cụm lệnh long treo dày nhất, rủi ro Long Squeeze vẫn còn hiện hữu.
+Funding Rate: ETF Bitcoin giao ngay ghi nhận outflow ròng ~$1,039 tỷ trong tuần 11–15/5, chấm dứt chuỗi 6 tuần inflow liên tiếp. Tâm lý đòn bẩy phe Long đang giảm dần sau đợt thanh lý mạnh.
+KẾT LUẬN: Rủi ro điều chỉnh ngắn hạn còn cao. Hỗ trợ cứng cần giữ là $76.087; nếu mất, giá có thể test về $74.000. Để hồi phục, BTC cần đóng cửa tuần trên $78.152.
+ 

@@ -49,7 +49,8 @@ def run():
             "source_type": "social_media",
             "entropy": 0.6,
             "redundancy_score": 0.4,
-            "recency_weight": 0.95
+            "recency_weight": 0.95,
+            "timestamp": "2026-05-19"
         }
     }
 

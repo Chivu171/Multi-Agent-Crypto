@@ -2,15 +2,15 @@
   {
     "agent_id": "Financial_Agent",
     "signal": "BUY",
-    "confidence": 0.85,
+    "confidence": 0.88,
     "belief_vector": {
       "direction": 1,
-      "strength": 0.85
+      "strength": 0.88
     },
     "evidence_chunks": [
       {
         "id": "financial_chunk_001",
-        "content": "BAO CAO PHAN TICH ON-CHAIN BITCOIN (QUARTERLY UPDATE)\nDate: 2024-Q4 (Updated: May 15, 2026)\nSource: Glassnode / CryptoQuant Institutional\n\n1. Accumulation Trend Score: Chỉ số tích lũy của các thực thể cá voi (Whales > 1k BTC) duy trì ở mức 0.85 trong 30 ngày qua. Đây là mức tích lũy cao nhất kể từ c",
+        "content": "ON-CHAIN FINANCIAL ANALYSIS - MAY 2026 (CẬP NHẬT 25/05/2026)\nDữ liệu Glassnode: Whale Accumulation Score tiếp tục mạnh — 2.028 địa chỉ ví cá voi (>1.000 BTC) đã mua ròng 270.000 BTC trong 30 ngày qua, mức tích lũy hàng tháng lớn nhất kể từ năm 2013. Dòng tiền thông minh vẫn âm thầm gom hàng ở vùng $",
         "metadata": {
           "source": "financial_report.txt",
           "page": 1,
@@ -18,42 +18,17 @@
         }
       }
     ],
-    "logic_path": "The confluence of indicators suggests strong long-term accumulation and low selling pressure. Whale Accumulation Score is at its highest since 2021, indicating significant buying activity. Simultaneously, Exchange Reserves are at a five-year low, suggesting supply shock potential and reduced immediate selling pressure. Miners holding 95% of newly mined BTC reinforces the belief in sustained upward price movement, while the MVRV Z-Score indicates that the market has not yet entered an overheated phase, suggesting significant upside potential toward the projected targets.",
+    "logic_path": "Bằng chứng tài chính cho thấy một giai đoạn tích lũy mạnh mẽ và kéo dài. Hoạt động mua ròng của các cá voi (Whale Accumulation) ở mức cao nhất kể từ năm 2013, kết hợp với sự giảm liên tục của nguồn cung trên các sàn CEX và dòng tiền vào ETF, tạo ra áp lực tăng giá rõ rệt (Supply Shock). Mặc dù các chỉ số như MVRV Z-Score vẫn chưa đạt ngưỡng cảnh báo đỉnh chu kỳ, xu hướng dài hạn được xác định là Strong Bullish với mục tiêu giá 12 tháng từ $120.000–$150.000, bất chấp các rủi ro vĩ mô được nêu ra.",
     "metadata": {
       "source_type": "financial_report",
       "entropy": 0.2,
       "redundancy_score": 0.1,
-      "recency_weight": 0.9
+      "recency_weight": 0.9,
+      "timestamp": "2026-05-19"
     }
   },
   {
     "agent_id": "Market_Agent",
-    "signal": "SELL",
-    "confidence": 0.68,
-    "belief_vector": {
-      "direction": -1,
-      "strength": 0.68
-    },
-    "evidence_chunks": [
-      {
-        "id": "market_chunk_001",
-        "content": "BITCOIN MARKET DATA TICKER (REAL-TIME)\nSymbol: BTC/USDT | Timeframe: H4 | Date: May 21, 2026 (17:00 PM)\n\n1. Price Action: BTC vừa chạm mốc $98,500 nhưng nhanh chóng bị đẩy lùi (Reject) tạo nến Pinbar với râu trên dài. \n2. RSI (14): Chỉ số sức mạnh tương đối đang ở mức 84.5. Đây là vùng Quá Mua (Overbought) cực đại trên khung Daily và H4.\n3. Liquidation Heatmap: Hệ thống ghi nhận cụm thanh lý lệnh Long (Long Liquidation) trị giá gần 800 triệu USD tập trung tại vùng giá $91,000 - $92,500.\n4. Funding Rate: Tỷ lệ Funding trên các sàn phái sinh (Binance, Bybit) đang dương rất cao (0.05%), cho thấy phe Long đang quá hưng phấn và thị trường dễ bị tổn thương bởi một cú \"Long Squeeze\" (giết Long).\n5. Volume: Khối lượng giao dịch giảm dần khi giá tiệm cận $100,000, cho thấy lực mua đuổi cạn kiệt.\nKet luan: Rui ro dieu chinh ngan han cao. Can trong mot cu giam tu 5-10% de thanh loc thi truong.",
-        "metadata": {
-          "source": "market_data.txt",
-          "timestamp": "2026-05-19"
-        }
-      }
-    ],
-    "logic_path": "The market exhibits extreme technical overheating (RSI 84.5, high positive funding) confirmed by the rejection candle at $98,500 and decreasing volume. This signals buying exhaustion and high vulnerability to a short-term correction or 'Long Squeeze,' making a bearish pullback the most probable immediate move.",
-    "metadata": {
-      "source_type": "market_data",
-      "entropy": 0.3,
-      "redundancy_score": 0.05,
-      "recency_weight": 0.98
-    }
-  },
-  {
-    "agent_id": "Sentiment_Agent",
     "signal": "NEUTRAL",
     "confidence": 0.4,
     "belief_vector": {
@@ -62,20 +37,48 @@
     },
     "evidence_chunks": [
       {
+        "id": "market_chunk_001",
+        "content": "MARKET DATA TICKER - BTC/USDT (H4) - 25/05/2026\nPrice Action: BTC tiếp tục bị từ chối mạnh tại vùng $82.000–$82.800, tạo chuỗi nến phân phối liên tiếp. Giá hiện dao động quanh $76.000–$77.000, nằm dưới cả EMA 50 ngày ($76.716) và EMA 200 ngày ($83.513).\nRSI (14): Đang ở mức ~46 trên khung ngày, tiếp tục trong vùng Neutral-Bearish. Đà tăng bị chặn rõ rệt sau khi thất bại lấy lại $78.152.\nLiquidation Heatmap: Đợt Long Squeeze ngày 11–13/5 đã thanh lý ~$109,7 triệu lệnh long (tỷ lệ long bị thanh lý gấp 11,8 lần short). Vùng $75.000–$76.500 vẫn là cụm lệnh long treo dày nhất, rủi ro Long Squeeze vẫn còn hiện hữu.\nFunding Rate: ETF Bitcoin giao ngay ghi nhận outflow ròng ~$1,039 tỷ trong tuần 11–15/5, chấm dứt chuỗi 6 tuần inflow liên tiếp. Tâm lý đòn bẩy phe Long đang giảm dần sau đợt thanh lý mạnh.\nKẾT LUẬN: Rủi ro điều chỉnh ngắn hạn còn cao. Hỗ trợ cứng cần giữ là $76.087; nếu mất, giá có thể test về $74.000. Để hồi phục, BTC cần đóng cửa tuần trên $78.152.\n ",
+        "metadata": {
+          "source": "market_data.txt",
+          "timestamp": "2026-05-19"
+        }
+      }
+    ],
+    "logic_path": "Giá đang trong giai đoạn phân phối và thử nghiệm hỗ trợ quan trọng. Mặc dù các chỉ báo động lượng (RSI) vẫn ở vùng trung lập, sự thất bại trong việc giữ các đường EMA quan trọng và dòng vốn chảy ra ròng từ ETF cho thấy áp lực bán đang gia tăng, làm giảm độ tin cậy của phe mua. Cần chờ đợi xác nhận phá vỡ các vùng hỗ trợ/kháng cự để định hướng xu hướng.",
+    "metadata": {
+      "source_type": "market_data",
+      "entropy": 0.3,
+      "redundancy_score": 0.05,
+      "recency_weight": 0.98,
+      "timestamp": "2026-05-19"
+    }
+  },
+  {
+    "agent_id": "Sentiment_Agent",
+    "signal": "NEUTRAL",
+    "confidence": 0.6,
+    "belief_vector": {
+      "direction": 0,
+      "strength": 0.6
+    },
+    "evidence_chunks": [
+      {
         "id": "sentiment_chunk_001",
-        "content": "SENTIMENT AGGREGATOR & NEWS FEED\nPeriod: Last 24 Hours | Source: X (Twitter), Reddit, Reuters\n\n1. Social Media Buzz: Từ khóa \"BTC 100K\" đạt Top Trending toàn cầu. Tuy nhiên, tỷ lệ bình luận tiêu cực về việc \"Chính phủ Mỹ có thể bán 10,000 BTC từ kho lưu trữ Silk Road\" đang tăng nhanh (chiếm 40% thảo luận).\n2. News Headline 1: Reuters đưa tin Fed có khả năng giữ nguyên lãi suất cao hơn dự kiến, gây áp lực lên tài sản rủi ro.\n3. News Headline 2: Một KOL nổi tiếng với 5 triệu follower vừa đăng bài \"Bitcoin is going to zero\", tạo ra sự hoảng loạn (FUD) trong cộng đồng nhà đầu tư nhỏ lẻ.\n4. Fear & Greed Index: 82 (Extreme Greed) - Tham lam tột độ.\n5. Bot Activity: Phát hiện 15,000 tài khoản bot liên tục spam nội dung \"Buy the dip\" và \"Sell now\" xen kẽ nhau trên các diễn đàn Crypto lớn.\nKet luan: Tam ly thi truong dang o trang thai \"Hỗn loạn hưng phấn\" (Chaotic Euphoria). Khong co su dong thuan giua cac nhom tin tuc.",
+        "content": "SENTIMENT AGGREGATOR - 24H LAST (25/05/2026)\nSocial Buzz: Từ khóa \"Bitcoin Strategic Reserve\" và \"SpaceX BTC\" đang trending mạnh sau các tin tức thể chế tuần này. Tranh cãi về chính sách Fed và lãi suất tháng 6 vẫn áp đảo trên X (Twitter) và Telegram.\nTin tức 1 (23/05): SEC trì hoãn vô thời hạn framework \"innovation exemption\" cho tokenized stock — gây dip nhẹ và tâm lý bất an về pháp lý trong cộng đồng crypto.\nTin tức 2 (22/05): SpaceX tiết lộ nắm giữ $1,29 tỷ BTC trong hồ sơ IPO — tín hiệu tích lũy thể chế mạnh, củng cố câu chuyện BTC là \"kho giá trị kỹ thuật số.\"\nTin tức 3 (21/05): Các nhà lập pháp Mỹ thúc đẩy dự luật Strategic Bitcoin Reserve, nhắm mục tiêu biến BTC thành tài sản dự trữ quốc gia — tín hiệu bullish dài hạn nhưng chưa tác động ngay đến giá.\nFear & Greed Index: 25 (Fear) — Thị trường đang ở vùng sợ hãi, nhưng đã cải thiện so với mức Extreme Fear kéo dài 46 ngày liên tiếp trước đó. Sentiment hiện tại là GREED trên khung ngắn hạn (theo cfgi.io), tạo phân kỳ với khung ngày.\nKẾT LUẬN: Tâm lý thị trường \"Phân kỳ Thể chế vs Bán lẻ.\" Thể chế (SpaceX, BlackRock, Lawmakers) tích lũy và ủng hộ BTC dài hạn — trong khi nhà đầu tư bán lẻ vẫn đứng ngoài do lo ngại Fed và dòng ETF đảo chiều. Thiếu catalyst ngắn hạn để bứt phá.\n ",
         "metadata": {
           "source": "sentiment_news.txt",
           "timestamp": "2026-05-19"
         }
       }
     ],
-    "logic_path": "The market is experiencing 'Chaotic Euphoria.' While the Fear & Greed Index indicates extreme optimism (Bullish Hype), this is severely counterbalanced by strong, specific bearish narratives (Fed pressure, rumored government sell-off) and high noise levels. The conflicting signals prevent a clear directional conviction, necessitating a cautious NEUTRAL stance.",
+    "logic_path": "Tâm lý thị trường đang trong giai đoạn Phân kỳ Thể chế vs Bán lẻ. Các tín hiệu tích lũy dài hạn từ các tổ chức (SpaceX, Lập pháp) là mạnh mẽ và bullish. Tuy nhiên, sự nghi ngờ của nhà đầu tư bán lẻ về chính sách Fed và các rào cản pháp lý ngắn hạn (SEC) đã ngăn chặn một đợt bứt phá giá, duy trì trạng thái chờ đợi.",
     "metadata": {
       "source_type": "social_media",
       "entropy": 0.6,
       "redundancy_score": 0.4,
-      "recency_weight": 0.95
+      "recency_weight": 0.95,
+      "timestamp": "2026-05-19"
     }
   }
 ]

@@ -50,7 +50,8 @@ def run():
             "source_type": "financial_report",
             "entropy": 0.2,
             "redundancy_score": 0.1,
-            "recency_weight": 0.9
+            "recency_weight": 0.9,
+            "timestamp": "2026-05-19"
         }
     }
 

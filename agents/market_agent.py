@@ -49,7 +49,8 @@ def run():
             "source_type": "market_data",
             "entropy": 0.3,
             "redundancy_score": 0.05,
-            "recency_weight": 0.98
+            "recency_weight": 0.98,
+            "timestamp": "2026-05-19"
         }
     }
 

@@ -17,6 +17,14 @@ class DebateBuffer:
         with self._lock:
             self._store.setdefault(agent_id, []).append(chunk)
 
+    def get(self, agent_id: str) -> Dict[str, Any]:
+        """Return the most recent chunk stored for the given agent.
+        If no data exists, returns an empty dict."""
+        with self._lock:
+            items = self._store.get(agent_id, [])
+            return items[-1] if items else {}
+
+
     def get_all(self) -> Dict[str, List[Dict[str, Any]]]:
         """Return a copy of the entire buffer content."""
         with self._lock:

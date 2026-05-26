@@ -1,3 +1,4 @@
+# pyrefly: ignore [missing-import]
 from openai import OpenAI
 from utils.config import BASE_URL, API_KEY, get_agent_config
 
@@ -11,6 +12,7 @@ def ask_llm(prompt: str, agent_name: str = "default") -> str:
     """
     Gửi prompt đến LLM Server dựa trên cấu hình riêng biệt của từng Agent.
     """
+    print(f"DEBUG: Đang gửi request tới LM Studio cho Agent: {agent_name}...")
     # Lấy cấu hình model, temperature, max_tokens cho Agent tương ứng
     config = get_agent_config(agent_name)
 

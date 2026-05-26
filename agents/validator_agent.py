@@ -156,7 +156,7 @@ class ValidatorAgent:
             print("\n[Step 3] Khởi chạy Debate Module...")
 
             # Instantiate DebateAgent with user‑specified preferences (3 rounds, alpha 0.8)
-            debate_agent = DebateAgent(rounds=3, alpha=0.8)
+            debate_agent = DebateAgent(rounds=2, alpha=0.8)
             debate_updated_outputs = debate_agent.run_debate(agents_output)
             # Optionally, you could re‑evaluate conflict after debate – omitted for brevity
         
