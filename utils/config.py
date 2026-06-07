@@ -6,47 +6,39 @@ from dotenv import load_dotenv
 # Load các biến môi trường từ file .env
 load_dotenv()
 
-# ── OpenRouter ────────────────────────────────────────────────────────────────
-OPENROUTER_API_KEY = os.getenv("OPENROUTER_API_KEY")
-OPENROUTER_BASE_URL = os.getenv("OPENROUTER_BASE_URL", "https://openrouter.ai/api/v1")
-OPENROUTER_MODEL_NAME = os.getenv("OPENROUTER_MODEL_NAME", "openai/gpt-oss-120b:free")
-OPENROUTER_SITE_URL = os.getenv("OPENROUTER_SITE_URL", "http://localhost:8501")
-OPENROUTER_APP_NAME = os.getenv("OPENROUTER_APP_NAME", "Multi-Agent-Crypto")
-
-# ── LM Studio (fallback local) ────────────────────────────────────────────────
+# Cấu hình kết nối LLM Server
 BASE_URL = os.getenv("BASE_URL", "http://127.0.0.1:1234/v1")
 API_KEY = os.getenv("API_KEY", "lm-studio")
 
 # Cấu hình chi tiết cho từng Agent trong hệ thống
-# Model dùng chung OPENROUTER_MODEL_NAME, chỉ khác temperature/max_tokens
 AGENT_LLM_CONFIGS = {
     "financial": {
-        "model": OPENROUTER_MODEL_NAME,
+        "model": os.getenv("FINANCIAL_AGENT_MODEL", "google/gemma-4-e4b"),
         "temperature": 0.1,  # Phân tích tài chính cần độ chính xác cao, ít sáng tạo
         "max_tokens": 1500
     },
     "market": {
-        "model": OPENROUTER_MODEL_NAME,
+        "model": os.getenv("MARKET_AGENT_MODEL", "google/gemma-4-e4b"),
         "temperature": 0.2,  # Nhận định kỹ thuật cần bám sát chỉ số
         "max_tokens": 1500
     },
     "sentiment": {
-        "model": OPENROUTER_MODEL_NAME,
+        "model": os.getenv("SENTIMENT_AGENT_MODEL", "google/gemma-4-e4b"),
         "temperature": 0.4,  # Nhận định mạng xã hội có thể sáng tạo nhẹ
         "max_tokens": 1200
     },
     "validator": {
-        "model": OPENROUTER_MODEL_NAME,
+        "model": os.getenv("VALIDATOR_AGENT_MODEL", "google/gemma-4-e4b"),
         "temperature": 0.0,  # Thẩm định và phát hiện lỗi logic cần tính deterministic tuyệt đối
         "max_tokens": 1500
     },
     "mediator": {
-        "model": OPENROUTER_MODEL_NAME,
+        "model": os.getenv("MEDIATOR_AGENT_MODEL", "google/gemma-4-e4b"),
         "temperature": 0.3,  # Điều phối và tổng hợp ý kiến cần sự cân bằng
         "max_tokens": 2000
     },
     "default": {
-        "model": OPENROUTER_MODEL_NAME,
+        "model": os.getenv("DEFAULT_MODEL", "google/gemma-4-e4b"),
         "temperature": 0.2,
         "max_tokens": 1000
     }

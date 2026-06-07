@@ -103,25 +103,6 @@ class DebateAgent:
             strengths.append(strength)
         return float(np.mean(strengths)) if strengths else 0.5
 
-    @staticmethod
-    def _build_debate_history(round_num: int, agents_state: List[Dict[str, Any]]) -> str:
-        """Tóm tắt trạng thái debate sau round_num — thay thế aggregator của MADAM-RAG."""
-        lines = [f"[Debate History — after Round {round_num}]"]
-        for a in agents_state:
-            lp = a.get("logic_path", "")
-            if isinstance(lp, dict):
-                steps = lp.get("steps", [])
-                lp_str = " → ".join(steps) if steps else json.dumps(lp, ensure_ascii=False)
-            elif isinstance(lp, list):
-                lp_str = " → ".join(str(s) for s in lp)
-            else:
-                lp_str = str(lp)
-            lines.append(
-                f"  {a['agent_id']}: signal={a.get('signal', '?')}, "
-                f"conf={a['confidence']:.3f} | {lp_str[:120]}"
-            )
-        return "\n".join(lines)
-
     def run_debate(self, agents_output: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
         """Execute deterministic debate và cập nhật logic_path bằng LLM.
         Sau mỗi vòng (round) sẽ in ra trạng thái hiện tại của mỗi agent.
@@ -132,7 +113,6 @@ class DebateAgent:
 
         vectors = self._prepare_vectors(agents_output)
         updated = agents_output
-        debate_history = ""  # tích lũy qua các round (MADAM-RAG style)
 
         for rnd in range(1, self.rounds + 1):
             round_updates = []
@@ -149,36 +129,24 @@ class DebateAgent:
                     if other["agent_id"] != agent_id:
                         other_evidence.extend(other.get("evidence_chunks", []))
 
-                evidence_text = "\n".join(
-                    [e.get("content", "")[:200] for e in other_evidence][:5]
-                )
-                old_logic_str = json.dumps(out.get("logic_path"), ensure_ascii=False)
-
-                history_section = (
-                    f"\nLịch sử tranh luận các round trước:\n{debate_history}\n"
-                    if debate_history else ""
-                )
-
+                # Prompt cho LLM (tiếng Việt)
                 prompt = (
-                    f"Bạn là {agent_id} trong một cuộc tranh luận đa‑agent. "
-                    f"Đây là Round {rnd}.\n\n"
-                    f"Logic path hiện tại của bạn:\n{old_logic_str}\n"
-                    f"{history_section}"
-                    f"\nBằng chứng phản bác từ các agent khác (rebuttal strength = {rebuttal:.3f}):\n{evidence_text}\n\n"
-                    f"Confidence sau khi bị phản bác: {conf:.3f}.\n\n"
-                    f"Dựa trên lịch sử tranh luận và bằng chứng mới, hãy cập nhật lập luận của bạn. "
-                    f"Viết lại logic_path thành JSON với đúng 3 ý chính (mỗi ý tối đa 8 từ tiếng Anh, "
-                    f"phản ánh sự thay đổi so với round trước nếu có). "
-                    f"Chỉ trả về JSON dạng {{\"steps\": [\"...\", \"...\", \"...\"]}}, không markdown, không giải thích."
+                    "Bạn là một engine lý luận trong một cuộc tranh luận đa‑agent. "
+                    f"Dựa trên độ thay đổi confidence (strength = {rebuttal:.3f}) và các đoạn bằng chứng từ các agent khác, "
+                    "Bạn là một công cụ suy luận cho phiên tranh luận đa‑agent. "
+                    "Dựa trên mức độ thay đổi confidence (rebuttal strength = {rebuttal:.3f}) "
+                    "và các đoạn bằng chứng từ các agent khác, hãy tạo một JSON‑serialisable "
+                    "`logic_path` mô tả các bước lý luận cập nhật. "
+                    "Chỉ trả về JSON mà không có bất kỳ văn bản nào khác."
+                    "\nCác đoạn bằng chứng:\n"
+                    + "\n".join([e.get("content", "")[:200] for e in other_evidence][:5])
+                    + f"\nConfidence hiện tại: {conf:.3f}"
                 )
                 try:
                     new_logic_raw = ask_llm(prompt, agent_name="debate")
-                    # Trích xuất JSON từ response (xử lý cả ```json ... ``` blocks)
-                    import re
-                    json_match = re.search(r'\{.*\}', new_logic_raw, re.DOTALL)
-                    if json_match:
-                        new_logic = json.loads(json_match.group())
-                    else:
+                    try:
+                        new_logic = json.loads(new_logic_raw)
+                    except Exception:
                         new_logic = out.get("logic_path")
                 except Exception:
                     new_logic = out.get("logic_path")
@@ -186,24 +154,15 @@ class DebateAgent:
                 new_out = dict(out)
                 new_out["confidence"] = conf
                 new_out["logic_path"] = new_logic
-                # Cập nhật belief_vector strength theo confidence mới
-                new_bv = dict(out.get("belief_vector", {}))
-                new_bv["strength"] = round(conf, 3)
-                new_out["belief_vector"] = new_bv
                 self.buffer.publish(agent_id, new_out)
                 round_updates.append(new_out)
 
                 # In ra thông tin cho người dùng
-                from utils.display import print_logic_path
-                print(f"  [{agent_id}] Round {rnd} → confidence: {conf:.3f}")
-                print_logic_path(f"sau round {rnd}", new_logic)
+                print(f"[Vòng {rnd}] Agent: {agent_id}\n  Confidence: {conf:.3f}\n  Logic Path: {json.dumps(new_logic, ensure_ascii=False, indent=2)}\n")
 
             # Cập nhật vectors cho vòng tiếp theo
             vectors = {o["agent_id"]: np.array([o["belief_vector"]["direction"] * o["belief_vector"]["strength"]]) for o in round_updates}
             updated = round_updates
-
-            # Tích lũy debate history để truyền vào round tiếp theo (MADAM-RAG aggregator)
-            debate_history = self._build_debate_history(rnd, round_updates)
 
         # Trả về danh sách cuối cùng (sau tất cả các vòng)
         final_outputs = []
