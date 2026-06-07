@@ -38,8 +38,9 @@ Quy tắc:
 - BUY (Mua) chỉ khi bằng chứng hỗ trợ mạnh mẽ triển vọng tài chính tích cực
 - SELL (Bán) chỉ khi bằng chứng hỗ trợ mạnh mẽ triển vọng tiêu cực
 - Độ tin cậy từ 0 đến 1
-- Logic_path phải giải thích suy luận từng bước
+- Logic_path phải giải thích suy luận từng bước, tối đa 5 bước, mỗi bước tối đa 10 từ tiếng Anh
 - Không bao gồm markdown
+- Respond entirely in English
 """
 
 MARKET_AGENT_PROMPT = """

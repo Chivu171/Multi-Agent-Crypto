@@ -2,10 +2,10 @@
   {
     "agent_id": "Financial_Agent",
     "signal": "BUY",
-    "confidence": 0.88,
+    "confidence": 0.78,
     "belief_vector": {
       "direction": 1,
-      "strength": 0.88
+      "strength": 0.78
     },
     "evidence_chunks": [
       {
@@ -18,22 +18,22 @@
         }
       }
     ],
-    "logic_path": "Bằng chứng tài chính cho thấy một giai đoạn tích lũy mạnh mẽ và kéo dài. Hoạt động mua ròng của các cá voi (Whale Accumulation) ở mức cao nhất kể từ năm 2013, kết hợp với sự giảm liên tục của nguồn cung trên các sàn CEX và dòng tiền vào ETF, tạo ra áp lực tăng giá rõ rệt (Supply Shock). Mặc dù các chỉ số như MVRV Z-Score vẫn chưa đạt ngưỡng cảnh báo đỉnh chu kỳ, xu hướng dài hạn được xác định là Strong Bullish với mục tiêu giá 12 tháng từ $120.000–$150.000, bất chấp các rủi ro vĩ mô được nêu ra.",
+    "logic_path": "1. Whale accumulation record high; 2. On‑chain supply decreasing; 3. MVRV far below peak thresholds; 4. Miner holding tight post‑halving; 5. Institutional ETF holdings create supply shock",
     "metadata": {
       "source_type": "financial_report",
       "entropy": 0.2,
       "redundancy_score": 0.1,
-      "recency_weight": 0.9,
+      "recency_weight": 0.45,
       "timestamp": "2026-05-19"
     }
   },
   {
     "agent_id": "Market_Agent",
-    "signal": "NEUTRAL",
-    "confidence": 0.4,
+    "signal": "SELL",
+    "confidence": 0.63,
     "belief_vector": {
-      "direction": 0,
-      "strength": 0.4
+      "direction": -1,
+      "strength": 0.63
     },
     "evidence_chunks": [
       {
@@ -45,7 +45,7 @@
         }
       }
     ],
-    "logic_path": "Giá đang trong giai đoạn phân phối và thử nghiệm hỗ trợ quan trọng. Mặc dù các chỉ báo động lượng (RSI) vẫn ở vùng trung lập, sự thất bại trong việc giữ các đường EMA quan trọng và dòng vốn chảy ra ròng từ ETF cho thấy áp lực bán đang gia tăng, làm giảm độ tin cậy của phe mua. Cần chờ đợi xác nhận phá vỡ các vùng hỗ trợ/kháng cự để định hướng xu hướng.",
+    "logic_path": "Price below EMA50 (76.716) and EMA200 (83.513) → bearish bias. Repeated rejection at $82k-$82.8k and current trading range $76k-$77k indicates distribution. RSI at 46 on daily is neutral but failing to break above $78.152 reinforces lack of bullish momentum. Liquidation heatmap shows heavy long squeeze and large long liquidation (~$109.7M) with long positions clustered at $75k-$76.5k, suggesting vulnerable long side. Funding rate outflow confirms weakening long leverage. Combined bearish price action, EMA positioning, and liquidation/funding pressure yields a sell signal with moderate confidence.",
     "metadata": {
       "source_type": "market_data",
       "entropy": 0.3,
@@ -57,10 +57,10 @@
   {
     "agent_id": "Sentiment_Agent",
     "signal": "NEUTRAL",
-    "confidence": 0.6,
+    "confidence": 0.42,
     "belief_vector": {
       "direction": 0,
-      "strength": 0.6
+      "strength": 0.42
     },
     "evidence_chunks": [
       {
@@ -72,7 +72,7 @@
         }
       }
     ],
-    "logic_path": "Tâm lý thị trường đang trong giai đoạn Phân kỳ Thể chế vs Bán lẻ. Các tín hiệu tích lũy dài hạn từ các tổ chức (SpaceX, Lập pháp) là mạnh mẽ và bullish. Tuy nhiên, sự nghi ngờ của nhà đầu tư bán lẻ về chính sách Fed và các rào cản pháp lý ngắn hạn (SEC) đã ngăn chặn một đợt bứt phá giá, duy trì trạng thái chờ đợi.",
+    "logic_path": "Institutional bullish cues (SpaceX holdings, strategic reserve bill) are offset by persistent retail fear (Fed rate uncertainty, SEC delay) and lack of short-term catalyst, leading to a split sentiment and low conviction.",
     "metadata": {
       "source_type": "social_media",
       "entropy": 0.6,

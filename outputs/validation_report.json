@@ -1,14 +1,116 @@
 {
-  "conflict_score": 0.311,
+  "conflict_score": 0.453,
   "metrics": {
-    "mean_pairwise_kl": 0.4036,
-    "decision_variance": 0.1721
+    "mean_pairwise_kl": 0.6336,
+    "decision_variance": 0.3326
   },
-  "conflict_detected": false,
+  "conflict_detected": true,
   "conflict_categories": [
-    "Unclassified Structural Anomaly"
+    "Signal Conflict",
+    "Temporal Conflict"
   ],
-  "root_cause_analysis": "N/A - System in state of consensus.",
-  "trigger_debate_module": false,
-  "debate_updated_outputs": null
+  "root_cause_analysis": "**CORE DISCREPANCY**  \nFinancial_Agent’s on‑chain accumulation metrics (whale net‑buy 270 k BTC, MVRV deep dip) generate a high‑confidence BUY, while Market_Agent’s price‑action and liquidation heatmap produce a moderate‑confidence SELL; the two inference engines diverge despite referencing the same underlying asset.\n\n**DATA ASYMMETRY ANALYSIS**  \nTemporal conflict arises: on‑chain signals are lag‑free (snapshot of cumulative balances) and thus reflect structural supply shock with a latency ≈0 h, whereas market‑price indicators embed a 4‑hour aggregation window, introducing a reporting delay and smoothing effect that masks the nascent bullish pressure. Simultaneously, semantic friction appears: “whale accumulation” is interpreted as supply contraction (BUY) while “price below EMA50/200” is treated as immediate bearish momentum (SELL), yielding a semantic divergence in the mapping function from raw metrics to signal taxonomy.\n\n**CONFLICT STATE**  \nSignal Conflict – persistent information asymmetry between real‑time on‑chain fundamentals and delayed market microstructure creates a bifurcated confidence landscape.",
+  "trigger_debate_module": true,
+  "debate_updated_outputs": [
+    {
+      "agent_id": "Financial_Agent",
+      "signal": "BUY",
+      "confidence": 0.14557833527357641,
+      "belief_vector": {
+        "direction": 1,
+        "strength": 0.146
+      },
+      "evidence_chunks": [
+        {
+          "id": "financial_chunk_001",
+          "content": "ON-CHAIN FINANCIAL ANALYSIS - MAY 2026 (CẬP NHẬT 25/05/2026)\nDữ liệu Glassnode: Whale Accumulation Score tiếp tục mạnh — 2.028 địa chỉ ví cá voi (>1.000 BTC) đã mua ròng 270.000 BTC trong 30 ngày qua, mức tích lũy hàng tháng lớn nhất kể từ năm 2013. Dòng tiền thông minh vẫn âm thầm gom hàng ở vùng $",
+          "metadata": {
+            "source": "financial_report.txt",
+            "page": 1,
+            "timestamp": "2026-05-19"
+          }
+        }
+      ],
+      "logic_path": {
+        "steps": [
+          "Whale accumulation slowing, distribution dominates",
+          "MVRV low, undervaluation persists",
+          "Institutional buzz high, but price pressure bearish"
+        ]
+      },
+      "metadata": {
+        "source_type": "financial_report",
+        "entropy": 0.2,
+        "redundancy_score": 0.1,
+        "recency_weight": 0.45,
+        "timestamp": "2026-05-19"
+      }
+    },
+    {
+      "agent_id": "Market_Agent",
+      "signal": "SELL",
+      "confidence": 0.11790263857747119,
+      "belief_vector": {
+        "direction": -1,
+        "strength": 0.118
+      },
+      "evidence_chunks": [
+        {
+          "id": "market_chunk_001",
+          "content": "MARKET DATA TICKER - BTC/USDT (H4) - 25/05/2026\nPrice Action: BTC tiếp tục bị từ chối mạnh tại vùng $82.000–$82.800, tạo chuỗi nến phân phối liên tiếp. Giá hiện dao động quanh $76.000–$77.000, nằm dưới cả EMA 50 ngày ($76.716) và EMA 200 ngày ($83.513).\nRSI (14): Đang ở mức ~46 trên khung ngày, tiếp tục trong vùng Neutral-Bearish. Đà tăng bị chặn rõ rệt sau khi thất bại lấy lại $78.152.\nLiquidation Heatmap: Đợt Long Squeeze ngày 11–13/5 đã thanh lý ~$109,7 triệu lệnh long (tỷ lệ long bị thanh lý gấp 11,8 lần short). Vùng $75.000–$76.500 vẫn là cụm lệnh long treo dày nhất, rủi ro Long Squeeze vẫn còn hiện hữu.\nFunding Rate: ETF Bitcoin giao ngay ghi nhận outflow ròng ~$1,039 tỷ trong tuần 11–15/5, chấm dứt chuỗi 6 tuần inflow liên tiếp. Tâm lý đòn bẩy phe Long đang giảm dần sau đợt thanh lý mạnh.\nKẾT LUẬN: Rủi ro điều chỉnh ngắn hạn còn cao. Hỗ trợ cứng cần giữ là $76.087; nếu mất, giá có thể test về $74.000. Để hồi phục, BTC cần đóng cửa tuần trên $78.152.\n ",
+          "metadata": {
+            "source": "market_data.txt",
+            "timestamp": "2026-05-19"
+          }
+        }
+      ],
+      "logic_path": {
+        "steps": [
+          "Price below EMA50/200 stays bearish",
+          "Strong whale accumulation adds buying pressure",
+          "Long liquidation pressure still low"
+        ]
+      },
+      "metadata": {
+        "source_type": "market_data",
+        "entropy": 0.3,
+        "redundancy_score": 0.05,
+        "recency_weight": 0.98,
+        "timestamp": "2026-05-19"
+      }
+    },
+    {
+      "agent_id": "Sentiment_Agent",
+      "signal": "NEUTRAL",
+      "confidence": 0.1042873945745499,
+      "belief_vector": {
+        "direction": 0,
+        "strength": 0.104
+      },
+      "evidence_chunks": [
+        {
+          "id": "sentiment_chunk_001",
+          "content": "SENTIMENT AGGREGATOR - 24H LAST (25/05/2026)\nSocial Buzz: Từ khóa \"Bitcoin Strategic Reserve\" và \"SpaceX BTC\" đang trending mạnh sau các tin tức thể chế tuần này. Tranh cãi về chính sách Fed và lãi suất tháng 6 vẫn áp đảo trên X (Twitter) và Telegram.\nTin tức 1 (23/05): SEC trì hoãn vô thời hạn framework \"innovation exemption\" cho tokenized stock — gây dip nhẹ và tâm lý bất an về pháp lý trong cộng đồng crypto.\nTin tức 2 (22/05): SpaceX tiết lộ nắm giữ $1,29 tỷ BTC trong hồ sơ IPO — tín hiệu tích lũy thể chế mạnh, củng cố câu chuyện BTC là \"kho giá trị kỹ thuật số.\"\nTin tức 3 (21/05): Các nhà lập pháp Mỹ thúc đẩy dự luật Strategic Bitcoin Reserve, nhắm mục tiêu biến BTC thành tài sản dự trữ quốc gia — tín hiệu bullish dài hạn nhưng chưa tác động ngay đến giá.\nFear & Greed Index: 25 (Fear) — Thị trường đang ở vùng sợ hãi, nhưng đã cải thiện so với mức Extreme Fear kéo dài 46 ngày liên tiếp trước đó. Sentiment hiện tại là GREED trên khung ngắn hạn (theo cfgi.io), tạo phân kỳ với khung ngày.\nKẾT LUẬN: Tâm lý thị trường \"Phân kỳ Thể chế vs Bán lẻ.\" Thể chế (SpaceX, BlackRock, Lawmakers) tích lũy và ủng hộ BTC dài hạn — trong khi nhà đầu tư bán lẻ vẫn đứng ngoài do lo ngại Fed và dòng ETF đảo chiều. Thiếu catalyst ngắn hạn để bứt phá.\n ",
+          "metadata": {
+            "source": "sentiment_news.txt",
+            "timestamp": "2026-05-19"
+          }
+        }
+      ],
+      "logic_path": {
+        "steps": [
+          "Whale accumulation remains strong",
+          "Price rejection confirms bearish distribution",
+          "Short-term outlook bearish, low conviction"
+        ]
+      },
+      "metadata": {
+        "source_type": "social_media",
+        "entropy": 0.6,
+        "redundancy_score": 0.4,
+        "recency_weight": 0.95,
+        "timestamp": "2026-05-19"
+      }
+    }
+  ]
 }
