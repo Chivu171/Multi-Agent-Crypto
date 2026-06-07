@@ -1,4 +1,5 @@
 import json
+import datetime
 from utils.llm import ask_llm
 from utils.belief import build_belief_vector
 from utils.prompts import MARKET_AGENT_PROMPT
@@ -38,7 +39,7 @@ def run():
 
                 "metadata": {
                     "source": "market_data.txt",
-                    "timestamp": "2026-05-19"
+                    "timestamp": datetime.date.today().isoformat()
                 }
             }
         ],
@@ -47,10 +48,10 @@ def run():
 
         "metadata": {
             "source_type": "market_data",
-            "entropy": 0.3,
-            "redundancy_score": 0.05,
-            "recency_weight": 0.98,
-            "timestamp": "2026-05-19"
+            "entropy": 0.25,        # EMA/RSI deterministic nhưng 23-signal composite có 22% vs 61% split
+            "redundancy_score": 0.05, # price/ETF flow nhất quán giữa CoinGlass/Bloomberg/Farside
+            "recency_weight": 0.98,  # real-time data, ETF flow T+1 — nguồn tin cậy nhất về timing
+            "timestamp": datetime.date.today().isoformat()
         }
     }
 

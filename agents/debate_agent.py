@@ -101,27 +101,59 @@ class DebateAgent:
                 self.w_logic * logic
             )
             strengths.append(strength)
-        return float(np.mean(strengths)) if strengths else 0.5
+        raw = float(np.mean(strengths)) if strengths else 0.5
+        # Normalize về [0, 1] — cosine dist có thể lên tới 2.0
+        return float(np.clip(raw / 1.5, 0.0, 1.0))
+
+    # Vai trò chuyên môn của từng agent — dùng để giữ domain trong debate
+    AGENT_ROLES = {
+        "Financial_Agent": "on-chain fundamentals analyst (whale flows, MVRV, supply, miner behavior, ETF holdings)",
+        "Market_Agent": "technical market analyst (price action, EMA, RSI, liquidations, funding rate)",
+        "Sentiment_Agent": "social sentiment analyst (retail fear/greed, news tone, institutional narrative, macro mood)",
+    }
+
+    @staticmethod
+    def _build_debate_history(round_num: int, agents_state: List[Dict[str, Any]]) -> str:
+        """Tóm tắt trạng thái debate sau round_num — MADAM-RAG aggregator style."""
+        lines = [f"[Debate History — after Round {round_num}]"]
+        for a in agents_state:
+            lp = a.get("logic_path", "")
+            if isinstance(lp, dict):
+                steps = lp.get("steps", [])
+                lp_str = " → ".join(steps) if steps else json.dumps(lp, ensure_ascii=False)
+            elif isinstance(lp, list):
+                lp_str = " → ".join(str(s) for s in lp)
+            else:
+                lp_str = str(lp)
+            lines.append(
+                f"  {a['agent_id']}: signal={a.get('signal', '?')}, "
+                f"conf={a['confidence']:.3f} | {lp_str[:120]}"
+            )
+        return "\n".join(lines)
 
     def run_debate(self, agents_output: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
-        """Execute deterministic debate và cập nhật logic_path bằng LLM.
-        Sau mỗi vòng (round) sẽ in ra trạng thái hiện tại của mỗi agent.
+        """Execute multi-turn debate với debate history tích lũy (MADAM-RAG style).
+        Mỗi agent giữ đúng domain chuyên môn qua từng round.
         """
+        import re
+        from utils.display import print_logic_path
+
         # 1. Đưa toàn bộ output ban đầu vào buffer
         for out in agents_output:
             self.buffer.publish(out["agent_id"], out)
 
         vectors = self._prepare_vectors(agents_output)
         updated = agents_output
+        debate_history = ""  # tích lũy qua các round (MADAM-RAG aggregator)
 
         for rnd in range(1, self.rounds + 1):
             round_updates = []
             for out in updated:
                 agent_id = out["agent_id"]
                 rebuttal = self._rebuttal_strength(agent_id, updated, vectors)
-                # Cập nhật confidence
-                conf = out["confidence"]
-                conf = update_confidence(conf, rebuttal, beta=self.alpha)
+
+                # Confidence decay (alpha=0.35 để tránh decay quá mạnh)
+                conf = update_confidence(out["confidence"], rebuttal, beta=self.alpha)
 
                 # Thu thập evidence của các agent khác
                 other_evidence = []
@@ -129,43 +161,58 @@ class DebateAgent:
                     if other["agent_id"] != agent_id:
                         other_evidence.extend(other.get("evidence_chunks", []))
 
-                # Prompt cho LLM (tiếng Việt)
-                prompt = (
-                    "Bạn là một engine lý luận trong một cuộc tranh luận đa‑agent. "
-                    f"Dựa trên độ thay đổi confidence (strength = {rebuttal:.3f}) và các đoạn bằng chứng từ các agent khác, "
-                    "Bạn là một công cụ suy luận cho phiên tranh luận đa‑agent. "
-                    "Dựa trên mức độ thay đổi confidence (rebuttal strength = {rebuttal:.3f}) "
-                    "và các đoạn bằng chứng từ các agent khác, hãy tạo một JSON‑serialisable "
-                    "`logic_path` mô tả các bước lý luận cập nhật. "
-                    "Chỉ trả về JSON mà không có bất kỳ văn bản nào khác."
-                    "\nCác đoạn bằng chứng:\n"
-                    + "\n".join([e.get("content", "")[:200] for e in other_evidence][:5])
-                    + f"\nConfidence hiện tại: {conf:.3f}"
+                evidence_text = "\n".join(
+                    [e.get("content", "")[:200] for e in other_evidence][:5]
                 )
+                old_logic_str = json.dumps(out.get("logic_path"), ensure_ascii=False)
+                role_desc = self.AGENT_ROLES.get(agent_id, "financial analyst")
+
+                history_section = (
+                    f"\nDebate history from previous rounds:\n{debate_history}\n"
+                    if debate_history else ""
+                )
+
+                prompt = (
+                    f"You are {agent_id}, acting strictly as a {role_desc}. "
+                    f"This is Round {rnd} of a multi-agent debate.\n\n"
+                    f"Your current logic path:\n{old_logic_str}\n"
+                    f"{history_section}"
+                    f"\nCounter-evidence from other agents (rebuttal strength = {rebuttal:.3f}):\n{evidence_text}\n\n"
+                    f"Your confidence after rebuttal: {conf:.3f}.\n\n"
+                    f"Update your reasoning based on debate history and new evidence. "
+                    f"IMPORTANT: Stay strictly within your domain ({role_desc}). "
+                    f"Do NOT adopt arguments outside your expertise. "
+                    f"Rewrite logic_path as JSON with exactly 3 key points (max 8 words each, in English). "
+                    f'Return only JSON: {{"steps": ["...", "...", "..."]}}, no markdown, no explanation.'
+                )
+
                 try:
                     new_logic_raw = ask_llm(prompt, agent_name="debate")
-                    try:
-                        new_logic = json.loads(new_logic_raw)
-                    except Exception:
-                        new_logic = out.get("logic_path")
+                    json_match = re.search(r'\{.*\}', new_logic_raw, re.DOTALL)
+                    new_logic = json.loads(json_match.group()) if json_match else out.get("logic_path")
                 except Exception:
                     new_logic = out.get("logic_path")
 
                 new_out = dict(out)
                 new_out["confidence"] = conf
                 new_out["logic_path"] = new_logic
+                # Cập nhật belief_vector strength theo confidence mới
+                new_bv = dict(out.get("belief_vector", {}))
+                new_bv["strength"] = round(conf, 3)
+                new_out["belief_vector"] = new_bv
                 self.buffer.publish(agent_id, new_out)
                 round_updates.append(new_out)
 
-                # In ra thông tin cho người dùng
-                print(f"[Vòng {rnd}] Agent: {agent_id}\n  Confidence: {conf:.3f}\n  Logic Path: {json.dumps(new_logic, ensure_ascii=False, indent=2)}\n")
+                print(f"  [{agent_id}] Round {rnd} → confidence: {conf:.3f}")
+                print_logic_path(f"sau round {rnd}", new_logic)
 
-            # Cập nhật vectors cho vòng tiếp theo
-            vectors = {o["agent_id"]: np.array([o["belief_vector"]["direction"] * o["belief_vector"]["strength"]]) for o in round_updates}
+            # Cập nhật vectors và tích lũy debate history cho round tiếp
+            vectors = {
+                o["agent_id"]: np.array([o["belief_vector"]["direction"] * o["belief_vector"]["strength"]])
+                for o in round_updates
+            }
             updated = round_updates
+            debate_history = self._build_debate_history(rnd, round_updates)
 
-        # Trả về danh sách cuối cùng (sau tất cả các vòng)
-        final_outputs = []
-        for out in updated:
-            final_outputs.append(self.buffer.get(out["agent_id"]))
-        return final_outputs
+        # Trả về snapshot cuối cùng từ buffer
+        return [self.buffer.get(out["agent_id"]) for out in updated]

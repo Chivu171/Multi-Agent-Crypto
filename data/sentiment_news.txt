@@ -1,8 +1,40 @@
-SENTIMENT AGGREGATOR - 24H LAST (25/05/2026)
-Social Buzz: Từ khóa "Bitcoin Strategic Reserve" và "SpaceX BTC" đang trending mạnh sau các tin tức thể chế tuần này. Tranh cãi về chính sách Fed và lãi suất tháng 6 vẫn áp đảo trên X (Twitter) và Telegram.
-Tin tức 1 (23/05): SEC trì hoãn vô thời hạn framework "innovation exemption" cho tokenized stock — gây dip nhẹ và tâm lý bất an về pháp lý trong cộng đồng crypto.
-Tin tức 2 (22/05): SpaceX tiết lộ nắm giữ $1,29 tỷ BTC trong hồ sơ IPO — tín hiệu tích lũy thể chế mạnh, củng cố câu chuyện BTC là "kho giá trị kỹ thuật số."
-Tin tức 3 (21/05): Các nhà lập pháp Mỹ thúc đẩy dự luật Strategic Bitcoin Reserve, nhắm mục tiêu biến BTC thành tài sản dự trữ quốc gia — tín hiệu bullish dài hạn nhưng chưa tác động ngay đến giá.
-Fear & Greed Index: 25 (Fear) — Thị trường đang ở vùng sợ hãi, nhưng đã cải thiện so với mức Extreme Fear kéo dài 46 ngày liên tiếp trước đó. Sentiment hiện tại là GREED trên khung ngắn hạn (theo cfgi.io), tạo phân kỳ với khung ngày.
-KẾT LUẬN: Tâm lý thị trường "Phân kỳ Thể chế vs Bán lẻ." Thể chế (SpaceX, BlackRock, Lawmakers) tích lũy và ủng hộ BTC dài hạn — trong khi nhà đầu tư bán lẻ vẫn đứng ngoài do lo ngại Fed và dòng ETF đảo chiều. Thiếu catalyst ngắn hạn để bứt phá.
- 
+===== BTC SENTIMENT NEWS — June 7, 2026 =====
+Sources: CoinMarketCap AI, Alternative.me, Bitcoin.com, MEXC News, TradingKey
+
+--- FEAR & GREED INDEX ---
+Current reading: 12/100 — EXTREME FEAR (June 3-7, 2026)
+One of the lowest sentiment readings in months. Historically, readings below 15 have
+preceded short-term bounce rallies, but can persist in strong downtrends.
+
+--- INSTITUTIONAL SENTIMENT ---
+- Record $3.4B weekly outflow from U.S. spot Bitcoin ETFs (largest since ETF launch 2024).
+- BlackRock IBIT led redemptions: single-day outflows exceeded $600M.
+- Market rumor: Strategy (formerly MicroStrategy) sold Bitcoin for first time in years —
+  unconfirmed but added significant fear to market.
+- Strategic Bitcoin Reserve bill in U.S. Congress: still pending, no vote scheduled.
+- SpaceX confirmed holding $1.29B in BTC on balance sheet (unchanged, long-term signal).
+
+--- RETAIL SENTIMENT ---
+- Retail leveraged longs mostly wiped out: $1.8B total liquidations in single day (June 5),
+  $1.35B from long positions.
+- Google Trends for "Bitcoin crash" spiked to 85/100 (highest since May 2022).
+- Reddit/Twitter sentiment: predominantly bearish, recurring "is this the end?" narratives.
+- Fear of Fed rate hike resurgence following stronger-than-expected May jobs report.
+- SEC delay on Ethereum ETF staking approval adding broader crypto uncertainty.
+
+--- MACRO SENTIMENT CONTEXT ---
+- U.S.-Iran geopolitical tensions escalating — risk-off across all assets.
+- Federal Reserve signaling higher-for-longer stance; rate cut projections reduced from 2 to 1.
+- Dollar index (DXY) at 104.3, elevated — historically inversely correlated with BTC.
+- Gold outperforming at $3,280/oz as investors flee to safety assets.
+
+--- CONTRARIAN INDICATORS ---
+- Extreme fear historically marks local bottoms: Feb 2024 (fear 18) preceded 40% BTC rally.
+- Social media narrative uniformly bearish = potential capitulation signal.
+- Funding rates deeply negative: market paying shorts, indicating crowded bearish positioning.
+- Large long liquidation cascade may have cleared weak hands (sell-side exhaustion signal).
+
+--- CONTENT QUALITY NOTES ---
+Redundancy: "ETF outflow $3.4B" narrative republished across 8+ outlets from single Bloomberg
+source. Strategy sale rumor unverified, circulating in low-credibility outlets.
+Fear & Greed Index data is primary/unique. Macro context articles have high overlap.

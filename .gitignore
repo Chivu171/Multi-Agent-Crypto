@@ -1,3 +1,4 @@
 *.pyc
 /multiagent
 .DS_Store
+.env

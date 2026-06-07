@@ -8,6 +8,7 @@ from agents.sentiment_agent import run as sentiment_run
 from agents.validator_agent import ValidatorAgent
 from agents.debate_agent import DebateAgent
 from agents.mediator_agent import run_mediator
+from utils.display import print_logic_path
 
 
 def main():
@@ -20,15 +21,16 @@ def main():
     try:
         financial_output = financial_run()
         print(f"  - Financial Agent: {financial_output['signal']} (Confidence: {financial_output['confidence']})")
+        print_logic_path("initial", financial_output.get("logic_path"))
     except Exception as e:
         import traceback
-        print(f"DEBUG: ERROR CHI TIẾT:")
-        traceback.print_exc() # In ra toàn bộ stack trace
+        traceback.print_exc()
         financial_output = None
 
     try:
         market_output = market_run()
         print(f"  - Market Agent: {market_output['signal']} (Confidence: {market_output['confidence']})")
+        print_logic_path("initial", market_output.get("logic_path"))
     except Exception as e:
         print(f"  - ERROR Market Agent: {e}")
         market_output = None
@@ -36,6 +38,7 @@ def main():
     try:
         sentiment_output = sentiment_run()
         print(f"  - Sentiment Agent: {sentiment_output['signal']} (Confidence: {sentiment_output['confidence']})")
+        print_logic_path("initial", sentiment_output.get("logic_path"))
     except Exception as e:
         print(f"  - ERROR Sentiment Agent: {e}")
         sentiment_output = None

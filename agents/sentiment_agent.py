@@ -1,4 +1,5 @@
 import json
+import datetime
 from utils.llm import ask_llm
 from utils.belief import build_belief_vector
 from utils.prompts import SENTIMENT_AGENT_PROMPT
@@ -38,7 +39,7 @@ def run():
 
                 "metadata": {
                     "source": "sentiment_news.txt",
-                    "timestamp": "2026-05-19"
+                    "timestamp": datetime.date.today().isoformat()
                 }
             }
         ],
@@ -47,10 +48,10 @@ def run():
 
         "metadata": {
             "source_type": "social_media",
-            "entropy": 0.6,
-            "redundancy_score": 0.4,
-            "recency_weight": 0.95,
-            "timestamp": "2026-05-19"
+            "entropy": 0.65,        # Fear=12 vs contrarian signals + unverified rumor (Strategy sale)
+            "redundancy_score": 0.55, # "$3.4B ETF outflow" republished 8+ outlets từ 1 Bloomberg source
+            "recency_weight": 0.80,  # tin tức hôm nay nhưng qua biên tập, F&G cập nhật hàng ngày
+            "timestamp": datetime.date.today().isoformat()
         }
     }
 

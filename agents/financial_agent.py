@@ -1,4 +1,5 @@
 import json
+import datetime
 from utils.llm import ask_llm
 from utils.belief import build_belief_vector
 from utils.prompts import FINANCIAL_AGENT_PROMPT
@@ -39,7 +40,7 @@ def run():
                 "metadata": {
                     "source": "financial_report.txt",
                     "page": 1,
-                    "timestamp": "2026-05-19"
+                    "timestamp": datetime.date.today().isoformat()
                 }
             }
         ],
@@ -48,10 +49,10 @@ def run():
 
         "metadata": {
             "source_type": "financial_report",
-            "entropy": 0.2,
-            "redundancy_score": 0.1,
-            "recency_weight": 0.9,
-            "timestamp": "2026-05-19"
+            "entropy": 0.15,        # metrics deterministic (MVRV, SOPR, exchange supply) — ít ambiguity
+            "redundancy_score": 0.2, # whale figure từ 6+ outlets nhưng cùng 1 Glassnode source
+            "recency_weight": 0.45,  # on-chain aggregate lag 1-24h → Temporal Conflict với market
+            "timestamp": datetime.date.today().isoformat()
         }
     }
 

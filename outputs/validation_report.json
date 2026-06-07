@@ -1,14 +1,116 @@
 {
-  "conflict_score": 0.311,
+  "conflict_score": 0.5947,
   "metrics": {
-    "mean_pairwise_kl": 0.4036,
-    "decision_variance": 0.1721
+    "mean_pairwise_kl": 0.729,
+    "decision_variance": 0.3931
   },
-  "conflict_detected": false,
+  "conflict_detected": true,
   "conflict_categories": [
-    "Unclassified Structural Anomaly"
+    "Signal Conflict",
+    "Temporal Conflict"
   ],
-  "root_cause_analysis": "N/A - System in state of consensus.",
-  "trigger_debate_module": false,
-  "debate_updated_outputs": null
+  "root_cause_analysis": "**CORE DISCREPANCY**  \nFinancial Agent’s on‑chain fundamentals (whale net‑buy, supply contraction, MVRV≈1) generate a high‑confidence BUY, while Market Agent’s price‑action metrics (EMA‑20/50/200 divergence, bearish composite) produce a SELL; the two inference engines operate on temporally misaligned windows (30‑day on‑chain aggregates vs 1‑hour technical candles).\n\n**DATA ASYMMETRY ANALYSIS**  \nOn‑chain data are lagged ≈ 24‑48 h and smoothed over monthly periods, yielding low‑frequency, low‑noise signals that reflect structural accumulation. Technical data are high‑frequency, noise‑sensitive snapshots that capture transient price dislocations and liquidation spikes. Sentiment data sit between, amplifying fear‑driven bias but lacking granularity. The divergent latency (temporal conflict) creates information friction: the BUY logic ingests delayed supply‑side equilibrium, whereas the SELL logic reacts to immediate demand‑side stress, producing opposite confidence weights.\n\n**CONFLICT STATE**  \nTemporal‑signal conflict → **Signal Conflict** with asymmetric confidence (0.78 BUY vs 0.65 SELL). The system resides in a **high‑entropy, bifurcated state** requiring reconciliation of lagged fundamentals with real‑time market stress.",
+  "trigger_debate_module": true,
+  "debate_updated_outputs": [
+    {
+      "agent_id": "Financial_Agent",
+      "signal": "BUY",
+      "confidence": 0.5125743654707315,
+      "belief_vector": {
+        "direction": 1,
+        "strength": 0.513
+      },
+      "evidence_chunks": [
+        {
+          "id": "financial_chunk_001",
+          "content": "===== BTC ON-CHAIN DATA (FUNDAMENTALS) — June 7, 2026 =====\nSources: Glassnode, CryptoQuant, SpotedCrypto, BeInCrypto, CheckOnChain\n\n--- WHALE ACCUMULATION ---\nLarge wallet cohort (>1,000 BTC): 2,028 addresses active as accumulators in May 2026.\nNet accumulation: 270,000 BTC bought in last 30 days —",
+          "metadata": {
+            "source": "financial_report.txt",
+            "page": 1,
+            "timestamp": "2026-06-07"
+          }
+        }
+      ],
+      "logic_path": {
+        "steps": [
+          "Whale inflows remain strong",
+          "Supply contraction easing modestly",
+          "Valuation metrics near buy zone"
+        ]
+      },
+      "metadata": {
+        "source_type": "financial_report",
+        "entropy": 0.15,
+        "redundancy_score": 0.2,
+        "recency_weight": 0.45,
+        "timestamp": "2026-06-07"
+      }
+    },
+    {
+      "agent_id": "Market_Agent",
+      "signal": "SELL",
+      "confidence": 0.36822275065530147,
+      "belief_vector": {
+        "direction": -1,
+        "strength": 0.368
+      },
+      "evidence_chunks": [
+        {
+          "id": "market_chunk_001",
+          "content": "===== BTC MARKET DATA (TECHNICAL) — June 7, 2026 =====\nSources: CapitalStreetFX, Investtech, CoinStats AI, Investing.com, Barchart\n\n--- PRICE ACTION ---\nCurrent Price: ~$63,632 (range June 5-7: $61,800 - $65,400)\n7-day change: -13.9%\n30-day change: -22.1%\nKey rejection: Failed to break $82,000-$82,800 resistance zone (April-May 2026)\nCurrent range: $61,800 - $65,400 (consolidation after sharp drop)\n\n--- MOVING AVERAGES ---\nEMA20 (daily): ~$71,200 — price significantly below, bearish\nEMA50 (daily): ~$76,716 — price below, bearish bias\nEMA200 (daily): ~$83,513 — price well below, strong bearish structure\nBTC must reclaim $76,000-$80,000 (EMA50 zone) to restore neutral trend bias.\n\n--- RSI ---\nDaily RSI: 18.20 — EXTREME OVERSOLD (well below 30 threshold)\nHistorical note: Daily RSI below 20 has preceded 5-12% bounce within 48-72h on 6/8 occurrences.\nWeekly RSI: ~32 — approaching oversold but not extreme.\nRSI divergence: price making lower lows while RSI not confirming — potential reversal signal.\n\n--- SUPPORT / RESISTANCE ---\nCritical support: $61,800 (0.786 Fibonacci retracement from 2025 low to ATH)\nSecondary support: $58,000-$59,000 (high-volume accumulation zone 2024)\nResistance: $68,000 (recent breakdown level, now resistance)\nResistance: $76,000-$80,000 (EMA50/200 zone, strong supply)\n\n--- DERIVATIVES / LIQUIDATIONS ---\nTotal liquidations (June 5, 2026): $1.8B in 24h — $1.35B long positions\nLiquidation heatmap: Heavy long clustering at $60,000-$62,000 (vulnerable zone)\nFunding rate: -0.018% per 8h (negative = bearish, market paying shorts)\nOpen interest: Declining — leverage being removed from system\nLong/Short ratio: 0.87 (shorts dominant for first time since Q4 2023)\n\n--- ETF FLOWS ---\nWeekly ETF net outflow: -$3.4B (record, June 2-6, 2026)\nBlackRock IBIT single-day outflow: -$642M (June 4)\nFidelity FBTC: -$287M\nTotal U.S. spot BTC ETF AUM: ~$98B (down from $118B peak)\n\n--- TECHNICAL SIGNAL COMPOSITE (23 indicators) ---\nBullish: 5 signals (22%)\nBearish: 14 signals (61%)\nNeutral: 4 signals (17%)\nOverall bias: BEARISH\n\n--- CONTENT QUALITY NOTES ---\nPrice data: primary, real-time, low redundancy.\nEMA/RSI: calculated from raw OHLCV, deterministic — high reliability.\nETF flow figures: consistent across CoinGlass, Bloomberg, Farside — high confidence.\nLiquidation data: aggregated from Binance/OKX/Bybit — moderate precision.\n",
+          "metadata": {
+            "source": "market_data.txt",
+            "timestamp": "2026-06-07"
+          }
+        }
+      ],
+      "logic_path": {
+        "steps": [
+          "Price below EMA20/50",
+          "RSI deep oversold, bearish structure",
+          "Funding rate positive, short liquidations rising"
+        ]
+      },
+      "metadata": {
+        "source_type": "market_data",
+        "entropy": 0.25,
+        "redundancy_score": 0.05,
+        "recency_weight": 0.98,
+        "timestamp": "2026-06-07"
+      }
+    },
+    {
+      "agent_id": "Sentiment_Agent",
+      "signal": "BUY",
+      "confidence": 0.3638227160162804,
+      "belief_vector": {
+        "direction": 1,
+        "strength": 0.364
+      },
+      "evidence_chunks": [
+        {
+          "id": "sentiment_chunk_001",
+          "content": "===== BTC SENTIMENT NEWS — June 7, 2026 =====\nSources: CoinMarketCap AI, Alternative.me, Bitcoin.com, MEXC News, TradingKey\n\n--- FEAR & GREED INDEX ---\nCurrent reading: 12/100 — EXTREME FEAR (June 3-7, 2026)\nOne of the lowest sentiment readings in months. Historically, readings below 15 have\npreceded short-term bounce rallies, but can persist in strong downtrends.\n\n--- INSTITUTIONAL SENTIMENT ---\n- Record $3.4B weekly outflow from U.S. spot Bitcoin ETFs (largest since ETF launch 2024).\n- BlackRock IBIT led redemptions: single-day outflows exceeded $600M.\n- Market rumor: Strategy (formerly MicroStrategy) sold Bitcoin for first time in years —\n  unconfirmed but added significant fear to market.\n- Strategic Bitcoin Reserve bill in U.S. Congress: still pending, no vote scheduled.\n- SpaceX confirmed holding $1.29B in BTC on balance sheet (unchanged, long-term signal).\n\n--- RETAIL SENTIMENT ---\n- Retail leveraged longs mostly wiped out: $1.8B total liquidations in single day (June 5),\n  $1.35B from long positions.\n- Google Trends for \"Bitcoin crash\" spiked to 85/100 (highest since May 2022).\n- Reddit/Twitter sentiment: predominantly bearish, recurring \"is this the end?\" narratives.\n- Fear of Fed rate hike resurgence following stronger-than-expected May jobs report.\n- SEC delay on Ethereum ETF staking approval adding broader crypto uncertainty.\n\n--- MACRO SENTIMENT CONTEXT ---\n- U.S.-Iran geopolitical tensions escalating — risk-off across all assets.\n- Federal Reserve signaling higher-for-longer stance; rate cut projections reduced from 2 to 1.\n- Dollar index (DXY) at 104.3, elevated — historically inversely correlated with BTC.\n- Gold outperforming at $3,280/oz as investors flee to safety assets.\n\n--- CONTRARIAN INDICATORS ---\n- Extreme fear historically marks local bottoms: Feb 2024 (fear 18) preceded 40% BTC rally.\n- Social media narrative uniformly bearish = potential capitulation signal.\n- Funding rates deeply negative: market paying shorts, indicating crowded bearish positioning.\n- Large long liquidation cascade may have cleared weak hands (sell-side exhaustion signal).\n\n--- CONTENT QUALITY NOTES ---\nRedundancy: \"ETF outflow $3.4B\" narrative republished across 8+ outlets from single Bloomberg\nsource. Strategy sale rumor unverified, circulating in low-credibility outlets.\nFear & Greed Index data is primary/unique. Macro context articles have high overlap.\n",
+          "metadata": {
+            "source": "sentiment_news.txt",
+            "timestamp": "2026-06-07"
+          }
+        }
+      ],
+      "logic_path": {
+        "steps": [
+          "Retail fear extreme, index 12/100",
+          "Institutional narrative cautious bullish, outflows noted",
+          "Macro risk‑off persists, USD strength"
+        ]
+      },
+      "metadata": {
+        "source_type": "social_media",
+        "entropy": 0.65,
+        "redundancy_score": 0.55,
+        "recency_weight": 0.8,
+        "timestamp": "2026-06-07"
+      }
+    }
+  ]
 }

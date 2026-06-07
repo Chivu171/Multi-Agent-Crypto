@@ -2,83 +2,83 @@
   {
     "agent_id": "Financial_Agent",
     "signal": "BUY",
-    "confidence": 0.88,
+    "confidence": 0.78,
     "belief_vector": {
       "direction": 1,
-      "strength": 0.88
+      "strength": 0.78
     },
     "evidence_chunks": [
       {
         "id": "financial_chunk_001",
-        "content": "ON-CHAIN FINANCIAL ANALYSIS - MAY 2026 (CẬP NHẬT 25/05/2026)\nDữ liệu Glassnode: Whale Accumulation Score tiếp tục mạnh — 2.028 địa chỉ ví cá voi (>1.000 BTC) đã mua ròng 270.000 BTC trong 30 ngày qua, mức tích lũy hàng tháng lớn nhất kể từ năm 2013. Dòng tiền thông minh vẫn âm thầm gom hàng ở vùng $",
+        "content": "===== BTC ON-CHAIN DATA (FUNDAMENTALS) — June 7, 2026 =====\nSources: Glassnode, CryptoQuant, SpotedCrypto, BeInCrypto, CheckOnChain\n\n--- WHALE ACCUMULATION ---\nLarge wallet cohort (>1,000 BTC): 2,028 addresses active as accumulators in May 2026.\nNet accumulation: 270,000 BTC bought in last 30 days —",
         "metadata": {
           "source": "financial_report.txt",
           "page": 1,
-          "timestamp": "2026-05-19"
+          "timestamp": "2026-06-07"
         }
       }
     ],
-    "logic_path": "Bằng chứng tài chính cho thấy một giai đoạn tích lũy mạnh mẽ và kéo dài. Hoạt động mua ròng của các cá voi (Whale Accumulation) ở mức cao nhất kể từ năm 2013, kết hợp với sự giảm liên tục của nguồn cung trên các sàn CEX và dòng tiền vào ETF, tạo ra áp lực tăng giá rõ rệt (Supply Shock). Mặc dù các chỉ số như MVRV Z-Score vẫn chưa đạt ngưỡng cảnh báo đỉnh chu kỳ, xu hướng dài hạn được xác định là Strong Bullish với mục tiêu giá 12 tháng từ $120.000–$150.000, bất chấp các rủi ro vĩ mô được nêu ra.",
+    "logic_path": "1. Whale accumulation shows 270,000 BTC net bought in the last 30 days (largest monthly inflow since 2013) and a 3.2% MoM increase in large‑holder count, indicating strong demand from long‑term investors. 2. Exchange reserves fell to a 7‑year low (~2.69M BTC) with a 30‑day net outflow of 127,000 BTC and a 7‑day outflow of 18,400 BTC, reflecting a shift to self‑custody and reduced sell pressure. 3. MVRV Z‑Score at 1.0 places price at realized value, a historically favorable buy zone. 4. SOPR at 0.97 (<1) shows coins are being spent at a loss, a capitulation signal that often precedes price recovery; aSOPR trending toward 1.0 supports an imminent reset. 5. Miners are holding production (stable balances) despite a post‑halving reward of 1.5625 BTC, and hash rate remains near all‑time high, indicating confidence in network security and no forced liquidation. 6. Network activity metrics (active addresses ~812k, transaction volume $18.2B/day) are stable, and spot price ($63,632) sits just above the realized price ($62,800), a strong support historically. The convergence of strong accumulation, supply contraction, valuation metrics in buy territory, and stable network fundamentals yields a bullish outlook, justifying a BUY signal.",
     "metadata": {
       "source_type": "financial_report",
-      "entropy": 0.2,
-      "redundancy_score": 0.1,
-      "recency_weight": 0.9,
-      "timestamp": "2026-05-19"
+      "entropy": 0.15,
+      "redundancy_score": 0.2,
+      "recency_weight": 0.45,
+      "timestamp": "2026-06-07"
     }
   },
   {
     "agent_id": "Market_Agent",
-    "signal": "NEUTRAL",
-    "confidence": 0.4,
+    "signal": "SELL",
+    "confidence": 0.65,
     "belief_vector": {
-      "direction": 0,
-      "strength": 0.4
+      "direction": -1,
+      "strength": 0.65
     },
     "evidence_chunks": [
       {
         "id": "market_chunk_001",
-        "content": "MARKET DATA TICKER - BTC/USDT (H4) - 25/05/2026\nPrice Action: BTC tiếp tục bị từ chối mạnh tại vùng $82.000–$82.800, tạo chuỗi nến phân phối liên tiếp. Giá hiện dao động quanh $76.000–$77.000, nằm dưới cả EMA 50 ngày ($76.716) và EMA 200 ngày ($83.513).\nRSI (14): Đang ở mức ~46 trên khung ngày, tiếp tục trong vùng Neutral-Bearish. Đà tăng bị chặn rõ rệt sau khi thất bại lấy lại $78.152.\nLiquidation Heatmap: Đợt Long Squeeze ngày 11–13/5 đã thanh lý ~$109,7 triệu lệnh long (tỷ lệ long bị thanh lý gấp 11,8 lần short). Vùng $75.000–$76.500 vẫn là cụm lệnh long treo dày nhất, rủi ro Long Squeeze vẫn còn hiện hữu.\nFunding Rate: ETF Bitcoin giao ngay ghi nhận outflow ròng ~$1,039 tỷ trong tuần 11–15/5, chấm dứt chuỗi 6 tuần inflow liên tiếp. Tâm lý đòn bẩy phe Long đang giảm dần sau đợt thanh lý mạnh.\nKẾT LUẬN: Rủi ro điều chỉnh ngắn hạn còn cao. Hỗ trợ cứng cần giữ là $76.087; nếu mất, giá có thể test về $74.000. Để hồi phục, BTC cần đóng cửa tuần trên $78.152.\n ",
+        "content": "===== BTC MARKET DATA (TECHNICAL) — June 7, 2026 =====\nSources: CapitalStreetFX, Investtech, CoinStats AI, Investing.com, Barchart\n\n--- PRICE ACTION ---\nCurrent Price: ~$63,632 (range June 5-7: $61,800 - $65,400)\n7-day change: -13.9%\n30-day change: -22.1%\nKey rejection: Failed to break $82,000-$82,800 resistance zone (April-May 2026)\nCurrent range: $61,800 - $65,400 (consolidation after sharp drop)\n\n--- MOVING AVERAGES ---\nEMA20 (daily): ~$71,200 — price significantly below, bearish\nEMA50 (daily): ~$76,716 — price below, bearish bias\nEMA200 (daily): ~$83,513 — price well below, strong bearish structure\nBTC must reclaim $76,000-$80,000 (EMA50 zone) to restore neutral trend bias.\n\n--- RSI ---\nDaily RSI: 18.20 — EXTREME OVERSOLD (well below 30 threshold)\nHistorical note: Daily RSI below 20 has preceded 5-12% bounce within 48-72h on 6/8 occurrences.\nWeekly RSI: ~32 — approaching oversold but not extreme.\nRSI divergence: price making lower lows while RSI not confirming — potential reversal signal.\n\n--- SUPPORT / RESISTANCE ---\nCritical support: $61,800 (0.786 Fibonacci retracement from 2025 low to ATH)\nSecondary support: $58,000-$59,000 (high-volume accumulation zone 2024)\nResistance: $68,000 (recent breakdown level, now resistance)\nResistance: $76,000-$80,000 (EMA50/200 zone, strong supply)\n\n--- DERIVATIVES / LIQUIDATIONS ---\nTotal liquidations (June 5, 2026): $1.8B in 24h — $1.35B long positions\nLiquidation heatmap: Heavy long clustering at $60,000-$62,000 (vulnerable zone)\nFunding rate: -0.018% per 8h (negative = bearish, market paying shorts)\nOpen interest: Declining — leverage being removed from system\nLong/Short ratio: 0.87 (shorts dominant for first time since Q4 2023)\n\n--- ETF FLOWS ---\nWeekly ETF net outflow: -$3.4B (record, June 2-6, 2026)\nBlackRock IBIT single-day outflow: -$642M (June 4)\nFidelity FBTC: -$287M\nTotal U.S. spot BTC ETF AUM: ~$98B (down from $118B peak)\n\n--- TECHNICAL SIGNAL COMPOSITE (23 indicators) ---\nBullish: 5 signals (22%)\nBearish: 14 signals (61%)\nNeutral: 4 signals (17%)\nOverall bias: BEARISH\n\n--- CONTENT QUALITY NOTES ---\nPrice data: primary, real-time, low redundancy.\nEMA/RSI: calculated from raw OHLCV, deterministic — high reliability.\nETF flow figures: consistent across CoinGlass, Bloomberg, Farside — high confidence.\nLiquidation data: aggregated from Binance/OKX/Bybit — moderate precision.\n",
         "metadata": {
           "source": "market_data.txt",
-          "timestamp": "2026-05-19"
+          "timestamp": "2026-06-07"
         }
       }
     ],
-    "logic_path": "Giá đang trong giai đoạn phân phối và thử nghiệm hỗ trợ quan trọng. Mặc dù các chỉ báo động lượng (RSI) vẫn ở vùng trung lập, sự thất bại trong việc giữ các đường EMA quan trọng và dòng vốn chảy ra ròng từ ETF cho thấy áp lực bán đang gia tăng, làm giảm độ tin cậy của phe mua. Cần chờ đợi xác nhận phá vỡ các vùng hỗ trợ/kháng cự để định hướng xu hướng.",
+    "logic_path": "Price is ~7k below EMA20 and ~15k below EMA50, sitting in a strong bearish structure. EMA200 remains well above price, confirming long‑term downtrend. Technical composite shows 61% bearish signals. RSI is extreme oversold (18) but paired with bearish price action (lower lows) and lack of bullish divergence, suggesting only a limited short‑term rebound. Derivatives data shows heavy long liquidations and a negative funding rate, indicating short‑side pressure. ETF outflows further reflect weakening demand. Combined, these factors point to a bearish outlook with moderate confidence.",
     "metadata": {
       "source_type": "market_data",
-      "entropy": 0.3,
+      "entropy": 0.25,
       "redundancy_score": 0.05,
       "recency_weight": 0.98,
-      "timestamp": "2026-05-19"
+      "timestamp": "2026-06-07"
     }
   },
   {
     "agent_id": "Sentiment_Agent",
-    "signal": "NEUTRAL",
-    "confidence": 0.6,
+    "signal": "BUY",
+    "confidence": 0.55,
     "belief_vector": {
-      "direction": 0,
-      "strength": 0.6
+      "direction": 1,
+      "strength": 0.55
     },
     "evidence_chunks": [
       {
         "id": "sentiment_chunk_001",
-        "content": "SENTIMENT AGGREGATOR - 24H LAST (25/05/2026)\nSocial Buzz: Từ khóa \"Bitcoin Strategic Reserve\" và \"SpaceX BTC\" đang trending mạnh sau các tin tức thể chế tuần này. Tranh cãi về chính sách Fed và lãi suất tháng 6 vẫn áp đảo trên X (Twitter) và Telegram.\nTin tức 1 (23/05): SEC trì hoãn vô thời hạn framework \"innovation exemption\" cho tokenized stock — gây dip nhẹ và tâm lý bất an về pháp lý trong cộng đồng crypto.\nTin tức 2 (22/05): SpaceX tiết lộ nắm giữ $1,29 tỷ BTC trong hồ sơ IPO — tín hiệu tích lũy thể chế mạnh, củng cố câu chuyện BTC là \"kho giá trị kỹ thuật số.\"\nTin tức 3 (21/05): Các nhà lập pháp Mỹ thúc đẩy dự luật Strategic Bitcoin Reserve, nhắm mục tiêu biến BTC thành tài sản dự trữ quốc gia — tín hiệu bullish dài hạn nhưng chưa tác động ngay đến giá.\nFear & Greed Index: 25 (Fear) — Thị trường đang ở vùng sợ hãi, nhưng đã cải thiện so với mức Extreme Fear kéo dài 46 ngày liên tiếp trước đó. Sentiment hiện tại là GREED trên khung ngắn hạn (theo cfgi.io), tạo phân kỳ với khung ngày.\nKẾT LUẬN: Tâm lý thị trường \"Phân kỳ Thể chế vs Bán lẻ.\" Thể chế (SpaceX, BlackRock, Lawmakers) tích lũy và ủng hộ BTC dài hạn — trong khi nhà đầu tư bán lẻ vẫn đứng ngoài do lo ngại Fed và dòng ETF đảo chiều. Thiếu catalyst ngắn hạn để bứt phá.\n ",
+        "content": "===== BTC SENTIMENT NEWS — June 7, 2026 =====\nSources: CoinMarketCap AI, Alternative.me, Bitcoin.com, MEXC News, TradingKey\n\n--- FEAR & GREED INDEX ---\nCurrent reading: 12/100 — EXTREME FEAR (June 3-7, 2026)\nOne of the lowest sentiment readings in months. Historically, readings below 15 have\npreceded short-term bounce rallies, but can persist in strong downtrends.\n\n--- INSTITUTIONAL SENTIMENT ---\n- Record $3.4B weekly outflow from U.S. spot Bitcoin ETFs (largest since ETF launch 2024).\n- BlackRock IBIT led redemptions: single-day outflows exceeded $600M.\n- Market rumor: Strategy (formerly MicroStrategy) sold Bitcoin for first time in years —\n  unconfirmed but added significant fear to market.\n- Strategic Bitcoin Reserve bill in U.S. Congress: still pending, no vote scheduled.\n- SpaceX confirmed holding $1.29B in BTC on balance sheet (unchanged, long-term signal).\n\n--- RETAIL SENTIMENT ---\n- Retail leveraged longs mostly wiped out: $1.8B total liquidations in single day (June 5),\n  $1.35B from long positions.\n- Google Trends for \"Bitcoin crash\" spiked to 85/100 (highest since May 2022).\n- Reddit/Twitter sentiment: predominantly bearish, recurring \"is this the end?\" narratives.\n- Fear of Fed rate hike resurgence following stronger-than-expected May jobs report.\n- SEC delay on Ethereum ETF staking approval adding broader crypto uncertainty.\n\n--- MACRO SENTIMENT CONTEXT ---\n- U.S.-Iran geopolitical tensions escalating — risk-off across all assets.\n- Federal Reserve signaling higher-for-longer stance; rate cut projections reduced from 2 to 1.\n- Dollar index (DXY) at 104.3, elevated — historically inversely correlated with BTC.\n- Gold outperforming at $3,280/oz as investors flee to safety assets.\n\n--- CONTRARIAN INDICATORS ---\n- Extreme fear historically marks local bottoms: Feb 2024 (fear 18) preceded 40% BTC rally.\n- Social media narrative uniformly bearish = potential capitulation signal.\n- Funding rates deeply negative: market paying shorts, indicating crowded bearish positioning.\n- Large long liquidation cascade may have cleared weak hands (sell-side exhaustion signal).\n\n--- CONTENT QUALITY NOTES ---\nRedundancy: \"ETF outflow $3.4B\" narrative republished across 8+ outlets from single Bloomberg\nsource. Strategy sale rumor unverified, circulating in low-credibility outlets.\nFear & Greed Index data is primary/unique. Macro context articles have high overlap.\n",
         "metadata": {
           "source": "sentiment_news.txt",
-          "timestamp": "2026-05-19"
+          "timestamp": "2026-06-07"
         }
       }
     ],
-    "logic_path": "Tâm lý thị trường đang trong giai đoạn Phân kỳ Thể chế vs Bán lẻ. Các tín hiệu tích lũy dài hạn từ các tổ chức (SpaceX, Lập pháp) là mạnh mẽ và bullish. Tuy nhiên, sự nghi ngờ của nhà đầu tư bán lẻ về chính sách Fed và các rào cản pháp lý ngắn hạn (SEC) đã ngăn chặn một đợt bứt phá giá, duy trì trạng thái chờ đợi.",
+    "logic_path": "Extreme fear (12/100) + historic bottom patterns + negative funding rates indicate oversold conditions, while large liquidation cascade may have removed weak longs. However, confidence is tempered by repeated outflow reports, unverified rumor of Strategy sale, and broader macro risk-off (Geopolitical tension, strong USD, Fed higher‑for‑longer). Net bias leans bullish but remains cautious.",
     "metadata": {
       "source_type": "social_media",
-      "entropy": 0.6,
-      "redundancy_score": 0.4,
-      "recency_weight": 0.95,
-      "timestamp": "2026-05-19"
+      "entropy": 0.65,
+      "redundancy_score": 0.55,
+      "recency_weight": 0.8,
+      "timestamp": "2026-06-07"
     }
   }
 ]
