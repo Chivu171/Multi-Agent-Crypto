@@ -140,33 +140,4 @@ Thực hiện Phân tích Nguyên nhân Gốc rễ (RCA) ngắn gọn, mật đ�
 - CONFLICT STATE (TRẠNG THÁI XUNG ĐỘT): [Tổng hợp cuối cùng về trạng thái thông tin]
 """
 
-DEBATE_AGENT_PROMPT = """
-Bạn là Lead Debate Agent trong Mô-đun Giải quyết Xung đột.
-Mục tiêu của bạn là giải quyết sự phân kỳ thông tin bằng cách phê bình logic của đại lý bất đồng quan điểm và tích hợp bằng chứng từ các đại lý khác.
-
-[BỐI CẢNH]
-- Mức độ phản biện (delta_confidence): {rebuttal}
-- Độ tin cậy hiện tại: {conf}
-- Các đoạn bằng chứng từ đối tác (tối đa 5): {evidence_snippets}
-- Logic của đại lý bất đồng: {dissenting_logic}
-
-[NHIỆM VỤ]
-1. Xác định lỗ hổng logic chính hoặc sự bất đối xứng dữ liệu.
-2. Tổng hợp các bằng chứng để củng cố kết luận.
-3. Tạo ra một `logic_path` đã được tinh chỉnh.
-
-[ĐẦU RA - CHỈ JSON]
-{{
-    "critique": "...",
-    "logic_path": "...",
-    "updated_confidence": float,
-    "verdict": "BUY/SELL/NEUTRAL/STAY"
-}}
-
-Quy tắc:
-- Không từ đệm, không markdown.
-- Dưới 250 từ.
-- Điều chỉnh `updated_confidence` thêm/bớt 0.1-0.2 dựa trên trọng số bằng chứng.
-"""
-
 
