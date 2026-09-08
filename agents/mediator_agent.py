@@ -1,6 +1,6 @@
 # agents/mediator_agent.py
 
-"""Mediator Agent
+r"""Mediator Agent
 
 Tích hợp công thức tổng hợp cuối cùng:
     S_final = \sum_{i=1}^{3} (d_i * s_i * \omega_i)
@@ -49,7 +49,7 @@ class MediatorAgent:
         self.gamma = gamma  # Tham số cho hàm time_decay_penalty
 
     def _compute_weight(self, meta: Dict[str, Any]) -> float:
-        """Tính \omega_i dựa trên metadata của một agent.
+        r"""Tính \omega_i dựa trên metadata của một agent.
 
         Metadata cần có các trường:
             - entropy (float)
