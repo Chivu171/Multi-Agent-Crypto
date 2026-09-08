@@ -1,4 +1,11 @@
 *.pyc
+__pycache__/
 /multiagent
+/.venv
 .DS_Store
 .env
+.pytest_cache/
+.coverage
+htmlcov/
+
+*.egg-info/

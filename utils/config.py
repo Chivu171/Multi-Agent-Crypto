@@ -16,6 +16,10 @@ OPENROUTER_APP_NAME = os.getenv("OPENROUTER_APP_NAME")
 BASE_URL = os.getenv("BASE_URL")
 API_KEY  = os.getenv("API_KEY")
 
+# ── Gemini (embeddings used by the rag/ retrieval pipeline) ───────────────────
+GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
+EMBEDDING_MODEL = os.getenv("EMBEDDING_MODEL", "models/text-embedding-004")
+
 # ── Agent configs — tất cả dùng OPENROUTER_MODEL_NAME ─────────────────────────
 AGENT_LLM_CONFIGS = {
     "financial": {
