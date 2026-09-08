@@ -10,6 +10,7 @@ dependencies = [
     "python-dotenv>=1.2.2",
     "google-genai>=1.0.0",
     "pypdf>=5.0.0",
+    "requests>=2.31.0",
 ]
 
 [project.optional-dependencies]
@@ -27,5 +28,5 @@ python_files = ["test_*.py"]
 addopts = "-v"
 
 [tool.coverage.run]
-source = ["agents", "utils", "rag"]
+source = ["agents", "utils", "rag", "data_sources"]
 omit = ["*/__pycache__/*"]
