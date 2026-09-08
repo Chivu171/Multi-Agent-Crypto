@@ -28,5 +28,5 @@ python_files = ["test_*.py"]
 addopts = "-v"
 
 [tool.coverage.run]
-source = ["agents", "utils", "rag", "data_sources"]
+source = ["agents", "utils", "rag", "data_sources", "app"]
 omit = ["*/__pycache__/*"]
