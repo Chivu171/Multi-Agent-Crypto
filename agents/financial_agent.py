@@ -1,23 +1,30 @@
-import json
 import datetime
+from data_sources.onchain_data import fetch_onchain_data
 from utils.llm import ask_llm
 from utils.belief import build_belief_vector
+from utils.parsing import parse_json_response
+from utils.penalties import recency_weight_from_iso_timestamp
 from utils.prompts import FINANCIAL_AGENT_PROMPT
 
 
 def run():
 
-    with open("data/financial_report.txt", "r", encoding="utf-8") as f:
-        text = f.read()
+    onchain = fetch_onchain_data()
+    text = onchain["summary_text"]
 
     prompt = FINANCIAL_AGENT_PROMPT.format(text=text)
 
     raw_response = ask_llm(prompt, agent_name="financial")
 
-    parsed = json.loads(raw_response)
+    parsed = parse_json_response(raw_response)
 
     signal = parsed["signal"]
     confidence = float(parsed["confidence"])
+
+    # Entropy proxy: how noisy/dispersed the on-chain metrics are right now —
+    # larger day-over-day swings across metrics mean less certain signal.
+    pct_changes = [abs(m["pct_change_1d"]) for m in onchain["metrics"].values()]
+    entropy = min(max((sum(pct_changes) / len(pct_changes)) / 30.0, 0.0), 1.0)
 
     output = {
         "agent_id": "Financial_Agent",
@@ -35,12 +42,12 @@ def run():
             {
                 "id": "financial_chunk_001",
 
-                "content": text[:300],
+                "content": text,
 
                 "metadata": {
-                    "source": "financial_report.txt",
+                    "source": "blockchain.info Charts API",
                     "page": 1,
-                    "timestamp": datetime.date.today().isoformat()
+                    "timestamp": onchain["fetched_at"]
                 }
             }
         ],
@@ -49,9 +56,9 @@ def run():
 
         "metadata": {
             "source_type": "financial_report",
-            "entropy": 0.15,        # metrics deterministic (MVRV, SOPR, exchange supply) — ít ambiguity
-            "redundancy_score": 0.2, # whale figure từ 6+ outlets nhưng cùng 1 Glassnode source
-            "recency_weight": 0.45,  # on-chain aggregate lag 1-24h → Temporal Conflict với market
+            "entropy": round(entropy, 3),  # avg |% change| across hash-rate/miner-revenue/tx-count/tx-volume
+            "redundancy_score": 0.1,  # single canonical API source, no cross-outlet duplication
+            "recency_weight": round(recency_weight_from_iso_timestamp(onchain["fetched_at"]), 3),
             "timestamp": datetime.date.today().isoformat()
         }
     }

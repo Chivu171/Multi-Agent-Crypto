@@ -1,23 +1,28 @@
-import json
 import datetime
+from data_sources.market_data import fetch_market_data
 from utils.llm import ask_llm
 from utils.belief import build_belief_vector
+from utils.parsing import parse_json_response
+from utils.penalties import recency_weight_from_iso_timestamp
 from utils.prompts import MARKET_AGENT_PROMPT
 
 
 def run():
 
-    with open("data/market_data.txt", "r", encoding="utf-8") as f:
-        summary = f.read()
+    market = fetch_market_data()
+    summary = market["summary_text"]
 
     prompt = MARKET_AGENT_PROMPT.format(summary=summary)
 
     raw_response = ask_llm(prompt, agent_name="market")
 
-    parsed = json.loads(raw_response)
+    parsed = parse_json_response(raw_response)
 
     signal = parsed["signal"]
     confidence = float(parsed["confidence"])
+
+    # Entropy proxy: RSI near 50 = ambiguous/high entropy, RSI near 0/100 = decisive/low entropy.
+    entropy = 1.0 - abs(market["rsi14"] - 50.0) / 50.0
 
     output = {
         "agent_id": "Market_Agent",
@@ -38,8 +43,8 @@ def run():
                 "content": summary,
 
                 "metadata": {
-                    "source": "market_data.txt",
-                    "timestamp": datetime.date.today().isoformat()
+                    "source": "Binance public API",
+                    "timestamp": market["fetched_at"]
                 }
             }
         ],
@@ -48,9 +53,9 @@ def run():
 
         "metadata": {
             "source_type": "market_data",
-            "entropy": 0.25,        # EMA/RSI deterministic nhưng 23-signal composite có 22% vs 61% split
-            "redundancy_score": 0.05, # price/ETF flow nhất quán giữa CoinGlass/Bloomberg/Farside
-            "recency_weight": 0.98,  # real-time data, ETF flow T+1 — nguồn tin cậy nhất về timing
+            "entropy": round(entropy, 3),  # derived from RSI14 distance to the neutral midpoint (50)
+            "redundancy_score": 0.05,  # single canonical exchange API, no cross-outlet duplication
+            "recency_weight": round(recency_weight_from_iso_timestamp(market["fetched_at"]), 3),
             "timestamp": datetime.date.today().isoformat()
         }
     }

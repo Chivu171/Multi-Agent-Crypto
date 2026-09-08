@@ -1,23 +1,29 @@
-import json
 import datetime
+from data_sources.sentiment_data import fetch_sentiment_data
 from utils.llm import ask_llm
 from utils.belief import build_belief_vector
+from utils.parsing import parse_json_response
+from utils.penalties import recency_weight_from_iso_timestamp
 from utils.prompts import SENTIMENT_AGENT_PROMPT
 
 
 def run():
 
-    with open("data/sentiment_news.txt", "r", encoding="utf-8") as f:
-        text = f.read()
+    sentiment = fetch_sentiment_data()
+    text = sentiment["summary_text"]
 
     prompt = SENTIMENT_AGENT_PROMPT.format(text=text)
 
     raw_response = ask_llm(prompt, agent_name="sentiment")
 
-    parsed = json.loads(raw_response)
+    parsed = parse_json_response(raw_response)
 
     signal = parsed["signal"]
     confidence = float(parsed["confidence"])
+
+    # Entropy proxy: Fear&Greed near 50 = ambiguous/high entropy, near 0/100 = decisive/low entropy.
+    fg_value = sentiment["fear_greed"]["value"]
+    entropy = 1.0 - abs(fg_value - 50.0) / 50.0
 
     output = {
         "agent_id": "Sentiment_Agent",
@@ -38,8 +44,8 @@ def run():
                 "content": text,
 
                 "metadata": {
-                    "source": "sentiment_news.txt",
-                    "timestamp": datetime.date.today().isoformat()
+                    "source": "Alternative.me + ForexFactory calendar",
+                    "timestamp": sentiment["fetched_at"]
                 }
             }
         ],
@@ -48,9 +54,9 @@ def run():
 
         "metadata": {
             "source_type": "social_media",
-            "entropy": 0.65,        # Fear=12 vs contrarian signals + unverified rumor (Strategy sale)
-            "redundancy_score": 0.55, # "$3.4B ETF outflow" republished 8+ outlets từ 1 Bloomberg source
-            "recency_weight": 0.80,  # tin tức hôm nay nhưng qua biên tập, F&G cập nhật hàng ngày
+            "entropy": round(entropy, 3),  # derived from Fear&Greed distance to the neutral midpoint (50)
+            "redundancy_score": 0.1,  # single canonical API pair, no cross-outlet duplication
+            "recency_weight": round(recency_weight_from_iso_timestamp(sentiment["fetched_at"]), 3),
             "timestamp": datetime.date.today().isoformat()
         }
     }
