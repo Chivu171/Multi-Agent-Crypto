@@ -82,8 +82,9 @@ cp .env.example .env
 
 | Backend | When it's used | What to set |
 |---|---|---|
-| **OpenRouter** (preferred) | `OPENROUTER_API_KEY` is non-empty | `OPENROUTER_API_KEY` — get one at [openrouter.ai](https://openrouter.ai) |
-| **LM Studio** (local fallback) | `OPENROUTER_API_KEY` is empty | Run [LM Studio](https://lmstudio.ai) locally, serving on `http://127.0.0.1:1234/v1` |
+| **OpenRouter** (specialist agents) | Always, if any `OPENROUTER_API_KEY*` is set | `OPENROUTER_API_KEY` — global fallback; or `OPENROUTER_API_KEY_FINANCIAL` / `OPENROUTER_API_KEY_MARKET` / `OPENROUTER_API_KEY_SENTIMENT` — per-agent keys for 3x rate limit |
+| **Groq** (validator/debate/mediator) | If `GROQ_API_KEY` is set | `GROQ_API_KEY` — get one at [console.groq.com](https://console.groq.com) |
+| **LM Studio** (local fallback) | Both OpenRouter and Groq keys are empty | Run [LM Studio](https://lmstudio.ai) locally, serving on `http://127.0.0.1:1234/v1` |
 | **Gemini** (embeddings, `rag/` only) | Ingesting/querying the retriever | `GEMINI_API_KEY` — get one at [ai.google.dev](https://ai.google.dev). Not needed to run `main.py`. |
 
 ---
@@ -96,7 +97,14 @@ python main.py
 
 This runs the full pipeline — specialist agents fetch live data → validator → (conditional) debate → mediator — and prints the reasoning steps and final decision to the console. If none of the specialist agents can reach the LLM, `main.py` automatically falls back to the cached output in `outputs/logs.json`.
 
-`python app.py` is a separate utility: it re-runs just the 3 specialist agents and refreshes that `outputs/logs.json` cache, without running the validator/debate/mediator stages. Use it if you want to pre-warm the fallback cache.
+You can also use the Makefile:
+
+```bash
+make run            # same as python main.py
+make refresh-logs   # re-run only the 3 specialist agents to refresh outputs/logs.json
+make test           # run pytest suite
+make test-cov       # run pytest with coverage report
+```
 
 Ad-hoc smoke-test scripts (not a real test suite yet — see [Limitations](#limitations)):
 
@@ -121,6 +129,33 @@ pytest --cov --cov-report=term-missing   # with a coverage report
 The old `test.py` / `test_debate.py` / `test_validator.py` scripts at the repo root are manual, LLM-hitting smoke tests kept for interactive debugging — they are not part of the automated suite (pytest only looks under `tests/`, see `[tool.pytest.ini_options]` in `pyproject.toml`).
 
 ---
+
+## LLM Backend Routing
+
+The system uses **different LLM backends per agent group** to maximize reliability and minimize rate limiting:
+
+| Agent group | Backend | Keys |
+|---|---|---|
+| Financial, Market, Sentiment | OpenRouter | `OPENROUTER_API_KEY_FINANCIAL` / `_MARKET` / `_SENTIMENT` (fallback: `OPENROUTER_API_KEY`) |
+| Validator, Debate, Mediator | Groq | `GROQ_API_KEY` |
+| All (fallback) | LM Studio | `BASE_URL` + `API_KEY` |
+
+**Model routing (free tier):**
+
+| Agent | OpenRouter model | Key |
+|---|---|---|
+| Financial | `inclusionai/ling-3.0-flash-fin:free` | `OPENROUTER_API_KEY_FINANCIAL` |
+| Market | `nvidia/nemotron-3.5-lightning:free` | `OPENROUTER_API_KEY_MARKET` |
+| Sentiment | `thinking-machines/inkling:free` | `OPENROUTER_API_KEY_SENTIMENT` |
+| Validator / Debate / Mediator | `qwen/qwen3.8-27b` on Groq | `GROQ_API_KEY` |
+
+**Why this routing:**
+- **3 OpenRouter keys** give 3x the free-tier rate limit for the 3 specialist agents, and isolate 429s so one agent's failure doesn't block the others.
+- **3 different OpenRouter models** avoid shared rate-limit pools on the same provider/model.
+- **Groq** for validator/debate/mediator because those calls are fast, deterministic, and benefit from Groq's LPU speed.
+- **LM Studio** as final fallback if no cloud keys are configured.
+
+You can mix and match: set only `OPENROUTER_API_KEY` for simple use, or set per-agent keys + `GROQ_API_KEY` for maximum parallelism.
 
 ## RAG (retrieval pipeline)
 
@@ -152,9 +187,16 @@ Multi-Agent-Crypto/
 ├── data_sources/   live data fetchers used by the 3 specialist agents (Binance, Alternative.me+ForexFactory, blockchain.info)
 ├── utils/          LLM client, config, prompts, math helpers (penalties, confidence, belief vectors, JSON parsing)
 ├── data/           legacy static text files — no longer read by the agents, kept for reference only
-├── outputs/        run artifacts (logs.json, mediator_result.json, validation_report.json) + outputs/cache/ (fetcher cache, gitignored)
+├── outputs/        run artifacts (logs.json, mediator_result.json, validation_report.json) + cache/ (fetcher cache, gitignored)
+├── scripts/        maintenance scripts (refresh_logs.py, future demo/backtest scripts)
 ├── rag/            retrieval pipeline — chunking, PDF ingestion, Gemini-embedding retriever (standalone, not wired into main.py)
-└── tests/          automated pytest suite (mocked LLM/HTTP calls, runs fully offline)
+├── tests/          automated pytest suite (mocked LLM/HTTP calls, runs fully offline)
+├── docs/           architectural docs (BLUEPRINT, CONTRACT, TASK_GRAPH, LO_TRINH_P3_DATN)
+├── pyproject.toml  project metadata, dependencies, pytest config, entry point
+├── requirements.txt locked runtime dependencies (generated by pip-tools)
+├── Makefile        convenience targets (install, test, run, refresh-logs)
+├── main.py         canonical full-pipeline entry point
+└── README.md       this file
 ```
 
 ---

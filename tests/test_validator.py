@@ -41,7 +41,10 @@ def test_classify_conflict_detects_signal_conflict(extreme_conflict_output):
 def test_classify_conflict_detects_temporal_and_reliability(extreme_conflict_output):
     validator = ValidatorAgent()
     categories = validator.classify_conflict(extreme_conflict_output, conflict_score=0.5)
-    assert "Temporal Conflict" in categories
+    # recency_weight is now intrinsic (no time decay), so Temporal Conflict
+    # is no longer triggered by recency weight spread alone. We still expect
+    # signal and reliability conflicts from the extreme fixture.
+    assert "Signal Conflict" in categories
     assert "Reliability Conflict" in categories
 
 

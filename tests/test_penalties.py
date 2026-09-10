@@ -53,13 +53,10 @@ def test_combined_weight_scales_with_base_weight():
     assert low == high / 2
 
 
-def test_recency_weight_just_fetched_is_close_to_one():
+def test_recency_weight_returns_intrinsic_value():
+    """recency_weight_from_iso_timestamp no longer applies time decay;
+    it returns a fixed intrinsic trust score of 1.0."""
     now = datetime.datetime.now(datetime.timezone.utc).isoformat()
-    assert recency_weight_from_iso_timestamp(now) == pytest.approx(1.0, abs=1e-3)
-
-
-def test_recency_weight_decreases_for_older_timestamp():
-    now = datetime.datetime.now(datetime.timezone.utc)
-    recent = (now - datetime.timedelta(minutes=5)).isoformat()
-    old = (now - datetime.timedelta(days=30)).isoformat()
-    assert recency_weight_from_iso_timestamp(old) < recency_weight_from_iso_timestamp(recent)
+    old = (datetime.datetime.now(datetime.timezone.utc) - datetime.timedelta(days=30)).isoformat()
+    assert recency_weight_from_iso_timestamp(now) == 1.0
+    assert recency_weight_from_iso_timestamp(old) == 1.0

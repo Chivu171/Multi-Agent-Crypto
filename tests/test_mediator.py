@@ -25,8 +25,9 @@ def test_older_evidence_gets_lower_weight():
     base_meta = {"entropy": 0.1, "redundancy_score": 0.1, "recency_weight": 1.0}
 
     today = datetime.date.today().isoformat()
-    old_weight = mediator._compute_weight({**base_meta, "timestamp": "2020-01-01"})
-    new_weight = mediator._compute_weight({**base_meta, "timestamp": today})
+    fixed_time = datetime.datetime(2026, 6, 8, tzinfo=datetime.timezone.utc)
+    old_weight = mediator._compute_weight({**base_meta, "timestamp": "2020-01-01"}, current_time=fixed_time)
+    new_weight = mediator._compute_weight({**base_meta, "timestamp": today}, current_time=fixed_time)
 
     assert old_weight < new_weight
 

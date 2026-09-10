@@ -14,7 +14,13 @@ def run():
 
     prompt = MARKET_AGENT_PROMPT.format(summary=summary)
 
-    raw_response = ask_llm(prompt, agent_name="market")
+    system_prompt = (
+        "You are a strict JSON-only API. "
+        "Output ONLY a single JSON object starting with { and ending with }. "
+        "No thinking, no reasoning, no explanation, no markdown, no extra text."
+    )
+
+    raw_response = ask_llm(prompt, agent_name="market", system=system_prompt)
 
     parsed = parse_json_response(raw_response)
 

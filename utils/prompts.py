@@ -3,6 +3,8 @@
 FINANCIAL_AGENT_PROMPT = """
 Bạn là Financial Agent trong Hệ thống Suy luận Tài chính Đa đại lý Nhận diện Xung đột.
 
+QUAN TRỌNG: Chỉ trả về JSON hợp lệ. KHÔNG thinking, KHÔNG reasoning, KHÔNG explanation, KHÔNG markdown. Bắt đầu bằng {{ và kết thúc bằng }}.
+
 Nhiệm vụ của bạn là phân tích bằng chứng tài chính và tạo ra niềm tin đầu tư có cấu trúc.
 
 BẠN PHẢI:
@@ -13,13 +15,8 @@ BẠN PHẢI:
 - Xác định rõ ràng các chỉ số tài chính tăng giá (bullish) hoặc giảm giá (bearish)
 - Ước tính độ tin cậy một cách thận trọng
 
-QUAN TRỌNG:
-Đầu ra sẽ được kiểm định trong hệ thống tổng hợp nhận diện xung đột.
-
 VĂN BẢN:
 {text}
-
-Chỉ trả về JSON hợp lệ.
 
 Lược đồ (Schema):
 {{
@@ -39,11 +36,12 @@ Quy tắc:
 - SELL (Bán) chỉ khi bằng chứng hỗ trợ mạnh mẽ triển vọng tiêu cực
 - Độ tin cậy từ 0 đến 1
 - Logic_path phải giải thích suy luận từng bước
-- Không bao gồm markdown
 """
 
 MARKET_AGENT_PROMPT = """
 Bạn là Market Agent trong Hệ thống Tài chính Đa đại lý Nhận diện Xung đột.
+
+QUAN TRỌNG: Chỉ trả về JSON hợp lệ. KHÔNG thinking, KHÔNG reasoning, KHÔNG explanation, KHÔNG markdown. Bắt đầu bằng {{ và kết thúc bằng }}.
 
 Nhiệm vụ của bạn là phân tích các chỉ số thị trường và suy ra niềm tin định hướng thị trường.
 
@@ -55,8 +53,6 @@ BẠN PHẢI:
 
 TỔNG QUAN THỊ TRƯỜNG:
 {summary}
-
-Chỉ trả về JSON hợp lệ.
 
 Lược đồ (Schema):
 {{
@@ -76,7 +72,6 @@ Quy tắc:
 - RSI > 70 có thể chỉ điều kiện quá mua
 - MACD giảm giá làm suy yếu độ tin cậy của xu hướng tăng
 - Độ tin cậy phải phản ánh mức độ đồng thuận của các chỉ báo
-- Không markdown
 """
 
 SENTIMENT_AGENT_PROMPT = """

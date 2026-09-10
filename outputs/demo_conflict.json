@@ -1,0 +1,223 @@
+{
+  "scenario": "Conflict (BUY/SELL/BUY)",
+  "timestamp": "2026-09-10T12:02:29.442419",
+  "inputs": [
+    {
+      "agent_id": "Financial_Agent",
+      "signal": "BUY",
+      "confidence": 0.85,
+      "belief_vector": {
+        "direction": 1,
+        "strength": 0.85
+      },
+      "evidence_chunks": [
+        {
+          "id": "financial_agent_chunk_0",
+          "content": "Mock evidence for Financial_Agent — BUY signal.",
+          "metadata": {}
+        }
+      ],
+      "logic_path": {
+        "steps": [
+          "Financial_Agent reasoning step 1",
+          "Financial_Agent reasoning step 2"
+        ]
+      },
+      "metadata": {
+        "source_type": "demo_mock",
+        "entropy": 0.1,
+        "redundancy_score": 0.1,
+        "recency_weight": 0.9,
+        "timestamp": "2026-09-10T12:02:20.927473"
+      }
+    },
+    {
+      "agent_id": "Market_Agent",
+      "signal": "SELL",
+      "confidence": 0.75,
+      "belief_vector": {
+        "direction": -1,
+        "strength": 0.75
+      },
+      "evidence_chunks": [
+        {
+          "id": "market_agent_chunk_0",
+          "content": "Mock evidence for Market_Agent — SELL signal.",
+          "metadata": {}
+        }
+      ],
+      "logic_path": {
+        "steps": [
+          "Market_Agent reasoning step 1",
+          "Market_Agent reasoning step 2"
+        ]
+      },
+      "metadata": {
+        "source_type": "demo_mock",
+        "entropy": 0.3,
+        "redundancy_score": 0.2,
+        "recency_weight": 0.95,
+        "timestamp": "2026-09-10T12:02:20.927479"
+      }
+    },
+    {
+      "agent_id": "Sentiment_Agent",
+      "signal": "BUY",
+      "confidence": 0.6,
+      "belief_vector": {
+        "direction": 1,
+        "strength": 0.6
+      },
+      "evidence_chunks": [
+        {
+          "id": "sentiment_agent_chunk_0",
+          "content": "Mock evidence for Sentiment_Agent — BUY signal.",
+          "metadata": {}
+        }
+      ],
+      "logic_path": {
+        "steps": [
+          "Sentiment_Agent reasoning step 1",
+          "Sentiment_Agent reasoning step 2"
+        ]
+      },
+      "metadata": {
+        "source_type": "demo_mock",
+        "entropy": 0.5,
+        "redundancy_score": 0.4,
+        "recency_weight": 0.7,
+        "timestamp": "2026-09-10T12:02:20.927482"
+      }
+    }
+  ],
+  "validation": {
+    "conflict_score": 0.7932,
+    "metrics": {
+      "mean_pairwise_kl": 0.9928,
+      "decision_variance": 0.4939
+    },
+    "conflict_detected": true,
+    "conflict_categories": [
+      "Signal Conflict"
+    ],
+    "root_cause_analysis": "RCA Triggered for ['Signal Conflict']. Core discrepancy found in agent signals: {'Financial_Agent': 'BUY', 'Market_Agent': 'SELL', 'Sentiment_Agent': 'BUY'}",
+    "trigger_debate_module": true,
+    "debate_updated_outputs": [
+      {
+        "agent_id": "Financial_Agent",
+        "signal": "BUY",
+        "confidence": 0.6689316149720099,
+        "belief_vector": {
+          "direction": 1,
+          "strength": 0.669
+        },
+        "evidence_chunks": [
+          {
+            "id": "financial_agent_chunk_0",
+            "content": "Mock evidence for Financial_Agent — BUY signal.",
+            "metadata": {}
+          }
+        ],
+        "logic_path": {
+          "steps": [
+            "Financial_Agent reasoning step 1",
+            "Financial_Agent reasoning step 2"
+          ]
+        },
+        "metadata": {
+          "source_type": "demo_mock",
+          "entropy": 0.1,
+          "redundancy_score": 0.1,
+          "recency_weight": 0.9,
+          "timestamp": "2026-09-10T12:02:20.927473"
+        }
+      },
+      {
+        "agent_id": "Market_Agent",
+        "signal": "SELL",
+        "confidence": 0.49855496452385295,
+        "belief_vector": {
+          "direction": -1,
+          "strength": 0.499
+        },
+        "evidence_chunks": [
+          {
+            "id": "market_agent_chunk_0",
+            "content": "Mock evidence for Market_Agent — SELL signal.",
+            "metadata": {}
+          }
+        ],
+        "logic_path": {
+          "steps": [
+            "Market_Agent reasoning step 1",
+            "Market_Agent reasoning step 2"
+          ]
+        },
+        "metadata": {
+          "source_type": "demo_mock",
+          "entropy": 0.3,
+          "redundancy_score": 0.2,
+          "recency_weight": 0.95,
+          "timestamp": "2026-09-10T12:02:20.927479"
+        }
+      },
+      {
+        "agent_id": "Sentiment_Agent",
+        "signal": "BUY",
+        "confidence": 0.4730728077245641,
+        "belief_vector": {
+          "direction": 1,
+          "strength": 0.473
+        },
+        "evidence_chunks": [
+          {
+            "id": "sentiment_agent_chunk_0",
+            "content": "Mock evidence for Sentiment_Agent — BUY signal.",
+            "metadata": {}
+          }
+        ],
+        "logic_path": {
+          "steps": [
+            "Sentiment_Agent reasoning step 1",
+            "Sentiment_Agent reasoning step 2"
+          ]
+        },
+        "metadata": {
+          "source_type": "demo_mock",
+          "entropy": 0.5,
+          "redundancy_score": 0.4,
+          "recency_weight": 0.7,
+          "timestamp": "2026-09-10T12:02:20.927482"
+        }
+      }
+    ]
+  },
+  "mediator_result": {
+    "S_final": 0.321563,
+    "details": [
+      {
+        "agent_id": "Financial_Agent",
+        "direction": 1,
+        "strength": 0.669,
+        "weight": 0.729,
+        "contribution": 0.487701
+      },
+      {
+        "agent_id": "Market_Agent",
+        "direction": -1,
+        "strength": 0.499,
+        "weight": 0.532,
+        "contribution": -0.265468
+      },
+      {
+        "agent_id": "Sentiment_Agent",
+        "direction": 1,
+        "strength": 0.473,
+        "weight": 0.21,
+        "contribution": 0.09933
+      }
+    ]
+  },
+  "final_signal": "BUY",
+  "final_intensity": "WEAK"
+}

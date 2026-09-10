@@ -28,12 +28,15 @@ def time_decay_penalty(delta_t_seconds: float, gamma: float = 1e-5) -> float:
     return np.exp(-gamma * delta_t_seconds)
 
 def recency_weight_from_iso_timestamp(fetched_at: str, gamma: float = 1e-5) -> float:
-    """Recency weight (0..1] from an ISO 8601 timestamp of when data was fetched.
-    Just-fetched data → close to 1.0; the longer it's been since the fetch
-    (e.g. a stale cache after an API outage), the closer this approaches 0."""
-    fetched = datetime.datetime.fromisoformat(fetched_at)
-    delta_seconds = max((datetime.datetime.now(datetime.timezone.utc) - fetched).total_seconds(), 0.0)
-    return float(time_decay_penalty(delta_seconds, gamma))
+    """Intrinsic recency weight (0..1] from an ISO 8601 timestamp of when data was fetched.
+
+    NOTE: This function no longer applies time decay. It returns a fixed intrinsic
+    trust score of 1.0. Time decay is applied exactly once inside
+    `combined_weight()` via `time_decay_penalty(delta_t, gamma)`, where `delta_t`
+    is computed from a controlled reference time (not live `utcnow()`).
+    """
+    # Intrinsic trust score — no time decay here.
+    return 1.0
 
 
 # Helper to combine all penalties into a single weight factor

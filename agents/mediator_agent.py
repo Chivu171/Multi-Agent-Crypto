@@ -26,15 +26,20 @@ from utils.penalties import combined_weight
 def _parse_timestamp(ts: str) -> datetime.datetime:
     """Chuyển chuỗi timestamp (ISO 8601) thành datetime.
     Nếu không phân tích được, trả về thời điểm hiện tại.
+    Trả về datetime có timezone (UTC) để tránh lỗi trừ giữa naive và aware.
     """
     try:
-        return datetime.datetime.fromisoformat(ts)
+        dt = datetime.datetime.fromisoformat(ts)
+        if dt.tzinfo is None:
+            dt = dt.replace(tzinfo=datetime.timezone.utc)
+        return dt
     except Exception:
         # Fallback: assume YYYY‑MM‑DD format
         try:
-            return datetime.datetime.strptime(ts, "%Y-%m-%d")
+            dt = datetime.datetime.strptime(ts, "%Y-%m-%d")
+            return dt.replace(tzinfo=datetime.timezone.utc)
         except Exception:
-            return datetime.datetime.utcnow()
+            return datetime.datetime.now(datetime.timezone.utc)
 
 
 class MediatorAgent:
@@ -48,7 +53,7 @@ class MediatorAgent:
     def __init__(self, gamma: float = 1e-5):
         self.gamma = gamma  # Tham số cho hàm time_decay_penalty
 
-    def _compute_weight(self, meta: Dict[str, Any]) -> float:
+    def _compute_weight(self, meta: Dict[str, Any], current_time: datetime.datetime | None = None) -> float:
         r"""Tính \omega_i dựa trên metadata của một agent.
 
         Metadata cần có các trường:
@@ -56,17 +61,30 @@ class MediatorAgent:
             - redundancy_score (float)
             - timestamp (str) – thời gian tạo evidence
             - recency_weight (float) – trọng số cơ bản (base_weight)
+
+        `current_time` là thời điểm tham chiếu để tính delta_t.
+        Mặc định là now() (UTC). Với backtest, inject giá trị xác định
+        để đảm bảo tái lập khoa học.
         """
         entropy = float(meta.get("entropy", 0.0))
         redundancy = float(meta.get("redundancy_score", 0.0))
         base_weight = float(meta.get("recency_weight", 1.0))
         ts_str = meta.get("timestamp", "")
-        delta_seconds = (datetime.datetime.utcnow() - _parse_timestamp(ts_str)).total_seconds()
-        delta_seconds = max(delta_seconds, 0.0)
+        ref_time = current_time or datetime.datetime.now(datetime.timezone.utc)
+        delta_seconds = max((ref_time - _parse_timestamp(ts_str)).total_seconds(), 0.0)
         return combined_weight(base_weight, entropy, redundancy, delta_seconds, gamma=self.gamma)
 
-    def aggregate(self, agents_output: List[Dict[str, Any]]) -> Dict[str, Any]:
+    def aggregate(self, agents_output: List[Dict[str, Any]], current_time: datetime.datetime | None = None) -> Dict[str, Any]:
         """Thực hiện hợp nhất và trả về kết quả.
+
+        Parameters
+        ----------
+        agents_output:
+            Danh sách đầu ra từ các specialist agents.
+        current_time:
+            Thời điểm tham chiếu cho time decay. Mặc định là ``now()``.
+            Truyền giá trị xác định khi chạy backtest để đảm bảo
+            tái lập khoa học.
 
         Returns
         -------
@@ -91,7 +109,7 @@ class MediatorAgent:
             direction = int(bv.get("direction", 0))
             strength = float(bv.get("strength", 0.0))
             meta = out.get("metadata", {})
-            weight = self._compute_weight(meta)
+            weight = self._compute_weight(meta, current_time=current_time)
             contribution = direction * strength * weight
             total += contribution
             details.append(
@@ -106,9 +124,17 @@ class MediatorAgent:
         return {"S_final": round(total, 6), "details": details}
 
 
-def run_mediator(agents_output: List[Dict[str, Any]]) -> Dict[str, Any]:
+def run_mediator(agents_output: List[Dict[str, Any]], current_time: datetime.datetime | None = None) -> Dict[str, Any]:
     """Convenient wrapper used by pipelines.
-    Instantiates `MediatorAgent` with default gamma and returns the aggregation.
+
+    Parameters
+    ----------
+    agents_output:
+        Danh sách đầu ra từ các specialist agents.
+    current_time:
+        Thời điểm tham chiếu cho time decay. Mặc định là ``now()``.
+        Truyền giá trị xác định khi chạy backtest để đảm bảo
+        tái lập khoa học.
     """
     mediator = MediatorAgent()
-    return mediator.aggregate(agents_output)
+    return mediator.aggregate(agents_output, current_time=current_time)

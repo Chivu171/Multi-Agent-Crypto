@@ -2,83 +2,83 @@
   {
     "agent_id": "Financial_Agent",
     "signal": "BUY",
-    "confidence": 0.78,
+    "confidence": 0.72,
     "belief_vector": {
       "direction": 1,
-      "strength": 0.78
+      "strength": 0.72
     },
     "evidence_chunks": [
       {
         "id": "financial_chunk_001",
-        "content": "===== BTC ON-CHAIN DATA (FUNDAMENTALS) — June 7, 2026 =====\nSources: Glassnode, CryptoQuant, SpotedCrypto, BeInCrypto, CheckOnChain\n\n--- WHALE ACCUMULATION ---\nLarge wallet cohort (>1,000 BTC): 2,028 addresses active as accumulators in May 2026.\nNet accumulation: 270,000 BTC bought in last 30 days —",
+        "content": "On-chain network snapshot (fetched 2026-09-10T05:11:03.943111+00:00):\n(free-tier proxies — no MVRV/SOPR/whale-flow; those require a paid provider)\n- Network hash rate: 1,020,033,712.53 TH/s (up 21.1% vs prior day)\n- Miner revenue: 44,921,766.61 USD/day (up 34.3% vs prior day)\n- Confirmed transactions: 758,490.00 tx/day (up 18.3% vs prior day)\n- Estimated transaction value: 6,791,307,829.21 USD/day (up 23.5% vs prior day)\n",
         "metadata": {
-          "source": "financial_report.txt",
+          "source": "blockchain.info Charts API",
           "page": 1,
-          "timestamp": "2026-06-07"
+          "timestamp": "2026-09-10T05:11:03.943111+00:00"
         }
       }
     ],
-    "logic_path": "1. Whale accumulation shows 270,000 BTC net bought in the last 30 days (largest monthly inflow since 2013) and a 3.2% MoM increase in large‑holder count, indicating strong demand from long‑term investors. 2. Exchange reserves fell to a 7‑year low (~2.69M BTC) with a 30‑day net outflow of 127,000 BTC and a 7‑day outflow of 18,400 BTC, reflecting a shift to self‑custody and reduced sell pressure. 3. MVRV Z‑Score at 1.0 places price at realized value, a historically favorable buy zone. 4. SOPR at 0.97 (<1) shows coins are being spent at a loss, a capitulation signal that often precedes price recovery; aSOPR trending toward 1.0 supports an imminent reset. 5. Miners are holding production (stable balances) despite a post‑halving reward of 1.5625 BTC, and hash rate remains near all‑time high, indicating confidence in network security and no forced liquidation. 6. Network activity metrics (active addresses ~812k, transaction volume $18.2B/day) are stable, and spot price ($63,632) sits just above the realized price ($62,800), a strong support historically. The convergence of strong accumulation, supply contraction, valuation metrics in buy territory, and stable network fundamentals yields a bullish outlook, justifying a BUY signal.",
+    "logic_path": "Tất cả bốn chỉ số on-chain đều cho thấy tăng trưởng tích cực so với ngày trước đó: (1) Hash rate tăng 21.1% cho thấy sức mạnh mạng lưới và sự tham gia của thợ đào gia tăng; (2) Doanh thu thợ đào tăng 34.3% phản ánh lợi nhuận khả quan và động lực kinh tế mạng lưới khỏe mạnh; (3) Giao dịch xác nhận tăng 18.3% cho thấy nhu cầu sử dụng mạng lưới đang mở rộng; (4) Giá trị giao dịch ước tính tăng 23.5% chứng tỏ hoạt động kinh tế trên chuỗi đang sôi động. Tuy nhiên, độ tin cậy bị giới hạn do chỉ có một bản chụp đơn lẻ (single-day snapshot), thiếu dữ liệu MVRV/SOPR/whale-flow, và không có xác nhận giá để đối chiếu.",
     "metadata": {
       "source_type": "financial_report",
-      "entropy": 0.15,
-      "redundancy_score": 0.2,
-      "recency_weight": 0.45,
-      "timestamp": "2026-06-07"
+      "entropy": 0.81,
+      "redundancy_score": 0.1,
+      "recency_weight": 1.0,
+      "timestamp": "2026-09-10"
     }
   },
   {
     "agent_id": "Market_Agent",
-    "signal": "SELL",
-    "confidence": 0.65,
+    "signal": "BUY",
+    "confidence": 0.62,
     "belief_vector": {
-      "direction": -1,
-      "strength": 0.65
+      "direction": 1,
+      "strength": 0.62
     },
     "evidence_chunks": [
       {
         "id": "market_chunk_001",
-        "content": "===== BTC MARKET DATA (TECHNICAL) — June 7, 2026 =====\nSources: CapitalStreetFX, Investtech, CoinStats AI, Investing.com, Barchart\n\n--- PRICE ACTION ---\nCurrent Price: ~$63,632 (range June 5-7: $61,800 - $65,400)\n7-day change: -13.9%\n30-day change: -22.1%\nKey rejection: Failed to break $82,000-$82,800 resistance zone (April-May 2026)\nCurrent range: $61,800 - $65,400 (consolidation after sharp drop)\n\n--- MOVING AVERAGES ---\nEMA20 (daily): ~$71,200 — price significantly below, bearish\nEMA50 (daily): ~$76,716 — price below, bearish bias\nEMA200 (daily): ~$83,513 — price well below, strong bearish structure\nBTC must reclaim $76,000-$80,000 (EMA50 zone) to restore neutral trend bias.\n\n--- RSI ---\nDaily RSI: 18.20 — EXTREME OVERSOLD (well below 30 threshold)\nHistorical note: Daily RSI below 20 has preceded 5-12% bounce within 48-72h on 6/8 occurrences.\nWeekly RSI: ~32 — approaching oversold but not extreme.\nRSI divergence: price making lower lows while RSI not confirming — potential reversal signal.\n\n--- SUPPORT / RESISTANCE ---\nCritical support: $61,800 (0.786 Fibonacci retracement from 2025 low to ATH)\nSecondary support: $58,000-$59,000 (high-volume accumulation zone 2024)\nResistance: $68,000 (recent breakdown level, now resistance)\nResistance: $76,000-$80,000 (EMA50/200 zone, strong supply)\n\n--- DERIVATIVES / LIQUIDATIONS ---\nTotal liquidations (June 5, 2026): $1.8B in 24h — $1.35B long positions\nLiquidation heatmap: Heavy long clustering at $60,000-$62,000 (vulnerable zone)\nFunding rate: -0.018% per 8h (negative = bearish, market paying shorts)\nOpen interest: Declining — leverage being removed from system\nLong/Short ratio: 0.87 (shorts dominant for first time since Q4 2023)\n\n--- ETF FLOWS ---\nWeekly ETF net outflow: -$3.4B (record, June 2-6, 2026)\nBlackRock IBIT single-day outflow: -$642M (June 4)\nFidelity FBTC: -$287M\nTotal U.S. spot BTC ETF AUM: ~$98B (down from $118B peak)\n\n--- TECHNICAL SIGNAL COMPOSITE (23 indicators) ---\nBullish: 5 signals (22%)\nBearish: 14 signals (61%)\nNeutral: 4 signals (17%)\nOverall bias: BEARISH\n\n--- CONTENT QUALITY NOTES ---\nPrice data: primary, real-time, low redundancy.\nEMA/RSI: calculated from raw OHLCV, deterministic — high reliability.\nETF flow figures: consistent across CoinGlass, Bloomberg, Farside — high confidence.\nLiquidation data: aggregated from Binance/OKX/Bybit — moderate precision.\n",
+        "content": "BTC/USDT market snapshot (fetched 2026-09-10T05:44:34.603304+00:00):\n- Price: $78,422.51\n- EMA20: $77,180.43 | EMA50: $71,376.72 (price is above EMA20)\n- RSI14: 43.4\n- Funding rate: 0.0100%\n- Long/Short account ratio: 1.27\n",
         "metadata": {
-          "source": "market_data.txt",
-          "timestamp": "2026-06-07"
+          "source": "Binance public API",
+          "timestamp": "2026-09-10T05:44:34.603304+00:00"
         }
       }
     ],
-    "logic_path": "Price is ~7k below EMA20 and ~15k below EMA50, sitting in a strong bearish structure. EMA200 remains well above price, confirming long‑term downtrend. Technical composite shows 61% bearish signals. RSI is extreme oversold (18) but paired with bearish price action (lower lows) and lack of bullish divergence, suggesting only a limited short‑term rebound. Derivatives data shows heavy long liquidations and a negative funding rate, indicating short‑side pressure. ETF outflows further reflect weakening demand. Combined, these factors point to a bearish outlook with moderate confidence.",
+    "logic_path": "Giá nằm trên EMA20 và EMA50, đồng thời EMA20 cao hơn EMA50, cho thấy xu hướng tăng vẫn được duy trì. Tuy nhiên, RSI14 ở mức 43.4 phản ánh động lượng chưa mạnh và chưa xác nhận tăng tốc. Funding rate dương nhẹ cùng tỷ lệ Long/Short 1.27 hỗ trợ thiên về phe mua nhưng mức độ đồng thuận chưa cao. Do đó, tín hiệu BUY được đưa ra với độ tin cậy trung bình.",
     "metadata": {
       "source_type": "market_data",
-      "entropy": 0.25,
+      "entropy": 0.868,
       "redundancy_score": 0.05,
-      "recency_weight": 0.98,
-      "timestamp": "2026-06-07"
+      "recency_weight": 1.0,
+      "timestamp": "2026-09-10"
     }
   },
   {
     "agent_id": "Sentiment_Agent",
-    "signal": "BUY",
-    "confidence": 0.55,
+    "signal": "NEUTRAL",
+    "confidence": 0.65,
     "belief_vector": {
-      "direction": 1,
-      "strength": 0.55
+      "direction": 0,
+      "strength": 0.65
     },
     "evidence_chunks": [
       {
         "id": "sentiment_chunk_001",
-        "content": "===== BTC SENTIMENT NEWS — June 7, 2026 =====\nSources: CoinMarketCap AI, Alternative.me, Bitcoin.com, MEXC News, TradingKey\n\n--- FEAR & GREED INDEX ---\nCurrent reading: 12/100 — EXTREME FEAR (June 3-7, 2026)\nOne of the lowest sentiment readings in months. Historically, readings below 15 have\npreceded short-term bounce rallies, but can persist in strong downtrends.\n\n--- INSTITUTIONAL SENTIMENT ---\n- Record $3.4B weekly outflow from U.S. spot Bitcoin ETFs (largest since ETF launch 2024).\n- BlackRock IBIT led redemptions: single-day outflows exceeded $600M.\n- Market rumor: Strategy (formerly MicroStrategy) sold Bitcoin for first time in years —\n  unconfirmed but added significant fear to market.\n- Strategic Bitcoin Reserve bill in U.S. Congress: still pending, no vote scheduled.\n- SpaceX confirmed holding $1.29B in BTC on balance sheet (unchanged, long-term signal).\n\n--- RETAIL SENTIMENT ---\n- Retail leveraged longs mostly wiped out: $1.8B total liquidations in single day (June 5),\n  $1.35B from long positions.\n- Google Trends for \"Bitcoin crash\" spiked to 85/100 (highest since May 2022).\n- Reddit/Twitter sentiment: predominantly bearish, recurring \"is this the end?\" narratives.\n- Fear of Fed rate hike resurgence following stronger-than-expected May jobs report.\n- SEC delay on Ethereum ETF staking approval adding broader crypto uncertainty.\n\n--- MACRO SENTIMENT CONTEXT ---\n- U.S.-Iran geopolitical tensions escalating — risk-off across all assets.\n- Federal Reserve signaling higher-for-longer stance; rate cut projections reduced from 2 to 1.\n- Dollar index (DXY) at 104.3, elevated — historically inversely correlated with BTC.\n- Gold outperforming at $3,280/oz as investors flee to safety assets.\n\n--- CONTRARIAN INDICATORS ---\n- Extreme fear historically marks local bottoms: Feb 2024 (fear 18) preceded 40% BTC rally.\n- Social media narrative uniformly bearish = potential capitulation signal.\n- Funding rates deeply negative: market paying shorts, indicating crowded bearish positioning.\n- Large long liquidation cascade may have cleared weak hands (sell-side exhaustion signal).\n\n--- CONTENT QUALITY NOTES ---\nRedundancy: \"ETF outflow $3.4B\" narrative republished across 8+ outlets from single Bloomberg\nsource. Strategy sale rumor unverified, circulating in low-credibility outlets.\nFear & Greed Index data is primary/unique. Macro context articles have high overlap.\n",
+        "content": "Sentiment snapshot (fetched 2026-09-10T05:11:11.388433+00:00):\n- Fear & Greed Index: 69/100 (Greed)\n- Upcoming macro events (High/Medium impact):\n  * [High] EUR — Main Refinancing Rate on 2026-09-10T08:15:00-04:00 (forecast: 2.65%, previous: 2.40%)\n  * [High] EUR — Monetary Policy Statement on 2026-09-10T08:15:00-04:00 (forecast: n/a, previous: n/a)\n  * [High] USD — Core PPI m/m on 2026-09-10T08:30:00-04:00 (forecast: 0.3%, previous: 0.2%)\n  * [High] USD — PPI m/m on 2026-09-10T08:30:00-04:00 (forecast: 0.4%, previous: 0.0%)\n  * [Medium] USD — Unemployment Claims on 2026-09-10T08:30:00-04:00 (forecast: 205K, previous: 206K)\n  * [High] EUR — ECB Press Conference on 2026-09-10T08:45:00-04:00 (forecast: n/a, previous: n/a)\n  * [High] GBP — GDP m/m on 2026-09-11T02:00:00-04:00 (forecast: 0.0%, previous: 0.3%)\n  * [Medium] CHF — SNB Chairman Schlegel Speaks on 2026-09-11T05:15:00-04:00 (forecast: n/a, previous: n/a)\n  * [High] USD — Core CPI m/m on 2026-09-11T08:30:00-04:00 (forecast: 0.2%, previous: 0.2%)\n  * [High] USD — Core CPI y/y on 2026-09-11T08:30:00-04:00 (forecast: 2.4%, previous: 2.5%)\n",
         "metadata": {
-          "source": "sentiment_news.txt",
-          "timestamp": "2026-06-07"
+          "source": "Alternative.me + ForexFactory calendar",
+          "timestamp": "2026-09-10T05:11:11.388433+00:00"
         }
       }
     ],
-    "logic_path": "Extreme fear (12/100) + historic bottom patterns + negative funding rates indicate oversold conditions, while large liquidation cascade may have removed weak longs. However, confidence is tempered by repeated outflow reports, unverified rumor of Strategy sale, and broader macro risk-off (Geopolitical tension, strong USD, Fed higher‑for‑longer). Net bias leans bullish but remains cautious.",
+    "logic_path": "Fear & Greed Index (69) indicates Greed but macro events show mixed signals. EUR rate hike (bullish for EUR) conflicts with USD PPI surge (bearish for USD). Core CPI decline (neutral/bullish for USD) offsets some USD bearishness. GBP GDP contraction (bearish) and SNB speech (uncertainty) add volatility. No clear directional bias due to conflicting macro drivers.",
     "metadata": {
       "source_type": "social_media",
-      "entropy": 0.65,
-      "redundancy_score": 0.55,
-      "recency_weight": 0.8,
-      "timestamp": "2026-06-07"
+      "entropy": 0.62,
+      "redundancy_score": 0.1,
+      "recency_weight": 1.0,
+      "timestamp": "2026-09-10"
     }
   }
 ]
