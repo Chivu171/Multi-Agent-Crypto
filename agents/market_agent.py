@@ -5,6 +5,7 @@ from utils.belief import build_belief_vector
 from utils.parsing import parse_json_response
 from utils.penalties import recency_weight_from_iso_timestamp
 from utils.prompts import MARKET_AGENT_PROMPT
+from utils.sanitize import strip_instruction_patterns
 
 
 def run():
@@ -12,7 +13,7 @@ def run():
     market = fetch_market_data()
     summary = market["summary_text"]
 
-    prompt = MARKET_AGENT_PROMPT.format(summary=summary)
+    prompt = MARKET_AGENT_PROMPT.format(summary=strip_instruction_patterns(summary))
 
     system_prompt = (
         "You are a strict JSON-only API. "

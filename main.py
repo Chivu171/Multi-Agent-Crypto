@@ -9,6 +9,12 @@ from agents.validator_agent import ValidatorAgent
 from agents.debate_agent import DebateAgent
 from agents.mediator_agent import run_mediator
 from utils.display import print_logic_path
+from utils.thresholds import (
+    DEFAULT_CONFLICT_ALPHA,
+    DEFAULT_CONFLICT_THRESHOLD,
+    SIGNAL_NEUTRAL_BAND,
+    SIGNAL_STRONG_INTENSITY_FLOOR,
+)
 
 
 def main():
@@ -43,7 +49,13 @@ def main():
         print(f"  - ERROR Sentiment Agent: {e}")
         sentiment_output = None
 
-    all_outputs = [o for o in [financial_output, market_output, sentiment_output] if o is not None]
+    named_outputs = [
+        ("Financial_Agent", financial_output),
+        ("Market_Agent", market_output),
+        ("Sentiment_Agent", sentiment_output),
+    ]
+    all_outputs = [o for _, o in named_outputs if o is not None]
+    missing_agents = [name for name, o in named_outputs if o is None]
 
     if not all_outputs:
         print("\n[!] Không thể kết nối tới LLM Server (LM Studio).")
@@ -51,6 +63,7 @@ def main():
         try:
             with open("outputs/logs.json", "r", encoding="utf-8") as f:
                 all_outputs = json.load(f)
+            missing_agents = []  # dữ liệu dự phòng thay thế toàn bộ live outputs
             print("    [✓] Đã tải thành công dữ liệu dự phòng từ logs.json.")
         except Exception as e:
             print(f"    [✗] Lỗi tải dữ liệu dự phòng: {e}")
@@ -65,8 +78,15 @@ def main():
 
     # Step 4: Run Validator Agent
     print("\n[Step 4] Khởi chạy Validator Agent thẩm định mâu thuẫn hệ thống...")
-    validator = ValidatorAgent(alpha=0.6, threshold=0.4, use_llm=True)
-    validation_result = validator.evaluate_pipeline(all_outputs)
+    validator = ValidatorAgent(alpha=DEFAULT_CONFLICT_ALPHA, threshold=DEFAULT_CONFLICT_THRESHOLD, use_llm=True)
+    validation_result = validator.evaluate_pipeline(all_outputs, missing_agents=missing_agents)
+
+    if validation_result.get("degraded_mode"):
+        print(
+            f"\n[⚠ CẢNH BÁO] Đang chạy ở chế độ suy giảm (degraded mode): "
+            f"thiếu {len(missing_agents)}/3 agent ({', '.join(missing_agents) or 'không rõ'}). "
+            f"Kết quả bên dưới KHÔNG đại diện đầy đủ cho sự đồng thuận 3-agent."
+        )
 
     # If the validator already performed a debate, its results are stored in 'debate_updated_outputs'
     debate_outputs = validation_result.get('debate_updated_outputs')
@@ -91,8 +111,18 @@ def main():
     print("\n[Step 5] Chạy Mediator Agent để hợp nhất tín hiệu...")
     mediator_result = run_mediator(final_outputs)
     score = mediator_result['S_final']
-    intensity = "STRONG" if abs(score) > 0.5 else "WEAK"
-    signal = "BUY" if score > 0.05 else ("SELL" if score < -0.05 else "NEUTRAL")
+    if len(final_outputs) < 2:
+        # Chỉ còn 1 (hoặc 0) specialist — S_final lúc này chỉ phản ánh ý kiến
+        # của một agent, không phải kết quả hợp nhất đa-agent. Không nên gán
+        # nhãn BUY/SELL như thể đó là quyết định đã qua đối chiếu chéo.
+        intensity = "N/A"
+        signal = "INSUFFICIENT_DATA"
+    else:
+        intensity = "STRONG" if abs(score) > SIGNAL_STRONG_INTENSITY_FLOOR else "WEAK"
+        signal = (
+            "BUY" if score > SIGNAL_NEUTRAL_BAND
+            else ("SELL" if score < -SIGNAL_NEUTRAL_BAND else "NEUTRAL")
+        )
 
     print(f"  - S_final: {score:.4f} | Intensity: {intensity} | Signal: {signal}")    # Save mediator result
     with open("outputs/mediator_result.json", "w", encoding="utf-8") as f:

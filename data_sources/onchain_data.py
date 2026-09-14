@@ -15,6 +15,8 @@ from typing import Any, Dict, List, Optional
 
 import requests
 
+from utils.retry import http_retry
+
 BLOCKCHAIN_INFO_CHARTS_URL = "https://api.blockchain.info/charts/{chart}"
 
 # chart slug -> (result key, human label, unit)
@@ -30,6 +32,7 @@ CACHE_TTL_SECONDS = 3 * 3600  # 3 hours — these charts update ~daily
 REQUEST_TIMEOUT = 10
 
 
+@http_retry
 def _fetch_chart(chart: str, timespan: str = "10days") -> List[Dict[str, float]]:
     resp = requests.get(
         BLOCKCHAIN_INFO_CHARTS_URL.format(chart=chart),

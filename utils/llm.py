@@ -9,6 +9,7 @@ from utils.config import (
     _OPENROUTER_KEY_MAP,
     get_agent_config,
 )
+from utils.retry import llm_retry
 
 # LM Studio client (fallback local)
 _lmstudio_client = OpenAI(base_url=BASE_URL, api_key=API_KEY)
@@ -43,6 +44,11 @@ def _get_openrouter_client(agent_name: str) -> OpenAI | None:
     )
 
 
+@llm_retry
+def _create_completion(client: OpenAI, **kwargs):
+    return client.chat.completions.create(**kwargs)
+
+
 def ask_llm(prompt: str, agent_name: str = "default", system: str | None = None) -> str:
     config = get_agent_config(agent_name)
     provider = config.get("provider", "openrouter")
@@ -59,7 +65,8 @@ def ask_llm(prompt: str, agent_name: str = "default", system: str | None = None)
         messages.append({"role": "system", "content": system})
     messages.append({"role": "user", "content": prompt})
 
-    response = client.chat.completions.create(
+    response = _create_completion(
+        client,
         model=config["model"],
         temperature=config["temperature"],
         max_tokens=config["max_tokens"],

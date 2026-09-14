@@ -8,6 +8,7 @@ from typing import List, Dict, Any
 
 from utils.debate_buffer import DebateBuffer
 from utils.confidence import update_confidence
+from utils.thresholds import DEBATE_CONFIDENCE_DECAY_ALPHA, DEBATE_ROUNDS
 
 
 def _cosine_distance(v1: np.ndarray, v2: np.ndarray) -> float:
@@ -74,7 +75,7 @@ class DebateAgent:
         Weighting for belief divergence, evidence contradiction, and logic‑path distance.
     """
 
-    def __init__(self, rounds: int = 3, alpha: float = 0.5, weights: tuple = (1/3, 1/3, 1/3)):
+    def __init__(self, rounds: int = DEBATE_ROUNDS, alpha: float = DEBATE_CONFIDENCE_DECAY_ALPHA, weights: tuple = (1/3, 1/3, 1/3)):
         self.rounds = rounds
         self.alpha = alpha
         self.w_belief, self.w_evidence, self.w_logic = weights

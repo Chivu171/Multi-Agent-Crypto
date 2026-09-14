@@ -15,6 +15,8 @@ from typing import Any, Dict, Optional
 import numpy as np
 import requests
 
+from utils.retry import http_retry
+
 BINANCE_SPOT_KLINES_URL = "https://api.binance.com/api/v3/klines"
 BINANCE_FUTURES_PREMIUM_URL = "https://fapi.binance.com/fapi/v1/premiumIndex"
 BINANCE_FUTURES_RATIO_URL = "https://fapi.binance.com/futures/data/globalLongShortAccountRatio"
@@ -53,6 +55,7 @@ def _rsi(closes: np.ndarray, period: int = 14) -> float:
     return 100 - (100 / (1 + rs))
 
 
+@http_retry
 def _fetch_klines(symbol: str, interval: str = "1d", limit: int = 60) -> np.ndarray:
     resp = requests.get(
         BINANCE_SPOT_KLINES_URL,
@@ -64,12 +67,14 @@ def _fetch_klines(symbol: str, interval: str = "1d", limit: int = 60) -> np.ndar
     return np.array([float(candle[4]) for candle in raw])  # index 4 = close price
 
 
+@http_retry
 def _fetch_funding_rate(symbol: str) -> float:
     resp = requests.get(BINANCE_FUTURES_PREMIUM_URL, params={"symbol": symbol}, timeout=REQUEST_TIMEOUT)
     resp.raise_for_status()
     return float(resp.json()["lastFundingRate"])
 
 
+@http_retry
 def _fetch_long_short_ratio(symbol: str) -> float:
     resp = requests.get(
         BINANCE_FUTURES_RATIO_URL,

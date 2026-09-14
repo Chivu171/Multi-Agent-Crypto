@@ -13,6 +13,8 @@ from typing import Any, Dict, List, Optional
 
 import requests
 
+from utils.retry import http_retry
+
 FEAR_GREED_URL = "https://api.alternative.me/fng/"
 FOREXFACTORY_CALENDAR_URL = "https://nfs.faireconomy.media/ff_calendar_thisweek.json"
 
@@ -23,6 +25,7 @@ REQUEST_TIMEOUT = 10
 RELEVANT_IMPACTS = {"High", "Medium"}
 
 
+@http_retry
 def _fetch_fear_greed() -> Dict[str, Any]:
     resp = requests.get(FEAR_GREED_URL, params={"limit": 1}, timeout=REQUEST_TIMEOUT)
     resp.raise_for_status()
@@ -30,6 +33,7 @@ def _fetch_fear_greed() -> Dict[str, Any]:
     return {"value": int(entry["value"]), "classification": entry["value_classification"]}
 
 
+@http_retry
 def _fetch_upcoming_events(limit: int = 10) -> List[Dict[str, Any]]:
     """Return upcoming High/Medium-impact macro events from ForexFactory's
     this-week calendar feed, soonest first."""

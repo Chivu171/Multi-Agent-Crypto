@@ -5,6 +5,7 @@ from utils.belief import build_belief_vector
 from utils.parsing import parse_json_response
 from utils.penalties import recency_weight_from_iso_timestamp
 from utils.prompts import FINANCIAL_AGENT_PROMPT
+from utils.sanitize import strip_instruction_patterns
 
 
 def run():
@@ -12,7 +13,7 @@ def run():
     onchain = fetch_onchain_data()
     text = onchain["summary_text"]
 
-    prompt = FINANCIAL_AGENT_PROMPT.format(text=text)
+    prompt = FINANCIAL_AGENT_PROMPT.format(text=strip_instruction_patterns(text))
 
     raw_response = ask_llm(prompt, agent_name="financial")
 

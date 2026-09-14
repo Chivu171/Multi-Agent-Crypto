@@ -80,6 +80,10 @@ Copy the env template and fill in your credentials:
 cp .env.example .env
 ```
 
+> **Never commit `.env`.** It is already listed in `.gitignore` — use `.env.example`
+> as the template for any new variable, and double-check `git status`/`git diff --cached`
+> before committing if you ever edit `.gitignore` or add new secret files.
+
 | Backend | When it's used | What to set |
 |---|---|---|
 | **OpenRouter** (specialist agents) | Always, if any `OPENROUTER_API_KEY*` is set | `OPENROUTER_API_KEY` — global fallback; or `OPENROUTER_API_KEY_FINANCIAL` / `OPENROUTER_API_KEY_MARKET` / `OPENROUTER_API_KEY_SENTIMENT` — per-agent keys for 3x rate limit |

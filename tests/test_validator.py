@@ -78,3 +78,47 @@ def test_evaluate_pipeline_rca_fallback_without_llm(extreme_conflict_output):
         result = validator.evaluate_pipeline(extreme_conflict_output)
 
     assert "RCA Triggered" in result["root_cause_analysis"]
+
+
+def test_evaluate_pipeline_single_agent_is_insufficient_data(single_agent_output):
+    """With only 1 agent output, there is no pair to compare — the pipeline
+    must NOT report a numeric conflict_score of 0.0 (which would silently
+    read as "consensus"). It must flag the result as insufficient instead."""
+    validator = ValidatorAgent(use_llm=False)
+    result = validator.evaluate_pipeline(single_agent_output, missing_agents=["Market_Agent", "Sentiment_Agent"])
+
+    assert result["conflict_score"] is None
+    assert result["conflict_detected"] is False
+    assert result["trigger_debate_module"] is False
+    assert result["debate_updated_outputs"] is None
+    assert result["degraded_mode"] is True
+    assert result["missing_agents"] == ["Market_Agent", "Sentiment_Agent"]
+    assert "Insufficient Data" in result["conflict_categories"][0]
+
+
+def test_evaluate_pipeline_zero_agents_is_insufficient_data():
+    validator = ValidatorAgent(use_llm=False)
+    result = validator.evaluate_pipeline([], missing_agents=["Financial_Agent", "Market_Agent", "Sentiment_Agent"])
+
+    assert result["conflict_score"] is None
+    assert result["degraded_mode"] is True
+
+
+def test_evaluate_pipeline_two_agents_still_computes_but_flags_degraded(extreme_conflict_output):
+    """With 2/3 agents, the KL/variance comparison is still mathematically
+    valid (one pair exists) — the pipeline should keep computing normally,
+    just mark the result as degraded_mode with the missing agent named."""
+    validator = ValidatorAgent(threshold=0.1, use_llm=False)
+    result = validator.evaluate_pipeline(extreme_conflict_output, missing_agents=["Sentiment_Agent"])
+
+    assert result["conflict_score"] is not None
+    assert result["degraded_mode"] is True
+    assert result["missing_agents"] == ["Sentiment_Agent"]
+
+
+def test_evaluate_pipeline_three_agents_not_degraded(consensus_agents_output):
+    validator = ValidatorAgent(use_llm=False)
+    result = validator.evaluate_pipeline(consensus_agents_output)
+
+    assert result["degraded_mode"] is False
+    assert result["missing_agents"] == []

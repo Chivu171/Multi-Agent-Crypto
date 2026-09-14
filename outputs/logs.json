@@ -2,29 +2,29 @@
   {
     "agent_id": "Financial_Agent",
     "signal": "BUY",
-    "confidence": 0.72,
+    "confidence": 0.6,
     "belief_vector": {
       "direction": 1,
-      "strength": 0.72
+      "strength": 0.6
     },
     "evidence_chunks": [
       {
         "id": "financial_chunk_001",
-        "content": "On-chain network snapshot (fetched 2026-09-10T05:11:03.943111+00:00):\n(free-tier proxies — no MVRV/SOPR/whale-flow; those require a paid provider)\n- Network hash rate: 1,020,033,712.53 TH/s (up 21.1% vs prior day)\n- Miner revenue: 44,921,766.61 USD/day (up 34.3% vs prior day)\n- Confirmed transactions: 758,490.00 tx/day (up 18.3% vs prior day)\n- Estimated transaction value: 6,791,307,829.21 USD/day (up 23.5% vs prior day)\n",
+        "content": "On-chain network snapshot (fetched 2026-09-14T08:01:53.929308+00:00):\n(free-tier proxies — no MVRV/SOPR/whale-flow; those require a paid provider)\n- Network hash rate: 956,677,581.31 TH/s (down 3.8% vs prior day)\n- Miner revenue: 41,850,977.38 USD/day (up 1.0% vs prior day)\n- Confirmed transactions: 791,693.00 tx/day (up 1.0% vs prior day)\n- Estimated transaction value: 3,113,701,982.14 USD/day (up 22.4% vs prior day)\n",
         "metadata": {
           "source": "blockchain.info Charts API",
           "page": 1,
-          "timestamp": "2026-09-10T05:11:03.943111+00:00"
+          "timestamp": "2026-09-14T08:01:53.929308+00:00"
         }
       }
     ],
-    "logic_path": "Tất cả bốn chỉ số on-chain đều cho thấy tăng trưởng tích cực so với ngày trước đó: (1) Hash rate tăng 21.1% cho thấy sức mạnh mạng lưới và sự tham gia của thợ đào gia tăng; (2) Doanh thu thợ đào tăng 34.3% phản ánh lợi nhuận khả quan và động lực kinh tế mạng lưới khỏe mạnh; (3) Giao dịch xác nhận tăng 18.3% cho thấy nhu cầu sử dụng mạng lưới đang mở rộng; (4) Giá trị giao dịch ước tính tăng 23.5% chứng tỏ hoạt động kinh tế trên chuỗi đang sôi động. Tuy nhiên, độ tin cậy bị giới hạn do chỉ có một bản chụp đơn lẻ (single-day snapshot), thiếu dữ liệu MVRV/SOPR/whale-flow, và không có xác nhận giá để đối chiếu.",
+    "logic_path": "Bước 1: Phân tích giá trị giao dịch ước tính tăng 22.4% — đây là tín hiệu tăng giá mạnh nhất, cho thấy dòng vốn lớn đổ vào mạng lưới, hoạt động kinh tế tăng mạnh. Bước 2: Giao dịch xác nhận tăng 1.0% — cho thấy mức sử dụng mạng ổn định và tăng nhẹ, hỗ trợ tích cực. Bước 3: Doanh thu thợ đào tăng 1.0% dù hash rate giảm — cho thấy phí giao dịch hoặc giá tài sản bù đắp cho sự suy giảm sức mạnh tính toán. Bước 4: Hash rate giảm 3.8% — đây là tín hiệu giảm giá duy nhất, gợi ý một số thợ đào ngừng hoạt động, có thể do biên lợi nhuận thu hẹp. Bước 5: Tổng hợp — tín hiệu tăng giá từ giá trị giao dịch (22.4%) đủ mạnh để lấn át tín hiệu giảm giá từ hash rate (-3.8%), dẫn đến kết luận BUY với độ tin cậy trung bình.",
     "metadata": {
       "source_type": "financial_report",
-      "entropy": 0.81,
+      "entropy": 0.235,
       "redundancy_score": 0.1,
       "recency_weight": 1.0,
-      "timestamp": "2026-09-10"
+      "timestamp": "2026-09-14"
     }
   },
   {
@@ -38,47 +38,20 @@
     "evidence_chunks": [
       {
         "id": "market_chunk_001",
-        "content": "BTC/USDT market snapshot (fetched 2026-09-10T05:44:34.603304+00:00):\n- Price: $78,422.51\n- EMA20: $77,180.43 | EMA50: $71,376.72 (price is above EMA20)\n- RSI14: 43.4\n- Funding rate: 0.0100%\n- Long/Short account ratio: 1.27\n",
+        "content": "BTC/USDT market snapshot (fetched 2026-09-14T08:01:59.651534+00:00):\n- Price: $77,820.01\n- EMA20: $77,107.12 | EMA50: $71,865.36 (price is above EMA20)\n- RSI14: 47.2\n- Funding rate: 0.0080%\n- Long/Short account ratio: 1.66\n",
         "metadata": {
           "source": "Binance public API",
-          "timestamp": "2026-09-10T05:44:34.603304+00:00"
+          "timestamp": "2026-09-14T08:01:59.651534+00:00"
         }
       }
     ],
-    "logic_path": "Giá nằm trên EMA20 và EMA50, đồng thời EMA20 cao hơn EMA50, cho thấy xu hướng tăng vẫn được duy trì. Tuy nhiên, RSI14 ở mức 43.4 phản ánh động lượng chưa mạnh và chưa xác nhận tăng tốc. Funding rate dương nhẹ cùng tỷ lệ Long/Short 1.27 hỗ trợ thiên về phe mua nhưng mức độ đồng thuận chưa cao. Do đó, tín hiệu BUY được đưa ra với độ tin cậy trung bình.",
+    "logic_path": "Giá nằm trên EMA20 và EMA50, đồng thời EMA20 cao hơn EMA50, cho thấy xu hướng tăng nhất quán. Tuy nhiên, RSI14 ở mức 47.2 không xác nhận động lượng mạnh. Funding rate dương và tỷ lệ Long/Short 1.66 ủng hộ phe mua nhưng cũng làm giảm độ tin cậy do vị thế dài đã chiếm ưu thế.",
     "metadata": {
       "source_type": "market_data",
-      "entropy": 0.868,
+      "entropy": 0.943,
       "redundancy_score": 0.05,
       "recency_weight": 1.0,
-      "timestamp": "2026-09-10"
-    }
-  },
-  {
-    "agent_id": "Sentiment_Agent",
-    "signal": "NEUTRAL",
-    "confidence": 0.65,
-    "belief_vector": {
-      "direction": 0,
-      "strength": 0.65
-    },
-    "evidence_chunks": [
-      {
-        "id": "sentiment_chunk_001",
-        "content": "Sentiment snapshot (fetched 2026-09-10T05:11:11.388433+00:00):\n- Fear & Greed Index: 69/100 (Greed)\n- Upcoming macro events (High/Medium impact):\n  * [High] EUR — Main Refinancing Rate on 2026-09-10T08:15:00-04:00 (forecast: 2.65%, previous: 2.40%)\n  * [High] EUR — Monetary Policy Statement on 2026-09-10T08:15:00-04:00 (forecast: n/a, previous: n/a)\n  * [High] USD — Core PPI m/m on 2026-09-10T08:30:00-04:00 (forecast: 0.3%, previous: 0.2%)\n  * [High] USD — PPI m/m on 2026-09-10T08:30:00-04:00 (forecast: 0.4%, previous: 0.0%)\n  * [Medium] USD — Unemployment Claims on 2026-09-10T08:30:00-04:00 (forecast: 205K, previous: 206K)\n  * [High] EUR — ECB Press Conference on 2026-09-10T08:45:00-04:00 (forecast: n/a, previous: n/a)\n  * [High] GBP — GDP m/m on 2026-09-11T02:00:00-04:00 (forecast: 0.0%, previous: 0.3%)\n  * [Medium] CHF — SNB Chairman Schlegel Speaks on 2026-09-11T05:15:00-04:00 (forecast: n/a, previous: n/a)\n  * [High] USD — Core CPI m/m on 2026-09-11T08:30:00-04:00 (forecast: 0.2%, previous: 0.2%)\n  * [High] USD — Core CPI y/y on 2026-09-11T08:30:00-04:00 (forecast: 2.4%, previous: 2.5%)\n",
-        "metadata": {
-          "source": "Alternative.me + ForexFactory calendar",
-          "timestamp": "2026-09-10T05:11:11.388433+00:00"
-        }
-      }
-    ],
-    "logic_path": "Fear & Greed Index (69) indicates Greed but macro events show mixed signals. EUR rate hike (bullish for EUR) conflicts with USD PPI surge (bearish for USD). Core CPI decline (neutral/bullish for USD) offsets some USD bearishness. GBP GDP contraction (bearish) and SNB speech (uncertainty) add volatility. No clear directional bias due to conflicting macro drivers.",
-    "metadata": {
-      "source_type": "social_media",
-      "entropy": 0.62,
-      "redundancy_score": 0.1,
-      "recency_weight": 1.0,
-      "timestamp": "2026-09-10"
+      "timestamp": "2026-09-14"
     }
   }
 ]

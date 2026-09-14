@@ -5,12 +5,22 @@ import numpy as np
 from typing import List, Dict, Any, Tuple
 from utils.llm import ask_llm  # Tận dụng LLM layer đã hoàn thành ở Thứ 3
 from utils.prompts import VALIDATOR_AGENT_PROMPT
+from utils.thresholds import (
+    DEBATE_CONFIDENCE_DECAY_ALPHA,
+    DEBATE_ROUNDS,
+    DEFAULT_CONFLICT_ALPHA,
+    DEFAULT_CONFLICT_THRESHOLD,
+    NO_CONFLICT_CEILING,
+    RELIABILITY_CONFLICT_GAP,
+    REDUNDANCY_CONFLICT_CEILING,
+    TEMPORAL_CONFLICT_GAP,
+)
 
 # Import DebateAgent for conditional debate integration
 from agents.debate_agent import DebateAgent
 
 class ValidatorAgent:
-    def __init__(self, alpha: float = 0.6, threshold: float = 0.4, use_llm: bool = True):
+    def __init__(self, alpha: float = DEFAULT_CONFLICT_ALPHA, threshold: float = DEFAULT_CONFLICT_THRESHOLD, use_llm: bool = True):
         """
         Alpha: Trọng số cân bằng giữa KL Divergence (Học thuật) và Variance (Thực nghiệm)
         Threshold: Ngưỡng biên kích hoạt vòng tranh luận (Conditional Debate Trigger)
@@ -72,7 +82,7 @@ class ValidatorAgent:
         [Task 2.1] Deterministic Conflict Classifier
         Phân loại mâu thuẫn hệ thống dựa trên các quy tắc biên cấu trúc
         """
-        if conflict_score < 0.15:
+        if conflict_score < NO_CONFLICT_CEILING:
             return ["No Conflict"]
 
         categories = []
@@ -86,15 +96,15 @@ class ValidatorAgent:
             categories.append("Signal Conflict")
 
         # Rule 2: Temporal Conflict (Xung đột thời gian/Độ trễ dữ liệu)
-        if np.ptp(recency_weights) > 0.4:
+        if np.ptp(recency_weights) > TEMPORAL_CONFLICT_GAP:
             categories.append("Temporal Conflict")
 
         # Rule 3: Reliability Conflict (Xung đột chất lượng nguồn/Entropy)
-        if np.ptp(entropies) > 0.5:
+        if np.ptp(entropies) > RELIABILITY_CONFLICT_GAP:
             categories.append("Reliability Conflict")
 
         # Rule 4: Redundancy Conflict (Mâu thuẫn do khuếch đại/Thao túng thông tin)
-        if any(r > 0.6 for r in redundancy_scores):
+        if any(r > REDUNDANCY_CONFLICT_CEILING for r in redundancy_scores):
             categories.append("Redundancy Conflict")
 
         return categories if categories else ["Unclassified Structural Anomaly"]
@@ -133,10 +143,40 @@ class ValidatorAgent:
         except Exception as e:
             return f"[RCA Fallback - LLM Connection Error: {str(e)}] Core discrepancy: {signals_map}"
 
-    def evaluate_pipeline(self, agents_output: List[Dict[str, Any]]) -> Dict[str, Any]:
+    def evaluate_pipeline(
+        self,
+        agents_output: List[Dict[str, Any]],
+        missing_agents: List[str] | None = None,
+    ) -> Dict[str, Any]:
         """
         Execution Pipeline chính của Validator Agent
+
+        missing_agents: tên các specialist agent đã lỗi/không trả được kết quả
+        (đã bị loại khỏi agents_output trước khi vào đây). Dùng để phân biệt
+        "đồng thuận thật" với "chỉ còn 1 agent nên không có gì để so sánh".
         """
+        missing_agents = missing_agents or []
+        n = len(agents_output)
+
+        # Với n < 2 không có phép so sánh nào là hợp lệ (KL/variance cần tối
+        # thiểu 2 điểm dữ liệu) — trả trạng thái "không đủ dữ liệu" tường minh
+        # thay vì để công thức âm thầm trả 0.0 và bị hiểu nhầm là "No Conflict".
+        if n < 2:
+            return {
+                "conflict_score": None,
+                "metrics": {"mean_pairwise_kl": None, "decision_variance": None},
+                "conflict_detected": False,
+                "conflict_categories": ["Insufficient Data — cannot assess conflict"],
+                "root_cause_analysis": (
+                    f"N/A - Insufficient agent outputs (n={n}) to perform conflict "
+                    f"analysis. Missing agents: {missing_agents or ['unknown']}."
+                ),
+                "trigger_debate_module": False,
+                "debate_updated_outputs": None,
+                "degraded_mode": True,
+                "missing_agents": missing_agents,
+            }
+
         # 1. Định lượng mâu thuẫn
         conflict_score, mean_kl, variance = self.calculate_conflict_core(agents_output)
         
@@ -155,8 +195,8 @@ class ValidatorAgent:
         if conflict_detected:
             print("\n[Step 3] Khởi chạy Debate Module...")
 
-            # Instantiate DebateAgent — alpha=0.35 để tránh confidence decay quá mạnh
-            debate_agent = DebateAgent(rounds=2, alpha=0.35)
+            # Instantiate DebateAgent — alpha thấp để tránh confidence decay quá mạnh
+            debate_agent = DebateAgent(rounds=DEBATE_ROUNDS, alpha=DEBATE_CONFIDENCE_DECAY_ALPHA)
             debate_updated_outputs = debate_agent.run_debate(agents_output)
             # Optionally, you could re‑evaluate conflict after debate – omitted for brevity
         
@@ -171,5 +211,7 @@ class ValidatorAgent:
             "conflict_categories": conflict_categories,
             "root_cause_analysis": rca_report,
             "trigger_debate_module": conflict_detected,
-            "debate_updated_outputs": debate_updated_outputs
+            "debate_updated_outputs": debate_updated_outputs,
+            "degraded_mode": n < 3,
+            "missing_agents": missing_agents,
         }
