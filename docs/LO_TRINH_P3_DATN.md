@@ -145,7 +145,7 @@ Các quyết định dưới đây **bắt buộc được thống nhất trư�
 ## 7. Tham chiếu
 
 - `README.md:1-168` — Kiến trúc mermaid, setup, limitations
-- `docs/BLUEPRINT.md:305` — Kiến trúc mục tiêu, R-matrix
+- `docs/BLUEPRINT.md`, `docs/UML.md` — đã xóa (2026-09-20) để gọn `docs/`; xem git history nếu cần
 - `docs/CONTRACT.md`, `docs/TASK_GRAPH.md` — đã xóa (2026-09-17): cả hai tự khai deprecated, nội dung deliverables/gates đã chuyển hết vào file này (`docs/LO_TRINH_P3_DATN.md`)
 - `docs/BAO_CAO_CHI_TIET_KY_THUAT.md` — bản chi tiết kỹ thuật đầy đủ (5 chương, suy diễn toán học từng bước), đổi tên/di chuyển từ `multi_agent_crypto_report.md` ở gốc project, đã cập nhật khớp codebase hiện tại (2026-09-17)
 - `pyproject.toml:1-32`, `requirements.txt:6`, `.env.example:14`

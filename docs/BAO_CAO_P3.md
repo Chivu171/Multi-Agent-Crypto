@@ -170,7 +170,7 @@ Multi-Agent-Crypto/
 ├── outputs/        logs.json, mediator_result.json, validation_report.json,
 │                   demo_consensus.json, demo_conflict.json, demo_fallback.json
 ├── tests/          96 tests (pytest)
-├── docs/           BAO_CAO_P3.md, UML.md, LO_TRINH_P3_DATN.md
+├── docs/           BAO_CAO_P3.md, BAO_CAO_CHI_TIET_KY_THUAT.md, LO_TRINH_P3_DATN.md, DIRECTION_PILOT.md
 └── main.py         entry point
 ```
 
