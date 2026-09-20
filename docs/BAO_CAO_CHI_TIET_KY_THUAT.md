@@ -1,6 +1,8 @@
 # BÁO CÁO NGHIÊN CỨU & PHÁT TRIỂN PROTOTYPE
 ## HỆ THỐNG PHÂN TÍCH TÀI CHÍNH & TỰ ĐỘNG GIẢI QUYẾT XUNG ĐỘT ĐA ĐẠI LÝ (MULTI-AGENT CRYPTO SYSTEM)
 
+> **Cập nhật 2026-09-17:** đã rà soát và sửa lại các chi tiết đã lỗi thời (nguồn dữ liệu tĩnh → live fetcher, giá trị tham số β, tình trạng module RAG...) để khớp đúng với codebase hiện tại. Đây là tài liệu kỹ thuật chi tiết nhất (có suy diễn toán học từng bước); bản báo cáo học vụ chính thức, cô đọng theo mẫu HUST nằm ở `docs/BAO_CAO_P3.md`. Lộ trình/roadmap đang hoạt động: `docs/LO_TRINH_P3_DATN.md`.
+
 ---
 
 ### LỜI MỞ ĐẦU
@@ -57,10 +59,12 @@ graph TD
 ### 3. CHI TIẾT CÁC THÀNH PHẦN VÀ CƠ SỞ TOÁN HỌC
 
 #### 3.1. Các Đại lý Chuyên môn (Specialist Agents)
-Hệ thống sử dụng ba đại lý chuyên biệt để thu thập và xử lý độc lập các chiều thông tin:
-- **Financial Agent (Đại lý Tài chính):** Đọc báo cáo on-chain dài hạn (`data/financial_report.txt`). Sử dụng nhiệt độ thấp ($T=0.1$) để đảm bảo suy luận chính xác, bám sát các chỉ số cốt lõi như MVRV Z-Score, Whale Accumulation.
-- **Market Agent (Đại lý Thị trường):** Đọc dữ liệu biến động kỹ thuật ngắn hạn (`data/market_data.txt`). Nhiệt độ cấu hình ($T=0.2$) để bám sát mô hình nến, RSI, và vùng thanh lý.
-- **Sentiment Agent (Đại lý Tâm lý):** Đọc dữ liệu tin tức xã hội (`data/sentiment_news.txt`). Nhiệt độ cấu hình ($T=0.4$) nhằm tổng hợp và phân tích ngôn ngữ tự nhiên từ mạng xã hội, phát hiện các điểm nhiễu tin tức.
+Hệ thống sử dụng ba đại lý chuyên biệt, mỗi đại lý lấy dữ liệu **live** từ một API công khai riêng (không còn đọc file `.txt` tĩnh trong `data/` — các file đó chỉ còn là fixture/sample cũ, không được specialist agent nào tham chiếu trong luồng chạy thật):
+- **Financial Agent (Đại lý Tài chính):** Lấy dữ liệu on-chain thời gian thực từ **blockchain.info Charts API** (`data_sources/onchain_data.py`) — hash-rate, miner revenue, số lượng giao dịch, khối lượng giao dịch. Chỉ số `entropy` không do LLM tự chấm mà được tính trực tiếp từ trung bình `|% thay đổi ngày|` của các chỉ số on-chain này.
+- **Market Agent (Đại lý Thị trường):** Lấy dữ liệu giá/khối lượng thời gian thực từ **Binance Public API** (`data_sources/market_data.py`, symbol `BTCUSDT`, không cần API key).
+- **Sentiment Agent (Đại lý Tâm lý):** Lấy **Fear & Greed Index** từ Alternative.me và lịch sự kiện vĩ mô từ nguồn công khai ForexFactory (`data_sources/sentiment_data.py`).
+
+Cả ba fetcher đều dùng chung một cơ chế **cache-first / stale-fallback**: ưu tiên dùng cache còn hạn (`outputs/cache/`), gọi API mới khi cache hết hạn, và tự động dùng lại dữ liệu cache cũ (kèm cảnh báo) nếu API tạm thời lỗi — tránh sập toàn bộ pipeline chỉ vì một API bên thứ ba không phản hồi.
 
 Tất cả các đại lý chuyên môn đều chuẩn hóa đầu ra theo định dạng `AgentOutput` bao gồm:
 1. **Tín hiệu định hướng (Signal):** $BUY$ (Mua), $SELL$ (Bán) hoặc $NEUTRAL$ (Trung lập).
@@ -127,10 +131,10 @@ Trong đó các trọng số $w_b, w_e, w_l$ lần lượt đại diện cho t�
 ##### Cập nhật Độ tự tin (Deterministic Confidence Update)
 Sau khi lượng hóa được $R_i$, độ tự tin của Agent $i$ được điều chỉnh suy giảm một cách tất định theo hàm số mũ cực kỳ trực quan:
 $$C_{new} = C_{old} \times e^{-\beta \cdot R_i}$$
-Trong đó $\beta$ (mặc định $\beta = 0.8$) là hệ số nhạy cảm. Nếu Agent $i$ gặp phải sự phản biện cực kỳ mạnh mẽ từ các Agent khác (cả về niềm tin, bằng chứng và logic), độ tự tin của nó sẽ bị kéo giảm nhanh chóng.
+Trong đó $\beta$ (mặc định $\beta = 0.35$ — `DEBATE_CONFIDENCE_DECAY_ALPHA` trong `utils/thresholds.py`, cố tình đặt thấp để tránh suy giảm quá mạnh) là hệ số nhạy cảm. Nếu Agent $i$ gặp phải sự phản biện cực kỳ mạnh mẽ từ các Agent khác (cả về niềm tin, bằng chứng và logic), độ tự tin của nó sẽ bị kéo giảm nhanh chóng; phản biện yếu gần như không ảnh hưởng, do bản chất phi tuyến của hàm mũ.
 
 ##### Tái lập luận bằng LLM (LLM Cognitive Adaptation)
-Tại mỗi vòng, các Agent nhận được thông tin phản biện $R_i$, kèm theo các bằng chứng từ đối phương. LLM sẽ đóng vai trò động cơ suy luận để đọc các luận điểm đối lập và sinh ra một `logic_path` mới, tự cập nhật thế giới quan và điều chỉnh lại tín hiệu của mình một cách thông minh (nhưng vẫn bám sát bằng chứng thực tế).
+Tại mỗi vòng (mặc định 2 vòng — `DEBATE_ROUNDS`), các Agent nhận được: `logic_path` cũ, **lịch sử tranh biện tích lũy từ các vòng trước** (phong cách MADAM-RAG aggregator), bằng chứng từ đối phương, và chỉ số phản biện $R_i$. LLM đóng vai trò động cơ suy luận để đọc các luận điểm đối lập và sinh ra một `logic_path` mới — với ràng buộc tường minh trong prompt là **phải bám sát đúng vai trò chuyên môn ban đầu** (ví dụ Financial Agent không được lấn sang lập luận kỹ thuật của Market Agent), tránh hiện tượng các Agent "hòa tan" thành một giọng nói chung sau vài vòng tranh biện.
 
 ---
 
@@ -152,6 +156,8 @@ Mediator Agent không sử dụng trực tiếp trọng số cơ bản ($base\_w
    $$P_{time} = e^{-\gamma \cdot \Delta t}$$
    Trong đó $\Delta t$ là khoảng thời gian (giây) tính từ thời điểm tạo bằng chứng đến thời điểm chạy hệ thống. $\gamma$ (mặc định $10^{-5}$) là tham số suy giảm. Dữ liệu càng cũ, độ tin cậy càng tiệm cận về 0.
 
+   > **Lưu ý kỹ thuật (đã sửa lỗi double-decay):** decay theo thời gian trước đây từng bị áp dụng ở CẢ HAI nơi — vừa trong `recency_weight` của specialist agent, vừa trong `combined_weight()` của Mediator — khiến cùng một bộ dữ liệu chạy ở hai thời điểm khác nhau trong ngày cho ra $S_{final}$ khác nhau (phá vỡ tái lập khoa học), đồng thời làm sai lệch việc Validator phát hiện *Temporal Conflict* (do so sánh các `recency_weight` đã bị suy giảm). Hiện tại `recency_weight` chỉ còn là điểm tin cậy nội tại cố định (không decay); decay chỉ tồn tại **duy nhất một lần** tại `combined_weight()`. Hàm này còn nhận tham số `current_time` tùy chọn để bơm mốc thời gian cố định khi backtest, đảm bảo kết quả tái lập được giữa các lần chạy.
+
 ##### Trọng số Hợp nhất Cuối cùng ($\omega_i$)
 Trọng số thực tế của Agent $i$ sau khi áp dụng các hình phạt:
 $$\omega_i = base\_weight_i \times (1 - P_{entropy}) \times (1 - P_{redundancy}) \times P_{time}$$
@@ -171,7 +177,7 @@ Cường độ tín hiệu được xác định là **STRONG** nếu $|S_{final
 
 ### 4. THỰC NGHIỆM & PHÂN TÍCH KẾT QUẢ MÔ PHỎNG
 
-Dưới đây là hai kịch bản thực nghiệm được trích xuất trực tiếp từ quá trình chạy thử nghiệm prototype thực tế của hệ thống.
+Dưới đây là hai kịch bản minh họa cơ chế toán học, trích từ các lần chạy thử nghiệm trước đây của prototype (số liệu mang tính minh họa cho cách công thức vận hành, không phải kết quả backtest chính thức). Để có bộ kịch bản tái lập được (reproducible), dùng `scripts/demo.py` — script này xuất 3 kịch bản cố định (Đồng thuận / Mâu thuẫn / Fallback) ra `outputs/demo_consensus.json`, `outputs/demo_conflict.json`, `outputs/demo_fallback.json`.
 
 #### Kịch bản 1: Hệ thống đạt Đồng thuận Tự nhiên (Consensus State)
 *Dữ liệu đầu vào thực nghiệm:* (Trích xuất từ `outputs/logs.json`)
@@ -225,15 +231,19 @@ Do thời gian dữ liệu từ ngày 2026-05-19 đến thời điểm chạy th
 1. **Kiểm soát rủi ro thông tin tốt:** Hệ thống không tin tưởng mù quáng vào LLMs mà sử dụng các thuật toán toán học lượng hóa độ nhiễu và độ trễ để phạt trọng số một cách triệt để trước khi ra quyết định.
 2. **Cơ chế tranh biện dân chủ và khoa học:** Thay vì sử dụng cơ chế bỏ phiếu đa số đơn giản (Majority Voting) vốn dễ bỏ qua các tín hiệu thiểu số có giá trị cao, hệ thống giải quyết xung đột bằng cách cho các Agent tranh luận, tự thích ứng triệt tiêu các lỗi logic dựa trên bằng chứng của nhau.
 3. **Tính minh bạch cao:** Hệ thống ghi nhận toàn bộ nhật ký lập luận cấu trúc (`logic_path`) và cung cấp báo cáo phân tích nguyên nhân gốc rễ (RCA) rõ ràng, giúp nhà đầu tư hoặc người quản trị hệ thống hiểu rõ lý do đằng sau mỗi quyết định.
+4. **Xử lý tường minh trạng thái thiếu dữ liệu (degraded mode):** Nếu một hoặc nhiều specialist agent lỗi/timeout, hệ thống không âm thầm coi đó là "đồng thuận" — Validator trả về trạng thái *Insufficient Data* rõ ràng khi còn dưới 2 agent (KL-divergence/variance cần tối thiểu 2 điểm dữ liệu mới có ý nghĩa), và tầng quyết định cuối gán nhãn `INSUFFICIENT_DATA` thay vì suy diễn BUY/SELL từ một ý kiến đơn lẻ.
 
 #### 5.2. Hạn chế hiện tại
-- **Độ trễ hệ thống:** Quá trình gọi LLM nhiều vòng cho khâu tranh biện (Debate Module) và thẩm định (Validator RCA) tốn tài nguyên thời gian (API Latency).
-- **Module RAG đang trong giai đoạn phát triển sơ khởi:** Các file logic trong thư mục `rag/` (như `retriever.py`, `chunking.py`) hiện tại là các lớp trống (placeholders), dữ liệu đầu vào hiện đang được tải tĩnh từ thư mục dữ liệu (`data/`).
+- **Độ trễ hệ thống:** Quá trình gọi LLM nhiều vòng cho khâu tranh biện (Debate Module) và thẩm định (Validator RCA) tốn tài nguyên thời gian (API Latency); backtest nhiều ngày với đầy đủ 3 agent × LLM call dễ chạm giới hạn rate-limit của API free-tier.
+- **Module RAG đã cài đặt nhưng chưa nối vào pipeline chính:** `rag/retriever.py`, `chunking.py`, `embeddings.py` đã có logic thật (có test coverage riêng), nhưng `main.py` hiện **không gọi** `Retriever.query()` — 3 specialist agent vẫn chỉ dùng dữ liệu live fetch trực tiếp, chưa được bổ sung ngữ cảnh truy xuất từ RAG.
+- **Tham số hệ thống chưa qua hiệu chỉnh thực nghiệm:** $\alpha, \beta, \gamma$, các ngưỡng conflict/temporal/reliability/redundancy hiện là giá trị đặt theo trực giác thiết kế, chưa backtest trên dữ liệu lịch sử để kiểm chứng tính tối ưu.
 
 #### 5.3. Định hướng phát triển tương lai
-1. **Hoàn thiện Tầng RAG Động (Dynamic RAG Integration):** Tích hợp công nghệ Vector Database (như ChromaDB hoặc Pinecone) để các Agent tự động truy xuất bằng chứng thời gian thực từ các luồng tin tức liên tục, thay vì đọc các file báo cáo tĩnh.
-2. **Tối ưu hóa Chi phí & Tốc độ:** Áp dụng kỹ thuật suy luận song song (Parallel LLM Calling) trong quá trình tranh biện để giảm thiểu thời gian phản hồi của hệ thống.
-3. **Tinh chỉnh Trọng số:** Sử dụng các giải thuật Học máy (Machine Learning) hoặc Học tăng cường (Reinforcement Learning) để tự động hóa việc tối ưu các tham số siêu cấu trúc như $\alpha$, $\beta$, $\gamma$ dựa trên hiệu suất giao dịch lịch sử thực tế.
+Lộ trình chi tiết (đã chốt, có gate rõ ràng) nằm ở `docs/LO_TRINH_P3_DATN.md`, tóm tắt:
+1. **Thực nghiệm có đối chứng (ưu tiên cao nhất cho ĐATN):** Thu thập dữ liệu lịch sử BTC, xây dựng backtest engine chạy ở chế độ `--mock` (không gọi LLM, đảm bảo tái lập), so sánh 4 cấu hình ablation (technical-only / single-agent / no-debate / full) bằng accuracy, Sharpe, drawdown, win-rate.
+2. **Nối RAG vào pipeline:** Gọi `Retriever.query()` từ Financial Agent, kèm ablation "có RAG vs không RAG" để chứng minh giá trị tăng thêm bằng số liệu, không chỉ bằng trực giác.
+3. **Tinh chỉnh Trọng số bằng dữ liệu:** Quét (grid-search/ablation) các tham số $\alpha, \beta, \gamma$ và các ngưỡng conflict trên tập dữ liệu lịch sử, thay vì Học tăng cường (Reinforcement Learning) phức tạp khi chưa có đủ dữ liệu huấn luyện — RL là hướng xa hơn nếu ablation cho thấy còn dư địa cải thiện.
+4. **Tối ưu hóa Chi phí & Tốc độ:** Áp dụng suy luận song song (`ThreadPoolExecutor`/`asyncio`) cho 3 specialist agent và SQLite cache cho LLM response để giảm độ trễ và chi phí khi backtest quy mô lớn.
 
 ---
 **Người báo cáo thực hiện:** Nhóm nghiên cứu & Phát triển Prototype Multi-Agent

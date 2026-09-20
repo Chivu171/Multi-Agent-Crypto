@@ -146,12 +146,11 @@ Các quyết định dưới đây **bắt buộc được thống nhất trư�
 
 - `README.md:1-168` — Kiến trúc mermaid, setup, limitations
 - `docs/BLUEPRINT.md:305` — Kiến trúc mục tiêu, R-matrix
-- `docs/CONTRACT.md:110` — 16 deliverables, NOT INCLUDED
-- `docs/TASK_GRAPH.md:211` — 14 TIPs, 4 Phases, gates
-- `multi_agent_crypto_report.md:240` — 5 chương báo cáo hiện tại
+- `docs/CONTRACT.md`, `docs/TASK_GRAPH.md` — đã xóa (2026-09-17): cả hai tự khai deprecated, nội dung deliverables/gates đã chuyển hết vào file này (`docs/LO_TRINH_P3_DATN.md`)
+- `docs/BAO_CAO_CHI_TIET_KY_THUAT.md` — bản chi tiết kỹ thuật đầy đủ (5 chương, suy diễn toán học từng bước), đổi tên/di chuyển từ `multi_agent_crypto_report.md` ở gốc project, đã cập nhật khớp codebase hiện tại (2026-09-17)
 - `pyproject.toml:1-32`, `requirements.txt:6`, `.env.example:14`
 - `agents/*:700` dòng (6 files), `utils/*:405` dòng, `data_sources/*:386` dòng, `rag/*:121` dòng, `tests/*:1098` dòng (97 tests)
-- `app.py:37` — entry point thứ 2 (quyết định giữ/xóa ở Q2)
+- Q2 (`app.py`) đã quyết: xóa, gộp vào `main.py`
 - `utils/confidence.py`, `utils/display.py`, `utils/debate_buffer.py`, `utils/schema.py` — module phụ không được nhắc trong lộ trình
 - `outputs/logs.json`, `validation_report.json`, `mediator_result.json` — bằng chứng thực nghiệm 2026-06-07
 
