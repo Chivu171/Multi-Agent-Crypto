@@ -1,0 +1,66 @@
+{
+  "sample_id": "2022-01-30",
+  "status": "error",
+  "specialists": [
+    {
+      "agent_id": "Financial_Agent",
+      "signal": "NEUTRAL",
+      "confidence": 0.55,
+      "belief_vector": {
+        "direction": 0,
+        "strength": 0.55
+      },
+      "evidence_chunks": [
+        {
+          "id": "financial_chunk_001",
+          "content": "Historical on-chain observations; MVRV, SOPR and whale flows unavailable.\n{\"hash-rate\": {\"value\": 203963748.12575728, \"pct_change_1d\": 17.557251908396942, \"observed_at\": \"2022-01-28T00:00:00+00:00\"}, \"miners-revenue\": {\"value\": 36132765.51223091, \"pct_change_1d\": 19.53620729479153, \"observed_at\": \"2022-01-28T00:00:00+00:00\"}, \"n-transactions\": {\"value\": 264609.0, \"pct_change_1d\": 3.3931815961707468, \"observed_at\": \"2022-01-28T00:00:00+00:00\"}, \"estimated-transaction-volume-usd\": {\"value\": 4157373396.2608657, \"pct_change_1d\": -22.610057685882566, \"observed_at\": \"2022-01-28T00:00:00+00:00\"}}",
+          "metadata": {
+            "source": "blockchain.info Charts API",
+            "page": 1,
+            "timestamp": "2022-01-28T00:00:00+00:00"
+          }
+        }
+      ],
+      "logic_path": "Phân tích dựa trên bốn chỉ số on-chain quan sát tại 2022-01-28. Thứ nhất, hash rate tăng 17.56% cho thấy sức mạnh mạng lưới được cải thiện đáng kể, phản ánh sự tham gia nhiều hơn của thợ đào — đây là tín hiệu tăng giá (bullish). Thứ hai, doanh thu thợ đào tăng 19.54% cho thấy kinh tế khai thác đang khỏe mạnh, cũng là tín hiệu tăng giá (bullish). Thứ ba, số lượng giao dịch tăng nhẹ 3.39%, cho thấy hoạt động mạng lưới ổn định nhưng không nổi bật — tín hiệu trung tính. Thứ tư, khối lượng giao dịch ước tính bằng USD giảm mạnh 22.61%, cho thấy sự suy giảm đáng kể về giá trị lưu chuyển trên chuỗi — đây là tín hiệu giảm giá (bearish). Tỷ lệ giao dịch tăng nhưng khối lượng USD giảm mạnh cho thấy các giao dịch có giá trị nhỏ hơn, có thể phản ánh sự suy yếu của nhu cầu lớn. Các chỉ số quan trọng như MVRV, SOPR và dòng chảy whale không khả dụng, làm hạn chế khả năng đánh giá toàn diện. Với 2 tín hiệu bullish, 1 trung tính và 1 bearish đáng kể, không đủ bằng chứng mạnh để xác định hướng rõ ràng, dẫn đến kết luận NEUTRAL.",
+      "metadata": {
+        "source_type": "financial_report",
+        "entropy": 0.526,
+        "redundancy_score": 0.1,
+        "recency_weight": 1.0,
+        "timestamp": "2022-01-28T00:00:00+00:00"
+      }
+    },
+    {
+      "agent_id": "Market_Agent",
+      "signal": "SELL",
+      "confidence": 0.6,
+      "belief_vector": {
+        "direction": -1,
+        "strength": 0.6
+      },
+      "evidence_chunks": [
+        {
+          "id": "market_chunk_001",
+          "content": "Historical closed daily candles; funding rate and long/short ratio unavailable.\n{\"price\": 38166.84, \"ema20\": 39626.53753649627, \"ema50\": 43810.96345246798, \"rsi14\": 28.99827030259027, \"volume\": 26129.49682, \"funding_rate\": null, \"long_short_ratio\": null, \"fetched_at\": \"2022-01-30T00:00:00+00:00\"}",
+          "metadata": {
+            "source": "Binance public API",
+            "timestamp": "2022-01-30T00:00:00+00:00"
+          }
+        }
+      ],
+      "logic_path": "Giá hiện tại 38166.84 nằm dưới cả EMA20 (39626.54) và EMA50 (43810.96), cho thấy xu hướng giảm mạnh. Khoảng cách giữa giá và EMA50 lên tới khoảng 13%, phản ánh đà giảm đáng kể. RSI14 ở mức 28.99 cho thấy điều kiện quá bán, điều này tạo ra khả năng phục hồi ngắn hạn nhưng không đủ để đảo ngược xu hướng giảm hiện tại. Do đó, xu hướng ngắn hạn vẫn mang tính giảm, nhưng độ tin cậy bị hạn chế bởi tín hiệu quá bán từ RSI.",
+      "metadata": {
+        "source_type": "market_data",
+        "entropy": 0.58,
+        "redundancy_score": 0.05,
+        "recency_weight": 1.0,
+        "timestamp": "2022-01-30T00:00:00+00:00"
+      }
+    }
+  ],
+  "agent_errors": [
+    "KeyError"
+  ],
+  "failure": "ValueError",
+  "llm_errors": []
+}

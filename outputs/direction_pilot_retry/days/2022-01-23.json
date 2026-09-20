@@ -1,0 +1,65 @@
+{
+  "sample_id": "2022-01-23",
+  "status": "error",
+  "specialists": [
+    {
+      "agent_id": "Market_Agent",
+      "signal": "SELL",
+      "confidence": 0.68,
+      "belief_vector": {
+        "direction": -1,
+        "strength": 0.68
+      },
+      "evidence_chunks": [
+        {
+          "id": "market_chunk_001",
+          "content": "Historical closed daily candles; funding rate and long/short ratio unavailable.\n{\"price\": 35071.42, \"ema20\": 42087.85387944327, \"ema50\": 46305.07564301884, \"rsi14\": 23.5408535384192, \"volume\": 90471.338961, \"funding_rate\": null, \"long_short_ratio\": null, \"fetched_at\": \"2022-01-23T00:00:00+00:00\"}",
+          "metadata": {
+            "source": "Binance public API",
+            "timestamp": "2022-01-23T00:00:00+00:00"
+          }
+        }
+      ],
+      "logic_path": "Giá hiện tại 35071.42 nằm xa dưới EMA20 (42087.85) và EMA50 (46305.08), cho thấy xu hướng giảm mạnh. Khoảng cách giữa giá và các đường EMA rất lớn, xác nhận xu hướng giảm vẫn chi phối. RSI14 ở mức 23.54 cho thấy điều kiện quá bán, tuy nhiên trong xu hướng giảm mạnh, RSI có thể duy trì ở vùng quá bán trong thời gian dài. Do thiếu dữ liệu funding rate và long/short ratio, không thể đánh giá áp lực từ thị trường phái sinh. Độ tin cậy được điều chỉnh thận trọng do tín hiệu quá bán từ RSI có thể tạo ra khả năng phục hồi ngắn hạn.",
+      "metadata": {
+        "source_type": "market_data",
+        "entropy": 0.471,
+        "redundancy_score": 0.05,
+        "recency_weight": 1.0,
+        "timestamp": "2022-01-23T00:00:00+00:00"
+      }
+    },
+    {
+      "agent_id": "Sentiment_Agent",
+      "signal": "SELL",
+      "confidence": 0.6,
+      "belief_vector": {
+        "direction": -1,
+        "strength": 0.6
+      },
+      "evidence_chunks": [
+        {
+          "id": "sentiment_chunk_001",
+          "content": "Historical Fear & Greed Index (0=extreme fear, 100=extreme greed): 13.0. ForexFactory calendar and news unavailable; do not invent events.",
+          "metadata": {
+            "source": "Alternative.me + ForexFactory calendar",
+            "timestamp": "2022-01-22T00:00:00+00:00"
+          }
+        }
+      ],
+      "logic_path": "Chỉ số Fear & Greed Index ở mức 13.0 cho thấy nỗi sợ hãi cực đoan trên thị trường, tạo áp lực bán mạnh. Do đó, dự báo giá BTC sẽ giảm trong 24 giờ tới.",
+      "metadata": {
+        "source_type": "social_media",
+        "entropy": 0.26,
+        "redundancy_score": 0.1,
+        "recency_weight": 1.0,
+        "timestamp": "2022-01-22T00:00:00+00:00"
+      }
+    }
+  ],
+  "agent_errors": [
+    "ValueError"
+  ],
+  "failure": "ValueError",
+  "llm_errors": []
+}

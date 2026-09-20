@@ -1,0 +1,65 @@
+{
+  "sample_id": "2022-01-17",
+  "status": "error",
+  "specialists": [
+    {
+      "agent_id": "Market_Agent",
+      "signal": "SELL",
+      "confidence": 0.62,
+      "belief_vector": {
+        "direction": -1,
+        "strength": 0.62
+      },
+      "evidence_chunks": [
+        {
+          "id": "market_chunk_001",
+          "content": "Historical closed daily candles; funding rate and long/short ratio unavailable.\n{\"price\": 43071.66, \"ema20\": 44391.593695643925, \"ema50\": 48167.35437462821, \"rsi14\": 28.968411597385128, \"volume\": 20602.35271, \"funding_rate\": null, \"long_short_ratio\": null, \"fetched_at\": \"2022-01-17T00:00:00+00:00\"}",
+          "metadata": {
+            "source": "Binance public API",
+            "timestamp": "2022-01-17T00:00:00+00:00"
+          }
+        }
+      ],
+      "logic_path": "Giá hiện tại 43071.66 nằm dưới cả EMA20 (44391.59) và EMA50 (48167.35), cho thấy xu hướng giảm rõ ràng trong cả ngắn hạn và trung hạn. Khoảng cách giữa giá và EMA50 khá lớn, xác nhận xu hướng giảm mạnh. RSI14 ở mức 28.97, dưới ngưỡng 30, cho thấy điều kiện quá bán — đây là tín hiệu có thể phản ứng ngược lại xu hướng giảm, làm tăng khả năng phục hồi ngắn hạn. Tuy nhiên, xu hướng giảm chủ đạo vẫn chi phối do giá chưa có dấu hiệu vượt qua các đường trung bình động. Độ tin cậy được đánh giá thận trọng ở mức trung bình do sự mâu thuẫn giữa xu hướng giảm mạnh và tín hiệu quá bán.",
+      "metadata": {
+        "source_type": "market_data",
+        "entropy": 0.579,
+        "redundancy_score": 0.05,
+        "recency_weight": 1.0,
+        "timestamp": "2022-01-17T00:00:00+00:00"
+      }
+    },
+    {
+      "agent_id": "Sentiment_Agent",
+      "signal": "SELL",
+      "confidence": 0.35,
+      "belief_vector": {
+        "direction": -1,
+        "strength": 0.35
+      },
+      "evidence_chunks": [
+        {
+          "id": "sentiment_chunk_001",
+          "content": "Historical Fear & Greed Index (0=extreme fear, 100=extreme greed): 21.0. ForexFactory calendar and news unavailable; do not invent events.",
+          "metadata": {
+            "source": "Alternative.me + ForexFactory calendar",
+            "timestamp": "2022-01-16T00:00:00+00:00"
+          }
+        }
+      ],
+      "logic_path": "Chỉ số Fear & Greed ở mức 21 cho thấy tâm lý cực kỳ sợ hãi trên thị trường. Sự sợ hãi quá mức thường liên quan đến áp lực bán mạnh, khiến giá có xu hướng tiếp tục giảm trong ngắn hạn. Do đó, tín hiệu tổng thể là giảm giá.",
+      "metadata": {
+        "source_type": "social_media",
+        "entropy": 0.42,
+        "redundancy_score": 0.1,
+        "recency_weight": 1.0,
+        "timestamp": "2022-01-16T00:00:00+00:00"
+      }
+    }
+  ],
+  "agent_errors": [
+    "ValueError"
+  ],
+  "failure": "ValueError",
+  "llm_errors": []
+}

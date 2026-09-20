@@ -1,0 +1,14 @@
+{
+  "url": "https://api.blockchain.info/charts/miners-revenue",
+  "params": {
+    "start": "2021-09-23",
+    "timespan": "130days",
+    "format": "json",
+    "sampled": "false"
+  },
+  "retrieved_at": "2026-09-17T08:21:02.695099+00:00",
+  "status": 200,
+  "response_url": "https://api.blockchain.info/charts/miners-revenue?start=2021-09-23&timespan=130days&format=json&sampled=false",
+  "sha256": "429af7a595c049b84833c8657fd664f006734d458bbb74730ff849c9d313ed6a",
+  "body_file": "57ac8f9549a496fcfa9bd58648296228d74dcf1859fa368563aab08bcdedeaec.body"
+}

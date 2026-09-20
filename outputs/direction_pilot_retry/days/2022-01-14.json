@@ -1,0 +1,71 @@
+{
+  "sample_id": "2022-01-14",
+  "status": "error",
+  "specialists": [
+    {
+      "agent_id": "Market_Agent",
+      "signal": "SELL",
+      "confidence": 0.68,
+      "belief_vector": {
+        "direction": -1,
+        "strength": 0.68
+      },
+      "evidence_chunks": [
+        {
+          "id": "market_chunk_001",
+          "content": "Historical closed daily candles; funding rate and long/short ratio unavailable.\n{\"price\": 42560.11, \"ema20\": 44850.10070693082, \"ema50\": 48926.369617701464, \"rsi14\": 31.50366377317539, \"volume\": 34910.87762, \"funding_rate\": null, \"long_short_ratio\": null, \"fetched_at\": \"2022-01-14T00:00:00+00:00\"}",
+          "metadata": {
+            "source": "Binance public API",
+            "timestamp": "2022-01-14T00:00:00+00:00"
+          }
+        }
+      ],
+      "logic_path": "Giá hiện tại 42560.11 nằm dưới cả EMA20 (44850.10) và EMA50 (48926.37), cho thấy xu hướng giảm rõ ràng. EMA20 thấp hơn EMA50, xác nhận sự sắp xếp giảm của các đường trung bình động. RSI14 ở mức 31.50, đang tiến gần vùng quá bán nhưng chưa vượt ngưỡng 30, cho thấy đà giảm vẫn còn hiệu lực nhưng có nguy cơ đảo chiều ngắn hạn. Các chỉ số kỹ thuật đồng thuận về xu hướng giảm, tuy nhiên proximity với vùng quá bán làm hạn chế độ tin cậy.",
+      "metadata": {
+        "source_type": "market_data",
+        "entropy": 0.63,
+        "redundancy_score": 0.05,
+        "recency_weight": 1.0,
+        "timestamp": "2022-01-14T00:00:00+00:00"
+      }
+    },
+    {
+      "agent_id": "Sentiment_Agent",
+      "signal": "BUY",
+      "confidence": 0.65,
+      "belief_vector": {
+        "direction": 1,
+        "strength": 0.65
+      },
+      "evidence_chunks": [
+        {
+          "id": "sentiment_chunk_001",
+          "content": "Historical Fear & Greed Index (0=extreme fear, 100=extreme greed): 21.0. ForexFactory calendar and news unavailable; do not invent events.",
+          "metadata": {
+            "source": "Alternative.me + ForexFactory calendar",
+            "timestamp": "2022-01-13T00:00:00+00:00"
+          }
+        }
+      ],
+      "logic_path": "Chỉ số Fear & Greed lịch sử ở mức 21,0 cho thấy tâm lý sợ hãi cực đoan. Chỉ số này phản ánh sự bi quan và áp lực bán hàng trên thị trường. Trong điều kiện sợ hãi cực đoan, sự bán tháo thường đạt đỉnh, tạo ra khả năng đảo chiều tăng giá trong ngắn hạn. Dựa trên bằng chứng này, chúng tôi dự đoán áp lực giảm giá có thể đã giảm và BTC có thể tăng giá trong 24 giờ tới.",
+      "metadata": {
+        "source_type": "social_media",
+        "entropy": 0.42,
+        "redundancy_score": 0.1,
+        "recency_weight": 1.0,
+        "timestamp": "2022-01-13T00:00:00+00:00"
+      }
+    }
+  ],
+  "agent_errors": [
+    "RateLimitError"
+  ],
+  "failure": "ValueError",
+  "llm_errors": [
+    {
+      "type": "RateLimitError",
+      "status_code": 429,
+      "provider_message": "Provider returned error"
+    }
+  ]
+}

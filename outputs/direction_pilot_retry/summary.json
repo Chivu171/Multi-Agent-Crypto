@@ -1,0 +1,21 @@
+{
+  "requested_days": 30,
+  "successful_days": 24,
+  "failed_or_not_run_days": 6,
+  "directional_predictions": 24,
+  "correct": 13,
+  "directional_win_rate": 0.5416666666666666,
+  "neutral_days": 0,
+  "coverage_over_requested": 0.8,
+  "coverage_over_successful": 1.0,
+  "BUY": {
+    "count": 0,
+    "correct": 0,
+    "accuracy": null
+  },
+  "SELL": {
+    "count": 24,
+    "correct": 13,
+    "accuracy": 0.5416666666666666
+  }
+}

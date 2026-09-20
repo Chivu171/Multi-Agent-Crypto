@@ -1,0 +1,15 @@
+{
+  "url": "https://data-api.binance.vision/api/v3/klines",
+  "params": {
+    "symbol": "BTCUSDT",
+    "interval": "1d",
+    "startTime": 1632355200000,
+    "endTime": 1643587199999,
+    "limit": 1000
+  },
+  "retrieved_at": "2026-09-17T08:06:24.432632+00:00",
+  "status": 200,
+  "response_url": "https://data-api.binance.vision/api/v3/klines?symbol=BTCUSDT&interval=1d&startTime=1632355200000&endTime=1643587199999&limit=1000",
+  "sha256": "52b393cbd1bb4c0efcb1a4e56aac96fc58b7a5a7723a5a637a7b45620291842d",
+  "body_file": "d5e8afcf5377f2234fdfd431f629fb439c17d06ba17f32e8e7bd386287c8a712.body"
+}

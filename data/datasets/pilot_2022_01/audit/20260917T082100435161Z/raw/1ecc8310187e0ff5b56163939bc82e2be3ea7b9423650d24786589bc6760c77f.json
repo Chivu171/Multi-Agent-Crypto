@@ -1,0 +1,11 @@
+{
+  "url": "https://www.forexfactory.com/calendar",
+  "params": {
+    "week": "dec26.2021"
+  },
+  "retrieved_at": "2026-09-17T08:21:24.504270+00:00",
+  "status": 200,
+  "response_url": "https://www.forexfactory.com/calendar?week=dec26.2021",
+  "sha256": "6aa3b82dabbb4a490c9486ab63ac73470739f8615d23ac1621711820d94af2ed",
+  "body_file": "1ecc8310187e0ff5b56163939bc82e2be3ea7b9423650d24786589bc6760c77f.body"
+}

@@ -1,0 +1,317 @@
+{
+  "checked_at": "2026-09-17T08:21:00.435161+00:00",
+  "live_requested": true,
+  "checks": [
+    "All manifest artifact checksums match",
+    "All 12 raw response hashes checked; normalized API data equals raw JSON",
+    "Independently recomputed every numeric feature and all 30 labels from archived raw data",
+    "All 506 exported Forex events trace to archived HTML; availability remains unverified"
+  ],
+  "live_comparisons": [
+    {
+      "url": "https://data-api.binance.vision/api/v3/klines",
+      "params": {
+        "symbol": "BTCUSDT",
+        "interval": "1d",
+        "startTime": 1632355200000,
+        "endTime": 1643587199999,
+        "limit": 1000
+      },
+      "archived_records": 130,
+      "matching_records": 130,
+      "differences": [],
+      "status": "match"
+    },
+    {
+      "url": "https://api.blockchain.info/charts/hash-rate",
+      "params": {
+        "start": "2021-09-23",
+        "timespan": "130days",
+        "format": "json",
+        "sampled": "false"
+      },
+      "archived_records": 131,
+      "matching_records": 131,
+      "differences": [],
+      "status": "match"
+    },
+    {
+      "url": "https://api.blockchain.info/charts/miners-revenue",
+      "params": {
+        "start": "2021-09-23",
+        "timespan": "130days",
+        "format": "json",
+        "sampled": "false"
+      },
+      "archived_records": 131,
+      "matching_records": 131,
+      "differences": [],
+      "status": "match"
+    },
+    {
+      "url": "https://api.blockchain.info/charts/n-transactions",
+      "params": {
+        "start": "2021-09-23",
+        "timespan": "130days",
+        "format": "json",
+        "sampled": "false"
+      },
+      "archived_records": 131,
+      "matching_records": 131,
+      "differences": [],
+      "status": "match"
+    },
+    {
+      "url": "https://api.blockchain.info/charts/estimated-transaction-volume-usd",
+      "params": {
+        "start": "2021-09-23",
+        "timespan": "130days",
+        "format": "json",
+        "sampled": "false"
+      },
+      "archived_records": 128,
+      "matching_records": 128,
+      "differences": [],
+      "status": "match"
+    },
+    {
+      "url": "https://api.alternative.me/fng/",
+      "params": {
+        "limit": 0,
+        "format": "json"
+      },
+      "archived_records": 3147,
+      "matching_records": 3147,
+      "differences": [],
+      "status": "match"
+    },
+    {
+      "url": "https://www.forexfactory.com/calendar",
+      "params": {
+        "week": "dec26.2021"
+      },
+      "archived_records": 34,
+      "matching_records": 34,
+      "differences": [],
+      "status": "match"
+    },
+    {
+      "url": "https://www.forexfactory.com/calendar",
+      "params": {
+        "week": "jan2.2022"
+      },
+      "archived_records": 98,
+      "matching_records": 98,
+      "differences": [],
+      "status": "match"
+    },
+    {
+      "url": "https://www.forexfactory.com/calendar",
+      "params": {
+        "week": "jan9.2022"
+      },
+      "archived_records": 80,
+      "matching_records": 80,
+      "differences": [],
+      "status": "match"
+    },
+    {
+      "url": "https://www.forexfactory.com/calendar",
+      "params": {
+        "week": "jan16.2022"
+      },
+      "archived_records": 91,
+      "matching_records": 91,
+      "differences": [],
+      "status": "match"
+    },
+    {
+      "url": "https://www.forexfactory.com/calendar",
+      "params": {
+        "week": "jan23.2022"
+      },
+      "archived_records": 76,
+      "matching_records": 76,
+      "differences": [],
+      "status": "match"
+    },
+    {
+      "url": "https://www.forexfactory.com/calendar",
+      "params": {
+        "week": "jan30.2022"
+      },
+      "archived_records": 127,
+      "matching_records": 127,
+      "differences": [],
+      "status": "match"
+    }
+  ],
+  "missing_cells": [
+    {
+      "sample_id": "2022-01-01",
+      "feature": "estimated_transaction_volume_usd_mean_7d"
+    },
+    {
+      "sample_id": "2022-01-02",
+      "feature": "estimated_transaction_volume_usd_change_7d"
+    }
+  ],
+  "label_counts": {
+    "BUY": 8,
+    "SELL": 10,
+    "NEUTRAL": 12
+  },
+  "fresh_raw_responses": [
+    {
+      "url": "https://data-api.binance.vision/api/v3/klines",
+      "params": {
+        "symbol": "BTCUSDT",
+        "interval": "1d",
+        "startTime": 1632355200000,
+        "endTime": 1643587199999,
+        "limit": 1000
+      },
+      "retrieved_at": "2026-09-17T08:21:01.161443+00:00",
+      "status": 200,
+      "response_url": "https://data-api.binance.vision/api/v3/klines?symbol=BTCUSDT&interval=1d&startTime=1632355200000&endTime=1643587199999&limit=1000",
+      "sha256": "52b393cbd1bb4c0efcb1a4e56aac96fc58b7a5a7723a5a637a7b45620291842d",
+      "body_file": "d5e8afcf5377f2234fdfd431f629fb439c17d06ba17f32e8e7bd386287c8a712.body"
+    },
+    {
+      "url": "https://api.blockchain.info/charts/hash-rate",
+      "params": {
+        "start": "2021-09-23",
+        "timespan": "130days",
+        "format": "json",
+        "sampled": "false"
+      },
+      "retrieved_at": "2026-09-17T08:21:01.928415+00:00",
+      "status": 200,
+      "response_url": "https://api.blockchain.info/charts/hash-rate?start=2021-09-23&timespan=130days&format=json&sampled=false",
+      "sha256": "a72493752b1465623f2cf4fbe2571af648415d41eded0c4c62dadf740328f04b",
+      "body_file": "d17f0858502a5dd911ddd9e8b2dd25163e7170fe7e03441f47622f64bb5269e4.body"
+    },
+    {
+      "url": "https://api.blockchain.info/charts/miners-revenue",
+      "params": {
+        "start": "2021-09-23",
+        "timespan": "130days",
+        "format": "json",
+        "sampled": "false"
+      },
+      "retrieved_at": "2026-09-17T08:21:02.695099+00:00",
+      "status": 200,
+      "response_url": "https://api.blockchain.info/charts/miners-revenue?start=2021-09-23&timespan=130days&format=json&sampled=false",
+      "sha256": "429af7a595c049b84833c8657fd664f006734d458bbb74730ff849c9d313ed6a",
+      "body_file": "57ac8f9549a496fcfa9bd58648296228d74dcf1859fa368563aab08bcdedeaec.body"
+    },
+    {
+      "url": "https://api.blockchain.info/charts/n-transactions",
+      "params": {
+        "start": "2021-09-23",
+        "timespan": "130days",
+        "format": "json",
+        "sampled": "false"
+      },
+      "retrieved_at": "2026-09-17T08:21:03.485859+00:00",
+      "status": 200,
+      "response_url": "https://api.blockchain.info/charts/n-transactions?start=2021-09-23&timespan=130days&format=json&sampled=false",
+      "sha256": "e5fc90bec6c471809acea86130f4e5999a1ff3fc38e28da957888fbfa3706c74",
+      "body_file": "a15c056c50588ad63bdd38f5a607d3966a0b0767cf0900a219ccff72a41f9d95.body"
+    },
+    {
+      "url": "https://api.blockchain.info/charts/estimated-transaction-volume-usd",
+      "params": {
+        "start": "2021-09-23",
+        "timespan": "130days",
+        "format": "json",
+        "sampled": "false"
+      },
+      "retrieved_at": "2026-09-17T08:21:04.115087+00:00",
+      "status": 200,
+      "response_url": "https://api.blockchain.info/charts/estimated-transaction-volume-usd?start=2021-09-23&timespan=130days&format=json&sampled=false",
+      "sha256": "46608aa6cea4a407a418ebd76a0d022a7b84b7590b7b8482fb1124c70a738fd4",
+      "body_file": "74ad2bcd0723db9337909f519a26cc744755be435103f915946769bbe4445922.body"
+    },
+    {
+      "url": "https://api.alternative.me/fng/",
+      "params": {
+        "limit": 0,
+        "format": "json"
+      },
+      "retrieved_at": "2026-09-17T08:21:05.487521+00:00",
+      "status": 200,
+      "response_url": "https://api.alternative.me/fng/?limit=0&format=json",
+      "sha256": "334810f30813fe96b12612045bf373757b63e865b41be4ec18da7eb14ad3adea",
+      "body_file": "1d8e3abe32ef680914cf7b1b6991b98a60c567c52ea809981a2ab86bffa5b650.body"
+    },
+    {
+      "url": "https://www.forexfactory.com/calendar",
+      "params": {
+        "week": "dec26.2021"
+      },
+      "retrieved_at": "2026-09-17T08:21:24.504270+00:00",
+      "status": 200,
+      "response_url": "https://www.forexfactory.com/calendar?week=dec26.2021",
+      "sha256": "6aa3b82dabbb4a490c9486ab63ac73470739f8615d23ac1621711820d94af2ed",
+      "body_file": "1ecc8310187e0ff5b56163939bc82e2be3ea7b9423650d24786589bc6760c77f.body"
+    },
+    {
+      "url": "https://www.forexfactory.com/calendar",
+      "params": {
+        "week": "jan2.2022"
+      },
+      "retrieved_at": "2026-09-17T08:21:25.038179+00:00",
+      "status": 200,
+      "response_url": "https://www.forexfactory.com/calendar?week=jan2.2022",
+      "sha256": "e46dc40287953e21b780f39ad5bc12abbc3e1b513a81beecc9da6663f0d48c34",
+      "body_file": "4e638fbb02cf63d0519b1745263869cac4f672dea63cf9af0c8e7df6f9783f38.body"
+    },
+    {
+      "url": "https://www.forexfactory.com/calendar",
+      "params": {
+        "week": "jan9.2022"
+      },
+      "retrieved_at": "2026-09-17T08:21:25.366561+00:00",
+      "status": 200,
+      "response_url": "https://www.forexfactory.com/calendar?week=jan9.2022",
+      "sha256": "be89043fdbf5d0cd6f72222f46802c715c1f50bcb482e05da7a501af2cd6a9ce",
+      "body_file": "720da734487c9e2618413a0ba9a7369a818139ef3b5292670c81ad4a02486507.body"
+    },
+    {
+      "url": "https://www.forexfactory.com/calendar",
+      "params": {
+        "week": "jan16.2022"
+      },
+      "retrieved_at": "2026-09-17T08:21:25.884908+00:00",
+      "status": 200,
+      "response_url": "https://www.forexfactory.com/calendar?week=jan16.2022",
+      "sha256": "d20580c9bb18093d209ef0227cb19a213f26c73a0e3764e9c0d98607392c7fd9",
+      "body_file": "d560cebff928db22a47b4d02fbcbd6ae09907f972106f9144243b986e7ed4b35.body"
+    },
+    {
+      "url": "https://www.forexfactory.com/calendar",
+      "params": {
+        "week": "jan23.2022"
+      },
+      "retrieved_at": "2026-09-17T08:21:26.426476+00:00",
+      "status": 200,
+      "response_url": "https://www.forexfactory.com/calendar?week=jan23.2022",
+      "sha256": "63e2e0b251dc578f78ae20c66bf938b11bb7bd98d3499cd802cff6d0e569764c",
+      "body_file": "bd72c6f894f5ef9567c747d1fb84e99d306116c8929eafb8b328029c6e852ba9.body"
+    },
+    {
+      "url": "https://www.forexfactory.com/calendar",
+      "params": {
+        "week": "jan30.2022"
+      },
+      "retrieved_at": "2026-09-17T08:21:26.954955+00:00",
+      "status": 200,
+      "response_url": "https://www.forexfactory.com/calendar?week=jan30.2022",
+      "sha256": "1f33a99b3b99b0d1794e07fcd9687b66c07ce5def3d800ab9aa81a0dba113f90",
+      "body_file": "762c8017ebea0602368373afc124c8f1f345e87aa793bf3170b30813209073ee.body"
+    }
+  ],
+  "passed": true,
+  "scope": "Provider provenance and arithmetic; not proof of point-in-time availability or investment validity"
+}

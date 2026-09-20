@@ -1,0 +1,57 @@
+{
+  "snapshots_sha256": "cf07d51ecd7d89e7aa033874976b5e991c220a7c1b1a89fd740cac414c13357f",
+  "models": {
+    "financial": {
+      "model": "inclusionai/ling-3.0-flash-fin:free",
+      "temperature": 0.1,
+      "max_tokens": 1500,
+      "provider": "openrouter"
+    },
+    "market": {
+      "model": "inclusionai/ling-3.0-flash-vl:free",
+      "temperature": 0.2,
+      "max_tokens": 1500,
+      "provider": "openrouter"
+    },
+    "sentiment": {
+      "model": "cohere/north-mini-code:free",
+      "temperature": 0.4,
+      "max_tokens": 1800,
+      "provider": "openrouter"
+    },
+    "validator": {
+      "model": "qwen/qwen3.8-27b",
+      "temperature": 0.0,
+      "max_tokens": 1500,
+      "provider": "groq"
+    },
+    "debate": {
+      "model": "qwen/qwen3.8-27b",
+      "temperature": 0.3,
+      "max_tokens": 800,
+      "provider": "groq"
+    }
+  },
+  "code_sha256": {
+    "/Users/tranchivu/Documents/GitHub/Multi-Agent-Crypto/scripts/evaluate_direction.py": "93b2190e9e3c9dc5105ea740c052cdb27afc2fe29107745666810b977f042d32",
+    "agents/financial_agent.py": "6971b8f0511864273799a10872285a0dbdb733dc8d035ac248fd7a470d1e4fdd",
+    "agents/market_agent.py": "e9d15af94d2f8bde3f8fdb3565eb3830f35a4efbed77d046b5e7b2ad124a4151",
+    "agents/validator_agent.py": "2d2522eab5c526a2fca47dbeb80d9248258befa433f17d598eb389f74e90d5f6",
+    "agents/sentiment_agent.py": "39c6822335c9f105a58cf5338d31582f2f366fbcba9e7160ff2bba2e3c28fc4b",
+    "agents/debate_agent.py": "8b9f3cfb9bd23eefc31182fd5dd7057a473d23cfb3068babc4b772c7c30ee0a5",
+    "agents/mediator_agent.py": "ff7ddb4900f1ff065529b81b193179b08e3c838372afbde7adc0567c45570b5a",
+    "utils/prompts.py": "dcf3d44c20498268711bf4223c511aad2f767d28573cddaf3d1c0c6900d90ab6",
+    "utils/thresholds.py": "f8b431c45d453d6e283dba78c430205de4731817b3e08e26a43de2b87de5e665",
+    "utils/penalties.py": "24e5af5de6932ef88bcfff88f95b5f76c896e061237e60f82a92e1e3ef4e6a08"
+  },
+  "limitations": [
+    "30-day train pilot, not held-out test",
+    "Forex, funding and long/short unavailable",
+    "Historical LLM knowledge contamination possible",
+    "On-chain/F&G publication lags assumed"
+  ],
+  "horizon_hours": 24,
+  "signal_threshold": 0.05,
+  "market_window": "60 candles as in live fetcher",
+  "weights_reference": "prediction_time; source observation timestamps"
+}

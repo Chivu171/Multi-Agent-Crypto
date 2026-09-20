@@ -1,0 +1,28 @@
+{
+  "checked_at": "2026-09-17T08:20:44.522803+00:00",
+  "live_requested": false,
+  "checks": [
+    "All manifest artifact checksums match",
+    "All 12 raw response hashes checked; normalized API data equals raw JSON",
+    "Independently recomputed every numeric feature and all 30 labels from archived raw data",
+    "All 506 exported Forex events trace to archived HTML; availability remains unverified"
+  ],
+  "live_comparisons": [],
+  "missing_cells": [
+    {
+      "sample_id": "2022-01-01",
+      "feature": "estimated_transaction_volume_usd_mean_7d"
+    },
+    {
+      "sample_id": "2022-01-02",
+      "feature": "estimated_transaction_volume_usd_change_7d"
+    }
+  ],
+  "label_counts": {
+    "BUY": 8,
+    "SELL": 10,
+    "NEUTRAL": 12
+  },
+  "passed": true,
+  "scope": "Provider provenance and arithmetic; not proof of point-in-time availability or investment validity"
+}

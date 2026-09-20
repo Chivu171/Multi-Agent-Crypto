@@ -1,0 +1,72 @@
+{
+  "sample_id": "2022-01-04",
+  "status": "error",
+  "specialists": [
+    {
+      "agent_id": "Financial_Agent",
+      "signal": "SELL",
+      "confidence": 0.6,
+      "belief_vector": {
+        "direction": -1,
+        "strength": 0.6
+      },
+      "evidence_chunks": [
+        {
+          "id": "financial_chunk_001",
+          "content": "Historical on-chain observations; MVRV, SOPR and whale flows unavailable.\n{\"hash-rate\": {\"value\": 190640298.56134245, \"pct_change_1d\": -8.139534883720923, \"observed_at\": \"2022-01-02T00:00:00+00:00\"}, \"miners-revenue\": {\"value\": 48206934.99043735, \"pct_change_1d\": -3.872610316316427, \"observed_at\": \"2022-01-02T00:00:00+00:00\"}, \"n-transactions\": {\"value\": 196865.0, \"pct_change_1d\": 5.368937131357243, \"observed_at\": \"2022-01-02T00:00:00+00:00\"}, \"estimated-transaction-volume-usd\": {\"value\": 1452133098.9064906, \"pct_change_1d\": -35.492738063615604, \"observed_at\": \"2022-01-02T00:00:00+00:00\"}}",
+          "metadata": {
+            "source": "blockchain.info Charts API",
+            "page": 1,
+            "timestamp": "2022-01-02T00:00:00+00:00"
+          }
+        }
+      ],
+      "logic_path": "Phân tích dựa trên 4 chỉ số on-chain quan sát tại 2022-01-02. Thứ nhất, hash-rate giảm 8.14% trong 1 ngày, cho thấy sức mạnh mạng lưới suy yếu và sự tham gia của thợ đào giảm sút — đây là tín hiệu giảm giá. Thứ hai, doanh thu thợ đào giảm 3.87%, phản ánh lợi nhuận khai thác suy giảm, có thể dẫn đến áp lực bán từ phía thợ đào để bù chi phí — tín hiệu giảm giá. Thứ ba, số lượng giao dịch tăng 5.37%, cho thấy hoạt động sử dụng mạng lưới vẫn đang diễn ra — đây là tín hiệu tăng giá duy nhất. Thứ tư, khối lượng giao dịch ước tính bằng USD giảm mạnh 35.49%, cho thấy giá trị kinh tế di chuyển trên mạng suy giảm nghiêm trọng dù số lượng giao dịch tăng — tín hiệu giảm giá rất mạnh. Tổng kết: 3 trong 4 chỉ số mang tính giảm giá, trong đó hai chỉ số (hash-rate và khối lượng giao dịch USD) cho thấy mức suy giảm đáng kể. Tuy nhiên, độ tin cậy bị hạn chế do thiếu dữ liệu MVRV, SOPR và dòng chảy whale, đồng thời dữ liệu quan sát cách mốc dự báo 2 ngày, nên không thể khẳng định mức độ tin cậy cao.",
+      "metadata": {
+        "source_type": "financial_report",
+        "entropy": 0.441,
+        "redundancy_score": 0.1,
+        "recency_weight": 1.0,
+        "timestamp": "2022-01-02T00:00:00+00:00"
+      }
+    },
+    {
+      "agent_id": "Sentiment_Agent",
+      "signal": "SELL",
+      "confidence": 0.35,
+      "belief_vector": {
+        "direction": -1,
+        "strength": 0.35
+      },
+      "evidence_chunks": [
+        {
+          "id": "sentiment_chunk_001",
+          "content": "Historical Fear & Greed Index (0=extreme fear, 100=extreme greed): 29.0. ForexFactory calendar and news unavailable; do not invent events.",
+          "metadata": {
+            "source": "Alternative.me + ForexFactory calendar",
+            "timestamp": "2022-01-03T00:00:00+00:00"
+          }
+        }
+      ],
+      "logic_path": "Chỉ số Fear & Greed ở mức 29 cho thấy tâm lý sợ hãi trên thị trường, điều này thường dẫn đến áp lực bán ra và có khả năng khiến giá BTC giảm trong 24 giờ tới.",
+      "metadata": {
+        "source_type": "social_media",
+        "entropy": 0.58,
+        "redundancy_score": 0.1,
+        "recency_weight": 1.0,
+        "timestamp": "2022-01-03T00:00:00+00:00"
+      }
+    }
+  ],
+  "agent_errors": [
+    "RateLimitError"
+  ],
+  "failure": "ValueError",
+  "llm_errors": [
+    {
+      "type": "RateLimitError",
+      "status_code": 429,
+      "provider_message": "Provider returned error"
+    }
+  ]
+}

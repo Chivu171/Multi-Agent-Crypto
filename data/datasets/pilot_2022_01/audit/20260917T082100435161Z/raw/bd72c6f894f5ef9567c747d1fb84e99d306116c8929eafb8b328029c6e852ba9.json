@@ -1,0 +1,11 @@
+{
+  "url": "https://www.forexfactory.com/calendar",
+  "params": {
+    "week": "jan23.2022"
+  },
+  "retrieved_at": "2026-09-17T08:21:26.426476+00:00",
+  "status": 200,
+  "response_url": "https://www.forexfactory.com/calendar?week=jan23.2022",
+  "sha256": "63e2e0b251dc578f78ae20c66bf938b11bb7bd98d3499cd802cff6d0e569764c",
+  "body_file": "bd72c6f894f5ef9567c747d1fb84e99d306116c8929eafb8b328029c6e852ba9.body"
+}

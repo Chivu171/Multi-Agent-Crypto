@@ -1,0 +1,82 @@
+{
+  "independent_recount": true,
+  "successful_days": 24,
+  "wins": 13,
+  "always_sell_same_days_correct": 13,
+  "always_sell_same_days_accuracy": 0.5416666666666666,
+  "debate_days_successful": 6,
+  "failures": [
+    {
+      "sample_id": "2022-01-08",
+      "agent_errors": [
+        "ValueError"
+      ],
+      "llm_errors": [],
+      "completed_specialists": [
+        "Market_Agent",
+        "Sentiment_Agent"
+      ]
+    },
+    {
+      "sample_id": "2022-01-14",
+      "agent_errors": [
+        "RateLimitError"
+      ],
+      "llm_errors": [
+        {
+          "type": "RateLimitError",
+          "status_code": 429,
+          "provider_message": "Provider returned error"
+        }
+      ],
+      "completed_specialists": [
+        "Market_Agent",
+        "Sentiment_Agent"
+      ]
+    },
+    {
+      "sample_id": "2022-01-17",
+      "agent_errors": [
+        "ValueError"
+      ],
+      "llm_errors": [],
+      "completed_specialists": [
+        "Market_Agent",
+        "Sentiment_Agent"
+      ]
+    },
+    {
+      "sample_id": "2022-01-20",
+      "agent_errors": [
+        "ValueError"
+      ],
+      "llm_errors": [],
+      "completed_specialists": [
+        "Market_Agent",
+        "Sentiment_Agent"
+      ]
+    },
+    {
+      "sample_id": "2022-01-23",
+      "agent_errors": [
+        "ValueError"
+      ],
+      "llm_errors": [],
+      "completed_specialists": [
+        "Market_Agent",
+        "Sentiment_Agent"
+      ]
+    },
+    {
+      "sample_id": "2022-01-30",
+      "agent_errors": [
+        "KeyError"
+      ],
+      "llm_errors": [],
+      "completed_specialists": [
+        "Financial_Agent",
+        "Market_Agent"
+      ]
+    }
+  ]
+}

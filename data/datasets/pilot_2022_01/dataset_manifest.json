@@ -1,0 +1,192 @@
+{
+  "version": 1,
+  "config": {
+    "start": "2022-01-01",
+    "end": "2022-01-30",
+    "horizon_hours": 24,
+    "timezone": "UTC",
+    "threshold": 0.01,
+    "onchain_lag_days": 2,
+    "fear_greed_lag_days": 1,
+    "max_source_age_hours": 72,
+    "market_window_days": 90,
+    "forex_requested": true,
+    "train_end": "2024-06-30",
+    "validation_end": "2024-12-31",
+    "test_end": "2025-12-31"
+  },
+  "artifacts_sha256": {
+    "features.csv": "5a096eaaa4290cd2412965320840bc36e9f353f389d09f876106e52e5e8f9b14",
+    "labels.csv": "ec5d281c1b7a4876c2ac87e7cc24291410f3130880c66dfab4274beea16ed28c",
+    "splits.csv": "e520893e8a971a2788edaac78c959b18aae3a4741343f838894f33e77dc09eb3",
+    "snapshots.jsonl": "cf07d51ecd7d89e7aa033874976b5e991c220a7c1b1a89fd740cac414c13357f",
+    "sample_audit.json": "ce66b592a742464055ab0e8519ec8de069b23771d1603e9d6ba48e2f6801221f",
+    "review_10_samples_WITH_LABELS.json": "48980434a6c7190ee3f470a94a43bdb3fd31042f3878964a8b4b82b59b532e91",
+    "quality_report.json": "48cfb38c40df990952b9ea73e64c4af301ac1519f47a17a081aafbf63fe416e7",
+    "source_data.json": "61b40aa690694dc3b9ff951270ac272d453f977a931184c9da155bf288275080",
+    "forex_events_RETROSPECTIVE_ONLY.json": "38d4189ae863b2dfc5769b0d5ba48fba3ff307c978d2b61d449dd4ec563ddefb"
+  },
+  "code_sha256": {
+    "utils/historical_dataset.py": "894d3c69750f1c556fcfdf9c97867f51da888d3eb2a6d372414c589d3f74c8ed",
+    "data_sources/historical_data.py": "cb8de964ba8a7bbdf964ee53c424de8cccb4feb4d5664bf8d2db34f35f8ca5b9",
+    "scripts/build_dataset.py": "46b6e1dcae8217f7f50abcba598506dfc5e955bca8a609a0e3e82ec40f6d6548",
+    "data_sources/market_data.py": "c533fd84610618fd4008646a514ef54f5041c9bbf47d836a01e5e5d232fd2e02"
+  },
+  "raw_responses": [
+    {
+      "url": "https://data-api.binance.vision/api/v3/klines",
+      "params": {
+        "symbol": "BTCUSDT",
+        "interval": "1d",
+        "startTime": 1632355200000,
+        "endTime": 1643587199999,
+        "limit": 1000
+      },
+      "retrieved_at": "2026-09-17T08:06:24.432632+00:00",
+      "status": 200,
+      "response_url": "https://data-api.binance.vision/api/v3/klines?symbol=BTCUSDT&interval=1d&startTime=1632355200000&endTime=1643587199999&limit=1000",
+      "sha256": "52b393cbd1bb4c0efcb1a4e56aac96fc58b7a5a7723a5a637a7b45620291842d",
+      "body_file": "d5e8afcf5377f2234fdfd431f629fb439c17d06ba17f32e8e7bd386287c8a712.body"
+    },
+    {
+      "url": "https://api.blockchain.info/charts/hash-rate",
+      "params": {
+        "start": "2021-09-23",
+        "timespan": "130days",
+        "format": "json",
+        "sampled": "false"
+      },
+      "retrieved_at": "2026-09-17T08:06:25.258987+00:00",
+      "status": 200,
+      "response_url": "https://api.blockchain.info/charts/hash-rate?start=2021-09-23&timespan=130days&format=json&sampled=false",
+      "sha256": "a72493752b1465623f2cf4fbe2571af648415d41eded0c4c62dadf740328f04b",
+      "body_file": "d17f0858502a5dd911ddd9e8b2dd25163e7170fe7e03441f47622f64bb5269e4.body"
+    },
+    {
+      "url": "https://api.blockchain.info/charts/miners-revenue",
+      "params": {
+        "start": "2021-09-23",
+        "timespan": "130days",
+        "format": "json",
+        "sampled": "false"
+      },
+      "retrieved_at": "2026-09-17T08:06:26.028441+00:00",
+      "status": 200,
+      "response_url": "https://api.blockchain.info/charts/miners-revenue?start=2021-09-23&timespan=130days&format=json&sampled=false",
+      "sha256": "429af7a595c049b84833c8657fd664f006734d458bbb74730ff849c9d313ed6a",
+      "body_file": "57ac8f9549a496fcfa9bd58648296228d74dcf1859fa368563aab08bcdedeaec.body"
+    },
+    {
+      "url": "https://api.blockchain.info/charts/n-transactions",
+      "params": {
+        "start": "2021-09-23",
+        "timespan": "130days",
+        "format": "json",
+        "sampled": "false"
+      },
+      "retrieved_at": "2026-09-17T08:06:26.808447+00:00",
+      "status": 200,
+      "response_url": "https://api.blockchain.info/charts/n-transactions?start=2021-09-23&timespan=130days&format=json&sampled=false",
+      "sha256": "e5fc90bec6c471809acea86130f4e5999a1ff3fc38e28da957888fbfa3706c74",
+      "body_file": "a15c056c50588ad63bdd38f5a607d3966a0b0767cf0900a219ccff72a41f9d95.body"
+    },
+    {
+      "url": "https://api.blockchain.info/charts/estimated-transaction-volume-usd",
+      "params": {
+        "start": "2021-09-23",
+        "timespan": "130days",
+        "format": "json",
+        "sampled": "false"
+      },
+      "retrieved_at": "2026-09-17T08:06:27.577370+00:00",
+      "status": 200,
+      "response_url": "https://api.blockchain.info/charts/estimated-transaction-volume-usd?start=2021-09-23&timespan=130days&format=json&sampled=false",
+      "sha256": "46608aa6cea4a407a418ebd76a0d022a7b84b7590b7b8482fb1124c70a738fd4",
+      "body_file": "74ad2bcd0723db9337909f519a26cc744755be435103f915946769bbe4445922.body"
+    },
+    {
+      "url": "https://api.alternative.me/fng/",
+      "params": {
+        "limit": 0,
+        "format": "json"
+      },
+      "retrieved_at": "2026-09-17T08:06:30.536108+00:00",
+      "status": 200,
+      "response_url": "https://api.alternative.me/fng/?limit=0&format=json",
+      "sha256": "5a3eb9a819d93410af86ed702a88fac697678c68a6fd4db9d3cbe4ffdb86986e",
+      "body_file": "1d8e3abe32ef680914cf7b1b6991b98a60c567c52ea809981a2ab86bffa5b650.body"
+    },
+    {
+      "url": "https://www.forexfactory.com/calendar",
+      "params": {
+        "week": "dec26.2021"
+      },
+      "retrieved_at": "2026-09-17T08:06:31.303902+00:00",
+      "status": 200,
+      "response_url": "https://www.forexfactory.com/calendar?week=dec26.2021",
+      "sha256": "9b6ba6b6603123b57e2eb178c59c96b3cec6f5c7407b22bfc3ce2c82a12ebc9b",
+      "body_file": "1ecc8310187e0ff5b56163939bc82e2be3ea7b9423650d24786589bc6760c77f.body"
+    },
+    {
+      "url": "https://www.forexfactory.com/calendar",
+      "params": {
+        "week": "jan2.2022"
+      },
+      "retrieved_at": "2026-09-17T08:06:32.867604+00:00",
+      "status": 200,
+      "response_url": "https://www.forexfactory.com/calendar?week=jan2.2022",
+      "sha256": "3224bdeaaae9f2aedddb5472feb879cbcb25b28575531fe4525aa10eede49ea6",
+      "body_file": "4e638fbb02cf63d0519b1745263869cac4f672dea63cf9af0c8e7df6f9783f38.body"
+    },
+    {
+      "url": "https://www.forexfactory.com/calendar",
+      "params": {
+        "week": "jan9.2022"
+      },
+      "retrieved_at": "2026-09-17T08:06:34.380013+00:00",
+      "status": 200,
+      "response_url": "https://www.forexfactory.com/calendar?week=jan9.2022",
+      "sha256": "45bf9d16158bd6b621e2ec6bd8fb2523ff9f96d5a0ecd15a78f27d90bebe7d16",
+      "body_file": "720da734487c9e2618413a0ba9a7369a818139ef3b5292670c81ad4a02486507.body"
+    },
+    {
+      "url": "https://www.forexfactory.com/calendar",
+      "params": {
+        "week": "jan16.2022"
+      },
+      "retrieved_at": "2026-09-17T08:06:35.936911+00:00",
+      "status": 200,
+      "response_url": "https://www.forexfactory.com/calendar?week=jan16.2022",
+      "sha256": "218bd9c6dd43c78ade0dff0fbad89a1b265ddd4e161ed8b4c7b8738dac1a6305",
+      "body_file": "d560cebff928db22a47b4d02fbcbd6ae09907f972106f9144243b986e7ed4b35.body"
+    },
+    {
+      "url": "https://www.forexfactory.com/calendar",
+      "params": {
+        "week": "jan23.2022"
+      },
+      "retrieved_at": "2026-09-17T08:06:37.482777+00:00",
+      "status": 200,
+      "response_url": "https://www.forexfactory.com/calendar?week=jan23.2022",
+      "sha256": "81cb9ebde6989ce6dbac1a92f675d9efddeb47595688fb65f60ac8620737e24c",
+      "body_file": "bd72c6f894f5ef9567c747d1fb84e99d306116c8929eafb8b328029c6e852ba9.body"
+    },
+    {
+      "url": "https://www.forexfactory.com/calendar",
+      "params": {
+        "week": "jan30.2022"
+      },
+      "retrieved_at": "2026-09-17T08:06:39.027652+00:00",
+      "status": 200,
+      "response_url": "https://www.forexfactory.com/calendar?week=jan30.2022",
+      "sha256": "99018feaf7d4f8fd63fb3edc40ecdd1bfef69c4d468c54f187b3d5092f5e0d86",
+      "body_file": "762c8017ebea0602368373afc124c8f1f345e87aa793bf3170b30813209073ee.body"
+    }
+  ],
+  "sources": {
+    "market": "https://github.com/binance/binance-spot-api-docs/blob/master/rest-api.md",
+    "onchain": "https://www.blockchain.com/en/explorer/api/charts_api",
+    "fear_greed": "https://alternative.me/crypto/fear-and-greed-index/",
+    "forex": "https://www.forexfactory.com/calendar"
+  }
+}

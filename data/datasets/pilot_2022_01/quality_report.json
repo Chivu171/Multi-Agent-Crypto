@@ -1,0 +1,105 @@
+{
+  "requested_days": 30,
+  "rows": 30,
+  "eligible_core_rows": 30,
+  "eligible_full_rows": 0,
+  "complete_feature_rows": 28,
+  "forex_events_parsed": 506,
+  "forex_usd_high_medium_in_requested_range": 46,
+  "label_counts": {
+    "BUY": 8,
+    "SELL": 10,
+    "NEUTRAL": 12
+  },
+  "missing_cells": {
+    "sample_id": 0,
+    "prediction_time": 0,
+    "close": 0,
+    "return_1d": 0,
+    "return_7d": 0,
+    "return_30d": 0,
+    "ema20_gap": 0,
+    "ema50_gap": 0,
+    "rsi14": 0,
+    "volatility_7d": 0,
+    "volatility_30d": 0,
+    "volume": 0,
+    "volume_change_1d": 0,
+    "hash_rate_value": 0,
+    "hash_rate_change_1d": 0,
+    "hash_rate_change_7d": 0,
+    "hash_rate_mean_7d": 0,
+    "hash_rate_age_hours": 0,
+    "hash_rate_missing": 0,
+    "miners_revenue_value": 0,
+    "miners_revenue_change_1d": 0,
+    "miners_revenue_change_7d": 0,
+    "miners_revenue_mean_7d": 0,
+    "miners_revenue_age_hours": 0,
+    "miners_revenue_missing": 0,
+    "n_transactions_value": 0,
+    "n_transactions_change_1d": 0,
+    "n_transactions_change_7d": 0,
+    "n_transactions_mean_7d": 0,
+    "n_transactions_age_hours": 0,
+    "n_transactions_missing": 0,
+    "estimated_transaction_volume_usd_value": 0,
+    "estimated_transaction_volume_usd_change_1d": 0,
+    "estimated_transaction_volume_usd_change_7d": 1,
+    "estimated_transaction_volume_usd_mean_7d": 1,
+    "estimated_transaction_volume_usd_age_hours": 0,
+    "estimated_transaction_volume_usd_missing": 0,
+    "fear_greed_value": 0,
+    "fear_greed_change_1d": 0,
+    "fear_greed_change_7d": 0,
+    "fear_greed_mean_7d": 0,
+    "fear_greed_age_hours": 0,
+    "fear_greed_missing": 0
+  },
+  "source_errors": {},
+  "forex_audit": [
+    {
+      "week": "dec26.2021",
+      "status": "html_with_event_markers",
+      "bytes": 216315,
+      "point_in_time_verified": false
+    },
+    {
+      "week": "jan2.2022",
+      "status": "html_with_event_markers",
+      "bytes": 465338,
+      "point_in_time_verified": false
+    },
+    {
+      "week": "jan9.2022",
+      "status": "html_with_event_markers",
+      "bytes": 403211,
+      "point_in_time_verified": false
+    },
+    {
+      "week": "jan16.2022",
+      "status": "html_with_event_markers",
+      "bytes": 441121,
+      "point_in_time_verified": false
+    },
+    {
+      "week": "jan23.2022",
+      "status": "html_with_event_markers",
+      "bytes": 389710,
+      "point_in_time_verified": false
+    },
+    {
+      "week": "jan30.2022",
+      "status": "html_with_event_markers",
+      "bytes": 580619,
+      "point_in_time_verified": false
+    }
+  ],
+  "limitations": [
+    "On-chain and Fear & Greed publication times are assumed, not verified historical vintages.",
+    "Forex fields excluded; this is NOT the full live pipeline dataset.",
+    "Funding and long/short ratio not included.",
+    "Historical LLM evaluation may contain knowledge from model pretraining.",
+    "Close-to-close prediction labels do not imply executable trading returns."
+  ]
+}

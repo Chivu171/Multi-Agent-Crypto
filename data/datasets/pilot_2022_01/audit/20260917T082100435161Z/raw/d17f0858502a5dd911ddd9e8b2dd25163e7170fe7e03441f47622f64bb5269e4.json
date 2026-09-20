@@ -1,0 +1,14 @@
+{
+  "url": "https://api.blockchain.info/charts/hash-rate",
+  "params": {
+    "start": "2021-09-23",
+    "timespan": "130days",
+    "format": "json",
+    "sampled": "false"
+  },
+  "retrieved_at": "2026-09-17T08:21:01.928415+00:00",
+  "status": 200,
+  "response_url": "https://api.blockchain.info/charts/hash-rate?start=2021-09-23&timespan=130days&format=json&sampled=false",
+  "sha256": "a72493752b1465623f2cf4fbe2571af648415d41eded0c4c62dadf740328f04b",
+  "body_file": "d17f0858502a5dd911ddd9e8b2dd25163e7170fe7e03441f47622f64bb5269e4.body"
+}

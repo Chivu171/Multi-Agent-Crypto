@@ -1,0 +1,133 @@
+{
+  "sample_id": "2022-01-28",
+  "status": "ok",
+  "specialists": [
+    {
+      "agent_id": "Financial_Agent",
+      "signal": "SELL",
+      "confidence": 0.68,
+      "belief_vector": {
+        "direction": -1,
+        "strength": 0.68
+      },
+      "evidence_chunks": [
+        {
+          "id": "financial_chunk_001",
+          "content": "Historical on-chain observations; MVRV, SOPR and whale flows unavailable.\n{\"hash-rate\": {\"value\": 172177189.9762886, \"pct_change_1d\": -14.473684210526317, \"observed_at\": \"2022-01-26T00:00:00+00:00\"}, \"miners-revenue\": {\"value\": 31353367.591352165, \"pct_change_1d\": -10.641634699504776, \"observed_at\": \"2022-01-26T00:00:00+00:00\"}, \"n-transactions\": {\"value\": 261070.0, \"pct_change_1d\": -1.5305814549953278, \"observed_at\": \"2022-01-26T00:00:00+00:00\"}, \"estimated-transaction-volume-usd\": {\"value\": 4724487375.564173, \"pct_change_1d\": -1.4320893079349584, \"observed_at\": \"2022-01-26T00:00:00+00:00\"}}",
+          "metadata": {
+            "source": "blockchain.info Charts API",
+            "page": 1,
+            "timestamp": "2022-01-26T00:00:00+00:00"
+          }
+        }
+      ],
+      "logic_path": "Tất cả bốn chỉ số on-chain quan sát được vào ngày 2022-01-26 đều cho thấy mức thay đổi âm trong 24 giờ. Thứ nhất, hash rate giảm -14.47%, đây là mức suy giảm đáng kể cho thấy các thợ đào đang ngừng hoạt động hoặc tắt máy, phản ánh áp lực chi phí và sự suy yếu của mạng lưới. Thứ hai, doanh thu thợ đào giảm -10.64%, cho thấy khả năng sinh lời của thợ đào suy giảm, tạo ra áp lực bán tăng khi thợ đào cần bù chi phí vận hành. Thứ ba, số lượng giao dịch giảm -1.53%, phản ánh hoạt động trên mạng suy yếu nhẹ. Thứ tư, khối lượng giao dịch ước tính giảm -1.43%, cho thấy hoạt động kinh tế on-chain đang chậm lại. Tổng hợp lại, cả bốn chỉ số đều hướng về phía tiêu cực. Tuy nhiên, mức giảm ở hai chỉ số giao dịch là nhẹ, và các chỉ số MVRV, SOPR, whale flows không khả dụng, làm giới hạn phạm vi phân tích. Do đó, tín hiệu SELL được xác định với độ tin cậy vừa phải.",
+      "metadata": {
+        "source_type": "financial_report",
+        "entropy": 0.234,
+        "redundancy_score": 0.1,
+        "recency_weight": 1.0,
+        "timestamp": "2022-01-26T00:00:00+00:00"
+      }
+    },
+    {
+      "agent_id": "Market_Agent",
+      "signal": "SELL",
+      "confidence": 0.62,
+      "belief_vector": {
+        "direction": -1,
+        "strength": 0.62
+      },
+      "evidence_chunks": [
+        {
+          "id": "market_chunk_001",
+          "content": "Historical closed daily candles; funding rate and long/short ratio unavailable.\n{\"price\": 37160.1, \"ema20\": 40005.88406017654, \"ema50\": 44428.35545394737, \"rsi14\": 25.94583903876189, \"volume\": 53020.87934, \"funding_rate\": null, \"long_short_ratio\": null, \"fetched_at\": \"2022-01-28T00:00:00+00:00\"}",
+          "metadata": {
+            "source": "Binance public API",
+            "timestamp": "2022-01-28T00:00:00+00:00"
+          }
+        }
+      ],
+      "logic_path": "Giá hiện tại 37160.1 nằm dưới cả EMA20 (40005.88) và EMA50 (44428.36), cho thấy xu hướng giảm mạnh trên cả khung ngắn hạn và trung hạn. RSI14 ở mức 25.95 cho thấy điều kiện quá bán, tuy nhiên điều này cũng phản ánh đà giảm vẫn còn mạnh mẽ. Sự đồng thuận của các chỉ báo thiên về phía bán, nhưng RSI quá bán làm giảm độ tin cậy do khả năng phục hồi ngắn hạn có thể xảy ra.",
+      "metadata": {
+        "source_type": "market_data",
+        "entropy": 0.519,
+        "redundancy_score": 0.05,
+        "recency_weight": 1.0,
+        "timestamp": "2022-01-28T00:00:00+00:00"
+      }
+    },
+    {
+      "agent_id": "Sentiment_Agent",
+      "signal": "SELL",
+      "confidence": 0.4,
+      "belief_vector": {
+        "direction": -1,
+        "strength": 0.4
+      },
+      "evidence_chunks": [
+        {
+          "id": "sentiment_chunk_001",
+          "content": "Historical Fear & Greed Index (0=extreme fear, 100=extreme greed): 20.0. ForexFactory calendar and news unavailable; do not invent events.",
+          "metadata": {
+            "source": "Alternative.me + ForexFactory calendar",
+            "timestamp": "2022-01-27T00:00:00+00:00"
+          }
+        }
+      ],
+      "logic_path": "Chỉ số Fear & Greed ở mức 20 cho thấy sự sợ hãi cực đoan trên thị trường, một trạng thái thường liên quan đến áp lực bán ra và tâm lý bi quan. Do chỉ có một nguồn bằng chứng, độ tin cậy của dự báo này được đánh giá ở mức thấp.",
+      "metadata": {
+        "source_type": "social_media",
+        "entropy": 0.4,
+        "redundancy_score": 0.1,
+        "recency_weight": 1.0,
+        "timestamp": "2022-01-27T00:00:00+00:00"
+      }
+    }
+  ],
+  "validation": {
+    "conflict_score": 0.0244,
+    "metrics": {
+      "mean_pairwise_kl": 0.031,
+      "decision_variance": 0.0145
+    },
+    "conflict_detected": false,
+    "conflict_categories": [
+      "No Conflict"
+    ],
+    "root_cause_analysis": "N/A - System in state of consensus.",
+    "trigger_debate_module": false,
+    "debate_updated_outputs": null,
+    "degraded_mode": false,
+    "missing_agents": []
+  },
+  "mediator": {
+    "S_final": -0.457623,
+    "details": [
+      {
+        "agent_id": "Financial_Agent",
+        "direction": -1,
+        "strength": 0.68,
+        "weight": 0.122465,
+        "contribution": -0.083276
+      },
+      {
+        "agent_id": "Market_Agent",
+        "direction": -1,
+        "strength": 0.62,
+        "weight": 0.45695,
+        "contribution": -0.283309
+      },
+      {
+        "agent_id": "Sentiment_Agent",
+        "direction": -1,
+        "strength": 0.4,
+        "weight": 0.227595,
+        "contribution": -0.091038
+      }
+    ]
+  },
+  "S_final": -0.457623,
+  "signal": "SELL",
+  "llm_errors": []
+}

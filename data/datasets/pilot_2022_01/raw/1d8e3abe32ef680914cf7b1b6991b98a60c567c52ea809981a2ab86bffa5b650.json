@@ -1,0 +1,12 @@
+{
+  "url": "https://api.alternative.me/fng/",
+  "params": {
+    "limit": 0,
+    "format": "json"
+  },
+  "retrieved_at": "2026-09-17T08:06:30.536108+00:00",
+  "status": 200,
+  "response_url": "https://api.alternative.me/fng/?limit=0&format=json",
+  "sha256": "5a3eb9a819d93410af86ed702a88fac697678c68a6fd4db9d3cbe4ffdb86986e",
+  "body_file": "1d8e3abe32ef680914cf7b1b6991b98a60c567c52ea809981a2ab86bffa5b650.body"
+}

@@ -1,0 +1,235 @@
+{
+  "sample_id": "2022-01-06",
+  "status": "ok",
+  "specialists": [
+    {
+      "agent_id": "Financial_Agent",
+      "signal": "BUY",
+      "confidence": 0.68,
+      "belief_vector": {
+        "direction": 1,
+        "strength": 0.68
+      },
+      "evidence_chunks": [
+        {
+          "id": "financial_chunk_001",
+          "content": "Historical on-chain observations; MVRV, SOPR and whale flows unavailable.\n{\"hash-rate\": {\"value\": 177367872.71213505, \"pct_change_1d\": 5.000000000000004, \"observed_at\": \"2022-01-04T00:00:00+00:00\"}, \"miners-revenue\": {\"value\": 43285514.636499785, \"pct_change_1d\": 3.1580957603438042, \"observed_at\": \"2022-01-04T00:00:00+00:00\"}, \"n-transactions\": {\"value\": 274544.0, \"pct_change_1d\": 16.93023216194691, \"observed_at\": \"2022-01-04T00:00:00+00:00\"}, \"estimated-transaction-volume-usd\": {\"value\": 6318179076.736239, \"pct_change_1d\": 119.63230560549007, \"observed_at\": \"2022-01-04T00:00:00+00:00\"}}",
+          "metadata": {
+            "source": "blockchain.info Charts API",
+            "page": 1,
+            "timestamp": "2022-01-04T00:00:00+00:00"
+          }
+        }
+      ],
+      "logic_path": "Dữ liệu on-chain quan sát ngày 2022-01-04 cho thấy bốn chỉ số đều tăng trưởng tích cực. Thứ nhất, hash-rate tăng 5.00% trong 1 ngày, cho thấy công suất mạng lưới gia tăng, phản ánh sự đầu tư của thợ đào và niềm tin vào hệ thống. Thứ hai, doanh thu thợ đào tăng 3.16% trong 1 ngày, cho thấy hoạt động khai thác vẫn bền vững và có lợi nhuận. Thứ ba, số lượng giao dịch tăng 16.93% trong 1 ngày, cho thấy nhu cầu sử dụng mạng lưới đang gia tăng mạnh mẽ. Thứ tư, khối lượng giao dịch ước tính bằng USD tăng 119.63% trong 1 ngày — đây là mức tăng rất đáng kể, cho thấy dòng tiền lớn đang đổ vào mạng Bitcoin. Tất cả bốn chỉ số đều mang tín hiệu tăng giá (bullish). Tuy nhiên, cần lưu ý rằng các chỉ số quan trọng như MVRV, SOPR và dòng chảy whale không có sẵn, đồng thời dữ liệu được quan sát trước thời điểm dự báo 2 ngày, tạo ra khoảng trễ thông tin. Do đó, niềm tin được điều chỉnh xuống mức trung bình-phía cao thay vì rất cao.",
+      "metadata": {
+        "source_type": "financial_report",
+        "entropy": 1.0,
+        "redundancy_score": 0.1,
+        "recency_weight": 1.0,
+        "timestamp": "2022-01-04T00:00:00+00:00"
+      }
+    },
+    {
+      "agent_id": "Market_Agent",
+      "signal": "SELL",
+      "confidence": 0.68,
+      "belief_vector": {
+        "direction": -1,
+        "strength": 0.68
+      },
+      "evidence_chunks": [
+        {
+          "id": "market_chunk_001",
+          "content": "Historical closed daily candles; funding rate and long/short ratio unavailable.\n{\"price\": 43451.13, \"ema20\": 47782.953200550066, \"ema50\": 52123.92219762874, \"rsi14\": 32.543555901412574, \"volume\": 51784.11857, \"funding_rate\": null, \"long_short_ratio\": null, \"fetched_at\": \"2022-01-06T00:00:00+00:00\"}",
+          "metadata": {
+            "source": "Binance public API",
+            "timestamp": "2022-01-06T00:00:00+00:00"
+          }
+        }
+      ],
+      "logic_path": "Giá BTC đang giao dịch thấp hơn đáng kể cả EMA20 (43451.13 so với 47782.95, thấp hơn khoảng 9.06%) và EMA50 (43451.13 so với 52123.92, thấp hơn khoảng 16.64%), cho thấy xu hướng giảm mạnh trên cả khung ngắn hạn và trung hạn. RSI14 ở mức 32.54, tiến gần vùng quá bán (dưới 30), cho thấy đà giảm có thể tiếp tục nhưng cũng đang tiến đến ngưỡng có thể xảy ra phục hồi kỹ thuật. Không có dữ liệu funding rate và long/short ratio để bổ sung xác nhận. Các chỉ báo đồng thuận về hướng giảm, tuy nhiên RSI gần vùng quá bán giới hạn mức độ tin cậy.",
+      "metadata": {
+        "source_type": "market_data",
+        "entropy": 0.651,
+        "redundancy_score": 0.05,
+        "recency_weight": 1.0,
+        "timestamp": "2022-01-06T00:00:00+00:00"
+      }
+    },
+    {
+      "agent_id": "Sentiment_Agent",
+      "signal": "SELL",
+      "confidence": 0.55,
+      "belief_vector": {
+        "direction": -1,
+        "strength": 0.55
+      },
+      "evidence_chunks": [
+        {
+          "id": "sentiment_chunk_001",
+          "content": "Historical Fear & Greed Index (0=extreme fear, 100=extreme greed): 24.0. ForexFactory calendar and news unavailable; do not invent events.",
+          "metadata": {
+            "source": "Alternative.me + ForexFactory calendar",
+            "timestamp": "2022-01-05T00:00:00+00:00"
+          }
+        }
+      ],
+      "logic_path": "Chỉ số Fear & Greed ở mức 24, cho thấy nỗi sợ cực đoan trên thị trường. Mức độ sợ hãi cao thường liên quan đến áp lực bán ra và tâm lý bi quan, dẫn đến khả năng giá Bitcoin giảm trong ngắn hạn. Do chỉ có một nguồn bằng chứng, độ tin cậy của dự báo này ở mức trung bình.",
+      "metadata": {
+        "source_type": "social_media",
+        "entropy": 0.48,
+        "redundancy_score": 0.1,
+        "recency_weight": 1.0,
+        "timestamp": "2022-01-05T00:00:00+00:00"
+      }
+    }
+  ],
+  "validation": {
+    "conflict_score": 0.5565,
+    "metrics": {
+      "mean_pairwise_kl": 0.6772,
+      "decision_variance": 0.3755
+    },
+    "conflict_detected": true,
+    "conflict_categories": [
+      "Signal Conflict",
+      "Reliability Conflict"
+    ],
+    "root_cause_analysis": "CORE DISCREPANCY: Phân kỳ cấu trúc giữa tín hiệu BUY (Financial_Agent) và SELL (Market/Sentiment_Agents) bắt nguồn từ sự lệch pha thời gian (temporal misalignment) giữa dữ liệu on-chain tĩnh và biến động giá thời gian thực.\n\nDATA ASYMMETRY ANALYSIS: Financial_Agent dựa trên quan sát ngày 2022-01-04, tạo ra \"ma sát thông tin\" do thiếu các chỉ báo xác nhận tức thời (MVRV, SOPR). Ngược lại, Market_Agent phản ánh trạng thái kỹ thuật hiện tại (giá dưới EMA20/50, RSI 32.54) và Sentiment_Agent ghi nhận tâm lý sợ hãi cực đoan (F&G 24). Sự bất đối xứng này tạo ra \"lỗi thời tạm thời\" (transient lag), nơi dữ liệu cơ bản lạc hậu không thể bù đắp cho áp lực bán kỹ thuật và tâm lý thị trường đang diễn ra.\n\nCONFLICT STATE: Trạng thái xung đột Signal Conflict và Reliability Conflict ở mức cao. Niềm tin đồng đều (0.68) nhưng trái chiều cho thấy hệ thống đang trong giai đoạn \"phân kỳ ngữ nghĩa\" nghiêm trọng, nơi tín hiệu cơ bản lạc hậu bị phủ nhận bởi tín hiệu kỹ thuật và tâm lý tức thời.",
+    "trigger_debate_module": true,
+    "debate_updated_outputs": [
+      {
+        "agent_id": "Financial_Agent",
+        "signal": "BUY",
+        "confidence": 0.386607513667141,
+        "belief_vector": {
+          "direction": 1,
+          "strength": 0.387
+        },
+        "evidence_chunks": [
+          {
+            "id": "financial_chunk_001",
+            "content": "Historical on-chain observations; MVRV, SOPR and whale flows unavailable.\n{\"hash-rate\": {\"value\": 177367872.71213505, \"pct_change_1d\": 5.000000000000004, \"observed_at\": \"2022-01-04T00:00:00+00:00\"}, \"miners-revenue\": {\"value\": 43285514.636499785, \"pct_change_1d\": 3.1580957603438042, \"observed_at\": \"2022-01-04T00:00:00+00:00\"}, \"n-transactions\": {\"value\": 274544.0, \"pct_change_1d\": 16.93023216194691, \"observed_at\": \"2022-01-04T00:00:00+00:00\"}, \"estimated-transaction-volume-usd\": {\"value\": 6318179076.736239, \"pct_change_1d\": 119.63230560549007, \"observed_at\": \"2022-01-04T00:00:00+00:00\"}}",
+            "metadata": {
+              "source": "blockchain.info Charts API",
+              "page": 1,
+              "timestamp": "2022-01-04T00:00:00+00:00"
+            }
+          }
+        ],
+        "logic_path": {
+          "steps": [
+            "Thiếu dữ liệu whale và MVRV",
+            "Giá dưới EMA xác nhận giảm",
+            "Niềm tin thấp do thiếu bằng chứng"
+          ]
+        },
+        "metadata": {
+          "source_type": "financial_report",
+          "entropy": 1.0,
+          "redundancy_score": 0.1,
+          "recency_weight": 1.0,
+          "timestamp": "2022-01-04T00:00:00+00:00"
+        }
+      },
+      {
+        "agent_id": "Market_Agent",
+        "signal": "SELL",
+        "confidence": 0.4538397673184103,
+        "belief_vector": {
+          "direction": -1,
+          "strength": 0.454
+        },
+        "evidence_chunks": [
+          {
+            "id": "market_chunk_001",
+            "content": "Historical closed daily candles; funding rate and long/short ratio unavailable.\n{\"price\": 43451.13, \"ema20\": 47782.953200550066, \"ema50\": 52123.92219762874, \"rsi14\": 32.543555901412574, \"volume\": 51784.11857, \"funding_rate\": null, \"long_short_ratio\": null, \"fetched_at\": \"2022-01-06T00:00:00+00:00\"}",
+            "metadata": {
+              "source": "Binance public API",
+              "timestamp": "2022-01-06T00:00:00+00:00"
+            }
+          }
+        ],
+        "logic_path": {
+          "steps": [
+            "Giá dưới EMA, xu hướng giảm",
+            "RSI quá bán, rủi ro cao",
+            "Fear & Greed xác nhận sợ hãi"
+          ]
+        },
+        "metadata": {
+          "source_type": "market_data",
+          "entropy": 0.651,
+          "redundancy_score": 0.05,
+          "recency_weight": 1.0,
+          "timestamp": "2022-01-06T00:00:00+00:00"
+        }
+      },
+      {
+        "agent_id": "Sentiment_Agent",
+        "signal": "SELL",
+        "confidence": 0.36542424442495586,
+        "belief_vector": {
+          "direction": -1,
+          "strength": 0.365
+        },
+        "evidence_chunks": [
+          {
+            "id": "sentiment_chunk_001",
+            "content": "Historical Fear & Greed Index (0=extreme fear, 100=extreme greed): 24.0. ForexFactory calendar and news unavailable; do not invent events.",
+            "metadata": {
+              "source": "Alternative.me + ForexFactory calendar",
+              "timestamp": "2022-01-05T00:00:00+00:00"
+            }
+          }
+        ],
+        "logic_path": {
+          "steps": [
+            "Tâm lý sợ hãi cực đoan",
+            "Thiếu dữ liệu dòng tiền tổ chức",
+            "Áp lực bán duy trì mạnh"
+          ]
+        },
+        "metadata": {
+          "source_type": "social_media",
+          "entropy": 0.48,
+          "redundancy_score": 0.1,
+          "recency_weight": 1.0,
+          "timestamp": "2022-01-05T00:00:00+00:00"
+        }
+      }
+    ],
+    "degraded_mode": false,
+    "missing_agents": []
+  },
+  "mediator": {
+    "S_final": -0.22252,
+    "details": [
+      {
+        "agent_id": "Financial_Agent",
+        "direction": 1,
+        "strength": 0.387,
+        "weight": 0.0,
+        "contribution": 0.0
+      },
+      {
+        "agent_id": "Market_Agent",
+        "direction": -1,
+        "strength": 0.454,
+        "weight": 0.33155,
+        "contribution": -0.150524
+      },
+      {
+        "agent_id": "Sentiment_Agent",
+        "direction": -1,
+        "strength": 0.365,
+        "weight": 0.197249,
+        "contribution": -0.071996
+      }
+    ]
+  },
+  "S_final": -0.22252,
+  "signal": "SELL",
+  "llm_errors": []
+}
