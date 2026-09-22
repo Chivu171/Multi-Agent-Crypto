@@ -11,6 +11,10 @@ from utils.config import (
 )
 from utils.retry import llm_retry
 
+
+class IncompleteLLMResponse(ValueError):
+    """The provider stopped generation before the response was complete."""
+
 # LM Studio client (fallback local)
 _lmstudio_client = OpenAI(base_url=BASE_URL, api_key=API_KEY)
 
@@ -73,5 +77,13 @@ def ask_llm(prompt: str, agent_name: str = "default", system: str | None = None)
         messages=messages,
     )
 
-    content = response.choices[0].message.content or ""
+    if not response.choices:
+        raise ValueError(f"{agent_name}: LLM returned no choices")
+    choice = response.choices[0]
+    if choice.finish_reason == "length":
+        raise IncompleteLLMResponse(
+            f"{agent_name}: LLM response truncated (finish_reason=length, "
+            f"max_tokens={config['max_tokens']})"
+        )
+    content = choice.message.content or ""
     return content.strip()

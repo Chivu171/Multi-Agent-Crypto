@@ -74,7 +74,7 @@ AGENT_LLM_CONFIGS = {
     "sentiment": {
         "model": None,
         "temperature": 0.4,
-        "max_tokens": 1200,
+        "max_tokens": 1800,
         "provider": "openrouter",
     },
     "validator": {
@@ -86,7 +86,13 @@ AGENT_LLM_CONFIGS = {
     "debate": {
         "model": GROQ_MODEL_NAME,
         "temperature": 0.3,
-        "max_tokens": 800,
+        "max_tokens": 1600,  # claim text + verbatim citations
+        "provider": "groq",
+    },
+    "grounding": {
+        "model": GROQ_MODEL_NAME,
+        "temperature": 0.0,
+        "max_tokens": 1200,
         "provider": "groq",
     },
     "mediator": {

@@ -18,6 +18,7 @@ from utils.thresholds import (
 
 # Import DebateAgent for conditional debate integration
 from agents.debate_agent import DebateAgent
+from utils.grounding import build_evidence_registry, request_grounded_claims, render_claims, GroundingError
 
 class ValidatorAgent:
     def __init__(self, alpha: float = DEFAULT_CONFLICT_ALPHA, threshold: float = DEFAULT_CONFLICT_THRESHOLD, use_llm: bool = True):
@@ -29,6 +30,7 @@ class ValidatorAgent:
         self.alpha = alpha
         self.threshold = threshold
         self.use_llm = use_llm
+        self.rca_grounding = {"status": "not_run"}
 
     def _kl_divergence(self, p: np.ndarray, q: np.ndarray) -> float:
         """Tính toán Kullback-Leibler Divergence giữa 2 phân phối niềm tin có làm mượt (Smoothing)"""
@@ -125,7 +127,7 @@ class ValidatorAgent:
                 "signal": out["signal"],
                 "confidence": out["confidence"],
                 "logic_path": out["logic_path"],
-                "evidence_snippets": [chunk["content"][:200] for chunk in out["evidence_chunks"][:2]]
+                "note": "Agent opinion; verify against original evidence, not an independent source",
             })
 
         prompt = VALIDATOR_AGENT_PROMPT.format(
@@ -135,13 +137,17 @@ class ValidatorAgent:
         
         # Nếu chưa cấu hình sử dụng LLM hoặc gọi lỗi, trả về phân tích thô deterministic
         if not self.use_llm:
+            self.rca_grounding = {"status": "disabled"}
             return f"RCA Triggered for {categories}. Core discrepancy found in agent signals: {signals_map}"
-        
+
+        registry = build_evidence_registry(agents_output)
         try:
-            rca_explanation = ask_llm(prompt, agent_name="validator")
-            return rca_explanation
-        except Exception as e:
-            return f"[RCA Fallback - LLM Connection Error: {str(e)}] Core discrepancy: {signals_map}"
+            claims, audit = request_grounded_claims(prompt, registry, agent_name="validator", ask=ask_llm)
+            self.rca_grounding = {**audit, "claims": claims, "evidence": registry}
+            return "\n".join(render_claims(claims))
+        except GroundingError as exc:
+            self.rca_grounding = {**exc.audit, "evidence": registry}
+            return f"[RCA chưa có giải thích đạt kiểm tra nguồn] Tín hiệu đã quan sát: {signals_map}"
 
     def evaluate_pipeline(
         self,
@@ -156,6 +162,7 @@ class ValidatorAgent:
         "đồng thuận thật" với "chỉ còn 1 agent nên không có gì để so sánh".
         """
         missing_agents = missing_agents or []
+        self.rca_grounding = {"status": "not_run"}
         n = len(agents_output)
 
         # Với n < 2 không có phép so sánh nào là hợp lệ (KL/variance cần tối
@@ -175,6 +182,9 @@ class ValidatorAgent:
                 "debate_updated_outputs": None,
                 "degraded_mode": True,
                 "missing_agents": missing_agents,
+                "rca_grounding": self.rca_grounding,
+                "debate_status": "not_run",
+                "explanations_valid": False,
             }
 
         # 1. Định lượng mâu thuẫn
@@ -192,13 +202,18 @@ class ValidatorAgent:
         
         # 4. Conditional Debate Trigger – run debate if conflict detected
         debate_updated_outputs = None
+        debate_status = "not_run"
+        post_conflict = None
         if conflict_detected:
             print("\n[Step 3] Khởi chạy Debate Module...")
 
             # Instantiate DebateAgent — alpha thấp để tránh confidence decay quá mạnh
             debate_agent = DebateAgent(rounds=DEBATE_ROUNDS, alpha=DEBATE_CONFIDENCE_DECAY_ALPHA)
             debate_updated_outputs = debate_agent.run_debate(agents_output)
-            # Optionally, you could re‑evaluate conflict after debate – omitted for brevity
+            statuses = [item["status"] for out in debate_updated_outputs for item in out.get("debate_audit", [])]
+            debate_status = ("accepted" if statuses and all(s == "accepted" for s in statuses)
+                             else "partial" if "accepted" in statuses else "rejected")
+            post_conflict = self.calculate_conflict_core(debate_updated_outputs)[0]
         
         # 5. Assemble final result
         return {
@@ -214,4 +229,8 @@ class ValidatorAgent:
             "debate_updated_outputs": debate_updated_outputs,
             "degraded_mode": n < 3,
             "missing_agents": missing_agents,
+            "rca_grounding": self.rca_grounding,
+            "debate_status": debate_status,
+            "conflict_score_after_debate": round(post_conflict, 4) if post_conflict is not None else None,
+            "explanations_valid": self.rca_grounding["status"] != "rejected" and debate_status not in {"partial", "rejected"},
         }

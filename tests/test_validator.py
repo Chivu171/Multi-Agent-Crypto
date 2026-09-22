@@ -104,7 +104,8 @@ def test_evaluate_pipeline_zero_agents_is_insufficient_data():
     assert result["degraded_mode"] is True
 
 
-def test_evaluate_pipeline_two_agents_still_computes_but_flags_degraded(extreme_conflict_output):
+@patch("agents.debate_agent.ask_llm", side_effect=RuntimeError("offline test"))
+def test_evaluate_pipeline_two_agents_still_computes_but_flags_degraded(mock_ask, extreme_conflict_output):
     """With 2/3 agents, the KL/variance comparison is still mathematically
     valid (one pair exists) — the pipeline should keep computing normally,
     just mark the result as degraded_mode with the missing agent named."""

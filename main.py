@@ -58,7 +58,7 @@ def main():
     missing_agents = [name for name, o in named_outputs if o is None]
 
     if not all_outputs:
-        print("\n[!] Không thể kết nối tới LLM Server (LM Studio).")
+        print("\n[!] Cả 3 Specialist Agent đều thất bại; xem lỗi từng agent ở trên.")
         print("    Tự động kích hoạt cơ chế dự phòng: Tải dữ liệu từ 'outputs/logs.json'...")
         try:
             with open("outputs/logs.json", "r", encoding="utf-8") as f:
@@ -80,6 +80,10 @@ def main():
     print("\n[Step 4] Khởi chạy Validator Agent thẩm định mâu thuẫn hệ thống...")
     validator = ValidatorAgent(alpha=DEFAULT_CONFLICT_ALPHA, threshold=DEFAULT_CONFLICT_THRESHOLD, use_llm=True)
     validation_result = validator.evaluate_pipeline(all_outputs, missing_agents=missing_agents)
+
+    if not validation_result.get("explanations_valid", True):
+        print("\n[!] RCA/Debate có giải thích chưa đạt kiểm tra nguồn. "
+              "Các cập nhật bị từ chối đã giữ trạng thái cũ; lần chạy này không phải pipeline đầy đủ hợp lệ.")
 
     if validation_result.get("degraded_mode"):
         print(

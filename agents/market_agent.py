@@ -2,28 +2,22 @@ import datetime
 from data_sources.market_data import fetch_market_data
 from utils.llm import ask_llm
 from utils.belief import build_belief_vector
-from utils.parsing import parse_json_response
+from utils.specialist_response import request_specialist_response
 from utils.penalties import recency_weight_from_iso_timestamp
 from utils.prompts import MARKET_AGENT_PROMPT
 from utils.sanitize import strip_instruction_patterns
 
 
-def run():
+def run(data=None, reference_time=None):
 
-    market = fetch_market_data()
+    market = data if data is not None else fetch_market_data()
     summary = market["summary_text"]
 
     prompt = MARKET_AGENT_PROMPT.format(summary=strip_instruction_patterns(summary))
+    if reference_time is not None:
+        prompt = f"Dự báo hướng giá BTC trong 24 giờ sau {reference_time.isoformat()}. Chỉ sử dụng bằng chứng được cung cấp, không dùng kiến thức về diễn biến sau mốc dự báo.\n" + prompt
 
-    system_prompt = (
-        "You are a strict JSON-only API. "
-        "Output ONLY a single JSON object starting with { and ending with }. "
-        "No thinking, no reasoning, no explanation, no markdown, no extra text."
-    )
-
-    raw_response = ask_llm(prompt, agent_name="market", system=system_prompt)
-
-    parsed = parse_json_response(raw_response)
+    parsed = request_specialist_response(prompt, agent_name="market", ask=ask_llm)
 
     signal = parsed["signal"]
     confidence = float(parsed["confidence"])
@@ -63,7 +57,7 @@ def run():
             "entropy": round(entropy, 3),  # derived from RSI14 distance to the neutral midpoint (50)
             "redundancy_score": 0.05,  # single canonical exchange API, no cross-outlet duplication
             "recency_weight": round(recency_weight_from_iso_timestamp(market["fetched_at"]), 3),
-            "timestamp": datetime.date.today().isoformat()
+            "timestamp": market["fetched_at"] if reference_time is not None else datetime.date.today().isoformat()
         }
     }
 

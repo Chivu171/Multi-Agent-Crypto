@@ -98,3 +98,76 @@ def test_financial_agent_propagates_fetcher_failure():
     with patch("agents.financial_agent.fetch_onchain_data", side_effect=RuntimeError("no data available")):
         with pytest.raises(RuntimeError):
             financial_agent.run()
+
+
+@pytest.mark.parametrize("module,data", [
+    (financial_agent, FAKE_ONCHAIN_DATA),
+    (market_agent, FAKE_MARKET_DATA),
+    (sentiment_agent, FAKE_SENTIMENT_DATA),
+])
+@pytest.mark.parametrize("raw_signal,expected,direction", [
+    ("MUA", "BUY", 1), ("bán", "SELL", -1), ("TRUNG LẬP", "NEUTRAL", 0),
+])
+def test_translated_signals_are_canonical_before_belief_vector(module, data, raw_signal, expected, direction):
+    payload = json.loads(VALID_LLM_RESPONSE)
+    payload["signal"] = raw_signal
+    with patch.object(module, "ask_llm", return_value=json.dumps(payload)) as ask:
+        output = module.run(data=data)
+    assert output["signal"] == expected
+    assert output["belief_vector"]["direction"] == direction
+    assert ask.call_count == 1
+    assert "never translate" in ask.call_args.kwargs["system"]
+
+
+@pytest.mark.parametrize("module,data", [
+    (financial_agent, FAKE_ONCHAIN_DATA),
+    (market_agent, FAKE_MARKET_DATA),
+    (sentiment_agent, FAKE_SENTIMENT_DATA),
+])
+def test_truncated_json_is_regenerated_once_on_same_evidence(module, data):
+    truncated = '```json\n{"signal":"BUY","confidence":0.6,"logic_path":"Giá tăng'
+    with patch.object(module, "ask_llm", side_effect=[truncated, VALID_LLM_RESPONSE]) as ask:
+        output = module.run(data=data)
+    _assert_common_output_shape(output, module.__name__.split(".")[-1].replace("_agent", "").capitalize() + "_Agent")
+    assert ask.call_count == 2
+    original_prompt, retry_prompt = [call.args[0] for call in ask.call_args_list]
+    assert retry_prompt.startswith(original_prompt)
+
+
+def test_repeated_malformed_output_remains_an_error_not_neutral():
+    with patch.object(sentiment_agent, "ask_llm", return_value='{"signal":"BUY"') as ask:
+        with pytest.raises(ValueError, match="after 2 attempts"):
+            sentiment_agent.run(data=FAKE_SENTIMENT_DATA)
+    assert ask.call_count == 2
+
+
+@pytest.mark.parametrize("updates", [
+    {"signal": "MUA HOẶC BÁN"},
+    {"confidence": 1.5},
+    {"confidence": float("nan")},
+    {"confidence": True},
+    {"logic_path": ""},
+])
+def test_invalid_schema_cannot_reach_belief_vector(updates):
+    payload = {**json.loads(VALID_LLM_RESPONSE), **updates}
+    with patch.object(financial_agent, "ask_llm", return_value=json.dumps(payload)) as ask:
+        with pytest.raises(ValueError, match="after 2 attempts"):
+            financial_agent.run(data=FAKE_ONCHAIN_DATA)
+    assert ask.call_count == 2
+
+
+def test_provider_truncation_gets_one_shorter_regeneration():
+    from utils.llm import IncompleteLLMResponse
+    with patch.object(market_agent, "ask_llm", side_effect=[
+        IncompleteLLMResponse("finish_reason=length"), VALID_LLM_RESPONSE,
+    ]) as ask:
+        output = market_agent.run(data=FAKE_MARKET_DATA)
+    assert output["signal"] == "BUY"
+    assert ask.call_count == 2
+
+
+def test_api_failure_is_not_retried_as_a_format_error():
+    with patch.object(market_agent, "ask_llm", side_effect=RuntimeError("API unavailable")) as ask:
+        with pytest.raises(RuntimeError, match="API unavailable"):
+            market_agent.run(data=FAKE_MARKET_DATA)
+    assert ask.call_count == 1

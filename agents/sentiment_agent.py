@@ -2,22 +2,22 @@ import datetime
 from data_sources.sentiment_data import fetch_sentiment_data
 from utils.llm import ask_llm
 from utils.belief import build_belief_vector
-from utils.parsing import parse_json_response
+from utils.specialist_response import request_specialist_response
 from utils.penalties import recency_weight_from_iso_timestamp
 from utils.prompts import SENTIMENT_AGENT_PROMPT
 from utils.sanitize import strip_instruction_patterns
 
 
-def run():
+def run(data=None, reference_time=None):
 
-    sentiment = fetch_sentiment_data()
+    sentiment = data if data is not None else fetch_sentiment_data()
     text = sentiment["summary_text"]
 
     prompt = SENTIMENT_AGENT_PROMPT.format(text=strip_instruction_patterns(text))
+    if reference_time is not None:
+        prompt = f"Dự báo hướng giá BTC trong 24 giờ sau {reference_time.isoformat()}. Chỉ sử dụng bằng chứng được cung cấp, không dùng kiến thức về diễn biến sau mốc dự báo.\n" + prompt
 
-    raw_response = ask_llm(prompt, agent_name="sentiment")
-
-    parsed = parse_json_response(raw_response)
+    parsed = request_specialist_response(prompt, agent_name="sentiment", ask=ask_llm)
 
     signal = parsed["signal"]
     confidence = float(parsed["confidence"])
@@ -58,7 +58,7 @@ def run():
             "entropy": round(entropy, 3),  # derived from Fear&Greed distance to the neutral midpoint (50)
             "redundancy_score": 0.1,  # single canonical API pair, no cross-outlet duplication
             "recency_weight": round(recency_weight_from_iso_timestamp(sentiment["fetched_at"]), 3),
-            "timestamp": datetime.date.today().isoformat()
+            "timestamp": sentiment["fetched_at"] if reference_time is not None else datetime.date.today().isoformat()
         }
     }
 

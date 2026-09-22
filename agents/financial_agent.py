@@ -2,22 +2,22 @@ import datetime
 from data_sources.onchain_data import fetch_onchain_data
 from utils.llm import ask_llm
 from utils.belief import build_belief_vector
-from utils.parsing import parse_json_response
+from utils.specialist_response import request_specialist_response
 from utils.penalties import recency_weight_from_iso_timestamp
 from utils.prompts import FINANCIAL_AGENT_PROMPT
 from utils.sanitize import strip_instruction_patterns
 
 
-def run():
+def run(data=None, reference_time=None):
 
-    onchain = fetch_onchain_data()
+    onchain = data if data is not None else fetch_onchain_data()
     text = onchain["summary_text"]
 
     prompt = FINANCIAL_AGENT_PROMPT.format(text=strip_instruction_patterns(text))
+    if reference_time is not None:
+        prompt = f"Dự báo hướng giá BTC trong 24 giờ sau {reference_time.isoformat()}. Chỉ sử dụng bằng chứng được cung cấp, không dùng kiến thức về diễn biến sau mốc dự báo.\n" + prompt
 
-    raw_response = ask_llm(prompt, agent_name="financial")
-
-    parsed = parse_json_response(raw_response)
+    parsed = request_specialist_response(prompt, agent_name="financial", ask=ask_llm)
 
     signal = parsed["signal"]
     confidence = float(parsed["confidence"])
@@ -60,7 +60,7 @@ def run():
             "entropy": round(entropy, 3),  # avg |% change| across hash-rate/miner-revenue/tx-count/tx-volume
             "redundancy_score": 0.1,  # single canonical API source, no cross-outlet duplication
             "recency_weight": round(recency_weight_from_iso_timestamp(onchain["fetched_at"]), 3),
-            "timestamp": datetime.date.today().isoformat()
+            "timestamp": onchain["fetched_at"] if reference_time is not None else datetime.date.today().isoformat()
         }
     }
 

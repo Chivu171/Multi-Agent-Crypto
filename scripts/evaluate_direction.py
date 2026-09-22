@@ -106,8 +106,9 @@ def main():
     snapshots = [json.loads(line) for line in raw.decode().splitlines()]
     manifest = json.loads((args.dataset/"dataset_manifest.json").read_text())
     assert hashlib.sha256(raw).hexdigest() == manifest["artifacts_sha256"]["snapshots.jsonl"]
-    configs = {a: get_agent_config(a) for a in ("financial", "market", "sentiment", "validator", "debate")}
-    files = [Path(__file__), *Path("agents").glob("*.py"), Path("utils/prompts.py"), Path("utils/thresholds.py"), Path("utils/penalties.py")]
+    configs = {a: get_agent_config(a) for a in ("financial", "market", "sentiment", "validator", "debate", "grounding")}
+    files = [Path(__file__), *Path("agents").glob("*.py"), Path("utils/prompts.py"), Path("utils/thresholds.py"), Path("utils/penalties.py"),
+             Path("utils/grounding.py"), Path("utils/specialist_response.py"), Path("utils/llm.py")]
     run_config = {"snapshots_sha256": hashlib.sha256(raw).hexdigest(), "models": configs,
                   "code_sha256": {str(p): hashlib.sha256(p.read_bytes()).hexdigest() for p in files},
                   "limitations": ["30-day train pilot, not held-out test", "Forex, funding and long/short unavailable",
@@ -192,6 +193,9 @@ def main():
                 result["agent_errors"] = errors
                 raise ValueError("Incomplete specialists; excluded from win rate")
             validation = ValidatorAgent().evaluate_pipeline(outputs)
+            result["validation"] = validation
+            if not validation.get("explanations_valid", True):
+                raise ValueError("RCA/Debate grounding failed; excluded from directional accuracy")
             final = validation.get("debate_updated_outputs") or outputs
             mediated = run_mediator(final, current_time=ref)
             value = mediated["S_final"]
