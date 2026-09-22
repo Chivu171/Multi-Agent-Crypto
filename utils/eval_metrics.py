@@ -22,8 +22,10 @@ VALID_SIGNALS = {"BUY", "SELL", "NEUTRAL"}
 
 def validate_records(records: Sequence[Record]) -> None:
     """Kiểm tra đầu vào trước khi tính bất kỳ chỉ số nào: tín hiệu phải hợp
-    lệ (khớp trạng thái ok), và nếu record có sample_id dạng ngày ISO thì
-    chuỗi ngày phải liên tục, không trùng, không sai thứ tự."""
+    lệ (khớp trạng thái ok), return_24h phải là số hữu hạn, và nếu BẤT KỲ
+    record nào có sample_id thì TẤT CẢ record phải có sample_id hợp lệ (dạng
+    ngày ISO), chuỗi ngày phải liên tục, không trùng, không sai thứ tự — một
+    record thiếu/sai ID không được làm cả phép kiểm tra lịch bị bỏ qua."""
     if not records:
         raise ValueError("records rỗng — không có ngày nào để tính")
 
@@ -40,22 +42,33 @@ def validate_records(records: Sequence[Record]) -> None:
                 f"Ngày lỗi (ok=False) phải có signal=None, gặp {signal!r} "
                 f"(sample_id={r.get('sample_id')})"
             )
+        ret = r.get("return_24h")
+        if ret is not None and not math.isfinite(ret):
+            raise ValueError(f"return_24h không phải số hữu hạn: {ret!r} (sample_id={r.get('sample_id')})")
 
     sample_ids = [r.get("sample_id") for r in records]
-    if all(s is not None for s in sample_ids):
+    has_any_id = any(s is not None for s in sample_ids)
+    if has_any_id:
+        missing = [i for i, s in enumerate(sample_ids) if s is None]
+        if missing:
+            raise ValueError(
+                f"Một số record có sample_id, một số thì không (chỉ số thiếu: {missing}) — "
+                f"nếu dùng sample_id để kiểm tra lịch thì mọi record phải có ID"
+            )
         if len(set(sample_ids)) != len(sample_ids):
             raise ValueError(f"sample_id trùng lặp trong records: {sample_ids}")
-        try:
-            dates = [datetime.date.fromisoformat(str(s)[:10]) for s in sample_ids]
-        except ValueError:
-            dates = None
-        if dates is not None:
-            for prev, cur in zip(dates, dates[1:]):
-                if (cur - prev).days != 1:
-                    raise ValueError(
-                        f"Chuỗi ngày không liên tục hoặc sai thứ tự: {prev.isoformat()} -> {cur.isoformat()} "
-                        f"(cách nhau {(cur - prev).days} ngày, phải đúng 1 ngày)"
-                    )
+        dates = []
+        for s in sample_ids:
+            try:
+                dates.append(datetime.date.fromisoformat(str(s)[:10]))
+            except ValueError:
+                raise ValueError(f"sample_id không parse được thành ngày ISO (YYYY-MM-DD...): {s!r}")
+        for prev, cur in zip(dates, dates[1:]):
+            if (cur - prev).days != 1:
+                raise ValueError(
+                    f"Chuỗi ngày không liên tục hoặc sai thứ tự: {prev.isoformat()} -> {cur.isoformat()} "
+                    f"(cách nhau {(cur - prev).days} ngày, phải đúng 1 ngày)"
+                )
 
 
 # ---------------------------------------------------------------------------
@@ -131,6 +144,11 @@ def simulate_trades(records: Sequence[Record], prices: Sequence[float],
     validate_records(records)
     n = len(records)
     assert len(prices) == n + 1, "prices must bracket every requested day (n+1 points)"
+    for p in prices:
+        if not (math.isfinite(p) and p > 0):
+            raise ValueError(f"Giá không hợp lệ trong prices: {p!r} (phải là số hữu hạn và > 0)")
+    if not (math.isfinite(initial_equity) and initial_equity > 0):
+        raise ValueError(f"initial_equity không hợp lệ: {initial_equity!r} (phải là số hữu hạn và > 0)")
 
     equity = initial_equity
     position = 0        # +1 long, -1 short, 0 flat
@@ -339,6 +357,7 @@ def build_records(run_dir, dataset_dir) -> List[Record]:
                 "signal_no_debate": classify_signal(s_no_debate, SIGNAL_NEUTRAL_BAND),
             })
         records.append(rec)
+    validate_records(records)
     return records
 
 
@@ -346,7 +365,12 @@ def debate_impact(records: Sequence[Record]) -> Dict[str, Any]:
     """Nhóm 3b: tỷ lệ đổi tín hiệu do Debate; chất lượng dự đoán trước/sau đo
     ở hai phạm vi riêng — (a) chỉ trên các ngày có Debate hợp lệ, để thấy tác
     động trực tiếp của Debate; (b) trên toàn bộ ngày yêu cầu, để so sánh đúng
-    quy tắc baseline "multi-agent không Debate" và "hệ thống đầy đủ" đã chốt."""
+    quy tắc baseline "multi-agent không Debate" và "hệ thống đầy đủ" đã chốt.
+
+    Kiểm tra lịch trên chính `records` gốc — các tập con dựng bên trong hàm
+    này (before/after/debate_days) không mang theo sample_id nên không tự
+    phát hiện được lịch đứt đoạn; phải chặn ngay từ đầu vào đầy đủ."""
+    validate_records(records)
     debate_days = [r for r in records if r["ok"] and r.get("debate_triggered")]
     changed = [r for r in debate_days if r["signal"] != r["signal_no_debate"]]
 

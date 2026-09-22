@@ -120,7 +120,12 @@ def test_case_11_short_hold_multiple_days_no_daily_compounding():
     sim = simulate_trades(recs, prices=[100, 90, 95], fee=0.0)
     assert sim["trade_count"] == 1
     assert sim["trades"][0]["pnl_recorded"] == pytest.approx(0.05)  # 1 - 95/100
-    wrong_daily_compound = (1 + 0.10) * (1 - 95 / 90) - 1
+    # Cách sai hay gặp: cân bằng lại vị thế mỗi ngày — nhân dồn (1 - lợi suất
+    # BTC ngày đó) qua từng ngày thay vì giữ nguyên q. Ngày 1 (100->90): lợi
+    # suất BTC -10% -> hệ số short 1.10. Ngày 2 (90->95): lợi suất BTC
+    # +95/90-1 -> hệ số short (1 - (95/90 - 1)). Ra ~3,8889%, khác 5% ở trên.
+    wrong_daily_compound = 1.10 * (1 - (95 / 90 - 1)) - 1
+    assert wrong_daily_compound == pytest.approx(0.038889, abs=1e-5)
     assert sim["trades"][0]["pnl_recorded"] != pytest.approx(wrong_daily_compound)
 
 
@@ -446,3 +451,77 @@ def test_build_records_output_passes_validation_on_real_pilot():
     nằm ở build_records/snapshots.jsonl, không phải ở bộ validate."""
     records = build_records(PILOT, DATASET)
     validate_records(records)  # không raise
+
+
+# ---- lỗ hổng thứ 2 đợt review: 1 record thiếu ID không được làm tắt cả
+# phép kiểm tra lịch; debate_impact() phải tự kiểm tra records gốc ---------
+
+def test_one_missing_sample_id_among_others_is_rejected():
+    """Trước đây: nếu một record thiếu sample_id, validate_records bỏ qua
+    toàn bộ phép kiểm tra lịch cho MỌI record — kể cả những record có ID và
+    đang bị đứt đoạn thật sự. Giờ phải báo lỗi ngay khi có sự thiếu nhất quán."""
+    recs = [
+        {"sample_id": "2022-01-01", "ok": True, "signal": "BUY", "return_24h": 0.01},
+        {"ok": True, "signal": "BUY", "return_24h": 0.01},  # thiếu sample_id
+        {"sample_id": "2022-01-05", "ok": True, "signal": "BUY", "return_24h": 0.01},  # đứt đoạn thật
+    ]
+    with pytest.raises(ValueError, match="thiếu sample_id|có sample_id, một số thì không"):
+        prediction_metrics(recs)
+
+
+def test_malformed_sample_id_is_rejected_not_silently_skipped():
+    recs = [
+        {"sample_id": "2022-01-01", "ok": True, "signal": "BUY", "return_24h": 0.01},
+        {"sample_id": "not-a-date", "ok": True, "signal": "BUY", "return_24h": 0.01},
+    ]
+    with pytest.raises(ValueError, match="không parse được"):
+        prediction_metrics(recs)
+
+
+def test_debate_impact_rejects_gapped_calendar():
+    """debate_impact() dựng before/after nội bộ không mang ID, nên phải tự
+    validate records gốc — nếu không, lịch đứt đoạn sẽ lọt qua."""
+    recs = [
+        {"sample_id": "2022-01-01", "ok": True, "signal": "BUY", "return_24h": 0.01,
+         "debate_triggered": False, "signal_no_debate": "BUY"},
+        {"sample_id": "2022-01-05", "ok": True, "signal": "SELL", "return_24h": -0.01,  # thiếu 01-02..04
+         "debate_triggered": True, "signal_no_debate": "BUY"},
+    ]
+    with pytest.raises(ValueError, match="không liên tục"):
+        debate_impact(recs)
+
+
+# ---- lỗ hổng thứ 2 đợt review: dữ liệu số không hữu hạn / không hợp lệ ----
+
+def test_nan_return_is_rejected_not_scored_as_wrong():
+    recs = [day("BUY", float("nan"))]
+    with pytest.raises(ValueError, match="không phải số hữu hạn"):
+        prediction_metrics(recs)
+
+
+def test_inf_return_is_rejected():
+    recs = [day("BUY", float("inf"))]
+    with pytest.raises(ValueError, match="không phải số hữu hạn"):
+        prediction_metrics(recs)
+
+
+def test_nan_price_is_rejected_not_silently_zero_drawdown():
+    recs = [day("BUY", 0)]
+    with pytest.raises(ValueError, match="Giá không hợp lệ"):
+        simulate_trades(recs, prices=[100, float("nan")], fee=0.0)
+
+
+def test_zero_or_negative_price_is_rejected():
+    recs = [day("BUY", 0)]
+    with pytest.raises(ValueError, match="Giá không hợp lệ"):
+        simulate_trades(recs, prices=[100, 0], fee=0.0)
+    with pytest.raises(ValueError, match="Giá không hợp lệ"):
+        simulate_trades(recs, prices=[100, -50], fee=0.0)
+
+
+def test_non_positive_initial_equity_is_rejected():
+    recs = [day("BUY", 0)]
+    with pytest.raises(ValueError, match="initial_equity không hợp lệ"):
+        simulate_trades(recs, prices=[100, 110], fee=0.0, initial_equity=0.0)
+    with pytest.raises(ValueError, match="initial_equity không hợp lệ"):
+        simulate_trades(recs, prices=[100, 110], fee=0.0, initial_equity=-1.0)
