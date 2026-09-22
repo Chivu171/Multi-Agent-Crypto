@@ -12,10 +12,50 @@ Rules fixed in docs/Quy_tac_danh_gia_B1 (see chat log for the reviewed version):
   computed in money, not by compounding daily percentage returns (that would
   silently assume rebalancing every day, which is wrong for a held short).
 """
+import datetime
 import math
 from typing import Any, Dict, List, Optional, Sequence
 
 Record = Dict[str, Any]
+VALID_SIGNALS = {"BUY", "SELL", "NEUTRAL"}
+
+
+def validate_records(records: Sequence[Record]) -> None:
+    """Kiểm tra đầu vào trước khi tính bất kỳ chỉ số nào: tín hiệu phải hợp
+    lệ (khớp trạng thái ok), và nếu record có sample_id dạng ngày ISO thì
+    chuỗi ngày phải liên tục, không trùng, không sai thứ tự."""
+    if not records:
+        raise ValueError("records rỗng — không có ngày nào để tính")
+
+    for r in records:
+        signal = r.get("signal")
+        if r["ok"]:
+            if signal not in VALID_SIGNALS:
+                raise ValueError(
+                    f"Tín hiệu không hợp lệ {signal!r} ở ngày ok=True "
+                    f"(sample_id={r.get('sample_id')}); phải là một trong {VALID_SIGNALS}"
+                )
+        elif signal is not None:
+            raise ValueError(
+                f"Ngày lỗi (ok=False) phải có signal=None, gặp {signal!r} "
+                f"(sample_id={r.get('sample_id')})"
+            )
+
+    sample_ids = [r.get("sample_id") for r in records]
+    if all(s is not None for s in sample_ids):
+        if len(set(sample_ids)) != len(sample_ids):
+            raise ValueError(f"sample_id trùng lặp trong records: {sample_ids}")
+        try:
+            dates = [datetime.date.fromisoformat(str(s)[:10]) for s in sample_ids]
+        except ValueError:
+            dates = None
+        if dates is not None:
+            for prev, cur in zip(dates, dates[1:]):
+                if (cur - prev).days != 1:
+                    raise ValueError(
+                        f"Chuỗi ngày không liên tục hoặc sai thứ tự: {prev.isoformat()} -> {cur.isoformat()} "
+                        f"(cách nhau {(cur - prev).days} ngày, phải đúng 1 ngày)"
+                    )
 
 
 # ---------------------------------------------------------------------------
@@ -37,6 +77,7 @@ def _ratio(num: float, den: float) -> Optional[float]:
 
 
 def prediction_metrics(records: Sequence[Record]) -> Dict[str, Any]:
+    validate_records(records)
     successful = [r for r in records if r["ok"]]
     directional = [r for r in successful if r["signal"] in ("BUY", "SELL")]
     correct = sum(is_correct(r["signal"], r["return_24h"]) for r in directional)
@@ -87,6 +128,7 @@ def simulate_trades(records: Sequence[Record], prices: Sequence[float],
     """records[i] is day i (signal, ok); prices has len(records)+1 entries:
     prices[i] is the reference price at the start of day i (== end of day i-1),
     prices[n] is the price 24h after the last requested day."""
+    validate_records(records)
     n = len(records)
     assert len(prices) == n + 1, "prices must bracket every requested day (n+1 points)"
 
@@ -152,16 +194,23 @@ def simulate_trades(records: Sequence[Record], prices: Sequence[float],
             else:
                 curve.append(mark)
 
+    # Lệnh hòa vốn (pnl_recorded == 0) không phải lệnh thắng cũng không phải
+    # lệnh thua — không được đếm vào losing_trades (trước đây dùng <= 0, sai).
     wins = [t for t in trades if t["pnl_recorded"] > 0]
-    losses = [t for t in trades if t["pnl_recorded"] <= 0]
+    losses = [t for t in trades if t["pnl_recorded"] < 0]
+    breakeven = [t for t in trades if t["pnl_recorded"] == 0]
     loss_sum = -sum(t["pnl_recorded"] for t in losses)
     win_sum = sum(t["pnl_recorded"] for t in wins)
     if not trades:
-        profit_factor = None
-    elif loss_sum == 0:
-        profit_factor = None if win_sum == 0 else "no_losing_trades"
+        profit_factor, profit_factor_note = None, "no_trades"
+    elif not losses and not wins:
+        profit_factor, profit_factor_note = None, "no_wins_or_losses"  # toàn lệnh hòa vốn
+    elif not losses:
+        profit_factor, profit_factor_note = None, "no_losing_trades"
+    elif not wins:
+        profit_factor, profit_factor_note = 0.0, None
     else:
-        profit_factor = win_sum / loss_sum
+        profit_factor, profit_factor_note = win_sum / loss_sum, None
 
     return {
         "fee": fee, "allow_short": allow_short, "ruined": ruined,
@@ -170,8 +219,10 @@ def simulate_trades(records: Sequence[Record], prices: Sequence[float],
         "trade_count": len(trades),
         "trade_win_rate": _ratio(len(wins), len(trades)),
         "profit_factor": profit_factor,
+        "profit_factor_note": profit_factor_note,
         "profit_factor_winning_trades": len(wins),
         "profit_factor_losing_trades": len(losses),
+        "profit_factor_breakeven_trades": len(breakeven),
         "max_drawdown": max_drawdown(curve),
     }
 
@@ -292,14 +343,34 @@ def build_records(run_dir, dataset_dir) -> List[Record]:
 
 
 def debate_impact(records: Sequence[Record]) -> Dict[str, Any]:
-    """Nhóm 3b: tỷ lệ đổi tín hiệu do Debate, và thay đổi chất lượng dự đoán
-    trước/sau, đo trên cùng tập ngày có Debate hợp lệ (debate_triggered)."""
+    """Nhóm 3b: tỷ lệ đổi tín hiệu do Debate; chất lượng dự đoán trước/sau đo
+    ở hai phạm vi riêng — (a) chỉ trên các ngày có Debate hợp lệ, để thấy tác
+    động trực tiếp của Debate; (b) trên toàn bộ ngày yêu cầu, để so sánh đúng
+    quy tắc baseline "multi-agent không Debate" và "hệ thống đầy đủ" đã chốt."""
     debate_days = [r for r in records if r["ok"] and r.get("debate_triggered")]
     changed = [r for r in debate_days if r["signal"] != r["signal_no_debate"]]
 
-    before = [{"ok": True, "signal": r["signal_no_debate"], "return_24h": r["return_24h"]} for r in debate_days]
-    after = [{"ok": True, "signal": r["signal"], "return_24h": r["return_24h"]} for r in debate_days]
-    before_m, after_m = prediction_metrics(before), prediction_metrics(after)
+    if debate_days:
+        before = [{"ok": True, "signal": r["signal_no_debate"], "return_24h": r["return_24h"]} for r in debate_days]
+        after = [{"ok": True, "signal": r["signal"], "return_24h": r["return_24h"]} for r in debate_days]
+        before_m, after_m = prediction_metrics(before), prediction_metrics(after)
+        accuracy_before, accuracy_after = before_m["directional_accuracy"], after_m["directional_accuracy"]
+        coverage_before, coverage_after = before_m["coverage"], after_m["coverage"]
+    else:
+        accuracy_before = accuracy_after = coverage_before = coverage_after = None
+
+    # (b) toàn bộ ngày yêu cầu — giữ nguyên trạng thái ok của từng ngày để
+    # coverage/accuracy chia đúng cho tổng số ngày yêu cầu, không chỉ số ngày
+    # có Debate. Ngày ok nhưng chưa tính lại được signal_no_debate (ví dụ
+    # records dựng tay, chưa gọi build_records) bị coi như ngày lỗi ở nhánh
+    # "không Debate" vì không có gì để so sánh.
+    full_before, full_after = [], []
+    for r in records:
+        has_no_debate = r["ok"] and r.get("signal_no_debate") is not None
+        full_before.append({"ok": has_no_debate, "signal": r.get("signal_no_debate") if has_no_debate else None,
+                            "return_24h": r["return_24h"]})
+        full_after.append({"ok": r["ok"], "signal": r.get("signal"), "return_24h": r["return_24h"]})
+    full_before_m, full_after_m = prediction_metrics(full_before), prediction_metrics(full_after)
 
     wrong_to_right = right_to_wrong = call_to_neutral = neutral_to_call = other_changes = 0
     for r in changed:
@@ -319,10 +390,16 @@ def debate_impact(records: Sequence[Record]) -> Dict[str, Any]:
         "debate_days": len(debate_days),
         "signal_changed": len(changed),
         "signal_change_rate": _ratio(len(changed), len(debate_days)),
-        "accuracy_before_debate": before_m["directional_accuracy"],
-        "accuracy_after_debate": after_m["directional_accuracy"],
-        "coverage_before_debate": before_m["coverage"],
-        "coverage_after_debate": after_m["coverage"],
+        # (a) chỉ trên các ngày có Debate — đo tác động trực tiếp
+        "accuracy_before_debate": accuracy_before,
+        "accuracy_after_debate": accuracy_after,
+        "coverage_before_debate": coverage_before,
+        "coverage_after_debate": coverage_after,
+        # (b) toàn bộ ngày yêu cầu — đúng phạm vi baseline đã chốt trong B1
+        "accuracy_no_debate_all_days": full_before_m["directional_accuracy"],
+        "accuracy_with_debate_all_days": full_after_m["directional_accuracy"],
+        "coverage_no_debate_all_days": full_before_m["coverage"],
+        "coverage_with_debate_all_days": full_after_m["coverage"],
         "wrong_to_right": wrong_to_right,
         "right_to_wrong": right_to_wrong,
         "call_to_neutral": call_to_neutral,

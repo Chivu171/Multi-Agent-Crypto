@@ -18,6 +18,7 @@ from utils.eval_metrics import (
     s_final_buckets,
     simulate_trades,
     success_rate,
+    validate_records,
 )
 
 
@@ -109,7 +110,8 @@ def test_case_10_two_winning_trades_no_losses():
     assert sim["trade_count"] == 2
     assert all(t["pnl_recorded"] > 0 for t in sim["trades"])
     assert sim["trade_win_rate"] == 1.0
-    assert sim["profit_factor"] == "no_losing_trades"
+    assert sim["profit_factor"] is None
+    assert sim["profit_factor_note"] == "no_losing_trades"
     assert sim["profit_factor_losing_trades"] == 0
 
 
@@ -150,17 +152,22 @@ def test_case_15_max_drawdown_from_curve():
 
 
 def test_case_16_profit_factor_uses_money_not_percent():
+    """4 lệnh liên tiếp (tách bởi NEUTRAL để không gộp lệnh), lợi suất ròng
+    lần lượt +10%, -4%, +6%, -6% khi fee=0 — gọi thẳng simulate_trades(),
+    không tự tính PnL tay trong test, để test này thật sự kiểm tra module."""
+    recs = [day("BUY", 0), day("NEUTRAL", 0), day("BUY", 0), day("NEUTRAL", 0),
+            day("BUY", 0), day("NEUTRAL", 0), day("BUY", 0), day("NEUTRAL", 0)]
+    prices = [100, 110, 110, 105.6, 105.6, 111.936, 111.936, 105.21984, 105.21984]
+    sim = simulate_trades(recs, prices, fee=0.0)
+    assert sim["trade_count"] == 4
+    # xác nhận đúng thứ tự lợi suất ròng từng lệnh trước khi kiểm PF
+    # (E_open đổi mỗi lệnh theo vốn tích lũy, nên so PnL với equity tại lúc mở)
     equity = 1.0
-    pnls = []
-    for r in (0.10, -0.04, 0.06, -0.06):
-        pnl = equity * r
-        pnls.append(pnl)
-        equity += pnl
-    wins = sum(p for p in pnls if p > 0)
-    losses = -sum(p for p in pnls if p <= 0)
-    pf = wins / losses
-    assert pf == pytest.approx(1.46957, abs=1e-4)
-    assert pf != pytest.approx(16 / 10)
+    for t, target in zip(sim["trades"], (0.10, -0.04, 0.06, -0.06)):
+        assert t["pnl_recorded"] == pytest.approx(equity * target, rel=1e-6)
+        equity += t["pnl_recorded"]
+    assert sim["profit_factor"] == pytest.approx(1.46957, abs=1e-4)
+    assert sim["profit_factor"] != pytest.approx(16 / 10)
 
 
 def test_case_17_no_price_change_with_fee_is_a_loss():
@@ -192,7 +199,11 @@ def test_case_20_all_breakeven_trades():
     sim = simulate_trades(recs, prices=[100, 100, 100], fee=0.0)
     assert sim["trade_count"] == 2
     assert sim["trade_win_rate"] == 0.0
-    assert sim["profit_factor"] is None  # no losses either
+    assert sim["profit_factor"] is None
+    assert sim["profit_factor_note"] == "no_wins_or_losses"
+    # lệnh hòa vốn không được tính là lệnh thua (trước đây bị đếm nhầm 2)
+    assert sim["profit_factor_losing_trades"] == 0
+    assert sim["profit_factor_breakeven_trades"] == 2
 
 
 def test_case_21_ruin_caps_equity_at_zero():
@@ -279,6 +290,15 @@ def test_debate_impact_hand_case():
     assert out["accuracy_before_debate"] == pytest.approx(2 / 3)
     # sau Debate: BUY,SELL,BUY,BUY -> đúng 3/4 (SELL sai vì return>0)
     assert out["accuracy_after_debate"] == pytest.approx(3 / 4)
+    # toàn bộ 5 ngày (ngày 5 không có Debate nhưng vẫn có signal_no_debate=BUY,
+    # nghĩa là tính vào cả hai nhánh — đúng bản chất "nếu không có Debate thì
+    # tín hiệu vẫn có, chỉ là không đổi"):
+    # trước = SELL,BUY,BUY,NEUTRAL,BUY -> 4 mẫu directional, 3 đúng (SELL sai)
+    assert out["coverage_no_debate_all_days"] == pytest.approx(4 / 5)
+    assert out["accuracy_no_debate_all_days"] == pytest.approx(3 / 4)
+    # sau = BUY,SELL,BUY,BUY,BUY -> 5 mẫu directional, 4 đúng (SELL sai)
+    assert out["coverage_with_debate_all_days"] == pytest.approx(5 / 5)
+    assert out["accuracy_with_debate_all_days"] == pytest.approx(4 / 5)
 
 
 # ---- đối chứng với dữ liệu pilot thật ---------------------------------------
@@ -357,3 +377,72 @@ def test_debate_impact_on_real_pilot_no_signal_changed():
     assert out["signal_changed"] == 0
     assert out["signal_change_rate"] == 0.0
     assert out["accuracy_before_debate"] == out["accuracy_after_debate"]
+    # 0 ngày đổi tín hiệu -> 2 nhánh phải khớp y hệt nhau trên toàn bộ 24 ngày ok
+    assert out["accuracy_no_debate_all_days"] == out["accuracy_with_debate_all_days"] == pytest.approx(13 / 24)
+    assert out["coverage_no_debate_all_days"] == out["coverage_with_debate_all_days"] == pytest.approx(24 / 30)
+
+
+# ---- kiểm tra đầu vào (điểm 4): tín hiệu không hợp lệ, ngày thiếu/trùng/sai thứ tự ----
+
+def test_invalid_signal_on_ok_day_is_rejected():
+    recs = [day("HOLD", 0.01)]  # "HOLD" không phải BUY/SELL/NEUTRAL
+    with pytest.raises(ValueError, match="Tín hiệu không hợp lệ"):
+        prediction_metrics(recs)
+    with pytest.raises(ValueError, match="Tín hiệu không hợp lệ"):
+        simulate_trades(recs, prices=[100, 100])
+
+
+def test_signal_set_on_error_day_is_rejected():
+    recs = [day("BUY", 0.0, ok=False)]  # ok=False nhưng vẫn có signal
+    with pytest.raises(ValueError, match="signal=None"):
+        prediction_metrics(recs)
+
+
+def test_empty_records_rejected():
+    with pytest.raises(ValueError, match="rỗng"):
+        prediction_metrics([])
+
+
+def test_duplicate_sample_id_rejected():
+    recs = [
+        {"sample_id": "2022-01-01", "ok": True, "signal": "BUY", "return_24h": 0.01},
+        {"sample_id": "2022-01-01", "ok": True, "signal": "SELL", "return_24h": -0.01},
+    ]
+    with pytest.raises(ValueError, match="trùng lặp"):
+        prediction_metrics(recs)
+
+
+def test_gap_in_date_sequence_rejected():
+    recs = [
+        {"sample_id": "2022-01-01", "ok": True, "signal": "BUY", "return_24h": 0.01},
+        {"sample_id": "2022-01-03", "ok": True, "signal": "BUY", "return_24h": 0.01},  # thiếu 01-02
+    ]
+    with pytest.raises(ValueError, match="không liên tục"):
+        prediction_metrics(recs)
+
+
+def test_out_of_order_dates_rejected():
+    recs = [
+        {"sample_id": "2022-01-02", "ok": True, "signal": "BUY", "return_24h": 0.01},
+        {"sample_id": "2022-01-01", "ok": True, "signal": "BUY", "return_24h": 0.01},  # ngược thứ tự
+    ]
+    with pytest.raises(ValueError, match="không liên tục"):
+        prediction_metrics(recs)
+
+
+def test_valid_consecutive_dates_pass():
+    recs = [
+        {"sample_id": "2022-01-01", "ok": True, "signal": "BUY", "return_24h": 0.01},
+        {"sample_id": "2022-01-02", "ok": False, "signal": None, "return_24h": -0.01},
+        {"sample_id": "2022-01-03", "ok": True, "signal": "NEUTRAL", "return_24h": 0.0},
+    ]
+    m = prediction_metrics(recs)  # không raise
+    assert m["requested_days"] == 3
+
+
+@pytest.mark.skipif(not PILOT.exists(), reason="pilot run output not present")
+def test_build_records_output_passes_validation_on_real_pilot():
+    """Dữ liệu thật phải tự vượt qua validate_records — nếu không thì lỗi
+    nằm ở build_records/snapshots.jsonl, không phải ở bộ validate."""
+    records = build_records(PILOT, DATASET)
+    validate_records(records)  # không raise
