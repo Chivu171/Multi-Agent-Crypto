@@ -1,18 +1,22 @@
 {
-  "conflict_score": 0.0002,
+  "conflict_score": 0.1543,
   "metrics": {
-    "mean_pairwise_kl": 0.0003,
-    "decision_variance": 0.0001
+    "mean_pairwise_kl": 0.1901,
+    "decision_variance": 0.1006
   },
   "conflict_detected": false,
   "conflict_categories": [
-    "No Conflict"
+    "Reliability Conflict"
   ],
   "root_cause_analysis": "N/A - System in state of consensus.",
   "trigger_debate_module": false,
   "debate_updated_outputs": null,
-  "degraded_mode": true,
-  "missing_agents": [
-    "Sentiment_Agent"
-  ]
+  "degraded_mode": false,
+  "missing_agents": [],
+  "rca_grounding": {
+    "status": "not_run"
+  },
+  "debate_status": "not_run",
+  "conflict_score_after_debate": null,
+  "explanations_valid": true
 }

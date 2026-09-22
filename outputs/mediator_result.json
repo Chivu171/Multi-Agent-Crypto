@@ -1,19 +1,26 @@
 {
-  "S_final": 0.332207,
+  "S_final": 0.415986,
   "details": [
     {
       "agent_id": "Financial_Agent",
-      "direction": 1,
-      "strength": 0.6,
-      "weight": 0.512063,
-      "contribution": 0.307238
+      "direction": 0,
+      "strength": 0.55,
+      "weight": 0.0,
+      "contribution": 0.0
     },
     {
       "agent_id": "Market_Agent",
       "direction": 1,
-      "strength": 0.62,
-      "weight": 0.040273,
-      "contribution": 0.024969
+      "strength": 0.55,
+      "weight": 0.277812,
+      "contribution": 0.152796
+    },
+    {
+      "agent_id": "Sentiment_Agent",
+      "direction": 1,
+      "strength": 0.75,
+      "weight": 0.35092,
+      "contribution": 0.26319
     }
   ]
 }

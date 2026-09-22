@@ -1,57 +1,84 @@
 [
   {
     "agent_id": "Financial_Agent",
-    "signal": "BUY",
-    "confidence": 0.6,
+    "signal": "NEUTRAL",
+    "confidence": 0.55,
     "belief_vector": {
-      "direction": 1,
-      "strength": 0.6
+      "direction": 0,
+      "strength": 0.55
     },
     "evidence_chunks": [
       {
         "id": "financial_chunk_001",
-        "content": "On-chain network snapshot (fetched 2026-09-14T08:01:53.929308+00:00):\n(free-tier proxies — no MVRV/SOPR/whale-flow; those require a paid provider)\n- Network hash rate: 956,677,581.31 TH/s (down 3.8% vs prior day)\n- Miner revenue: 41,850,977.38 USD/day (up 1.0% vs prior day)\n- Confirmed transactions: 791,693.00 tx/day (up 1.0% vs prior day)\n- Estimated transaction value: 3,113,701,982.14 USD/day (up 22.4% vs prior day)\n",
+        "content": "On-chain network snapshot (fetched 2026-09-22T09:14:39.202008+00:00):\n(free-tier proxies — no MVRV/SOPR/whale-flow; those require a paid provider)\n- Network hash rate: 983,309,097.55 TH/s (down 3.2% vs prior day)\n- Miner revenue: 42,096,485.18 USD/day (down 1.2% vs prior day)\n- Confirmed transactions: 631,655.00 tx/day (down 22.4% vs prior day)\n- Estimated transaction value: 15,622,817,186.94 USD/day (up 307.2% vs prior day)\n",
         "metadata": {
           "source": "blockchain.info Charts API",
           "page": 1,
-          "timestamp": "2026-09-14T08:01:53.929308+00:00"
+          "timestamp": "2026-09-22T09:14:39.202008+00:00"
         }
       }
     ],
-    "logic_path": "Bước 1: Phân tích giá trị giao dịch ước tính tăng 22.4% — đây là tín hiệu tăng giá mạnh nhất, cho thấy dòng vốn lớn đổ vào mạng lưới, hoạt động kinh tế tăng mạnh. Bước 2: Giao dịch xác nhận tăng 1.0% — cho thấy mức sử dụng mạng ổn định và tăng nhẹ, hỗ trợ tích cực. Bước 3: Doanh thu thợ đào tăng 1.0% dù hash rate giảm — cho thấy phí giao dịch hoặc giá tài sản bù đắp cho sự suy giảm sức mạnh tính toán. Bước 4: Hash rate giảm 3.8% — đây là tín hiệu giảm giá duy nhất, gợi ý một số thợ đào ngừng hoạt động, có thể do biên lợi nhuận thu hẹp. Bước 5: Tổng hợp — tín hiệu tăng giá từ giá trị giao dịch (22.4%) đủ mạnh để lấn át tín hiệu giảm giá từ hash rate (-3.8%), dẫn đến kết luận BUY với độ tin cậy trung bình.",
+    "logic_path": "Phân tích bằng chứng on-chain cho thấy tín hiệu mâu thuẫn. Ba chỉ số giảm: hash rate giảm 3.2% cho thấy sức mạnh mạng suy yếu, doanh thu miner giảm 1.2% phản ánh lợi nhuận khai thác yếu, và giao dịch xác nhận giảm 22.4% cho thấy hoạt động sử dụng mạng suy giảm. Tuy nhiên, giá trị giao dịch ước tính tăng 307.2% cho thấy nhu cầu chuyển giá trị lớn tăng mạnh, có thể đến từ các giao dịch tổ chức. Sự kết hợp giữa hoạt động trên mạng giảm nhưng giá trị chuyển dịch tăng tạo ra tín hiệu hỗn hợp, không đủ cơ sở để xác định rõ hướng BUY hoặc SELL.",
     "metadata": {
       "source_type": "financial_report",
-      "entropy": 0.235,
+      "entropy": 1.0,
       "redundancy_score": 0.1,
       "recency_weight": 1.0,
-      "timestamp": "2026-09-14"
+      "timestamp": "2026-09-22"
     }
   },
   {
     "agent_id": "Market_Agent",
     "signal": "BUY",
-    "confidence": 0.62,
+    "confidence": 0.55,
     "belief_vector": {
       "direction": 1,
-      "strength": 0.62
+      "strength": 0.55
     },
     "evidence_chunks": [
       {
         "id": "market_chunk_001",
-        "content": "BTC/USDT market snapshot (fetched 2026-09-14T08:01:59.651534+00:00):\n- Price: $77,820.01\n- EMA20: $77,107.12 | EMA50: $71,865.36 (price is above EMA20)\n- RSI14: 47.2\n- Funding rate: 0.0080%\n- Long/Short account ratio: 1.66\n",
+        "content": "BTC/USDT market snapshot (fetched 2026-09-22T10:02:53.917749+00:00):\n- Price: $86,203.86\n- EMA20: $79,500.47 | EMA50: $74,039.22 (price is above EMA20)\n- RSI14: 71.0\n- Funding rate: 0.0100%\n- Long/Short account ratio: 0.89\n",
         "metadata": {
           "source": "Binance public API",
-          "timestamp": "2026-09-14T08:01:59.651534+00:00"
+          "timestamp": "2026-09-22T10:02:53.917749+00:00"
         }
       }
     ],
-    "logic_path": "Giá nằm trên EMA20 và EMA50, đồng thời EMA20 cao hơn EMA50, cho thấy xu hướng tăng nhất quán. Tuy nhiên, RSI14 ở mức 47.2 không xác nhận động lượng mạnh. Funding rate dương và tỷ lệ Long/Short 1.66 ủng hộ phe mua nhưng cũng làm giảm độ tin cậy do vị thế dài đã chiếm ưu thế.",
+    "logic_path": "Giá trên cả EMA20 và EMA50 cho thấy xu hướng tăng rõ ràng. Tuy nhiên RSI14 ở 71.0 cho thấy điều kiện quá mua, làm giảm độ tin cậy. Tỷ lệ funding dương và tỷ lệ Long/Short dưới 1 cho thấy tâm lý thận trọng. Tín hiệu BUY nhưng cần thận trọng do quá mua.",
     "metadata": {
       "source_type": "market_data",
-      "entropy": 0.943,
+      "entropy": 0.58,
       "redundancy_score": 0.05,
       "recency_weight": 1.0,
-      "timestamp": "2026-09-14"
+      "timestamp": "2026-09-22"
+    }
+  },
+  {
+    "agent_id": "Sentiment_Agent",
+    "signal": "BUY",
+    "confidence": 0.75,
+    "belief_vector": {
+      "direction": 1,
+      "strength": 0.75
+    },
+    "evidence_chunks": [
+      {
+        "id": "sentiment_chunk_001",
+        "content": "Sentiment snapshot (fetched 2026-09-22T09:14:55.587538+00:00):\n- Fear & Greed Index: 78/100 (Extreme Greed)\n- Upcoming macro events (High/Medium impact):\n  * [Medium] EUR — ECB President Lagarde Speaks on 2026-09-22T07:00:00-04:00 (forecast: n/a, previous: n/a)\n  * [Medium] EUR — French Flash Manufacturing PMI on 2026-09-23T03:15:00-04:00 (forecast: 50.9, previous: 51.5)\n  * [Medium] EUR — French Flash Services PMI on 2026-09-23T03:15:00-04:00 (forecast: 48.3, previous: 48.4)\n  * [Medium] EUR — German Flash Manufacturing PMI on 2026-09-23T03:30:00-04:00 (forecast: 54.1, previous: 54.1)\n  * [Medium] EUR — German Flash Services PMI on 2026-09-23T03:30:00-04:00 (forecast: 49.9, previous: 48.5)\n  * [Medium] GBP — Flash Manufacturing PMI on 2026-09-23T04:30:00-04:00 (forecast: 51.5, previous: 51.5)\n  * [Medium] GBP — Flash Services PMI on 2026-09-23T04:30:00-04:00 (forecast: 52.0, previous: 52.8)\n  * [High] AUD — Employment Change on 2026-09-23T21:30:00-04:00 (forecast: 22.5K, previous: -15.8K)\n  * [High] AUD — Unemployment Rate on 2026-09-23T21:30:00-04:00 (forecast: 4.5%, previous: 4.5%)\n  * [High] CHF — SNB Monetary Policy Assessment on 2026-09-24T03:30:00-04:00 (forecast: n/a, previous: n/a)\n",
+        "metadata": {
+          "source": "Alternative.me + ForexFactory calendar",
+          "timestamp": "2026-09-22T09:14:55.587538+00:00"
+        }
+      }
+    ],
+    "logic_path": "Chỉ số Fear & Greed ở mức 78 (Extreme Greed) cho thấy sự lạc quan mạnh mẽ. Dữ liệu việc làm AUD bất ngờ tăng 22.5K, vượt xa dự báo, củng cố quan điểm tích cực. Tuy nhiên, các chỉ số PMI khu vực đồng euro và Anh có mixed, tạo ra một số thận trọng. Bài phát biểu sắp tới của Chủ tịch ECB Lagarde có thể ảnh hưởng thêm đến thị trường.",
+    "metadata": {
+      "source_type": "social_media",
+      "entropy": 0.44,
+      "redundancy_score": 0.1,
+      "recency_weight": 1.0,
+      "timestamp": "2026-09-22"
     }
   }
 ]
