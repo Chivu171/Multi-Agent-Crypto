@@ -10,6 +10,7 @@ from utils.grounding import (
     GroundingError, build_evidence_registry, request_grounded_claims,
     validate_citations, validate_review,
 )
+from utils.llm import LLMAPIError
 
 
 def claim(text="Funding dương 0.0100%", quote="Funding rate: 0.0100%", evidence_id="E001", kind="fact"):
@@ -79,6 +80,29 @@ def test_news_outside_structured_metrics_is_allowed():
     assert claims[0]["citations"][0]["quote"] == content
 
 
+def test_source_reference_resolves_verbatim_without_model_copying_long_decimals(evidence):
+    evidence[0]["content"] = 'Observed snapshot\n{"pct_change_1d": 0.7092198581560294}'
+    payload = {"claims": [{"type": "fact", "text": "Hash rate tăng khoảng 0,71%.",
+                          "citations": [{"evidence_id": "E001", "quote_id": "L2"}]}]}
+    ask = Mock(side_effect=[json.dumps(payload), json.dumps(review())])
+    claims, audit = request_grounded_claims("test", evidence, agent_name="debate", ask=ask)
+    assert audit["status"] == "accepted"
+    assert claims[0]["citations"][0]["quote"] == evidence[0]["content"].splitlines()[1]
+    reviewed = json.loads(ask.call_args_list[1].args[0])
+    assert reviewed["claims"] == claims
+
+
+@pytest.mark.parametrize("citation", [
+    {"evidence_id": "E001", "quote_id": "L999"},
+    {"evidence_id": "E999", "quote_id": "L1"},
+    {"evidence_id": "E001", "quote_id": "L1", "quote": "invented"},
+])
+def test_invalid_source_reference_still_rejected(citation, evidence):
+    payload = {"claims": [{"type": "fact", "text": "claim", "citations": [citation]}]}
+    with pytest.raises(ValueError):
+        validate_citations(payload, evidence)
+
+
 @pytest.mark.parametrize("payload", [{"checks": []}, {"checks": [review()["checks"][0]]*2},
     {"checks": [{"claim_index": 1, "verdict": "supported", "reason": "x"}]},
     {"checks": [{"claim_index": 0, "verdict": "maybe", "reason": "x"}]}])
@@ -87,12 +111,27 @@ def test_incomplete_or_invalid_reviewer_cannot_approve(payload):
         validate_review(payload, 1)
 
 
-def test_reviewer_failure_is_fail_closed(evidence):
-    ask = Mock(side_effect=[json.dumps(claim()), RuntimeError("network failed")])
+def test_malformed_reviewer_is_fail_closed_as_json_invalid(evidence):
+    ask = Mock(side_effect=[json.dumps(claim()), "not json", '{"checks": []}'])
     with pytest.raises(GroundingError) as error:
         request_grounded_claims("test", evidence, agent_name="debate", ask=ask)
-    assert error.value.audit["attempts"][0]["stage"] == "review"
-    assert ask.call_count == 2
+    audit = error.value.audit
+    assert audit["attempts"][0]["stage"] == "review"
+    assert (audit["status"], audit["reason"]) == ("json_invalid", "review_json")
+    assert ask.call_count == 3
+
+
+def test_reviewer_api_failure_propagates_instead_of_counting_as_rejection(evidence):
+    ask = Mock(side_effect=[json.dumps(claim()), LLMAPIError("quota", "per day")])
+    with pytest.raises(LLMAPIError):
+        request_grounded_claims("test", evidence, agent_name="debate", ask=ask)
+
+
+def test_unknown_citation_twice_is_a_rejection_not_a_json_error(evidence):
+    ask = Mock(return_value=json.dumps(claim(evidence_id="E999")))
+    with pytest.raises(GroundingError) as error:
+        request_grounded_claims("test", evidence, agent_name="debate", ask=ask)
+    assert (error.value.audit["status"], error.value.audit["reason"]) == ("rejected", "citation")
 
 
 def test_rejected_debate_preserves_entire_decision_state(extreme_conflict_output):

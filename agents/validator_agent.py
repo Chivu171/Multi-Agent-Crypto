@@ -185,6 +185,7 @@ class ValidatorAgent:
                 "rca_grounding": self.rca_grounding,
                 "debate_status": "not_run",
                 "explanations_valid": False,
+                "explanation_failure": "insufficient_agents",
             }
 
         # 1. Định lượng mâu thuẫn
@@ -203,6 +204,7 @@ class ValidatorAgent:
         # 4. Conditional Debate Trigger – run debate if conflict detected
         debate_updated_outputs = None
         debate_status = "not_run"
+        statuses = []
         post_conflict = None
         if conflict_detected:
             print("\n[Step 3] Khởi chạy Debate Module...")
@@ -215,6 +217,11 @@ class ValidatorAgent:
                              else "partial" if "accepted" in statuses else "rejected")
             post_conflict = self.calculate_conflict_core(debate_updated_outputs)[0]
         
+        # A JSON failure is technical (worth rerunning); a rejection is a result.
+        audits = [self.rca_grounding["status"], *statuses] if conflict_detected else [self.rca_grounding["status"]]
+        explanation_failure = ("json_invalid" if "json_invalid" in audits
+                               else "rejected" if "rejected" in audits else None)
+
         # 5. Assemble final result
         return {
             "conflict_score": round(conflict_score, 4),
@@ -232,5 +239,6 @@ class ValidatorAgent:
             "rca_grounding": self.rca_grounding,
             "debate_status": debate_status,
             "conflict_score_after_debate": round(post_conflict, 4) if post_conflict is not None else None,
-            "explanations_valid": self.rca_grounding["status"] != "rejected" and debate_status not in {"partial", "rejected"},
+            "explanations_valid": explanation_failure is None,
+            "explanation_failure": explanation_failure,
         }

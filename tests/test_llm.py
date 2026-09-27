@@ -24,3 +24,18 @@ def test_provider_finish_reason_is_checked_before_returning_content(finish_reaso
         else:
             assert ask_llm("test evidence", agent_name="financial") == raw
     assert completion.call_count == 1
+
+
+def test_reasoning_setting_reaches_provider_before_budget_is_consumed():
+    config = {"provider": "openrouter", "model": "fixture", "temperature": 0,
+              "max_tokens": 1200, "reasoning_effort": "none"}
+    def provider(client, **kwargs):
+        off = kwargs.get("extra_body", {}).get("reasoning", {}).get("effort") == "none"
+        return SimpleNamespace(choices=[SimpleNamespace(
+            finish_reason="stop" if off else "length",
+            message=SimpleNamespace(content='{"ok":true}' if off else None),
+        )])
+    with patch("utils.llm.get_agent_config", return_value=config), \
+         patch("utils.llm._get_openrouter_client", return_value=object()), \
+         patch("utils.llm._create_completion", side_effect=provider):
+        assert ask_llm("review the supplied snapshot", agent_name="grounding") == '{"ok":true}'

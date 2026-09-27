@@ -3,12 +3,13 @@
 Scenarios:
     1. Consensus  — all 3 specialists agree (BUY/BUY/BUY)
     2. Conflict   — sharp disagreement (BUY/SELL/BUY)
-    3. Fallback   — LLM unreachable, pipeline falls back to outputs/logs.json
+    3. API error  — provider quota exhausted; the live pipeline stops with an
+                    explicit status and never reuses old predictions
 
 Outputs:
     outputs/demo_consensus.json
     outputs/demo_conflict.json
-    outputs/demo_fallback.json
+    outputs/demo_api_error.json
 """
 
 from __future__ import annotations
@@ -18,12 +19,17 @@ import os
 import sys
 from datetime import datetime
 from typing import List
+from unittest.mock import patch
+
+import httpx
+import openai
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from agents.validator_agent import ValidatorAgent
 from agents.debate_agent import DebateAgent
 from agents.mediator_agent import run_mediator
+from utils import llm
 from utils.display import print_logic_path
 
 
@@ -191,40 +197,44 @@ def scenario_conflict() -> dict:
     return result
 
 
-def scenario_fallback() -> dict:
-    """LLM unreachable — pipeline falls back to outputs/logs.json."""
+def scenario_api_error() -> dict:
+    """Quota exhausted — main.py stops with a reason instead of old predictions."""
+    import main as live_pipeline
+
     print(f"\n{'=' * 60}")
-    print(f"  SCENARIO: Fallback (LLM unreachable)")
+    print("  SCENARIO: API error (OpenRouter free quota exhausted)")
     print(f"{'=' * 60}")
 
-    # Simulate: delete logs.json to show fallback path
-    logs_path = "outputs/logs.json"
-    backup = None
-    if os.path.exists(logs_path):
-        with open(logs_path, "r", encoding="utf-8") as f:
-            backup = json.load(f)
-        os.remove(logs_path)
-
+    # Only the provider call is simulated; data fetching and main.py run for real.
+    quota = openai.RateLimitError(
+        "Rate limit exceeded: free-models-per-day",
+        response=httpx.Response(429, request=httpx.Request("POST", "https://openrouter.ai/api/v1")),
+        body={"message": "Rate limit exceeded: free-models-per-day"},
+    )
+    status_path = "outputs/run_status.json"
+    previous = open(status_path, encoding="utf-8").read() if os.path.exists(status_path) else None
     try:
-        # Attempt to run main pipeline (will fail because no LLM + no logs)
-        # In real scenario, main.py catches this and loads logs.json
-        # Here we simulate the fallback directly
-        print("\n[Fallback] LLM unreachable, loading outputs/logs.json...")
-        if backup:
-            print(f"  Loaded {len(backup)} agent outputs from cache.")
-            result = _run_pipeline(
-                backup, "Fallback (from logs.json)", use_llm=False
-            )
-            result["scenario"] = "Fallback (LLM down → logs.json)"
-            _save("outputs/demo_fallback.json", result)
-            return result
-        else:
-            raise FileNotFoundError("outputs/logs.json not found")
+        with patch.object(llm, "_send", side_effect=quota):
+            live_pipeline.main()
+        with open(status_path, encoding="utf-8") as f:
+            run_status = json.load(f)
     finally:
-        # Restore logs.json
-        if backup is not None:
-            with open(logs_path, "w", encoding="utf-8") as f:
-                json.dump(backup, f, indent=2, ensure_ascii=False)
+        # Keep the real run's status file untouched by the demo.
+        if previous is None:
+            os.remove(status_path)
+        else:
+            with open(status_path, "w", encoding="utf-8") as f:
+                f.write(previous)
+
+    print("\n[Kết quả]")
+    print(f"  status: {run_status['status']} ({run_status['reason']})")
+    for error in run_status["errors"]:
+        print(f"    - {error.get('agent', error.get('stage'))}: {error['status']} / {error['reason']}")
+    print("  Không có tín hiệu nào được sinh ra; kết quả cũ trong outputs/ giữ nguyên.")
+    result = {"scenario": "API error (quota exhausted → controlled stop)",
+              "timestamp": datetime.now().isoformat(), "run_status": run_status}
+    _save("outputs/demo_api_error.json", result)
+    return result
 
 
 # ---------------------------------------------------------------------------
@@ -238,7 +248,7 @@ def main() -> None:
 
     scenario_consensus()
     scenario_conflict()
-    scenario_fallback()
+    scenario_api_error()
 
     print("\n" + "=" * 60)
     print("  ALL DEMOS COMPLETE")
@@ -246,7 +256,7 @@ def main() -> None:
     print("  Outputs:")
     print("    - outputs/demo_consensus.json")
     print("    - outputs/demo_conflict.json")
-    print("    - outputs/demo_fallback.json")
+    print("    - outputs/demo_api_error.json")
 
 
 if __name__ == "__main__":

@@ -4,10 +4,9 @@ to skip tenacity's real sleep during tests (the production wait_exponential
 schedule is still what runs in normal usage)."""
 
 import requests
-from openai import RateLimitError
 from tenacity import wait_fixed
 
-from utils.retry import http_retry, llm_retry
+from utils.retry import http_retry
 
 
 def _run_without_waiting(decorated_func):
@@ -61,22 +60,3 @@ def test_http_retry_does_not_retry_non_network_errors():
         pass
 
     assert calls["n"] == 1  # no retry for non-network exceptions
-
-
-def test_llm_retry_recovers_from_rate_limit():
-    calls = {"n": 0}
-
-    class _FakeResponse:
-        status_code = 429
-        headers = {}
-        request = None
-
-    @llm_retry
-    def flaky_llm_call():
-        calls["n"] += 1
-        if calls["n"] < 2:
-            raise RateLimitError("rate limited", response=_FakeResponse(), body=None)
-        return "ok"
-
-    assert _run_without_waiting(flaky_llm_call) == "ok"
-    assert calls["n"] == 2

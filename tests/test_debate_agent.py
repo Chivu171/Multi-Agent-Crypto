@@ -62,8 +62,8 @@ def test_run_debate_updates_confidence_and_preserves_agent_count(mock_ask_llm, e
         assert 0.0 <= out["confidence"] <= 1.0
 
 
-@patch("agents.debate_agent.ask_llm", side_effect=RuntimeError("LLM unreachable"))
-def test_run_debate_keeps_old_logic_path_on_llm_failure(mock_ask_llm, extreme_conflict_output):
+@patch("agents.debate_agent.ask_llm", return_value="not json")
+def test_run_debate_keeps_old_logic_path_on_invalid_output(mock_ask_llm, extreme_conflict_output):
     agent = DebateAgent(rounds=1)
     result = agent.run_debate(extreme_conflict_output)
 

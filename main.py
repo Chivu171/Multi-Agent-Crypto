@@ -1,14 +1,19 @@
 # main.py
 
+import datetime
 import json
 import os
+import sys
+import uuid
 from agents.financial_agent import run as financial_run
 from agents.market_agent import run as market_run
 from agents.sentiment_agent import run as sentiment_run
 from agents.validator_agent import ValidatorAgent
 from agents.debate_agent import DebateAgent
 from agents.mediator_agent import run_mediator
+from utils import llm
 from utils.display import print_logic_path
+from utils.failures import describe_failure, explanation_status
 from utils.thresholds import (
     DEFAULT_CONFLICT_ALPHA,
     DEFAULT_CONFLICT_THRESHOLD,
@@ -16,74 +21,87 @@ from utils.thresholds import (
     SIGNAL_STRONG_INTENSITY_FLOOR,
 )
 
+RUN_BUDGET_SECONDS = 300
+# Result files are replaced only by a run whose explanations passed review.
+PUBLISHED_STATUSES = {"ok", "degraded"}
+
+
+def save_json(path, data):
+    """Atomic write: readers never see half a file."""
+    os.makedirs(os.path.dirname(path), exist_ok=True)
+    tmp = path + ".tmp"
+    with open(tmp, "w", encoding="utf-8") as f:
+        json.dump(data, f, indent=2, ensure_ascii=False)
+    os.replace(tmp, path)
+
 
 def main():
+    """Run the live pipeline; return the run status (also in outputs/run_status.json)."""
+    run = {"run_id": uuid.uuid4().hex[:12],
+           "started_at": datetime.datetime.now(datetime.timezone.utc).isoformat(),
+           "status": "error", "reason": None, "errors": []}
+    llm.set_deadline(RUN_BUDGET_SECONDS)
+    try:
+        _run_pipeline(run)
+    except Exception as exc:
+        failure = describe_failure(exc, stage="pipeline")
+        run["errors"].append(failure)
+        run.update(status=failure["status"], reason=failure["reason"])
+        print(f"\n[FATAL] {failure['status']} ({failure['reason']}): {failure['message']}")
+    finally:
+        llm.set_deadline(None)
+        run["finished_at"] = datetime.datetime.now(datetime.timezone.utc).isoformat()
+        save_json("outputs/run_status.json", run)
+        print(f"\n  -> Trạng thái lần chạy: {run['status']} ({run['reason'] or 'ok'}) — 'outputs/run_status.json'")
+    return run["status"]
+
+
+def _run_pipeline(run):
     print("=" * 60)
     print("🚀 KÍCH HOẠT HỆ THỐNG PHÂN TÍCH TÀI CHÍNH MULTI-AGENT CRYPTO")
     print("=" * 60)
 
     # Step 1: Gather independent opinions from Specialist Agents
     print("\n[Step 1] Thu thập nhận định độc lập từ các Specialist Agents...")
-    try:
-        financial_output = financial_run()
-        print(f"  - Financial Agent: {financial_output['signal']} (Confidence: {financial_output['confidence']})")
-        print_logic_path("initial", financial_output.get("logic_path"))
-    except Exception as e:
-        import traceback
-        traceback.print_exc()
-        financial_output = None
+    named_outputs = []
+    for name, runner in (("Financial_Agent", financial_run), ("Market_Agent", market_run),
+                         ("Sentiment_Agent", sentiment_run)):
+        try:
+            output = runner()
+            print(f"  - {name}: {output['signal']} (Confidence: {output['confidence']})")
+            print_logic_path("initial", output.get("logic_path"))
+        except Exception as e:
+            failure = describe_failure(e, stage="specialist", agent=name)
+            run["errors"].append(failure)
+            print(f"  - ERROR {name}: {failure['status']} ({failure['reason']}): {failure['message']}")
+            output = None
+        named_outputs.append((name, output))
 
-    try:
-        market_output = market_run()
-        print(f"  - Market Agent: {market_output['signal']} (Confidence: {market_output['confidence']})")
-        print_logic_path("initial", market_output.get("logic_path"))
-    except Exception as e:
-        print(f"  - ERROR Market Agent: {e}")
-        market_output = None
-
-    try:
-        sentiment_output = sentiment_run()
-        print(f"  - Sentiment Agent: {sentiment_output['signal']} (Confidence: {sentiment_output['confidence']})")
-        print_logic_path("initial", sentiment_output.get("logic_path"))
-    except Exception as e:
-        print(f"  - ERROR Sentiment Agent: {e}")
-        sentiment_output = None
-
-    named_outputs = [
-        ("Financial_Agent", financial_output),
-        ("Market_Agent", market_output),
-        ("Sentiment_Agent", sentiment_output),
-    ]
     all_outputs = [o for _, o in named_outputs if o is not None]
     missing_agents = [name for name, o in named_outputs if o is None]
 
     if not all_outputs:
-        print("\n[!] Cả 3 Specialist Agent đều thất bại; xem lỗi từng agent ở trên.")
-        print("    Tự động kích hoạt cơ chế dự phòng: Tải dữ liệu từ 'outputs/logs.json'...")
-        try:
-            with open("outputs/logs.json", "r", encoding="utf-8") as f:
-                all_outputs = json.load(f)
-            missing_agents = []  # dữ liệu dự phòng thay thế toàn bộ live outputs
-            print("    [✓] Đã tải thành công dữ liệu dự phòng từ logs.json.")
-        except Exception as e:
-            print(f"    [✗] Lỗi tải dữ liệu dự phòng: {e}")
-            print("\n[FATAL] Không thu thập được đầu ra từ bất kỳ Agent nào. Dừng pipeline.")
-            return
-
-    if financial_output or market_output or sentiment_output:
-        os.makedirs("outputs", exist_ok=True)
-        with open("outputs/logs.json", "w", encoding="utf-8") as f:
-            json.dump(all_outputs, f, indent=2, ensure_ascii=False)
-        print("  -> Đã lưu thô outputs của 3 Agent vào 'outputs/logs.json'")
+        # Never substitute predictions from an older run's logs.
+        first = run["errors"][0]
+        run.update(status=first["status"], reason=first["reason"])
+        print("\n[FATAL] Cả 3 Specialist Agent đều thất bại; không dùng nhận định cũ. Dừng pipeline.")
+        return
 
     # Step 4: Run Validator Agent
     print("\n[Step 4] Khởi chạy Validator Agent thẩm định mâu thuẫn hệ thống...")
     validator = ValidatorAgent(alpha=DEFAULT_CONFLICT_ALPHA, threshold=DEFAULT_CONFLICT_THRESHOLD, use_llm=True)
     validation_result = validator.evaluate_pipeline(all_outputs, missing_agents=missing_agents)
 
-    if not validation_result.get("explanations_valid", True):
+    if len(all_outputs) < 2:
+        run.update(status="insufficient_agents", reason=run["errors"][0]["status"])
+    elif not validation_result.get("explanations_valid", True):
+        status, reason = explanation_status(validation_result)
+        run.update(status=status, reason=reason)
         print("\n[!] RCA/Debate có giải thích chưa đạt kiểm tra nguồn. "
               "Các cập nhật bị từ chối đã giữ trạng thái cũ; lần chạy này không phải pipeline đầy đủ hợp lệ.")
+    else:
+        run.update(status="degraded" if missing_agents else "ok",
+                   reason=run["errors"][0]["status"] if missing_agents else None)
 
     if validation_result.get("degraded_mode"):
         print(
@@ -128,21 +146,24 @@ def main():
             else ("SELL" if score < -SIGNAL_NEUTRAL_BAND else "NEUTRAL")
         )
 
-    print(f"  - S_final: {score:.4f} | Intensity: {intensity} | Signal: {signal}")    # Save mediator result
-    with open("outputs/mediator_result.json", "w", encoding="utf-8") as f:
-        json.dump(mediator_result, f, indent=2, ensure_ascii=False)
-    print("  -> Mediator result saved to 'outputs/mediator_result.json'")
+    print(f"  - S_final: {score:.4f} | Intensity: {intensity} | Signal: {signal}")
+    run.update(signal=signal, S_final=score)
 
     print("\n[BÁO CÁO PHÂN TÍCH NGUYÊN NHÂN RỄ CỐT - RCA REPORT]:")
     print("-" * 60)
     print(validation_result['root_cause_analysis'])
     print("-" * 60)
 
-    # Step 4: Save validation report for visualization
-    with open("outputs/validation_report.json", "w", encoding="utf-8") as f:
-        json.dump(validation_result, f, indent=2, ensure_ascii=False)
-    print("\n  -> Báo cáo thẩm định chi tiết đã được lưu vào 'outputs/validation_report.json'")
+    if run["status"] not in PUBLISHED_STATUSES:
+        run["validation_report"] = validation_result
+        print(f"\n  -> Không ghi đè kết quả cũ trong outputs/ (status={run['status']}); chi tiết trong run_status.json")
+        return
+    for path, data in (("outputs/logs.json", all_outputs),
+                       ("outputs/mediator_result.json", {**mediator_result, "run_id": run["run_id"]}),
+                       ("outputs/validation_report.json", {**validation_result, "run_id": run["run_id"]})):
+        save_json(path, data)
+    print("\n  -> Đã lưu logs.json, mediator_result.json, validation_report.json")
     print("=" * 60)
 
 if __name__ == "__main__":
-    main()
+    sys.exit(0 if main() in PUBLISHED_STATUSES else 1)

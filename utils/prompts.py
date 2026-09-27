@@ -150,7 +150,6 @@ với giả thuyết về nguyên nhân; không bắt buộc phải tìm đượ
 
 [CẤU TRÚC BẮT BUỘC]
 JSON claims theo schema system: 1-3 nhận định ngắn bằng tiếng Việt, mỗi nhận định
-có type (fact/inference/hypothesis), text và citations (evidence_id, quote nguyên văn).
+có type (fact/inference/hypothesis), text và citations (evidence_id, quote_id do code cung cấp).
 Nếu không đủ bằng chứng cho một nhận định thì bỏ nhận định đó.
 """
-

@@ -17,7 +17,7 @@ def run(data=None, reference_time=None):
     if reference_time is not None:
         prompt = f"Dự báo hướng giá BTC trong 24 giờ sau {reference_time.isoformat()}. Chỉ sử dụng bằng chứng được cung cấp, không dùng kiến thức về diễn biến sau mốc dự báo.\n" + prompt
 
-    parsed = request_specialist_response(prompt, agent_name="market", ask=ask_llm)
+    parsed = request_specialist_response(prompt, agent_name="market", ask=ask_llm, evidence=market)
 
     signal = parsed["signal"]
     confidence = float(parsed["confidence"])
@@ -51,6 +51,7 @@ def run(data=None, reference_time=None):
         ],
 
         "logic_path": parsed["logic_path"],
+        "specialist_grounding": parsed["specialist_grounding"],
 
         "metadata": {
             "source_type": "market_data",

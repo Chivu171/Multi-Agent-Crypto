@@ -4,6 +4,7 @@ from unittest.mock import patch
 import pytest
 
 from agents import financial_agent, market_agent, sentiment_agent
+from utils.grounding import GroundingError
 
 VALID_LLM_RESPONSE = json.dumps({
     "signal": "BUY",
@@ -35,19 +36,37 @@ FAKE_SENTIMENT_DATA = {
 }
 
 
+def reviewing(*responses):
+    """Mock provider responses; still exercise the real review/schema boundary."""
+    remaining = iter(responses)
+    def ask(prompt, *, agent_name, **kwargs):
+        if agent_name == "grounding":
+            return json.dumps({"checks": [{"claim_index": 0, "verdict": "supported", "reason": "Fixture accepted"}]})
+        response = next(remaining)
+        if isinstance(response, Exception):
+            raise response
+        return response
+    return ask
+
+
+def generation_calls(ask):
+    return [c for c in ask.call_args_list if c.kwargs["agent_name"] != "grounding"]
+
+
 def _assert_common_output_shape(output, expected_agent_id):
     assert output["agent_id"] == expected_agent_id
     assert output["signal"] == "BUY"
     assert output["confidence"] == 0.72
     assert output["belief_vector"] == {"direction": 1, "strength": 0.72}
     assert len(output["evidence_chunks"]) == 1
+    assert output["specialist_grounding"]["status"] == "accepted"
     assert 0.0 <= output["metadata"]["entropy"] <= 1.0
     assert 0.0 <= output["metadata"]["recency_weight"] <= 1.0
 
 
 def test_financial_agent_run_uses_onchain_fetcher():
     with patch("agents.financial_agent.fetch_onchain_data", return_value=FAKE_ONCHAIN_DATA), \
-         patch("agents.financial_agent.ask_llm", return_value=VALID_LLM_RESPONSE):
+         patch("agents.financial_agent.ask_llm", side_effect=reviewing(VALID_LLM_RESPONSE)):
         output = financial_agent.run()
 
     _assert_common_output_shape(output, "Financial_Agent")
@@ -57,7 +76,7 @@ def test_financial_agent_run_uses_onchain_fetcher():
 
 def test_market_agent_run_uses_market_fetcher():
     with patch("agents.market_agent.fetch_market_data", return_value=FAKE_MARKET_DATA), \
-         patch("agents.market_agent.ask_llm", return_value=VALID_LLM_RESPONSE):
+         patch("agents.market_agent.ask_llm", side_effect=reviewing(VALID_LLM_RESPONSE)):
         output = market_agent.run()
 
     _assert_common_output_shape(output, "Market_Agent")
@@ -67,7 +86,7 @@ def test_market_agent_run_uses_market_fetcher():
 
 def test_sentiment_agent_run_uses_sentiment_fetcher():
     with patch("agents.sentiment_agent.fetch_sentiment_data", return_value=FAKE_SENTIMENT_DATA), \
-         patch("agents.sentiment_agent.ask_llm", return_value=VALID_LLM_RESPONSE):
+         patch("agents.sentiment_agent.ask_llm", side_effect=reviewing(VALID_LLM_RESPONSE)):
         output = sentiment_agent.run()
 
     _assert_common_output_shape(output, "Sentiment_Agent")
@@ -79,7 +98,7 @@ def test_run_recovers_json_wrapped_in_markdown_fence():
     """LLMs commonly wrap JSON in ```json fences — the agent must still parse it."""
     fenced = "```json\n" + VALID_LLM_RESPONSE + "\n```"
     with patch("agents.financial_agent.fetch_onchain_data", return_value=FAKE_ONCHAIN_DATA), \
-         patch("agents.financial_agent.ask_llm", return_value=fenced):
+         patch("agents.financial_agent.ask_llm", side_effect=reviewing(fenced)):
         output = financial_agent.run()
     assert output["signal"] == "BUY"
 
@@ -111,12 +130,12 @@ def test_financial_agent_propagates_fetcher_failure():
 def test_translated_signals_are_canonical_before_belief_vector(module, data, raw_signal, expected, direction):
     payload = json.loads(VALID_LLM_RESPONSE)
     payload["signal"] = raw_signal
-    with patch.object(module, "ask_llm", return_value=json.dumps(payload)) as ask:
+    with patch.object(module, "ask_llm", side_effect=reviewing(json.dumps(payload))) as ask:
         output = module.run(data=data)
     assert output["signal"] == expected
     assert output["belief_vector"]["direction"] == direction
-    assert ask.call_count == 1
-    assert "never translate" in ask.call_args.kwargs["system"]
+    assert ask.call_count == 2
+    assert "never translate" in generation_calls(ask)[0].kwargs["system"]
 
 
 @pytest.mark.parametrize("module,data", [
@@ -126,18 +145,20 @@ def test_translated_signals_are_canonical_before_belief_vector(module, data, raw
 ])
 def test_truncated_json_is_regenerated_once_on_same_evidence(module, data):
     truncated = '```json\n{"signal":"BUY","confidence":0.6,"logic_path":"Giá tăng'
-    with patch.object(module, "ask_llm", side_effect=[truncated, VALID_LLM_RESPONSE]) as ask:
+    with patch.object(module, "ask_llm", side_effect=reviewing(truncated, VALID_LLM_RESPONSE)) as ask:
         output = module.run(data=data)
     _assert_common_output_shape(output, module.__name__.split(".")[-1].replace("_agent", "").capitalize() + "_Agent")
-    assert ask.call_count == 2
-    original_prompt, retry_prompt = [call.args[0] for call in ask.call_args_list]
+    assert ask.call_count == 3
+    original_prompt, retry_prompt = [call.args[0] for call in generation_calls(ask)]
     assert retry_prompt.startswith(original_prompt)
 
 
 def test_repeated_malformed_output_remains_an_error_not_neutral():
     with patch.object(sentiment_agent, "ask_llm", return_value='{"signal":"BUY"') as ask:
-        with pytest.raises(ValueError, match="after 2 attempts"):
+        with pytest.raises(GroundingError) as error:
             sentiment_agent.run(data=FAKE_SENTIMENT_DATA)
+    assert error.value.audit["status"] == "json_invalid"
+    assert error.value.audit["reason"] == "no_json"
     assert ask.call_count == 2
 
 
@@ -151,19 +172,20 @@ def test_repeated_malformed_output_remains_an_error_not_neutral():
 def test_invalid_schema_cannot_reach_belief_vector(updates):
     payload = {**json.loads(VALID_LLM_RESPONSE), **updates}
     with patch.object(financial_agent, "ask_llm", return_value=json.dumps(payload)) as ask:
-        with pytest.raises(ValueError, match="after 2 attempts"):
+        with pytest.raises(GroundingError) as error:
             financial_agent.run(data=FAKE_ONCHAIN_DATA)
+    assert error.value.audit == {**error.value.audit, "status": "json_invalid", "reason": "schema"}
     assert ask.call_count == 2
 
 
 def test_provider_truncation_gets_one_shorter_regeneration():
     from utils.llm import IncompleteLLMResponse
-    with patch.object(market_agent, "ask_llm", side_effect=[
+    with patch.object(market_agent, "ask_llm", side_effect=reviewing(
         IncompleteLLMResponse("finish_reason=length"), VALID_LLM_RESPONSE,
-    ]) as ask:
+    )) as ask:
         output = market_agent.run(data=FAKE_MARKET_DATA)
     assert output["signal"] == "BUY"
-    assert ask.call_count == 2
+    assert ask.call_count == 3
 
 
 def test_api_failure_is_not_retried_as_a_format_error():

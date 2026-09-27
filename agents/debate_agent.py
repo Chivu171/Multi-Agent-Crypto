@@ -180,7 +180,7 @@ class DebateAgent:
                     f"Lập luận cũ/lịch sử là ý kiến, không phải bằng chứng đã xác minh. "
                     f"Chỉ nêu dữ kiện có nguồn; tin tức được cung cấp được phép dùng dù ngoài danh mục chỉ số. "
                     f"Phân biệt dữ kiện, suy luận và giả thuyết. Nêu cả cơ sở và giới hạn của tín hiệu hiện tại. "
-                    f"Trả 1-3 claims theo schema, mỗi claim có citations với evidence_id và trích đoạn nguyên văn."
+                    f"Trả 1-3 claims theo schema, mỗi claim có citations với evidence_id và quote_id do code cung cấp."
                 )
 
                 new_out = deepcopy(out)
