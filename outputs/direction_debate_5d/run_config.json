@@ -1,0 +1,89 @@
+{
+  "snapshots_sha256": "fb73e9acc0ca73d86f58c4dfc4589a7482f3dcf758505d873668ce94b6cdddbc",
+  "models": {
+    "financial": {
+      "model": "inclusionai/ling-3.0-flash-fin:free",
+      "temperature": 0.1,
+      "max_tokens": 1500,
+      "provider": "openrouter",
+      "reasoning_effort": "none"
+    },
+    "market": {
+      "model": "inclusionai/ling-3.0-flash-fin:free",
+      "temperature": 0.2,
+      "max_tokens": 1500,
+      "provider": "openrouter",
+      "reasoning_effort": "none"
+    },
+    "sentiment": {
+      "model": "cohere/north-mini-code:free",
+      "temperature": 0.4,
+      "max_tokens": 1800,
+      "provider": "openrouter",
+      "reasoning_effort": "none"
+    },
+    "validator": {
+      "model": "inclusionai/ling-3.0-flash-sante:free",
+      "temperature": 0.0,
+      "max_tokens": 1500,
+      "provider": "openrouter",
+      "reasoning_effort": "none"
+    },
+    "debate": {
+      "model": "dots-studio/dots-3-note-preview:free",
+      "temperature": 0.3,
+      "max_tokens": 1600,
+      "provider": "openrouter",
+      "reasoning_effort": "none"
+    },
+    "grounding": {
+      "model": "inclusionai/ling-3.0-flash-sante:free",
+      "temperature": 0.0,
+      "max_tokens": 1200,
+      "provider": "openrouter",
+      "reasoning_effort": "none"
+    }
+  },
+  "code_sha256": {
+    "/Users/tranchivu/Documents/GitHub/Multi-Agent-Crypto/scripts/evaluate_direction.py": "07eb26b5c07d3cc7435792187565b54e095c9d1cfb578d799776eaef11a66fe0",
+    "agents/financial_agent.py": "b1d504ffed79f35a7fc5fbd6bc95a28bd32693a8e717dbd633b01132a6885743",
+    "agents/market_agent.py": "6cb32295ed5e7b89ffc8d481a827de713ec503ff7283b8a214a519e36d5965a7",
+    "agents/validator_agent.py": "b88a9f07ae5333675baa3f2c853371731cc6fd5f49a0f2eb93257aa7aa931a82",
+    "agents/sentiment_agent.py": "c6504706e12b059f5cc95d4a4c4bd60ae00d83f9f178cc3667f0f34bd88e608e",
+    "agents/debate_agent.py": "0cbd6989b3ecba618e4fa4fa23f840a59555ac67656f777f5d6c022f92f7713e",
+    "agents/mediator_agent.py": "ff7ddb4900f1ff065529b81b193179b08e3c838372afbde7adc0567c45570b5a",
+    "utils/prompts.py": "11fa3674252a41bb22e0e9694b8e1d9e8d986b05fe8780c144dbb914668b1af2",
+    "utils/thresholds.py": "f8b431c45d453d6e283dba78c430205de4731817b3e08e26a43de2b87de5e665",
+    "utils/penalties.py": "24e5af5de6932ef88bcfff88f95b5f76c896e061237e60f82a92e1e3ef4e6a08",
+    "utils/grounding.py": "70152aed0852efdc2dfa2a438158e4802e7b06f2d15aaaa0a4615481f6befc44",
+    "utils/specialist_response.py": "4b60733d6b6c4613c74cc82eda68815af7e7ee37b109f065b2e1881d626da984",
+    "utils/llm.py": "7cf01dcd66932932e4d73648e4b7094b07a46a3c7b91f7f0182529254eca30e5",
+    "utils/parsing.py": "4673d0f000b56114bdab1e892de7e7c93c30f9ff8548a673bd1d05780a2a59d7",
+    "utils/failures.py": "ac98bdfa0ba28c87cb22dc54406c6395198a96d341c142a5cbda41d10a833622",
+    "utils/historical_calendar.py": "d784f65d8ec7c92a6e848b9bfd798dad9384bf4470da3bde6e592489eb3fe95f",
+    "utils/config.py": "3fb7089982db809de8fb5b5d6e245d959fa74bf850eb84baaf2a0f27d8cd066d"
+  },
+  "limitations": [
+    "ForexFactory schedule, forecast and previous are retrospective source values assumed known before prediction; historical vintages/revisions unverified. Actual/revision/result annotations excluded.",
+    "Global long/short uses the 5m archive column, not live period=1d; empty source cells remain missing.",
+    "Funding is last settled rate, not a historical premiumIndex snapshot of lastFundingRate.",
+    "On-chain and Fear & Greed publication times remain assumed; source vintages are unverified.",
+    "Daily closed-candle evaluation differs from live intraday/current-candle fetching.",
+    "This remains the base pilot's time split, not an independent held-out evaluation.",
+    "Historical LLM knowledge contamination possible."
+  ],
+  "require_full_live": false,
+  "sample_ids": [
+    "2022-01-02",
+    "2022-01-06",
+    "2022-01-13",
+    "2022-01-15",
+    "2022-01-21"
+  ],
+  "selection": "explicit input smoke cases; not a contiguous financial backtest",
+  "horizon_hours": 24,
+  "signal_threshold": 0.05,
+  "day_budget_seconds": 300,
+  "market_window": "60 candles as in live fetcher",
+  "weights_reference": "prediction_time; source observation timestamps"
+}

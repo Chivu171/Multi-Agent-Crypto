@@ -1,0 +1,33 @@
+{
+  "run_id": "762a0630a9f7",
+  "started_at": "2026-09-24T07:24:46.355906+00:00",
+  "status": "api_error",
+  "reason": "quota",
+  "errors": [
+    {
+      "stage": "specialist",
+      "agent": "Financial_Agent",
+      "status": "api_error",
+      "reason": "quota",
+      "type": "LLMAPIError",
+      "message": "quota: Rate limit exceeded: free-models-per-day. Add 10 credits to unlock 1000 free model requests per day"
+    },
+    {
+      "stage": "specialist",
+      "agent": "Market_Agent",
+      "status": "api_error",
+      "reason": "quota",
+      "type": "LLMAPIError",
+      "message": "quota: Rate limit exceeded: free-models-per-day. Add 10 credits to unlock 1000 free model requests per day"
+    },
+    {
+      "stage": "specialist",
+      "agent": "Sentiment_Agent",
+      "status": "api_error",
+      "reason": "quota",
+      "type": "LLMAPIError",
+      "message": "quota: Rate limit exceeded: free-models-per-day. Add 10 credits to unlock 1000 free model requests per day"
+    }
+  ],
+  "finished_at": "2026-09-24T07:25:05.735522+00:00"
+}

@@ -1,12 +1,12 @@
 {
-  "conflict_score": 0.1543,
+  "conflict_score": 0.3146,
   "metrics": {
-    "mean_pairwise_kl": 0.1901,
-    "decision_variance": 0.1006
+    "mean_pairwise_kl": 0.3774,
+    "decision_variance": 0.2206
   },
   "conflict_detected": false,
   "conflict_categories": [
-    "Reliability Conflict"
+    "Signal Conflict"
   ],
   "root_cause_analysis": "N/A - System in state of consensus.",
   "trigger_debate_module": false,
