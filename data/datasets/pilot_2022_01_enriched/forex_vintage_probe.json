@@ -1,0 +1,191 @@
+[
+  {
+    "source_url": "https://www.forexfactory.com/calendar?week=dec26.2021",
+    "requested_at": "2022-01-01T00:00:00+00:00",
+    "use_in_primary_features": false,
+    "closest": {
+      "status": "200",
+      "available": true,
+      "url": "http://web.archive.org/web/20220518205143/https://www.forexfactory.com/calendar?week=dec26.2021",
+      "timestamp": "20220518205143"
+    },
+    "captured_at": "2022-05-18T20:51:43+00:00",
+    "status": "capture_after_requested_time",
+    "age_days_at_request": -137.86924768518517
+  },
+  {
+    "source_url": "https://nfs.faireconomy.media/ff_calendar_thisweek.xml",
+    "requested_at": "2022-01-01T00:00:00+00:00",
+    "use_in_primary_features": false,
+    "closest": {
+      "status": "200",
+      "available": true,
+      "url": "http://web.archive.org/web/20220129141736/https://nfs.faireconomy.media/ff_calendar_thisweek.xml",
+      "timestamp": "20220129141736"
+    },
+    "captured_at": "2022-01-29T14:17:36+00:00",
+    "status": "capture_after_requested_time",
+    "age_days_at_request": -28.595555555555556
+  },
+  {
+    "source_url": "https://nfs.faireconomy.media/ff_calendar_thisweek.json",
+    "requested_at": "2022-01-01T00:00:00+00:00",
+    "use_in_primary_features": false,
+    "closest": null,
+    "status": "no_capture_returned"
+  },
+  {
+    "source_url": "https://www.forexfactory.com/calendar?week=jan2.2022",
+    "requested_at": "2022-01-02T00:00:00+00:00",
+    "use_in_primary_features": false,
+    "closest": {
+      "status": "200",
+      "available": true,
+      "url": "http://web.archive.org/web/20220129053301/https://www.forexfactory.com/calendar?week=jan2.2022",
+      "timestamp": "20220129053301"
+    },
+    "captured_at": "2022-01-29T05:33:01+00:00",
+    "status": "capture_after_requested_time",
+    "age_days_at_request": -27.231261574074075
+  },
+  {
+    "source_url": "https://nfs.faireconomy.media/ff_calendar_thisweek.xml",
+    "requested_at": "2022-01-02T00:00:00+00:00",
+    "use_in_primary_features": false,
+    "closest": {
+      "status": "200",
+      "available": true,
+      "url": "http://web.archive.org/web/20220129141736/https://nfs.faireconomy.media/ff_calendar_thisweek.xml",
+      "timestamp": "20220129141736"
+    },
+    "captured_at": "2022-01-29T14:17:36+00:00",
+    "status": "capture_after_requested_time",
+    "age_days_at_request": -27.595555555555556
+  },
+  {
+    "source_url": "https://nfs.faireconomy.media/ff_calendar_thisweek.json",
+    "requested_at": "2022-01-02T00:00:00+00:00",
+    "use_in_primary_features": false,
+    "closest": {
+      "status": "200",
+      "available": true,
+      "url": "http://web.archive.org/web/20220308080012/https://nfs.faireconomy.media/ff_calendar_thisweek.json",
+      "timestamp": "20220308080012"
+    },
+    "captured_at": "2022-03-08T08:00:12+00:00",
+    "status": "capture_after_requested_time",
+    "age_days_at_request": -65.33347222222223
+  },
+  {
+    "source_url": "https://www.forexfactory.com/calendar?week=jan9.2022",
+    "requested_at": "2022-01-09T00:00:00+00:00",
+    "use_in_primary_features": false,
+    "closest": {
+      "status": "200",
+      "available": true,
+      "url": "http://web.archive.org/web/20220518205147/https://www.forexfactory.com/calendar?week=jan9.2022",
+      "timestamp": "20220518205147"
+    },
+    "captured_at": "2022-05-18T20:51:47+00:00",
+    "status": "capture_after_requested_time",
+    "age_days_at_request": -129.8692939814815
+  },
+  {
+    "source_url": "https://nfs.faireconomy.media/ff_calendar_thisweek.xml",
+    "requested_at": "2022-01-09T00:00:00+00:00",
+    "use_in_primary_features": false,
+    "closest": null,
+    "status": "no_capture_returned"
+  },
+  {
+    "source_url": "https://nfs.faireconomy.media/ff_calendar_thisweek.json",
+    "requested_at": "2022-01-09T00:00:00+00:00",
+    "use_in_primary_features": false,
+    "closest": {
+      "status": "200",
+      "available": true,
+      "url": "http://web.archive.org/web/20220308080012/https://nfs.faireconomy.media/ff_calendar_thisweek.json",
+      "timestamp": "20220308080012"
+    },
+    "captured_at": "2022-03-08T08:00:12+00:00",
+    "status": "capture_after_requested_time",
+    "age_days_at_request": -58.33347222222222
+  },
+  {
+    "source_url": "https://www.forexfactory.com/calendar?week=jan16.2022",
+    "requested_at": "2022-01-16T00:00:00+00:00",
+    "use_in_primary_features": false,
+    "closest": {
+      "status": "200",
+      "available": true,
+      "url": "http://web.archive.org/web/20220129052757/https://www.forexfactory.com/calendar?week=jan16.2022",
+      "timestamp": "20220129052757"
+    },
+    "captured_at": "2022-01-29T05:27:57+00:00",
+    "status": "capture_after_requested_time",
+    "age_days_at_request": -13.227743055555555
+  },
+  {
+    "source_url": "https://nfs.faireconomy.media/ff_calendar_thisweek.xml",
+    "requested_at": "2022-01-16T00:00:00+00:00",
+    "use_in_primary_features": false,
+    "closest": {
+      "status": "200",
+      "available": true,
+      "url": "http://web.archive.org/web/20220129141736/https://nfs.faireconomy.media/ff_calendar_thisweek.xml",
+      "timestamp": "20220129141736"
+    },
+    "captured_at": "2022-01-29T14:17:36+00:00",
+    "status": "capture_after_requested_time",
+    "age_days_at_request": -13.595555555555556
+  },
+  {
+    "source_url": "https://nfs.faireconomy.media/ff_calendar_thisweek.json",
+    "requested_at": "2022-01-16T00:00:00+00:00",
+    "use_in_primary_features": false,
+    "status": "lookup_failed",
+    "error": "HTTP 429: https://archive.org/wayback/available; raw response archived"
+  },
+  {
+    "source_url": "https://www.forexfactory.com/calendar?week=jan23.2022",
+    "requested_at": "2022-01-23T00:00:00+00:00",
+    "use_in_primary_features": false,
+    "status": "lookup_failed",
+    "error": "HTTP 429: https://archive.org/wayback/available; raw response archived"
+  },
+  {
+    "source_url": "https://nfs.faireconomy.media/ff_calendar_thisweek.xml",
+    "requested_at": "2022-01-23T00:00:00+00:00",
+    "use_in_primary_features": false,
+    "status": "lookup_failed",
+    "error": "HTTP 429: https://archive.org/wayback/available; raw response archived"
+  },
+  {
+    "source_url": "https://nfs.faireconomy.media/ff_calendar_thisweek.json",
+    "requested_at": "2022-01-23T00:00:00+00:00",
+    "use_in_primary_features": false,
+    "status": "lookup_failed",
+    "error": "HTTP 429: https://archive.org/wayback/available; raw response archived"
+  },
+  {
+    "source_url": "https://www.forexfactory.com/calendar?week=jan30.2022",
+    "requested_at": "2022-01-30T00:00:00+00:00",
+    "use_in_primary_features": false,
+    "status": "lookup_failed",
+    "error": "HTTP 429: https://archive.org/wayback/available; raw response archived"
+  },
+  {
+    "source_url": "https://nfs.faireconomy.media/ff_calendar_thisweek.xml",
+    "requested_at": "2022-01-30T00:00:00+00:00",
+    "use_in_primary_features": false,
+    "status": "lookup_failed",
+    "error": "HTTP 429: https://archive.org/wayback/available; raw response archived"
+  },
+  {
+    "source_url": "https://nfs.faireconomy.media/ff_calendar_thisweek.json",
+    "requested_at": "2022-01-30T00:00:00+00:00",
+    "use_in_primary_features": false,
+    "status": "lookup_failed",
+    "error": "HTTP 429: https://archive.org/wayback/available; raw response archived"
+  }
+]

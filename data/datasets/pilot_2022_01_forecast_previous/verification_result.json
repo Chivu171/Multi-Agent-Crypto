@@ -1,0 +1,12 @@
+{
+  "offline_rebuild_byte_identical": true,
+  "snapshot_count": 30,
+  "entries_compared_to_source": 226,
+  "forecast_nonempty_entries": 180,
+  "previous_nonempty_entries": 185,
+  "unique_event_ids": 99,
+  "actual_revision_result_fields_in_model_events": 0,
+  "labels_unchanged": true,
+  "point_in_time_verified": false,
+  "manifest_sha256": "f7c5cb15afcfeac9e6481d828dcc60ef9fbec1a0f0fa1cbba02fcdd40d9551a7"
+}

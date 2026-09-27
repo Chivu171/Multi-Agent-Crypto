@@ -1,0 +1,28 @@
+{
+  "status": "PARTIAL_NOT_FULL_LIVE",
+  "requested_days": 30,
+  "funding_days": 30,
+  "global_ratio_5m_days": 11,
+  "forex_point_in_time_days": 0,
+  "eligible_full_live_days": 0,
+  "retrospective_high_medium_all_currencies": 95,
+  "retrospective_high_medium_usd": 46,
+  "forex_archive_lookup_attempts": 18,
+  "forex_archive_lookup_failures": 7,
+  "funding_api_crosscheck": {
+    "archive_rows": 90,
+    "api_rows": 90,
+    "matched": true,
+    "mismatch_timestamps": []
+  },
+  "download_errors": {},
+  "limitations": [
+    "ForexFactory forecast/previous/calendar vintages not verified; retrospective records excluded from prompts.",
+    "Global long/short uses the 5m archive column, not live period=1d; empty source cells remain missing.",
+    "Funding is last settled rate, not a historical premiumIndex snapshot of lastFundingRate.",
+    "On-chain and Fear & Greed publication times remain assumed; source vintages are unverified.",
+    "Daily closed-candle evaluation differs from live intraday/current-candle fetching.",
+    "This remains the base pilot's time split, not an independent held-out evaluation.",
+    "Historical LLM knowledge contamination possible."
+  ]
+}

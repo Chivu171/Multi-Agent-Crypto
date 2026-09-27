@@ -1,0 +1,17 @@
+{
+  "url": "https://web.archive.org/web/20220129141736id_/https://nfs.faireconomy.media/ff_calendar_thisweek.xml",
+  "purpose": "Inspect capture before final pilot decision; never include unverified content in prompts",
+  "status": "unavailable",
+  "error": "HTTP 429: https://web.archive.org/web/20220129141736id_/https://nfs.faireconomy.media/ff_calendar_thisweek.xml; raw response archived",
+  "raw_responses": [
+    {
+      "url": "https://web.archive.org/web/20220129141736id_/https://nfs.faireconomy.media/ff_calendar_thisweek.xml",
+      "params": {},
+      "retrieved_at": "2026-09-23T07:30:07.393285+00:00",
+      "status": 429,
+      "response_url": "https://web.archive.org/web/20220129141736id_/https://nfs.faireconomy.media/ff_calendar_thisweek.xml",
+      "sha256": "413d294fad14524bf94e764b33ff0f327682549408545171fcf9240189c154ae",
+      "body_file": "cb053a53cae3838242b6347cb448b82adf010d5af3c21671fc6949eff128fe89.body"
+    }
+  ]
+}

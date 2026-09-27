@@ -1,0 +1,9 @@
+{
+  "url": "https://data.binance.vision/data/futures/um/daily/metrics/BTCUSDT/BTCUSDT-metrics-2022-01-18.zip",
+  "params": {},
+  "retrieved_at": "2026-09-23T07:26:32.729295+00:00",
+  "status": 200,
+  "response_url": "https://data.binance.vision/data/futures/um/daily/metrics/BTCUSDT/BTCUSDT-metrics-2022-01-18.zip",
+  "sha256": "4c2334f99c1e86537128762db2b5d24d6b71cee8abb7e370b7c4bfa645eff53d",
+  "body_file": "3b8f5e5133730d4e5fdd9c6b8d919451a89087374fe8db78440f1e236f86a29a.body"
+}

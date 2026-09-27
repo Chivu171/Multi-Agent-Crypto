@@ -1,0 +1,12 @@
+{
+  "url": "https://archive.org/wayback/available",
+  "params": {
+    "url": "https://www.forexfactory.com/calendar?week=jan23.2022",
+    "timestamp": "20220123000000"
+  },
+  "retrieved_at": "2026-09-23T07:27:22.134608+00:00",
+  "status": 429,
+  "response_url": "https://archive.org/wayback/available?url=https%3A%2F%2Fwww.forexfactory.com%2Fcalendar%3Fweek%3Djan23.2022&timestamp=20220123000000",
+  "sha256": "ae138caf8767f7be2fe6f47f1663b0e2e28d903264707aa9b6f73bb7b223902c",
+  "body_file": "d0e414ea538982f2db37d60ee443a70df2d2ac321fd42403f3b0e3879c7d948e.body"
+}

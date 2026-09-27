@@ -1,0 +1,21 @@
+{
+  "offline_rebuild_byte_identical": true,
+  "artifacts_checked": 11,
+  "snapshots_verified_against_zip_csv": 30,
+  "funding_days": 30,
+  "ratio_days": [
+    "2022-01-20",
+    "2022-01-21",
+    "2022-01-22",
+    "2022-01-23",
+    "2022-01-24",
+    "2022-01-25",
+    "2022-01-26",
+    "2022-01-27",
+    "2022-01-28",
+    "2022-01-29",
+    "2022-01-30"
+  ],
+  "labels_unchanged": true,
+  "full_live_gate": "correctly_rejected"
+}

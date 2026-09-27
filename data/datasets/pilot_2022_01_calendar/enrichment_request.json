@@ -1,0 +1,7 @@
+{
+  "base_manifest_sha256": "951eade8fcf1c1750b78aa4b26d3074cdb2c8adcd53d4ceb878385a5a8ae6eeb",
+  "start": "2022-01-01",
+  "end": "2022-01-30",
+  "version": 1,
+  "calendar_mode": "schedule_only_assumed"
+}

@@ -1,0 +1,14 @@
+{
+  "url": "https://fapi.binance.com/fapi/v1/fundingRate",
+  "params": {
+    "symbol": "BTCUSDT",
+    "startTime": 1643472000014,
+    "endTime": 1643500799999,
+    "limit": 1000
+  },
+  "retrieved_at": "2026-09-23T07:26:39.391996+00:00",
+  "status": 200,
+  "response_url": "https://fapi.binance.com/fapi/v1/fundingRate?symbol=BTCUSDT&startTime=1643472000014&endTime=1643500799999&limit=1000",
+  "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+  "body_file": "5862e96066a8a29dd693c5f436629308b93f4f9d4a8f435313b3358c97a0275e.body"
+}

@@ -1,0 +1,17 @@
+{
+  "offline_rebuild_byte_identical": true,
+  "snapshots_verified": 30,
+  "schedule_days": 30,
+  "days_with_events": 25,
+  "empty_schedule_days": [
+    "2022-01-01",
+    "2022-01-08",
+    "2022-01-15",
+    "2022-01-22",
+    "2022-01-29"
+  ],
+  "event_entries_verified_against_original": 226,
+  "unique_event_ids": 99,
+  "economic_value_fields_in_model_events": 0,
+  "point_in_time_verified": false
+}

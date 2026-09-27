@@ -1,0 +1,12 @@
+{
+  "url": "https://archive.org/wayback/available",
+  "params": {
+    "url": "https://nfs.faireconomy.media/ff_calendar_thisweek.xml",
+    "timestamp": "20220102000000"
+  },
+  "retrieved_at": "2026-09-23T07:26:55.994081+00:00",
+  "status": 200,
+  "response_url": "https://archive.org/wayback/available?url=https%3A%2F%2Fnfs.faireconomy.media%2Fff_calendar_thisweek.xml&timestamp=20220102000000",
+  "sha256": "e696f985bbc81a9a9553e3adbff76617a1ed63d8f8981b8de6800bbddb40039f",
+  "body_file": "53c36e6d817c3247fcca639257266bf82d0ea1eda2c57c5dfb91f357984c0538.body"
+}

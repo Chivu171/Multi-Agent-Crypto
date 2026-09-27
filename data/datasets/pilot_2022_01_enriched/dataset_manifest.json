@@ -1,0 +1,869 @@
+{
+  "version": 2,
+  "config": {
+    "start": "2022-01-01",
+    "end": "2022-01-30",
+    "horizon_hours": 24,
+    "timezone": "UTC",
+    "threshold": 0.01,
+    "onchain_lag_days": 2,
+    "fear_greed_lag_days": 1,
+    "max_source_age_hours": 72,
+    "market_window_days": 90,
+    "forex_requested": true,
+    "train_end": "2024-06-30",
+    "validation_end": "2024-12-31",
+    "test_end": "2025-12-31"
+  },
+  "base_dataset": "data/datasets/pilot_2022_01",
+  "base_manifest_sha256": "951eade8fcf1c1750b78aa4b26d3074cdb2c8adcd53d4ceb878385a5a8ae6eeb",
+  "artifacts_sha256": {
+    "enrichment_request.json": "d08df5f2534cfb2961c3f421a923efe834d41740680ba98b00ec9057c8723a2d",
+    "features.csv": "0d7f000a240540e3ca6dd4e995cba3cc56b78054ab0e3d9c781212f583860817",
+    "labels.csv": "ec5d281c1b7a4876c2ac87e7cc24291410f3130880c66dfab4274beea16ed28c",
+    "splits.csv": "e520893e8a971a2788edaac78c959b18aae3a4741343f838894f33e77dc09eb3",
+    "snapshots.jsonl": "34b4afa26b53de1a8b2bbd56a6afe89d1a272fe72e5f168968eb34b6f6deca8b",
+    "forex_events_RETROSPECTIVE_ONLY.json": "38d4189ae863b2dfc5769b0d5ba48fba3ff307c978d2b61d449dd4ec563ddefb",
+    "derivatives_source.json": "a8fff5e2aad243c215c254ac1c72f176fee824e139e2578fb142c13af10147f2",
+    "forex_vintage_probe.json": "393cbc38d3542a614d0ddb1fcc60227a0860c656fb72750f86aa865a91cf8ea1",
+    "source_coverage.json": "51be34516c8950934de5d2ab5c4b132b812e96b994215d21570d4cb18911f727",
+    "quality_report.json": "aad17cf372f6549e32f97bbaa9eac492aa8cc8db2b1348d598d1c54b2c86a282",
+    "VERIFY.md": "0f8370c727631439163999e19518946884061c8bd14782b4b5ab7d5965f11be2"
+  },
+  "raw_responses": [
+    {
+      "url": "https://data.binance.vision/data/futures/um/monthly/fundingRate/BTCUSDT/BTCUSDT-fundingRate-2021-12.zip",
+      "params": {},
+      "retrieved_at": "2026-09-23T07:26:22.400896+00:00",
+      "status": 200,
+      "response_url": "https://data.binance.vision/data/futures/um/monthly/fundingRate/BTCUSDT/BTCUSDT-fundingRate-2021-12.zip",
+      "sha256": "bf3ce484faf41d7dccfd38c5cc3d8de34d8297df30ab10784e874cc10fd1b310",
+      "body_file": "228932baa921bb3335c16f3c8d73077be1f7ce4761c877596e482ebda8b19e6b.body"
+    },
+    {
+      "url": "https://data.binance.vision/data/futures/um/monthly/fundingRate/BTCUSDT/BTCUSDT-fundingRate-2021-12.zip.CHECKSUM",
+      "params": {},
+      "retrieved_at": "2026-09-23T07:26:22.670654+00:00",
+      "status": 200,
+      "response_url": "https://data.binance.vision/data/futures/um/monthly/fundingRate/BTCUSDT/BTCUSDT-fundingRate-2021-12.zip.CHECKSUM",
+      "sha256": "04faef928fcfb0f6c8bac8f1fe7fc5ba87a216fb1d1f6c6330e03ad89faaf759",
+      "body_file": "d8c58b65b294ac3072fe5478c0a9c98bb28c0d39dae03bd37e3673f8ae3d9782.body"
+    },
+    {
+      "url": "https://data.binance.vision/data/futures/um/monthly/fundingRate/BTCUSDT/BTCUSDT-fundingRate-2022-01.zip",
+      "params": {},
+      "retrieved_at": "2026-09-23T07:26:22.949515+00:00",
+      "status": 200,
+      "response_url": "https://data.binance.vision/data/futures/um/monthly/fundingRate/BTCUSDT/BTCUSDT-fundingRate-2022-01.zip",
+      "sha256": "22ee19079b620f5c6d820e7d7f8bafa7fde866d89bd664863b8bd527749c12cb",
+      "body_file": "c8cb42959df37b698cafd55ffdf0abde66e7278a4df138249f0e148d526ac5fa.body"
+    },
+    {
+      "url": "https://data.binance.vision/data/futures/um/monthly/fundingRate/BTCUSDT/BTCUSDT-fundingRate-2022-01.zip.CHECKSUM",
+      "params": {},
+      "retrieved_at": "2026-09-23T07:26:23.225364+00:00",
+      "status": 200,
+      "response_url": "https://data.binance.vision/data/futures/um/monthly/fundingRate/BTCUSDT/BTCUSDT-fundingRate-2022-01.zip.CHECKSUM",
+      "sha256": "b60b9ea50214a3a17ad24013d572f3daf7b2772803e01e4a681615dd87d9ce16",
+      "body_file": "735672472f498c8d04924c54dbd856c0036e640999714e93504640e94bfc81eb.body"
+    },
+    {
+      "url": "https://data.binance.vision/data/futures/um/daily/metrics/BTCUSDT/BTCUSDT-metrics-2021-12-31.zip",
+      "params": {},
+      "retrieved_at": "2026-09-23T07:26:23.501517+00:00",
+      "status": 200,
+      "response_url": "https://data.binance.vision/data/futures/um/daily/metrics/BTCUSDT/BTCUSDT-metrics-2021-12-31.zip",
+      "sha256": "d01ca93fc0c4e721f9d0b87ae226a692c3d33e2483b365da00b2874f389e82df",
+      "body_file": "7e30901feb138db619f649f6f3bbc54ed07f8dd62f830c4e9bf662232a911fa7.body"
+    },
+    {
+      "url": "https://data.binance.vision/data/futures/um/daily/metrics/BTCUSDT/BTCUSDT-metrics-2021-12-31.zip.CHECKSUM",
+      "params": {},
+      "retrieved_at": "2026-09-23T07:26:23.615882+00:00",
+      "status": 200,
+      "response_url": "https://data.binance.vision/data/futures/um/daily/metrics/BTCUSDT/BTCUSDT-metrics-2021-12-31.zip.CHECKSUM",
+      "sha256": "10b4c31cd5ed59f57b37e1d0bcfc103e0d41c18bd946e68415942650acf690af",
+      "body_file": "e12862d77e0d8d7e1a75940b7bc0ca4f71ce987e9928c9105a4126e481eefc13.body"
+    },
+    {
+      "url": "https://data.binance.vision/data/futures/um/daily/metrics/BTCUSDT/BTCUSDT-metrics-2022-01-01.zip",
+      "params": {},
+      "retrieved_at": "2026-09-23T07:26:23.729164+00:00",
+      "status": 200,
+      "response_url": "https://data.binance.vision/data/futures/um/daily/metrics/BTCUSDT/BTCUSDT-metrics-2022-01-01.zip",
+      "sha256": "1846df7dc4a6279afd20c010cb09ee271db8ffa9991c7acea7a73f0e00c0b2c5",
+      "body_file": "abea4c0df93b1b53aaf0a97a38e81e38809177e1a56ca1aae76b4025d9c88c21.body"
+    },
+    {
+      "url": "https://data.binance.vision/data/futures/um/daily/metrics/BTCUSDT/BTCUSDT-metrics-2022-01-01.zip.CHECKSUM",
+      "params": {},
+      "retrieved_at": "2026-09-23T07:26:24.001939+00:00",
+      "status": 200,
+      "response_url": "https://data.binance.vision/data/futures/um/daily/metrics/BTCUSDT/BTCUSDT-metrics-2022-01-01.zip.CHECKSUM",
+      "sha256": "27e65646d38b16230524848fdef704ce4c3fb8236cb12d1d9130a7c8a3347389",
+      "body_file": "41801926c9154c00d9c0d521b477ce38ef3b3c4b369705a1876f61a2bbb2cf60.body"
+    },
+    {
+      "url": "https://data.binance.vision/data/futures/um/daily/metrics/BTCUSDT/BTCUSDT-metrics-2022-01-02.zip",
+      "params": {},
+      "retrieved_at": "2026-09-23T07:26:24.124133+00:00",
+      "status": 200,
+      "response_url": "https://data.binance.vision/data/futures/um/daily/metrics/BTCUSDT/BTCUSDT-metrics-2022-01-02.zip",
+      "sha256": "145dab40eee5eaaa5f6ffca8ee53edca5bdf8693ad7ce4af52513bf7ec5c2c37",
+      "body_file": "d40ce2b6ee27be9fca4cde1280313632a8a09f75303b52bcb521fa9c5de614b4.body"
+    },
+    {
+      "url": "https://data.binance.vision/data/futures/um/daily/metrics/BTCUSDT/BTCUSDT-metrics-2022-01-02.zip.CHECKSUM",
+      "params": {},
+      "retrieved_at": "2026-09-23T07:26:24.403829+00:00",
+      "status": 200,
+      "response_url": "https://data.binance.vision/data/futures/um/daily/metrics/BTCUSDT/BTCUSDT-metrics-2022-01-02.zip.CHECKSUM",
+      "sha256": "10ac6ea0f77e3f4a7c5ff634aced16955f7f1c798b8750d00ca653772adbeb31",
+      "body_file": "8620251b36aeac40d88c136760fbb61c4b9c3b7de67f5839c5e5e5da82154726.body"
+    },
+    {
+      "url": "https://data.binance.vision/data/futures/um/daily/metrics/BTCUSDT/BTCUSDT-metrics-2022-01-03.zip",
+      "params": {},
+      "retrieved_at": "2026-09-23T07:26:24.683417+00:00",
+      "status": 200,
+      "response_url": "https://data.binance.vision/data/futures/um/daily/metrics/BTCUSDT/BTCUSDT-metrics-2022-01-03.zip",
+      "sha256": "999e5b235d92652689b648fdd4764c40513d3eb59a8068761f18686e7891e684",
+      "body_file": "ed0e78b35882069e763c412429e929b2511dacc2616b5358f4f2710f998b6f93.body"
+    },
+    {
+      "url": "https://data.binance.vision/data/futures/um/daily/metrics/BTCUSDT/BTCUSDT-metrics-2022-01-03.zip.CHECKSUM",
+      "params": {},
+      "retrieved_at": "2026-09-23T07:26:24.956548+00:00",
+      "status": 200,
+      "response_url": "https://data.binance.vision/data/futures/um/daily/metrics/BTCUSDT/BTCUSDT-metrics-2022-01-03.zip.CHECKSUM",
+      "sha256": "9340fad1e5da8d12c239489d4c24ffcd0f143a74a8ed6febcd69f41a33b11179",
+      "body_file": "01180ab4a25609436804ad142897fb32c184983b98dffc8db9eb32fdd0c0bd60.body"
+    },
+    {
+      "url": "https://data.binance.vision/data/futures/um/daily/metrics/BTCUSDT/BTCUSDT-metrics-2022-01-04.zip",
+      "params": {},
+      "retrieved_at": "2026-09-23T07:26:25.074845+00:00",
+      "status": 200,
+      "response_url": "https://data.binance.vision/data/futures/um/daily/metrics/BTCUSDT/BTCUSDT-metrics-2022-01-04.zip",
+      "sha256": "28da1ed645e8fd7f7b62a437cbc70f50d8f32ece4048dd068276d5ad887c37a6",
+      "body_file": "aa28cb72dff7a510a1b04f185c1aebad543bc3cb88e02d6ca496840c7c317c5d.body"
+    },
+    {
+      "url": "https://data.binance.vision/data/futures/um/daily/metrics/BTCUSDT/BTCUSDT-metrics-2022-01-04.zip.CHECKSUM",
+      "params": {},
+      "retrieved_at": "2026-09-23T07:26:25.198521+00:00",
+      "status": 200,
+      "response_url": "https://data.binance.vision/data/futures/um/daily/metrics/BTCUSDT/BTCUSDT-metrics-2022-01-04.zip.CHECKSUM",
+      "sha256": "663ff3f40c14532bd308705cae1e6df72407f1ff7c06e7cb844b25596a13218d",
+      "body_file": "abf40c711d2e9699a5dcdb9a98c579c29504ec59498420ea4061bb987c45d0a6.body"
+    },
+    {
+      "url": "https://data.binance.vision/data/futures/um/daily/metrics/BTCUSDT/BTCUSDT-metrics-2022-01-05.zip",
+      "params": {},
+      "retrieved_at": "2026-09-23T07:26:25.315764+00:00",
+      "status": 200,
+      "response_url": "https://data.binance.vision/data/futures/um/daily/metrics/BTCUSDT/BTCUSDT-metrics-2022-01-05.zip",
+      "sha256": "a2c624bcd3a1eb2b458a83d9c48bf3511edc674fbe25d351395db8c052d99840",
+      "body_file": "75b99ca2d4a48cad13837b0d1b647f2a4b87ccc7e9c11f8e247a7942ca752b4a.body"
+    },
+    {
+      "url": "https://data.binance.vision/data/futures/um/daily/metrics/BTCUSDT/BTCUSDT-metrics-2022-01-05.zip.CHECKSUM",
+      "params": {},
+      "retrieved_at": "2026-09-23T07:26:25.598007+00:00",
+      "status": 200,
+      "response_url": "https://data.binance.vision/data/futures/um/daily/metrics/BTCUSDT/BTCUSDT-metrics-2022-01-05.zip.CHECKSUM",
+      "sha256": "9f822d1742b770e5c4a8ae3833639a017a29577382feb3aaa7644d2d94324123",
+      "body_file": "57f9f21a9aff58341f326307a8d486e8efd411edfc63307fe72217fb4012d004.body"
+    },
+    {
+      "url": "https://data.binance.vision/data/futures/um/daily/metrics/BTCUSDT/BTCUSDT-metrics-2022-01-06.zip",
+      "params": {},
+      "retrieved_at": "2026-09-23T07:26:25.912344+00:00",
+      "status": 200,
+      "response_url": "https://data.binance.vision/data/futures/um/daily/metrics/BTCUSDT/BTCUSDT-metrics-2022-01-06.zip",
+      "sha256": "41131be406f685675635b1e3baf7364858d29de7faa0c7d1f6c8a9d73fa2bba6",
+      "body_file": "73af0d187e720b6b5138ff20709212282ea37f9233649089fdacc385d869f680.body"
+    },
+    {
+      "url": "https://data.binance.vision/data/futures/um/daily/metrics/BTCUSDT/BTCUSDT-metrics-2022-01-06.zip.CHECKSUM",
+      "params": {},
+      "retrieved_at": "2026-09-23T07:26:26.183574+00:00",
+      "status": 200,
+      "response_url": "https://data.binance.vision/data/futures/um/daily/metrics/BTCUSDT/BTCUSDT-metrics-2022-01-06.zip.CHECKSUM",
+      "sha256": "ed29f4aa4f3f72b85640c3891d80f6290510115085fabb4db3b28fee55c2ffe7",
+      "body_file": "6b89475c16de4324cd51c471348226104566fbca0796f82ab76c5ca4236c2ca6.body"
+    },
+    {
+      "url": "https://data.binance.vision/data/futures/um/daily/metrics/BTCUSDT/BTCUSDT-metrics-2022-01-07.zip",
+      "params": {},
+      "retrieved_at": "2026-09-23T07:26:26.454659+00:00",
+      "status": 200,
+      "response_url": "https://data.binance.vision/data/futures/um/daily/metrics/BTCUSDT/BTCUSDT-metrics-2022-01-07.zip",
+      "sha256": "d8d454c3f6fe0b05a42e57316a3c4e73637a0cd596b25e33ad63cb454f358763",
+      "body_file": "319622ac9b3a4767f023800141e48572a845ca53787efeee6b16eac7367859e3.body"
+    },
+    {
+      "url": "https://data.binance.vision/data/futures/um/daily/metrics/BTCUSDT/BTCUSDT-metrics-2022-01-07.zip.CHECKSUM",
+      "params": {},
+      "retrieved_at": "2026-09-23T07:26:26.732549+00:00",
+      "status": 200,
+      "response_url": "https://data.binance.vision/data/futures/um/daily/metrics/BTCUSDT/BTCUSDT-metrics-2022-01-07.zip.CHECKSUM",
+      "sha256": "524acf93728eb4699147f8b2b3cd74d0bd4c05888ba5c8525e0b97a8569f1a71",
+      "body_file": "9a0ddb9df4f01424f718724c5ce9d17dd9f5cea57f0ff9d68305bd6a7c08ad01.body"
+    },
+    {
+      "url": "https://data.binance.vision/data/futures/um/daily/metrics/BTCUSDT/BTCUSDT-metrics-2022-01-08.zip",
+      "params": {},
+      "retrieved_at": "2026-09-23T07:26:27.013174+00:00",
+      "status": 200,
+      "response_url": "https://data.binance.vision/data/futures/um/daily/metrics/BTCUSDT/BTCUSDT-metrics-2022-01-08.zip",
+      "sha256": "78ceb6a90c93bf8f479ae2d2bcb5ed98e719de7d708c59d3ba706492d3785f16",
+      "body_file": "d06fb0ea5a9aac294a73f1b8451ba2a68521f0f8d7403937396c57b176f6355c.body"
+    },
+    {
+      "url": "https://data.binance.vision/data/futures/um/daily/metrics/BTCUSDT/BTCUSDT-metrics-2022-01-08.zip.CHECKSUM",
+      "params": {},
+      "retrieved_at": "2026-09-23T07:26:27.288681+00:00",
+      "status": 200,
+      "response_url": "https://data.binance.vision/data/futures/um/daily/metrics/BTCUSDT/BTCUSDT-metrics-2022-01-08.zip.CHECKSUM",
+      "sha256": "ff5f1084d9d39113da2f63eaa995610a330d49f228c6827870c4a5d5610b5849",
+      "body_file": "669552dd16685ec34d0465bc905e095e81f1fa8154fdab4ee1b7e1036f9e5be9.body"
+    },
+    {
+      "url": "https://data.binance.vision/data/futures/um/daily/metrics/BTCUSDT/BTCUSDT-metrics-2022-01-09.zip",
+      "params": {},
+      "retrieved_at": "2026-09-23T07:26:27.568810+00:00",
+      "status": 200,
+      "response_url": "https://data.binance.vision/data/futures/um/daily/metrics/BTCUSDT/BTCUSDT-metrics-2022-01-09.zip",
+      "sha256": "af199235c64f92cf9daa10e524b68caa17d079067f7ee44549c9774c796b0c70",
+      "body_file": "8d37af60369795ac39086d1eb1780e139cdce518152ffbcf1b3e31872d9e2615.body"
+    },
+    {
+      "url": "https://data.binance.vision/data/futures/um/daily/metrics/BTCUSDT/BTCUSDT-metrics-2022-01-09.zip.CHECKSUM",
+      "params": {},
+      "retrieved_at": "2026-09-23T07:26:27.848458+00:00",
+      "status": 200,
+      "response_url": "https://data.binance.vision/data/futures/um/daily/metrics/BTCUSDT/BTCUSDT-metrics-2022-01-09.zip.CHECKSUM",
+      "sha256": "0d354391c187bbe0904b08d67ea169d70b302b4893334060d1bd6eddd7bc11ef",
+      "body_file": "6ea985810e6e8d92c1e388a10a7be7126be63823a27dfa645ea46fd5a2bde17e.body"
+    },
+    {
+      "url": "https://data.binance.vision/data/futures/um/daily/metrics/BTCUSDT/BTCUSDT-metrics-2022-01-10.zip",
+      "params": {},
+      "retrieved_at": "2026-09-23T07:26:28.147495+00:00",
+      "status": 200,
+      "response_url": "https://data.binance.vision/data/futures/um/daily/metrics/BTCUSDT/BTCUSDT-metrics-2022-01-10.zip",
+      "sha256": "44c5067dce9cd7461284422273aece474a51d5278a516ede6ec5554762017d91",
+      "body_file": "9660e25a83fc20a50aefcdcf5086f00e17bd32be64c32371533c9fb56ed8723e.body"
+    },
+    {
+      "url": "https://data.binance.vision/data/futures/um/daily/metrics/BTCUSDT/BTCUSDT-metrics-2022-01-10.zip.CHECKSUM",
+      "params": {},
+      "retrieved_at": "2026-09-23T07:26:28.428230+00:00",
+      "status": 200,
+      "response_url": "https://data.binance.vision/data/futures/um/daily/metrics/BTCUSDT/BTCUSDT-metrics-2022-01-10.zip.CHECKSUM",
+      "sha256": "530f000b99979f86c5c6427288a8e4b9328fb5fdb908d09cfb3421f7c06f651c",
+      "body_file": "c18ed277af75da33122036f90205fe90f242b1dccfd3c79e1b131096612a0844.body"
+    },
+    {
+      "url": "https://data.binance.vision/data/futures/um/daily/metrics/BTCUSDT/BTCUSDT-metrics-2022-01-11.zip",
+      "params": {},
+      "retrieved_at": "2026-09-23T07:26:28.722241+00:00",
+      "status": 200,
+      "response_url": "https://data.binance.vision/data/futures/um/daily/metrics/BTCUSDT/BTCUSDT-metrics-2022-01-11.zip",
+      "sha256": "2eb3d1d7e658ea6330aa6bb1e31758d79d8af7609d425322b774757fcb1d4a4c",
+      "body_file": "9e1c015a2c9f9fa68cdbff0a7637d26e89161680563beb4683c5dae6b8d83dcb.body"
+    },
+    {
+      "url": "https://data.binance.vision/data/futures/um/daily/metrics/BTCUSDT/BTCUSDT-metrics-2022-01-11.zip.CHECKSUM",
+      "params": {},
+      "retrieved_at": "2026-09-23T07:26:28.999527+00:00",
+      "status": 200,
+      "response_url": "https://data.binance.vision/data/futures/um/daily/metrics/BTCUSDT/BTCUSDT-metrics-2022-01-11.zip.CHECKSUM",
+      "sha256": "c2d9a70e26b2687886dcaa061002535d44ef4d8cc099472074ec6d9e6db58122",
+      "body_file": "db81a54c78227c61246739d09aafe5e6cdb7061a7407cd3ef5cda02ce2a9c503.body"
+    },
+    {
+      "url": "https://data.binance.vision/data/futures/um/daily/metrics/BTCUSDT/BTCUSDT-metrics-2022-01-12.zip",
+      "params": {},
+      "retrieved_at": "2026-09-23T07:26:29.276849+00:00",
+      "status": 200,
+      "response_url": "https://data.binance.vision/data/futures/um/daily/metrics/BTCUSDT/BTCUSDT-metrics-2022-01-12.zip",
+      "sha256": "63f90f9dff5e9ed01be096a1206458d3c84a5ba1a29c3ba5a67575a8c60430d1",
+      "body_file": "dbd67d6e0ac632365149b4409ef1ced773a43d8ff88bd8654d228c517e7989b1.body"
+    },
+    {
+      "url": "https://data.binance.vision/data/futures/um/daily/metrics/BTCUSDT/BTCUSDT-metrics-2022-01-12.zip.CHECKSUM",
+      "params": {},
+      "retrieved_at": "2026-09-23T07:26:29.550501+00:00",
+      "status": 200,
+      "response_url": "https://data.binance.vision/data/futures/um/daily/metrics/BTCUSDT/BTCUSDT-metrics-2022-01-12.zip.CHECKSUM",
+      "sha256": "2bb89b88d4de03e99dabf94f7b0a7c630975d0d93e534d8e105b29c8756dd45f",
+      "body_file": "0d933027e30f808dd34a84e9a72e22cd0e74d342bc8f0359e6e9734b47d7bc59.body"
+    },
+    {
+      "url": "https://data.binance.vision/data/futures/um/daily/metrics/BTCUSDT/BTCUSDT-metrics-2022-01-13.zip",
+      "params": {},
+      "retrieved_at": "2026-09-23T07:26:29.832299+00:00",
+      "status": 200,
+      "response_url": "https://data.binance.vision/data/futures/um/daily/metrics/BTCUSDT/BTCUSDT-metrics-2022-01-13.zip",
+      "sha256": "08d58a1dc31fb778b328f7995c6334f81a490407310275702bdcdcc7d3d95e03",
+      "body_file": "49a30b409449be8e6a7f6028b5734e866623c24dca247eec64d3ab22cb4fedcb.body"
+    },
+    {
+      "url": "https://data.binance.vision/data/futures/um/daily/metrics/BTCUSDT/BTCUSDT-metrics-2022-01-13.zip.CHECKSUM",
+      "params": {},
+      "retrieved_at": "2026-09-23T07:26:30.100673+00:00",
+      "status": 200,
+      "response_url": "https://data.binance.vision/data/futures/um/daily/metrics/BTCUSDT/BTCUSDT-metrics-2022-01-13.zip.CHECKSUM",
+      "sha256": "220243d8fc66e0cd9111697d784e5e3c1de90a78678a5e4003b635026d8e00db",
+      "body_file": "2aafb20bc754f3407757a4a3b279510830dab81c573d153a7a64f83dcad28dc0.body"
+    },
+    {
+      "url": "https://data.binance.vision/data/futures/um/daily/metrics/BTCUSDT/BTCUSDT-metrics-2022-01-14.zip",
+      "params": {},
+      "retrieved_at": "2026-09-23T07:26:30.383862+00:00",
+      "status": 200,
+      "response_url": "https://data.binance.vision/data/futures/um/daily/metrics/BTCUSDT/BTCUSDT-metrics-2022-01-14.zip",
+      "sha256": "882c64d7c7902545fc06d5b4d373eb44589d776868d7cbd7998c94f817fb8682",
+      "body_file": "8a58b396f946cdfcf81f9cb177da23f47b965a2eba03cdd51b5527aeb5f106c8.body"
+    },
+    {
+      "url": "https://data.binance.vision/data/futures/um/daily/metrics/BTCUSDT/BTCUSDT-metrics-2022-01-14.zip.CHECKSUM",
+      "params": {},
+      "retrieved_at": "2026-09-23T07:26:30.654257+00:00",
+      "status": 200,
+      "response_url": "https://data.binance.vision/data/futures/um/daily/metrics/BTCUSDT/BTCUSDT-metrics-2022-01-14.zip.CHECKSUM",
+      "sha256": "4e6c01721ff615490d26c1bdd175f39a0e52e50654165835e0164810d4f2d693",
+      "body_file": "29b4fbea54d90512da3997fa736ed90da6309431c74d6c7c3c33f7c8ffd8ed91.body"
+    },
+    {
+      "url": "https://data.binance.vision/data/futures/um/daily/metrics/BTCUSDT/BTCUSDT-metrics-2022-01-15.zip",
+      "params": {},
+      "retrieved_at": "2026-09-23T07:26:31.039049+00:00",
+      "status": 200,
+      "response_url": "https://data.binance.vision/data/futures/um/daily/metrics/BTCUSDT/BTCUSDT-metrics-2022-01-15.zip",
+      "sha256": "4fa624ebed7437a3a26f32c5b65b7b87007640fb761629682fb7775b0d989d00",
+      "body_file": "7c87ad61498ff9d236a7b5d16a82dd50bded27e48f4a44c1842a0345318bb44a.body"
+    },
+    {
+      "url": "https://data.binance.vision/data/futures/um/daily/metrics/BTCUSDT/BTCUSDT-metrics-2022-01-15.zip.CHECKSUM",
+      "params": {},
+      "retrieved_at": "2026-09-23T07:26:31.315579+00:00",
+      "status": 200,
+      "response_url": "https://data.binance.vision/data/futures/um/daily/metrics/BTCUSDT/BTCUSDT-metrics-2022-01-15.zip.CHECKSUM",
+      "sha256": "19ba41b6c22675a60ae1099522825d97c933cfb584246a7c8e5545fad0e36aee",
+      "body_file": "dde4567dd1d29f72154f03e49a284344d6712405bf3ee96b71d9f8cc827b2432.body"
+    },
+    {
+      "url": "https://data.binance.vision/data/futures/um/daily/metrics/BTCUSDT/BTCUSDT-metrics-2022-01-16.zip",
+      "params": {},
+      "retrieved_at": "2026-09-23T07:26:31.603947+00:00",
+      "status": 200,
+      "response_url": "https://data.binance.vision/data/futures/um/daily/metrics/BTCUSDT/BTCUSDT-metrics-2022-01-16.zip",
+      "sha256": "19c7a7e9eedd97024f92d079953fc236de44055a7ab58af5ef91bf2412f698a6",
+      "body_file": "a91f97e413dbd51359624456708f7d2e147477c5b72996ad29eb9b241fbd8bbe.body"
+    },
+    {
+      "url": "https://data.binance.vision/data/futures/um/daily/metrics/BTCUSDT/BTCUSDT-metrics-2022-01-16.zip.CHECKSUM",
+      "params": {},
+      "retrieved_at": "2026-09-23T07:26:31.881416+00:00",
+      "status": 200,
+      "response_url": "https://data.binance.vision/data/futures/um/daily/metrics/BTCUSDT/BTCUSDT-metrics-2022-01-16.zip.CHECKSUM",
+      "sha256": "a82f03df1f235721e33dedb744cf07ae7fac913aa2efbcafaa604b630b8acc53",
+      "body_file": "aa7c28895b86bc8c20fcdc98d02ccf16955491f4b8a288374c33db052479cce8.body"
+    },
+    {
+      "url": "https://data.binance.vision/data/futures/um/daily/metrics/BTCUSDT/BTCUSDT-metrics-2022-01-17.zip",
+      "params": {},
+      "retrieved_at": "2026-09-23T07:26:32.166483+00:00",
+      "status": 200,
+      "response_url": "https://data.binance.vision/data/futures/um/daily/metrics/BTCUSDT/BTCUSDT-metrics-2022-01-17.zip",
+      "sha256": "15636424cb02942003dd21ca3419e4b1f6271bc78c6688755dd65dbea7d11be6",
+      "body_file": "37f0700f4c2850453881ebb782027cb04b8f483961734531cfd72e1a452048bb.body"
+    },
+    {
+      "url": "https://data.binance.vision/data/futures/um/daily/metrics/BTCUSDT/BTCUSDT-metrics-2022-01-17.zip.CHECKSUM",
+      "params": {},
+      "retrieved_at": "2026-09-23T07:26:32.450030+00:00",
+      "status": 200,
+      "response_url": "https://data.binance.vision/data/futures/um/daily/metrics/BTCUSDT/BTCUSDT-metrics-2022-01-17.zip.CHECKSUM",
+      "sha256": "4812eda627e2f66012a31ae4e66cc6ae22cd998554c6c77917f8dcfe0f0f0790",
+      "body_file": "cc7f7b6a95c69b8da15c0ee302c7f1dfe424f28e38bcc0f1211fcb514485fa00.body"
+    },
+    {
+      "url": "https://data.binance.vision/data/futures/um/daily/metrics/BTCUSDT/BTCUSDT-metrics-2022-01-18.zip",
+      "params": {},
+      "retrieved_at": "2026-09-23T07:26:32.729295+00:00",
+      "status": 200,
+      "response_url": "https://data.binance.vision/data/futures/um/daily/metrics/BTCUSDT/BTCUSDT-metrics-2022-01-18.zip",
+      "sha256": "4c2334f99c1e86537128762db2b5d24d6b71cee8abb7e370b7c4bfa645eff53d",
+      "body_file": "3b8f5e5133730d4e5fdd9c6b8d919451a89087374fe8db78440f1e236f86a29a.body"
+    },
+    {
+      "url": "https://data.binance.vision/data/futures/um/daily/metrics/BTCUSDT/BTCUSDT-metrics-2022-01-18.zip.CHECKSUM",
+      "params": {},
+      "retrieved_at": "2026-09-23T07:26:33.000106+00:00",
+      "status": 200,
+      "response_url": "https://data.binance.vision/data/futures/um/daily/metrics/BTCUSDT/BTCUSDT-metrics-2022-01-18.zip.CHECKSUM",
+      "sha256": "cc35fe1f0666c3dc9ffadb90c7e5ed4756099f9839c6ab8b983792b3bab91197",
+      "body_file": "adb54c269b23430a9508ae00f44f2c935100694a5b8aa5001174ea9aedc49e7d.body"
+    },
+    {
+      "url": "https://data.binance.vision/data/futures/um/daily/metrics/BTCUSDT/BTCUSDT-metrics-2022-01-19.zip",
+      "params": {},
+      "retrieved_at": "2026-09-23T07:26:33.276568+00:00",
+      "status": 200,
+      "response_url": "https://data.binance.vision/data/futures/um/daily/metrics/BTCUSDT/BTCUSDT-metrics-2022-01-19.zip",
+      "sha256": "ee6332209b87b427c4b0c72d07a96fd38ab4eb6c636fa1017480a9cc26ff7375",
+      "body_file": "7ec7615c21d1bee490ff80edff5ede919094ac427bb88fc8e101e691a4ab0efa.body"
+    },
+    {
+      "url": "https://data.binance.vision/data/futures/um/daily/metrics/BTCUSDT/BTCUSDT-metrics-2022-01-19.zip.CHECKSUM",
+      "params": {},
+      "retrieved_at": "2026-09-23T07:26:33.555779+00:00",
+      "status": 200,
+      "response_url": "https://data.binance.vision/data/futures/um/daily/metrics/BTCUSDT/BTCUSDT-metrics-2022-01-19.zip.CHECKSUM",
+      "sha256": "c4a683822bf9b3ca30d6792ecd2bd69b94ee1de9361681eb7da016718b4f6741",
+      "body_file": "c2bd056809edc58b8ceb85b2f1dfad2c7776f74db77b7143fcb5b0d8af16a71a.body"
+    },
+    {
+      "url": "https://data.binance.vision/data/futures/um/daily/metrics/BTCUSDT/BTCUSDT-metrics-2022-01-20.zip",
+      "params": {},
+      "retrieved_at": "2026-09-23T07:26:33.838806+00:00",
+      "status": 200,
+      "response_url": "https://data.binance.vision/data/futures/um/daily/metrics/BTCUSDT/BTCUSDT-metrics-2022-01-20.zip",
+      "sha256": "e1c0a9f4e687d1348b116820f0c45025cc46267ee69f1b51ed461c76a059ea42",
+      "body_file": "d130b63d16150fd66cefb2ef0b4d241d3ac122bb12b5540cc8e8a30faa267166.body"
+    },
+    {
+      "url": "https://data.binance.vision/data/futures/um/daily/metrics/BTCUSDT/BTCUSDT-metrics-2022-01-20.zip.CHECKSUM",
+      "params": {},
+      "retrieved_at": "2026-09-23T07:26:34.155723+00:00",
+      "status": 200,
+      "response_url": "https://data.binance.vision/data/futures/um/daily/metrics/BTCUSDT/BTCUSDT-metrics-2022-01-20.zip.CHECKSUM",
+      "sha256": "f639937c284d1c4e7a6e27ef8bc1f7dd81c90a424ef452c6d2760e6c450198ff",
+      "body_file": "4fa15a5f71bfb7f33813ec4d341074643a9b79857eec84d6297676b3d68f59eb.body"
+    },
+    {
+      "url": "https://data.binance.vision/data/futures/um/daily/metrics/BTCUSDT/BTCUSDT-metrics-2022-01-21.zip",
+      "params": {},
+      "retrieved_at": "2026-09-23T07:26:34.433261+00:00",
+      "status": 200,
+      "response_url": "https://data.binance.vision/data/futures/um/daily/metrics/BTCUSDT/BTCUSDT-metrics-2022-01-21.zip",
+      "sha256": "0e47bdd3e2b5f906a3e8c81760c46c43e0f3893941a12f7f70d6f9f0b96d35b1",
+      "body_file": "1b42bf5a97947aa4e32a350515a12edd76c828e3702d2ca6bdef8f31d682e0ac.body"
+    },
+    {
+      "url": "https://data.binance.vision/data/futures/um/daily/metrics/BTCUSDT/BTCUSDT-metrics-2022-01-21.zip.CHECKSUM",
+      "params": {},
+      "retrieved_at": "2026-09-23T07:26:34.709439+00:00",
+      "status": 200,
+      "response_url": "https://data.binance.vision/data/futures/um/daily/metrics/BTCUSDT/BTCUSDT-metrics-2022-01-21.zip.CHECKSUM",
+      "sha256": "2cb91f49e7bf7f9181d149f3013cb3deb163b688cef1840a3c7efc8931ddc0fe",
+      "body_file": "3495fe00e6b67a648c07645bb8ce8318d1469d33fd4b8cc776c3d6b956c00c50.body"
+    },
+    {
+      "url": "https://data.binance.vision/data/futures/um/daily/metrics/BTCUSDT/BTCUSDT-metrics-2022-01-22.zip",
+      "params": {},
+      "retrieved_at": "2026-09-23T07:26:34.999779+00:00",
+      "status": 200,
+      "response_url": "https://data.binance.vision/data/futures/um/daily/metrics/BTCUSDT/BTCUSDT-metrics-2022-01-22.zip",
+      "sha256": "686ab143ce159b3a723263ab7fcc5a6fc8bea7cd41018fd33284ed0f8b0123db",
+      "body_file": "45b8a9b224e676064a196f673a9cb2a05199b0641aed83e3e855a29b4e972671.body"
+    },
+    {
+      "url": "https://data.binance.vision/data/futures/um/daily/metrics/BTCUSDT/BTCUSDT-metrics-2022-01-22.zip.CHECKSUM",
+      "params": {},
+      "retrieved_at": "2026-09-23T07:26:35.109561+00:00",
+      "status": 200,
+      "response_url": "https://data.binance.vision/data/futures/um/daily/metrics/BTCUSDT/BTCUSDT-metrics-2022-01-22.zip.CHECKSUM",
+      "sha256": "e65fff8542c4f76c786a26f19546f24231fa1ccb778302191a5dd5654866d85c",
+      "body_file": "cf06a3ed137e7a4aa297a1c7712abf501da548616dce243824dd55d60034dc63.body"
+    },
+    {
+      "url": "https://data.binance.vision/data/futures/um/daily/metrics/BTCUSDT/BTCUSDT-metrics-2022-01-23.zip",
+      "params": {},
+      "retrieved_at": "2026-09-23T07:26:35.390450+00:00",
+      "status": 200,
+      "response_url": "https://data.binance.vision/data/futures/um/daily/metrics/BTCUSDT/BTCUSDT-metrics-2022-01-23.zip",
+      "sha256": "a30d3d479ad39def2598670d58e335cd8c2b0b2bff800da747a3c1aa8352ccf6",
+      "body_file": "45d3a65b57c60565cd8f6dd883f7c623782760ba439bc8d5522189a5b570885f.body"
+    },
+    {
+      "url": "https://data.binance.vision/data/futures/um/daily/metrics/BTCUSDT/BTCUSDT-metrics-2022-01-23.zip.CHECKSUM",
+      "params": {},
+      "retrieved_at": "2026-09-23T07:26:35.666621+00:00",
+      "status": 200,
+      "response_url": "https://data.binance.vision/data/futures/um/daily/metrics/BTCUSDT/BTCUSDT-metrics-2022-01-23.zip.CHECKSUM",
+      "sha256": "0913929261ec71f4164900c38335b8f2011a871d904983fca2198b46dbe3c006",
+      "body_file": "ec30f2c8e67e2be56d4429adc982b9a376395772acc0a6dfeaaffec621fe56a1.body"
+    },
+    {
+      "url": "https://data.binance.vision/data/futures/um/daily/metrics/BTCUSDT/BTCUSDT-metrics-2022-01-24.zip",
+      "params": {},
+      "retrieved_at": "2026-09-23T07:26:35.797586+00:00",
+      "status": 200,
+      "response_url": "https://data.binance.vision/data/futures/um/daily/metrics/BTCUSDT/BTCUSDT-metrics-2022-01-24.zip",
+      "sha256": "9a2576c531dd30dbf827bcc7dc1a6cc734b7aa893c6451978c6975ec9ecae24c",
+      "body_file": "4ea017bd2c93c5d523e57fcfda2d8ee40ccc1adbb1332c051ad60dab40c52eaa.body"
+    },
+    {
+      "url": "https://data.binance.vision/data/futures/um/daily/metrics/BTCUSDT/BTCUSDT-metrics-2022-01-24.zip.CHECKSUM",
+      "params": {},
+      "retrieved_at": "2026-09-23T07:26:36.074757+00:00",
+      "status": 200,
+      "response_url": "https://data.binance.vision/data/futures/um/daily/metrics/BTCUSDT/BTCUSDT-metrics-2022-01-24.zip.CHECKSUM",
+      "sha256": "341edb2c0ade66f0e455e28da775b335cd9997ea4fa5f81c2459e094435d80df",
+      "body_file": "662b754690207b6fda617c4af29f15bba89c3783ee8ab31f18f6427ae7dcab59.body"
+    },
+    {
+      "url": "https://data.binance.vision/data/futures/um/daily/metrics/BTCUSDT/BTCUSDT-metrics-2022-01-25.zip",
+      "params": {},
+      "retrieved_at": "2026-09-23T07:26:36.364144+00:00",
+      "status": 200,
+      "response_url": "https://data.binance.vision/data/futures/um/daily/metrics/BTCUSDT/BTCUSDT-metrics-2022-01-25.zip",
+      "sha256": "89576103936de9844a8d789401685fb44918c78bef3d8446ff916cb45f59de3b",
+      "body_file": "c0db59c03a155bacb31ce18bbca20d48fdcb8cc2a1a0c34ae8d7c2a7c961bb3e.body"
+    },
+    {
+      "url": "https://data.binance.vision/data/futures/um/daily/metrics/BTCUSDT/BTCUSDT-metrics-2022-01-25.zip.CHECKSUM",
+      "params": {},
+      "retrieved_at": "2026-09-23T07:26:36.649266+00:00",
+      "status": 200,
+      "response_url": "https://data.binance.vision/data/futures/um/daily/metrics/BTCUSDT/BTCUSDT-metrics-2022-01-25.zip.CHECKSUM",
+      "sha256": "e2a08a32339967ea18438e47208deaac8caae82ab584ded07ed9706caa40b02a",
+      "body_file": "4e608dca2cd544ff7db60de115594fff17e15de8486a3a0714ddd11ef487bb86.body"
+    },
+    {
+      "url": "https://data.binance.vision/data/futures/um/daily/metrics/BTCUSDT/BTCUSDT-metrics-2022-01-26.zip",
+      "params": {},
+      "retrieved_at": "2026-09-23T07:26:36.933387+00:00",
+      "status": 200,
+      "response_url": "https://data.binance.vision/data/futures/um/daily/metrics/BTCUSDT/BTCUSDT-metrics-2022-01-26.zip",
+      "sha256": "826f2c4b419f98bbc7d937694c441090391de35b761ce786e95bceeaf8e3b713",
+      "body_file": "1085031c1f6de0d294274480841106bdae111f9075ea4a2c5b98d64e730e62be.body"
+    },
+    {
+      "url": "https://data.binance.vision/data/futures/um/daily/metrics/BTCUSDT/BTCUSDT-metrics-2022-01-26.zip.CHECKSUM",
+      "params": {},
+      "retrieved_at": "2026-09-23T07:26:37.207674+00:00",
+      "status": 200,
+      "response_url": "https://data.binance.vision/data/futures/um/daily/metrics/BTCUSDT/BTCUSDT-metrics-2022-01-26.zip.CHECKSUM",
+      "sha256": "55fb091df7d676503b8cde603ad872840f63c025329fb173435affaad8b5c73a",
+      "body_file": "01d0ec6b8779462d595b3079b069fb55703180fcfe50d7d6ddc805d6aaa23d05.body"
+    },
+    {
+      "url": "https://data.binance.vision/data/futures/um/daily/metrics/BTCUSDT/BTCUSDT-metrics-2022-01-27.zip",
+      "params": {},
+      "retrieved_at": "2026-09-23T07:26:37.494817+00:00",
+      "status": 200,
+      "response_url": "https://data.binance.vision/data/futures/um/daily/metrics/BTCUSDT/BTCUSDT-metrics-2022-01-27.zip",
+      "sha256": "f3a4c55b7229d5fb5f272c7682ca13becb7bd113d482e33dc4ef94979107ea81",
+      "body_file": "6f9f03844e684079da18d4405a37fe9a287a1878e564039a8dac10c6b85c9798.body"
+    },
+    {
+      "url": "https://data.binance.vision/data/futures/um/daily/metrics/BTCUSDT/BTCUSDT-metrics-2022-01-27.zip.CHECKSUM",
+      "params": {},
+      "retrieved_at": "2026-09-23T07:26:37.774958+00:00",
+      "status": 200,
+      "response_url": "https://data.binance.vision/data/futures/um/daily/metrics/BTCUSDT/BTCUSDT-metrics-2022-01-27.zip.CHECKSUM",
+      "sha256": "4bdd11b7baeba43b52da7f7d6a9ba51c807683cec2cefe0e854f90bf72b5a170",
+      "body_file": "3cdc2bf27a7b8765a2ad31063eaf003bca762a1b881cc6d27ee158b178dd872b.body"
+    },
+    {
+      "url": "https://data.binance.vision/data/futures/um/daily/metrics/BTCUSDT/BTCUSDT-metrics-2022-01-28.zip",
+      "params": {},
+      "retrieved_at": "2026-09-23T07:26:38.060129+00:00",
+      "status": 200,
+      "response_url": "https://data.binance.vision/data/futures/um/daily/metrics/BTCUSDT/BTCUSDT-metrics-2022-01-28.zip",
+      "sha256": "277a7552bad11780102f9ddb9522aa7d444eb0a19036f62bb53b72d2c06271f4",
+      "body_file": "9d57870df2c6d2f5510d137a649d2b14dfd0b649342aebaa4491b9c0384bef85.body"
+    },
+    {
+      "url": "https://data.binance.vision/data/futures/um/daily/metrics/BTCUSDT/BTCUSDT-metrics-2022-01-28.zip.CHECKSUM",
+      "params": {},
+      "retrieved_at": "2026-09-23T07:26:38.330802+00:00",
+      "status": 200,
+      "response_url": "https://data.binance.vision/data/futures/um/daily/metrics/BTCUSDT/BTCUSDT-metrics-2022-01-28.zip.CHECKSUM",
+      "sha256": "239faa4f90ef03a49c021af7a1759bfa86eb8024f87269b4861a42a5d797882e",
+      "body_file": "b0ddb554bf01f89820be54151c284c3ae0f335c3d9f8841b9c9d5dd13cd254d3.body"
+    },
+    {
+      "url": "https://data.binance.vision/data/futures/um/daily/metrics/BTCUSDT/BTCUSDT-metrics-2022-01-29.zip",
+      "params": {},
+      "retrieved_at": "2026-09-23T07:26:38.639759+00:00",
+      "status": 200,
+      "response_url": "https://data.binance.vision/data/futures/um/daily/metrics/BTCUSDT/BTCUSDT-metrics-2022-01-29.zip",
+      "sha256": "35268d033f57fe1c3f94a85ff477a71b796d14e8a6256b3435c4431be1b805cb",
+      "body_file": "573f22464afadc85ca4eb70a35c828ce59e4afbf3faed152452f901855b23999.body"
+    },
+    {
+      "url": "https://data.binance.vision/data/futures/um/daily/metrics/BTCUSDT/BTCUSDT-metrics-2022-01-29.zip.CHECKSUM",
+      "params": {},
+      "retrieved_at": "2026-09-23T07:26:38.917279+00:00",
+      "status": 200,
+      "response_url": "https://data.binance.vision/data/futures/um/daily/metrics/BTCUSDT/BTCUSDT-metrics-2022-01-29.zip.CHECKSUM",
+      "sha256": "20d949086540f0118ae3b9303097e1799566a558bcf44e98463addc2d52fc1e8",
+      "body_file": "31af82ee5f0a3545e33b0fc8427f0a4dd60b0a26b08d11e9e1d194b03a8dcaaf.body"
+    },
+    {
+      "url": "https://fapi.binance.com/fapi/v1/fundingRate",
+      "params": {
+        "symbol": "BTCUSDT",
+        "startTime": 1640908800000,
+        "endTime": 1643500799999,
+        "limit": 1000
+      },
+      "retrieved_at": "2026-09-23T07:26:39.284814+00:00",
+      "status": 200,
+      "response_url": "https://fapi.binance.com/fapi/v1/fundingRate?symbol=BTCUSDT&startTime=1640908800000&endTime=1643500799999&limit=1000",
+      "sha256": "76ac5eeddf11d3ee3062c4521eff74cfa00d2509fe1d6314c5fd726de888ef39",
+      "body_file": "0cc5bb7ee96b2bd1808370eb2f11fddbfb7db14e87f294e2ba7ab870c4d5ed4c.body"
+    },
+    {
+      "url": "https://fapi.binance.com/fapi/v1/fundingRate",
+      "params": {
+        "symbol": "BTCUSDT",
+        "startTime": 1643472000014,
+        "endTime": 1643500799999,
+        "limit": 1000
+      },
+      "retrieved_at": "2026-09-23T07:26:39.391996+00:00",
+      "status": 200,
+      "response_url": "https://fapi.binance.com/fapi/v1/fundingRate?symbol=BTCUSDT&startTime=1643472000014&endTime=1643500799999&limit=1000",
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "body_file": "5862e96066a8a29dd693c5f436629308b93f4f9d4a8f435313b3358c97a0275e.body"
+    },
+    {
+      "url": "https://archive.org/wayback/available",
+      "params": {
+        "url": "https://www.forexfactory.com/calendar?week=dec26.2021",
+        "timestamp": "20220101000000"
+      },
+      "retrieved_at": "2026-09-23T07:26:42.598247+00:00",
+      "status": 200,
+      "response_url": "https://archive.org/wayback/available?url=https%3A%2F%2Fwww.forexfactory.com%2Fcalendar%3Fweek%3Ddec26.2021&timestamp=20220101000000",
+      "sha256": "dd441fcc1c6b88ea9427a5c6d9cb2d7b49c380b57889650ecb1a61e27212899b",
+      "body_file": "fc0f42bbe29356fc15fd44d0f64db867ea77aa6da813ae3b82efd73fb970b575.body"
+    },
+    {
+      "url": "https://archive.org/wayback/available",
+      "params": {
+        "url": "https://nfs.faireconomy.media/ff_calendar_thisweek.xml",
+        "timestamp": "20220101000000"
+      },
+      "retrieved_at": "2026-09-23T07:26:44.880608+00:00",
+      "status": 200,
+      "response_url": "https://archive.org/wayback/available?url=https%3A%2F%2Fnfs.faireconomy.media%2Fff_calendar_thisweek.xml&timestamp=20220101000000",
+      "sha256": "e5bc028cd95574fcc3cd6d3c25655d8a6cfa940cddb4650e2dbef158d4c27462",
+      "body_file": "5f47c432850f8ba75fb9f93bcd23c71024448450b02426e12c7ea383dfe26fa2.body"
+    },
+    {
+      "url": "https://archive.org/wayback/available",
+      "params": {
+        "url": "https://nfs.faireconomy.media/ff_calendar_thisweek.json",
+        "timestamp": "20220101000000"
+      },
+      "retrieved_at": "2026-09-23T07:26:50.199992+00:00",
+      "status": 200,
+      "response_url": "https://archive.org/wayback/available?url=https%3A%2F%2Fnfs.faireconomy.media%2Fff_calendar_thisweek.json&timestamp=20220101000000",
+      "sha256": "7d91c50eb4ea2544ef23126dadd0af552ba14c58b69585d54835f9645fd4ba1f",
+      "body_file": "481b0216d278cf2ee50857ea4f95b43904d233567d6452164f89d3b6c0520505.body"
+    },
+    {
+      "url": "https://archive.org/wayback/available",
+      "params": {
+        "url": "https://www.forexfactory.com/calendar?week=jan2.2022",
+        "timestamp": "20220102000000"
+      },
+      "retrieved_at": "2026-09-23T07:26:53.016036+00:00",
+      "status": 200,
+      "response_url": "https://archive.org/wayback/available?url=https%3A%2F%2Fwww.forexfactory.com%2Fcalendar%3Fweek%3Djan2.2022&timestamp=20220102000000",
+      "sha256": "13979876811342fd0ef8eab98f5e13268f8b4913eb15b0a3512dd018470d2905",
+      "body_file": "91ac365032bd96e346ffd080054e356391f938970cf082e8ccd3ccb3f0388916.body"
+    },
+    {
+      "url": "https://archive.org/wayback/available",
+      "params": {
+        "url": "https://nfs.faireconomy.media/ff_calendar_thisweek.xml",
+        "timestamp": "20220102000000"
+      },
+      "retrieved_at": "2026-09-23T07:26:55.994081+00:00",
+      "status": 200,
+      "response_url": "https://archive.org/wayback/available?url=https%3A%2F%2Fnfs.faireconomy.media%2Fff_calendar_thisweek.xml&timestamp=20220102000000",
+      "sha256": "e696f985bbc81a9a9553e3adbff76617a1ed63d8f8981b8de6800bbddb40039f",
+      "body_file": "53c36e6d817c3247fcca639257266bf82d0ea1eda2c57c5dfb91f357984c0538.body"
+    },
+    {
+      "url": "https://archive.org/wayback/available",
+      "params": {
+        "url": "https://nfs.faireconomy.media/ff_calendar_thisweek.json",
+        "timestamp": "20220102000000"
+      },
+      "retrieved_at": "2026-09-23T07:26:59.741377+00:00",
+      "status": 200,
+      "response_url": "https://archive.org/wayback/available?url=https%3A%2F%2Fnfs.faireconomy.media%2Fff_calendar_thisweek.json&timestamp=20220102000000",
+      "sha256": "000b3a4dd597bd6a3209a8794c5594000e18f288e0b157cb1489c70f378952f5",
+      "body_file": "d31740c4d19fb213fd1992b8a6f0af74d73a531c2849455d467a982192bda85b.body"
+    },
+    {
+      "url": "https://archive.org/wayback/available",
+      "params": {
+        "url": "https://www.forexfactory.com/calendar?week=jan9.2022",
+        "timestamp": "20220109000000"
+      },
+      "retrieved_at": "2026-09-23T07:27:00.640306+00:00",
+      "status": 200,
+      "response_url": "https://archive.org/wayback/available?url=https%3A%2F%2Fwww.forexfactory.com%2Fcalendar%3Fweek%3Djan9.2022&timestamp=20220109000000",
+      "sha256": "c2215192c1dbc9e786c1dfec33ead16375fc611409958ef4a831a2d0f38477b2",
+      "body_file": "cfa9508e76a180ba66867fa7254354f617ce3a73a66d9874a268ccde98ec5e02.body"
+    },
+    {
+      "url": "https://archive.org/wayback/available",
+      "params": {
+        "url": "https://nfs.faireconomy.media/ff_calendar_thisweek.xml",
+        "timestamp": "20220109000000"
+      },
+      "retrieved_at": "2026-09-23T07:27:05.870379+00:00",
+      "status": 200,
+      "response_url": "https://archive.org/wayback/available?url=https%3A%2F%2Fnfs.faireconomy.media%2Fff_calendar_thisweek.xml&timestamp=20220109000000",
+      "sha256": "7e521c81bc37ffbb7c4813bd083ac8235ca388f145612d99bfa683e3a87560c9",
+      "body_file": "2de3fded67829537f17719a94a73bf4ad0d4405ee144d901d2b0262601b95238.body"
+    },
+    {
+      "url": "https://archive.org/wayback/available",
+      "params": {
+        "url": "https://nfs.faireconomy.media/ff_calendar_thisweek.json",
+        "timestamp": "20220109000000"
+      },
+      "retrieved_at": "2026-09-23T07:27:07.634439+00:00",
+      "status": 200,
+      "response_url": "https://archive.org/wayback/available?url=https%3A%2F%2Fnfs.faireconomy.media%2Fff_calendar_thisweek.json&timestamp=20220109000000",
+      "sha256": "40dda74569b2a241f0cf9dd9f261d2b26e9809d4ed31bb2ce78d5f75769bcff2",
+      "body_file": "fb7a161d3eed532c5bd3f707bac7f65047079c77826e185bdeefdf772719b245.body"
+    },
+    {
+      "url": "https://archive.org/wayback/available",
+      "params": {
+        "url": "https://www.forexfactory.com/calendar?week=jan16.2022",
+        "timestamp": "20220116000000"
+      },
+      "retrieved_at": "2026-09-23T07:27:10.309673+00:00",
+      "status": 200,
+      "response_url": "https://archive.org/wayback/available?url=https%3A%2F%2Fwww.forexfactory.com%2Fcalendar%3Fweek%3Djan16.2022&timestamp=20220116000000",
+      "sha256": "a95b06b544d657427be31c7a37aa78e838a03b94b6e358d8f62e563db960fa2c",
+      "body_file": "4868af82262745b5849b895507c661e6b1966c278da27e2ae3c1cd2c94da683f.body"
+    },
+    {
+      "url": "https://archive.org/wayback/available",
+      "params": {
+        "url": "https://nfs.faireconomy.media/ff_calendar_thisweek.xml",
+        "timestamp": "20220116000000"
+      },
+      "retrieved_at": "2026-09-23T07:27:14.346251+00:00",
+      "status": 200,
+      "response_url": "https://archive.org/wayback/available?url=https%3A%2F%2Fnfs.faireconomy.media%2Fff_calendar_thisweek.xml&timestamp=20220116000000",
+      "sha256": "01393cb7011701aedca0bcebc0f94726219c4ac58bd94d2962c28ab165f637d8",
+      "body_file": "25855885c7b90ba67f9e40b69c61e13933660feac313b57681925909746a4b72.body"
+    },
+    {
+      "url": "https://archive.org/wayback/available",
+      "params": {
+        "url": "https://nfs.faireconomy.media/ff_calendar_thisweek.json",
+        "timestamp": "20220116000000"
+      },
+      "retrieved_at": "2026-09-23T07:27:18.017593+00:00",
+      "status": 429,
+      "response_url": "https://archive.org/wayback/available?url=https%3A%2F%2Fnfs.faireconomy.media%2Fff_calendar_thisweek.json&timestamp=20220116000000",
+      "sha256": "ae138caf8767f7be2fe6f47f1663b0e2e28d903264707aa9b6f73bb7b223902c",
+      "body_file": "b9ae770f57bcdea4997d6dc85250cd5e52f667294043499dcdca7f1199894830.body"
+    },
+    {
+      "url": "https://archive.org/wayback/available",
+      "params": {
+        "url": "https://www.forexfactory.com/calendar?week=jan23.2022",
+        "timestamp": "20220123000000"
+      },
+      "retrieved_at": "2026-09-23T07:27:22.134608+00:00",
+      "status": 429,
+      "response_url": "https://archive.org/wayback/available?url=https%3A%2F%2Fwww.forexfactory.com%2Fcalendar%3Fweek%3Djan23.2022&timestamp=20220123000000",
+      "sha256": "ae138caf8767f7be2fe6f47f1663b0e2e28d903264707aa9b6f73bb7b223902c",
+      "body_file": "d0e414ea538982f2db37d60ee443a70df2d2ac321fd42403f3b0e3879c7d948e.body"
+    },
+    {
+      "url": "https://archive.org/wayback/available",
+      "params": {
+        "url": "https://nfs.faireconomy.media/ff_calendar_thisweek.xml",
+        "timestamp": "20220123000000"
+      },
+      "retrieved_at": "2026-09-23T07:27:26.415465+00:00",
+      "status": 429,
+      "response_url": "https://archive.org/wayback/available?url=https%3A%2F%2Fnfs.faireconomy.media%2Fff_calendar_thisweek.xml&timestamp=20220123000000",
+      "sha256": "ae138caf8767f7be2fe6f47f1663b0e2e28d903264707aa9b6f73bb7b223902c",
+      "body_file": "800d73d1d373085699adbcc544e4d8a5a8898ba35d36275956a71aeb99e1eff5.body"
+    },
+    {
+      "url": "https://archive.org/wayback/available",
+      "params": {
+        "url": "https://nfs.faireconomy.media/ff_calendar_thisweek.json",
+        "timestamp": "20220123000000"
+      },
+      "retrieved_at": "2026-09-23T07:27:30.087746+00:00",
+      "status": 429,
+      "response_url": "https://archive.org/wayback/available?url=https%3A%2F%2Fnfs.faireconomy.media%2Fff_calendar_thisweek.json&timestamp=20220123000000",
+      "sha256": "ae138caf8767f7be2fe6f47f1663b0e2e28d903264707aa9b6f73bb7b223902c",
+      "body_file": "1e8da94afbbe792de81865fc2f174242597e0eb5287db43fb9c7060b9b725a7c.body"
+    },
+    {
+      "url": "https://archive.org/wayback/available",
+      "params": {
+        "url": "https://www.forexfactory.com/calendar?week=jan30.2022",
+        "timestamp": "20220130000000"
+      },
+      "retrieved_at": "2026-09-23T07:27:33.767697+00:00",
+      "status": 429,
+      "response_url": "https://archive.org/wayback/available?url=https%3A%2F%2Fwww.forexfactory.com%2Fcalendar%3Fweek%3Djan30.2022&timestamp=20220130000000",
+      "sha256": "ae138caf8767f7be2fe6f47f1663b0e2e28d903264707aa9b6f73bb7b223902c",
+      "body_file": "3576017a5ca47a235ab356b992151fa90bfe05d7b749784f673ea90a3a24f6cc.body"
+    },
+    {
+      "url": "https://archive.org/wayback/available",
+      "params": {
+        "url": "https://nfs.faireconomy.media/ff_calendar_thisweek.xml",
+        "timestamp": "20220130000000"
+      },
+      "retrieved_at": "2026-09-23T07:27:37.420939+00:00",
+      "status": 429,
+      "response_url": "https://archive.org/wayback/available?url=https%3A%2F%2Fnfs.faireconomy.media%2Fff_calendar_thisweek.xml&timestamp=20220130000000",
+      "sha256": "ae138caf8767f7be2fe6f47f1663b0e2e28d903264707aa9b6f73bb7b223902c",
+      "body_file": "c8c34fb2732554a095b8c28d488a907ac326651d9402e2e4678d8d2e13907eb4.body"
+    },
+    {
+      "url": "https://archive.org/wayback/available",
+      "params": {
+        "url": "https://nfs.faireconomy.media/ff_calendar_thisweek.json",
+        "timestamp": "20220130000000"
+      },
+      "retrieved_at": "2026-09-23T07:27:41.095850+00:00",
+      "status": 429,
+      "response_url": "https://archive.org/wayback/available?url=https%3A%2F%2Fnfs.faireconomy.media%2Fff_calendar_thisweek.json&timestamp=20220130000000",
+      "sha256": "ae138caf8767f7be2fe6f47f1663b0e2e28d903264707aa9b6f73bb7b223902c",
+      "body_file": "e28778aa98c77a520eb81b715547032b6c470357266f1296f8ce056a2b814ae4.body"
+    }
+  ],
+  "limitations": [
+    "ForexFactory forecast/previous/calendar vintages not verified; retrospective records excluded from prompts.",
+    "Global long/short uses the 5m archive column, not live period=1d; empty source cells remain missing.",
+    "Funding is last settled rate, not a historical premiumIndex snapshot of lastFundingRate.",
+    "On-chain and Fear & Greed publication times remain assumed; source vintages are unverified.",
+    "Daily closed-candle evaluation differs from live intraday/current-candle fetching.",
+    "This remains the base pilot's time split, not an independent held-out evaluation.",
+    "Historical LLM knowledge contamination possible."
+  ],
+  "code_sha256": {
+    "data_sources/historical_data.py": "8c8e446fe24deb90d51f79d299e464860ad925fee96c7664d402a35c28b6906b",
+    "data_sources/historical_derivatives.py": "7d096fa8902e03de7fb6363f587be07565e81d91d0020ce02bd4d02c52fdc011",
+    "scripts/enrich_historical_dataset.py": "dba1e58aff9d11ca1cc32ffcc2d8469daef5e4f857c0a0d79c6bd9ff0efba695"
+  }
+}

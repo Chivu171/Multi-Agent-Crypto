@@ -1,0 +1,12 @@
+{
+  "url": "https://archive.org/wayback/available",
+  "params": {
+    "url": "https://www.forexfactory.com/calendar?week=dec26.2021",
+    "timestamp": "20220101000000"
+  },
+  "retrieved_at": "2026-09-23T07:26:42.598247+00:00",
+  "status": 200,
+  "response_url": "https://archive.org/wayback/available?url=https%3A%2F%2Fwww.forexfactory.com%2Fcalendar%3Fweek%3Ddec26.2021&timestamp=20220101000000",
+  "sha256": "dd441fcc1c6b88ea9427a5c6d9cb2d7b49c380b57889650ecb1a61e27212899b",
+  "body_file": "fc0f42bbe29356fc15fd44d0f64db867ea77aa6da813ae3b82efd73fb970b575.body"
+}

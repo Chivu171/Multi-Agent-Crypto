@@ -1,0 +1,9 @@
+{
+  "url": "https://data.binance.vision/data/futures/um/monthly/fundingRate/BTCUSDT/BTCUSDT-fundingRate-2022-01.zip",
+  "params": {},
+  "retrieved_at": "2026-09-23T07:26:22.949515+00:00",
+  "status": 200,
+  "response_url": "https://data.binance.vision/data/futures/um/monthly/fundingRate/BTCUSDT/BTCUSDT-fundingRate-2022-01.zip",
+  "sha256": "22ee19079b620f5c6d820e7d7f8bafa7fde866d89bd664863b8bd527749c12cb",
+  "body_file": "c8cb42959df37b698cafd55ffdf0abde66e7278a4df138249f0e148d526ac5fa.body"
+}
