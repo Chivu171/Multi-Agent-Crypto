@@ -245,3 +245,11 @@ def test_corrupt_snapshot_is_data_error_without_calls(provider):
     result = run_day(snap, day_budget=300)
     assert result["status"] == "data_error"
     assert calls == {"debate": 0, "debate_review": 0}
+
+
+def test_conflict_threshold_option_reaches_validator(provider):
+    calls = provider()
+    result = run_day(snapshot(), day_budget=300, conflict_threshold=5.0)
+    assert result["status"] == "ok"
+    assert result["validation"]["conflict_detected"] is False
+    assert calls == {"debate": 0, "debate_review": 0}

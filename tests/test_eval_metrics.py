@@ -525,3 +525,68 @@ def test_non_positive_initial_equity_is_rejected():
         simulate_trades(recs, prices=[100, 110], fee=0.0, initial_equity=0.0)
     with pytest.raises(ValueError, match="initial_equity không hợp lệ"):
         simulate_trades(recs, prices=[100, 110], fee=0.0, initial_equity=-1.0)
+
+
+# ---- Nhánh không Debate khi RCA/Debate bị từ chối --------------------------
+
+DATASET_V0 = Path("data/datasets/pilot_2022_01_forecast_previous")
+
+
+def _specialist(agent_id, signal, confidence):
+    direction = {"BUY": 1, "SELL": -1, "NEUTRAL": 0}[signal]
+    return {"agent_id": agent_id, "signal": signal, "confidence": confidence,
+            "belief_vector": {"direction": direction, "strength": confidence},
+            "metadata": {"entropy": 0.2, "redundancy_score": 0.1, "recency_weight": 1.0,
+                         "timestamp": "2021-12-31T00:00:00+00:00"}}
+
+
+def _fake_run(tmp_path):
+    """3 ngày đầu: ok / RCA bị từ chối / một specialist lỗi; các ngày sau chưa chạy."""
+    three = [_specialist("Financial_Agent", "SELL", 0.7), _specialist("Market_Agent", "SELL", 0.6),
+             _specialist("Sentiment_Agent", "BUY", 0.5)]
+    days = {
+        "2022-01-01": {"status": "ok", "signal": "SELL", "S_final": -0.2, "specialists": three,
+                       "validation": {"conflict_score": 0.1, "conflict_detected": False}},
+        "2022-01-02": {"status": "rejected_by_reviewer", "reason": "rca:review_rejected", "specialists": three,
+                       "validation": {"conflict_score": 0.5, "conflict_detected": True},
+                       "errors": [{"stage": "validator", "status": "rejected_by_reviewer"}]},
+        "2022-01-03": {"status": "api_error", "reason": "rate_limit", "specialists": three[:2],
+                       "errors": [{"stage": "specialist", "agent": "sentiment", "status": "api_error"}]},
+    }
+    (tmp_path / "days").mkdir()
+    for sample, data in days.items():
+        (tmp_path / "days" / f"{sample}.json").write_text(json.dumps({"sample_id": sample, **data}))
+    return tmp_path
+
+
+def test_rejected_explanation_keeps_no_debate_branch_valid(tmp_path):
+    records = build_records(_fake_run(tmp_path), DATASET_V0)
+    ok_day, rejected, failed = records[:3]
+    assert (ok_day["ok"], ok_day["signal"], ok_day["status"]) == (True, "SELL", "ok")
+    # RCA bị từ chối: nhánh đầy đủ lỗi, nhánh không Debate vẫn có tín hiệu.
+    assert (rejected["ok"], rejected["signal"], rejected["status"]) == (False, None, "rejected_by_reviewer")
+    assert rejected["signal_no_debate"] in {"BUY", "SELL", "NEUTRAL"}
+    assert rejected["debate_triggered"] is True
+    # Thiếu specialist: không có nhánh nào.
+    assert failed["ok"] is False and "signal_no_debate" not in failed
+    assert all(r["status"] == "not_run" for r in records[3:])
+    impact = debate_impact(records)
+    assert impact["debate_days"] == 0  # ngày có Debate không hợp lệ ở nhánh đầy đủ
+    assert impact["coverage_no_debate_all_days"] >= impact["coverage_with_debate_all_days"]
+
+
+def test_report_counts_configurations_on_full_calendar(tmp_path):
+    from scripts.report_evaluation import build_report, render_markdown
+    run = _fake_run(tmp_path)
+    per_day, summary = build_report(run, DATASET_V0)
+    assert len(per_day) == 30
+    p = summary["prediction"]
+    assert p["always_sell"]["directional_predictions"] == 30
+    assert p["full"]["successful_days"] == 1
+    assert p["no_debate"]["successful_days"] == 2
+    assert summary["status_counts"] == {"ok": 1, "rejected_by_reviewer": 1, "api_error": 1, "not_run": 27}
+    assert [d["sample_id"] for d in summary["buy_vs_sell_days"]] == ["2022-01-01", "2022-01-02"]
+    # Luôn SELL giữ một lệnh short xuyên kỳ.
+    assert summary["financial"]["always_sell"]["0.001"]["trade_count"] == 1
+    assert per_day[1]["signal_full"] == "" and per_day[1]["signal_no_debate"] != ""
+    assert "Luôn SELL" in render_markdown(summary)

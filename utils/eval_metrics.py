@@ -315,8 +315,11 @@ def classify_signal(s_final: float, band: float) -> str:
 
 def build_records(run_dir, dataset_dir) -> List[Record]:
     """Ghép một thư mục kết quả chạy (run_dir, dạng outputs/direction_pilot*)
-    với dataset (reference_price/return_24h từ labels.csv), tính lại S_final
-    không-Debate cho từng ngày chạy thành công. Đọc labels.csv sau cùng."""
+    với dataset (reference_price/return_24h từ labels.csv).
+
+    Nhánh đầy đủ: ok chỉ khi status == "ok". Nhánh không Debate: tính lại
+    S_final bằng Mediator cho mọi ngày có đủ 3 specialist hợp lệ — kể cả ngày
+    RCA/Debate bị từ chối, vì nhánh đó không có bước RCA/Debate."""
     import csv
     import datetime as dt
     import hashlib
@@ -346,16 +349,22 @@ def build_records(run_dir, dataset_dir) -> List[Record]:
         }
         day_path = run_dir / "days" / f"{sample}.json"
         day = _json.loads(day_path.read_text()) if day_path.exists() else {}
-        if day.get("status") == "ok":
+        rec.update({"status": day.get("status", "not_run"), "reason": day.get("reason")})
+        specialists = day.get("specialists") or []
+        specialists_ok = (len(specialists) == 3 and not day.get("agent_errors")
+                          and not any(e.get("stage") == "specialist" for e in day.get("errors", [])))
+        if specialists_ok:
             ref = dt.datetime.fromisoformat(snap["prediction_time"])
-            s_no_debate = run_mediator(day["specialists"], current_time=ref)["S_final"]
+            s_no_debate = run_mediator(specialists, current_time=ref)["S_final"]
+            validation = day.get("validation") or {}
             rec.update({
-                "ok": True, "signal": day["signal"], "S_final": day["S_final"],
-                "conflict_score": day["validation"]["conflict_score"],
-                "debate_triggered": bool(day["validation"]["conflict_detected"]),
+                "conflict_score": validation.get("conflict_score"),
+                "debate_triggered": bool(validation.get("conflict_detected")),
                 "S_final_no_debate": s_no_debate,
                 "signal_no_debate": classify_signal(s_no_debate, SIGNAL_NEUTRAL_BAND),
             })
+        if day.get("status") == "ok":
+            rec.update({"ok": True, "signal": day["signal"], "S_final": day["S_final"]})
         records.append(rec)
     validate_records(records)
     return records
@@ -383,14 +392,13 @@ def debate_impact(records: Sequence[Record]) -> Dict[str, Any]:
     else:
         accuracy_before = accuracy_after = coverage_before = coverage_after = None
 
-    # (b) toàn bộ ngày yêu cầu — giữ nguyên trạng thái ok của từng ngày để
-    # coverage/accuracy chia đúng cho tổng số ngày yêu cầu, không chỉ số ngày
-    # có Debate. Ngày ok nhưng chưa tính lại được signal_no_debate (ví dụ
-    # records dựng tay, chưa gọi build_records) bị coi như ngày lỗi ở nhánh
-    # "không Debate" vì không có gì để so sánh.
+    # (b) toàn bộ ngày yêu cầu — mỗi nhánh có trạng thái hợp lệ riêng để
+    # coverage/accuracy chia đúng cho tổng số ngày yêu cầu. Nhánh "không
+    # Debate" hợp lệ khi có signal_no_debate (đủ 3 specialist), kể cả khi nhánh
+    # đầy đủ lỗi ở RCA/Debate; không có signal_no_debate thì là ngày lỗi.
     full_before, full_after = [], []
     for r in records:
-        has_no_debate = r["ok"] and r.get("signal_no_debate") is not None
+        has_no_debate = r.get("signal_no_debate") is not None
         full_before.append({"ok": has_no_debate, "signal": r.get("signal_no_debate") if has_no_debate else None,
                             "return_24h": r["return_24h"]})
         full_after.append({"ok": r["ok"], "signal": r.get("signal"), "return_24h": r["return_24h"]})

@@ -26,7 +26,7 @@ from agents.mediator_agent import run_mediator
 from utils import llm
 from utils.config import get_agent_config
 from data_sources.market_data import _ema, _rsi
-from utils.thresholds import SIGNAL_NEUTRAL_BAND
+from utils.thresholds import DEFAULT_CONFLICT_THRESHOLD, SIGNAL_NEUTRAL_BAND
 from utils.historical_calendar import ASSUMPTIONS as CALENDAR_ASSUMPTIONS, validated_schedule
 from utils.failures import COMPLETED_STATUSES, describe_failure, explanation_status
 
@@ -228,7 +228,7 @@ def select_snapshots(snapshots, sample_ids=None):
     return [s for s in snapshots if s["sample_id"] in requested]
 
 
-def run_day(snap, day_budget):
+def run_day(snap, day_budget, conflict_threshold=DEFAULT_CONFLICT_THRESHOLD):
     """Predict one day; every failure becomes an explicit status, never a signal."""
     sample = snap["sample_id"]
     result = {"sample_id": sample, "status": "error", "errors": []}
@@ -257,7 +257,7 @@ def run_day(snap, day_budget):
             result.update(status=first["status"], reason=first["reason"])
             return result
         try:
-            validation = ValidatorAgent().evaluate_pipeline(outputs)
+            validation = ValidatorAgent(threshold=conflict_threshold).evaluate_pipeline(outputs)
         except Exception as exc:
             failure = describe_failure(exc, stage="validator")
             result["errors"].append(failure)
@@ -302,7 +302,10 @@ def main():
     parser.add_argument("--require-full-live", action="store_true",
                         help="Reject any dataset day not verified as equivalent to all live inputs")
     parser.add_argument("--sample-ids", nargs="+", help="Run only these dataset dates (YYYY-MM-DD), e.g. a 5-day smoke test")
-    parser.add_argument("--reuse-calls-from", type=Path, help="Reuse successful responses with exactly matching model, endpoint and request hash")
+    parser.add_argument("--reuse-calls-from", type=Path, nargs="+", default=[],
+                        help="calls/ directories whose successful responses are reused when model, endpoint and request hash match")
+    parser.add_argument("--conflict-threshold", type=float, default=DEFAULT_CONFLICT_THRESHOLD,
+                        help="Validator conflict score that triggers RCA/Debate (sensitivity analyses only)")
     parser.add_argument("--day-budget", type=float, default=DAY_BUDGET_SECONDS,
                         help="Wall-clock seconds per day, including retries and Debate")
     parser.add_argument("--retry-rejected", action="store_true",
@@ -312,8 +315,8 @@ def main():
     root.mkdir(parents=True, exist_ok=True)
     (root/"days").mkdir(exist_ok=True)
     (root/"calls").mkdir(exist_ok=True)
-    if args.reuse_calls_from:
-        for cached in args.reuse_calls_from.glob("*.json"):
+    for source in args.reuse_calls_from:
+        for cached in source.glob("*.json"):
             record = json.loads(cached.read_text())
             target = root/"calls"/cached.name
             if record.get("status") == "ok" and not target.exists():
@@ -337,6 +340,7 @@ def main():
                   "sample_ids": [s["sample_id"] for s in snapshots],
                   "selection": "explicit input smoke cases; not a contiguous financial backtest" if args.sample_ids else "all dataset dates",
                   "horizon_hours": 24, "signal_threshold": SIGNAL_NEUTRAL_BAND, "day_budget_seconds": args.day_budget,
+                  "conflict_threshold": args.conflict_threshold,
                   "market_window": "60 candles as in live fetcher", "weights_reference": "prediction_time; source observation timestamps"}
     if (root/"run_config.json").exists():
         if json.loads((root/"run_config.json").read_text()) != run_config:
@@ -405,7 +409,7 @@ def main():
         state["bypass_cache"] = bool(previous and previous["status"] == "rejected_by_reviewer")
         error_start = len(call_errors)
         started = time.monotonic()
-        result = run_day(snap, args.day_budget)
+        result = run_day(snap, args.day_budget, args.conflict_threshold)
         result["elapsed_seconds"] = round(time.monotonic()-started, 1)
         result["llm_call_errors"] = call_errors[error_start:]
         if previous:
