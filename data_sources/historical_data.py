@@ -33,7 +33,7 @@ class Archive:
         self.session = requests.Session()
         self.session.headers["User-Agent"] = "Multi-Agent-Crypto-Research/0.1"
 
-    def get(self, url: str, params: dict | None = None, *, as_json=True):
+    def get(self, url: str, params: dict | None = None, *, as_json=True, as_bytes=False):
         query = {"url": url, "params": params or {}}
         key = hashlib.sha256(json.dumps(query, sort_keys=True).encode()).hexdigest()
         body_path = self.root / f"{key}.body"
@@ -70,6 +70,8 @@ class Archive:
         self.records.append(meta)
         if meta["status"] != 200:
             raise RuntimeError(f"HTTP {meta['status']}: {url}; raw response archived")
+        if as_bytes:
+            return body
         return json.loads(body) if as_json else body.decode("utf-8", errors="replace")
 
 
