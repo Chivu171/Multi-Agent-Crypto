@@ -1,0 +1,296 @@
+{
+  "variants": {
+    "v0": {
+      "label": "Hệ thống hiện tại",
+      "buy_days": 2,
+      "sell_days": 11,
+      "neutral_days": 15,
+      "correct": 8,
+      "directional": 13,
+      "accuracy": 0.6153846153846154,
+      "coverage": 0.43333333333333335,
+      "cumulative_return": 0.23418953344151583,
+      "max_drawdown": 0.03083572723192287
+    },
+    "drop_tx_volume": {
+      "label": "Bỏ khối lượng giao dịch USD khỏi entropy Financial",
+      "buy_days": 5,
+      "sell_days": 13,
+      "neutral_days": 10,
+      "correct": 10,
+      "directional": 18,
+      "accuracy": 0.5555555555555556,
+      "coverage": 0.6,
+      "cumulative_return": 0.20516428245936313,
+      "max_drawdown": 0.03721899425526992
+    },
+    "entropy_floor": {
+      "label": "Phạt entropy tối đa 80% (trọng số ≥ 20%)",
+      "buy_days": 2,
+      "sell_days": 12,
+      "neutral_days": 14,
+      "correct": 9,
+      "directional": 14,
+      "accuracy": 0.6428571428571429,
+      "coverage": 0.4666666666666667,
+      "cumulative_return": 0.24892378895899858,
+      "max_drawdown": 0.030814010171293125
+    },
+    "no_entropy": {
+      "label": "Không phạt entropy",
+      "buy_days": 6,
+      "sell_days": 14,
+      "neutral_days": 8,
+      "correct": 11,
+      "directional": 20,
+      "accuracy": 0.55,
+      "coverage": 0.6666666666666666,
+      "cumulative_return": 0.20598365293931598,
+      "max_drawdown": 0.045318407321377374
+    },
+    "no_time_decay": {
+      "label": "Không phạt thời gian",
+      "buy_days": 3,
+      "sell_days": 12,
+      "neutral_days": 13,
+      "correct": 8,
+      "directional": 15,
+      "accuracy": 0.5333333333333333,
+      "coverage": 0.5,
+      "cumulative_return": 0.08467658151443613,
+      "max_drawdown": 0.07549232693674442
+    }
+  },
+  "per_day": {
+    "2022-01-01": {
+      "return_24h": 0.032579403261964845,
+      "v0": "NEUTRAL",
+      "drop_tx_volume": "SELL",
+      "entropy_floor": "NEUTRAL",
+      "no_entropy": "SELL",
+      "no_time_decay": "SELL"
+    },
+    "2022-01-02": {
+      "return_24h": -0.009145971566960398,
+      "v0": "NEUTRAL",
+      "drop_tx_volume": "NEUTRAL",
+      "entropy_floor": "NEUTRAL",
+      "no_entropy": "BUY",
+      "no_time_decay": "NEUTRAL"
+    },
+    "2022-01-03": {
+      "return_24h": -0.01776586732106511,
+      "v0": "NEUTRAL",
+      "drop_tx_volume": "NEUTRAL",
+      "entropy_floor": "NEUTRAL",
+      "no_entropy": "NEUTRAL",
+      "no_time_decay": "NEUTRAL"
+    },
+    "2022-01-04": {
+      "return_24h": -0.013221562197902492,
+      "v0": "NEUTRAL",
+      "drop_tx_volume": "NEUTRAL",
+      "entropy_floor": "SELL",
+      "no_entropy": "SELL",
+      "no_time_decay": "NEUTRAL"
+    },
+    "2022-01-05": {
+      "return_24h": -0.0519479726069183,
+      "v0": "SELL",
+      "drop_tx_volume": "SELL",
+      "entropy_floor": "SELL",
+      "no_entropy": "SELL",
+      "no_time_decay": "SELL"
+    },
+    "2022-01-06": {
+      "return_24h": -0.008488156694659077,
+      "v0": "NEUTRAL",
+      "drop_tx_volume": "BUY",
+      "entropy_floor": "NEUTRAL",
+      "no_entropy": "BUY",
+      "no_time_decay": "NEUTRAL"
+    },
+    "2022-01-07": {
+      "return_24h": -0.0351845107655554,
+      "v0": "NEUTRAL",
+      "drop_tx_volume": "NEUTRAL",
+      "entropy_floor": "NEUTRAL",
+      "no_entropy": "NEUTRAL",
+      "no_time_decay": "NEUTRAL"
+    },
+    "2022-01-08": {
+      "return_24h": 0.002724791707163998,
+      "v0": "NEUTRAL",
+      "drop_tx_volume": "NEUTRAL",
+      "entropy_floor": "NEUTRAL",
+      "no_entropy": "NEUTRAL",
+      "no_time_decay": "NEUTRAL"
+    },
+    "2022-01-09": {
+      "return_24h": 0.004435728245905768,
+      "v0": "SELL",
+      "drop_tx_volume": "SELL",
+      "entropy_floor": "SELL",
+      "no_entropy": "SELL",
+      "no_time_decay": "SELL"
+    },
+    "2022-01-10": {
+      "return_24h": -0.0010063390041520348,
+      "v0": "NEUTRAL",
+      "drop_tx_volume": "SELL",
+      "entropy_floor": "NEUTRAL",
+      "no_entropy": "SELL",
+      "no_time_decay": "SELL"
+    },
+    "2022-01-11": {
+      "return_24h": 0.021682114096984728,
+      "v0": "SELL",
+      "drop_tx_volume": "SELL",
+      "entropy_floor": "SELL",
+      "no_entropy": "SELL",
+      "no_time_decay": "SELL"
+    },
+    "2022-01-12": {
+      "return_24h": 0.027460554575093665,
+      "v0": "NEUTRAL",
+      "drop_tx_volume": "BUY",
+      "entropy_floor": "NEUTRAL",
+      "no_entropy": "BUY",
+      "no_time_decay": "NEUTRAL"
+    },
+    "2022-01-13": {
+      "return_24h": -0.03058015163545902,
+      "v0": "SELL",
+      "drop_tx_volume": "SELL",
+      "entropy_floor": "SELL",
+      "no_entropy": "SELL",
+      "no_time_decay": "BUY"
+    },
+    "2022-01-14": {
+      "return_24h": 0.011744565509816507,
+      "v0": "SELL",
+      "drop_tx_volume": "SELL",
+      "entropy_floor": "SELL",
+      "no_entropy": "SELL",
+      "no_time_decay": "SELL"
+    },
+    "2022-01-15": {
+      "return_24h": 0.0005650260706233645,
+      "v0": "SELL",
+      "drop_tx_volume": "SELL",
+      "entropy_floor": "SELL",
+      "no_entropy": "SELL",
+      "no_time_decay": "BUY"
+    },
+    "2022-01-16": {
+      "return_24h": -0.0002931462953200681,
+      "v0": "SELL",
+      "drop_tx_volume": "SELL",
+      "entropy_floor": "SELL",
+      "no_entropy": "SELL",
+      "no_time_decay": "SELL"
+    },
+    "2022-01-17": {
+      "return_24h": -0.020199825128634497,
+      "v0": "NEUTRAL",
+      "drop_tx_volume": "NEUTRAL",
+      "entropy_floor": "NEUTRAL",
+      "no_entropy": "NEUTRAL",
+      "no_time_decay": "NEUTRAL"
+    },
+    "2022-01-18": {
+      "return_24h": 0.003566213808853691
+    },
+    "2022-01-19": {
+      "return_24h": -0.01634180296051302,
+      "v0": "NEUTRAL",
+      "drop_tx_volume": "NEUTRAL",
+      "entropy_floor": "NEUTRAL",
+      "no_entropy": "NEUTRAL",
+      "no_time_decay": "NEUTRAL"
+    },
+    "2022-01-20": {
+      "return_24h": -0.023502154704235556,
+      "v0": "SELL",
+      "drop_tx_volume": "SELL",
+      "entropy_floor": "SELL",
+      "no_entropy": "SELL",
+      "no_time_decay": "SELL"
+    },
+    "2022-01-21": {
+      "return_24h": -0.10411763158690412,
+      "v0": "SELL",
+      "drop_tx_volume": "SELL",
+      "entropy_floor": "SELL",
+      "no_entropy": "SELL",
+      "no_time_decay": "SELL"
+    },
+    "2022-01-22": {
+      "return_24h": -0.03769730590849685,
+      "v0": "SELL",
+      "drop_tx_volume": "SELL",
+      "entropy_floor": "SELL",
+      "no_entropy": "SELL",
+      "no_time_decay": "SELL"
+    },
+    "2022-01-23": {
+      "return_24h": 0.033449743409305954,
+      "v0": "BUY",
+      "drop_tx_volume": "BUY",
+      "entropy_floor": "BUY",
+      "no_entropy": "BUY",
+      "no_time_decay": "BUY"
+    },
+    "2022-01-24": {
+      "return_24h": 0.011472069593911227,
+      "v0": "SELL",
+      "drop_tx_volume": "SELL",
+      "entropy_floor": "SELL",
+      "no_entropy": "SELL",
+      "no_time_decay": "SELL"
+    },
+    "2022-01-25": {
+      "return_24h": 0.008127854753159802,
+      "v0": "NEUTRAL",
+      "drop_tx_volume": "NEUTRAL",
+      "entropy_floor": "NEUTRAL",
+      "no_entropy": "NEUTRAL",
+      "no_time_decay": "NEUTRAL"
+    },
+    "2022-01-26": {
+      "return_24h": -0.004031027384361674,
+      "v0": "NEUTRAL",
+      "drop_tx_volume": "BUY",
+      "entropy_floor": "NEUTRAL",
+      "no_entropy": "BUY",
+      "no_time_decay": "NEUTRAL"
+    },
+    "2022-01-27": {
+      "return_24h": 0.009529103211304513,
+      "v0": "NEUTRAL",
+      "drop_tx_volume": "NEUTRAL",
+      "entropy_floor": "NEUTRAL",
+      "no_entropy": "NEUTRAL",
+      "no_time_decay": "NEUTRAL"
+    },
+    "2022-01-28": {
+      "return_24h": 0.01497466368497391,
+      "v0": "BUY",
+      "drop_tx_volume": "BUY",
+      "entropy_floor": "BUY",
+      "no_entropy": "BUY",
+      "no_time_decay": "SELL"
+    },
+    "2022-01-29": {
+      "return_24h": 0.011938522495158699,
+      "v0": "NEUTRAL",
+      "drop_tx_volume": "NEUTRAL",
+      "entropy_floor": "NEUTRAL",
+      "no_entropy": "NEUTRAL",
+      "no_time_decay": "NEUTRAL"
+    },
+    "2022-01-30": {
+      "return_24h": -0.0074693110564038045
+    }
+  }
+}

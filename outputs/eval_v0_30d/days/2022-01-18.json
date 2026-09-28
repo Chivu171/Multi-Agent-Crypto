@@ -1,0 +1,404 @@
+{
+  "sample_id": "2022-01-18",
+  "status": "rejected_by_reviewer",
+  "errors": [
+    {
+      "stage": "specialist",
+      "agent": "sentiment",
+      "status": "rejected_by_reviewer",
+      "reason": "review_rejected",
+      "type": "GroundingError",
+      "message": "Candidate logic_path and sentiment_factors contain multiple unsupported or contradicted statements versus snapshot: (1) 'GBP CPI y/y dự báo tăng nhẹ' — snapshot forecast 5.2% vs previous 5.1% is an increase, supported; but impact labeled High and 'bullish' for GBP CPI rise is questionable since higher inflation is not unambiguously bullish for GBP without rate-hike evidence, and no such evidence is supplied. (2) 'CAD CPI m/m dự báo giảm' — forecast -0.1% vs previous 0.2% is a decrease, supported",
+      "audit": {
+        "status": "rejected",
+        "verification": "full_snapshot_llm_review",
+        "attempts": [
+          {
+            "attempt": 1,
+            "stage": "review",
+            "candidate": {
+              "signal": "NEUTRAL",
+              "confidence": 0.45,
+              "logic_path": "Chỉ số Fear & Greed Index ở mức thấp (22) cho thấy tâm lý bi quan. Các sự kiện sắp tới của ngày 18 tháng 1 năm 2022 bao gồm Tuyên bố Chính sách Tiền tệ của BOJ, Báo cáo Triển vọng BOJ và Hội nghị Báo chí BOJ (tất cả đều có tác động trung bình đến cao), cùng với Chỉ số Tâm lý Kinh tế ZEW của EUR và Chỉ số Sản xuất Empire State của USD (tác động trung bình). Các chỉ số CPI sắp tới của GBP và CAD (tác động cao) có dự báo tăng nhẹ so với trước đó, nhưng không có sự thay đổi đáng kể nào. Nhìn chung, các yếu tố này tạo nên một bức tranh hỗn hợp, không rõ ràng về hướng đi của thị trường.",
+              "sentiment_factors": [
+                {
+                  "factor": "Chỉ số Fear & Greed Index ở mức thấp cho thấy tâm lý bi quan",
+                  "impact": "bearish"
+                },
+                {
+                  "factor": "Tác động trung bình đến cao từ các sự kiện chính sách tiền tệ của BOJ",
+                  "impact": "neutral"
+                },
+                {
+                  "factor": "Dự báo tăng nhẹ trong các chỉ số CPI của GBP và CAD",
+                  "impact": "bullish"
+                },
+                {
+                  "factor": "Các chỉ số kinh tế ZEW và Empire State có tác động trung bình",
+                  "impact": "neutral"
+                }
+              ]
+            },
+            "checks": [
+              {
+                "claim_index": 0,
+                "verdict": "unsupported",
+                "reason": "Candidate logic_path chứa nhiều tuyên bố không được snapshot hỗ trợ: (1) 'Dự báo tăng nhẹ trong các chỉ số CPI của GBP và CAD' — GBP CPI y/y forecast 5.2% vs previous 5.1% là tăng nhẹ (hỗ trợ), nhưng CAD CPI m/m forecast -0.1% vs previous 0.2% lại là GIẢM, không phải tăng; Median CPI y/y 2.9% vs 2.8% tăng nhẹ, Trimmed CPI y/y 3.4% vs 3.4% bằng nhau → không phải tất cả CPI CAD đều tăng nhẹ. (2) 'Không có sự thay đổi đáng kể nào' — mâu thuẫn với thực tế forecast thay đổi rõ ràng (GBP CPI +0.1%, CAD CPI m/m -0.3%, Empire State forecast 25.0 vs previous 31.9 giảm mạnh). (3) 'Tất cả đều có tác động trung bình đến cao' đối với BOJ — snapshot xác nhận BOJ Monetary Policy Statement Medium, BOJ Outlook Report High, BOJ Press Conference Medium → đúng. (4) ZEW EUR forecast 29.2 vs 26.8 và German ZEW 32.1 vs 29.9 đều tăng → candidate không đề cập chi tiết. (5) Empire State forecast 25.0 vs previous 31.9 giảm đáng kể → candidate bỏ qua. Kết luận: candidate mô tả sai hướng thay đổi CPI CAD và khẳng định 'không có thay đổi đáng kể' trong khi snapshot cho thấy nhiều thay đổi rõ ràng. Signal NEUTRAL có thể hợp lý nhưng lý do không chính xác."
+              }
+            ],
+            "error": "Candidate logic_path chứa nhiều tuyên bố không được snapshot hỗ trợ: (1) 'Dự báo tăng nhẹ trong các chỉ số CPI của GBP và CAD' — GBP CPI y/y forecast 5.2% vs previous 5.1% là tăng nhẹ (hỗ trợ), nhưng CAD CPI m/m forecast -0.1% vs previous 0.2% lại là GIẢM, không phải tăng; Median CPI y/y 2.9% vs 2.8% tăng nhẹ, Trimmed CPI y/y 3.4% vs 3.4% bằng nhau → không phải tất cả CPI CAD đều tăng nhẹ. (2) 'Không có sự thay đổi đáng kể nào' — mâu thuẫn với thực tế forecast thay đổi rõ ràng (GBP CPI +0.1%, CAD CPI m/m -0.3%, Empire State forecast 25.0 vs previous 31.9 giảm mạnh). (3) 'Tất cả đều có tác động trung bình đến cao' đối với BOJ — snapshot xác nhận BOJ Monetary Policy Statement Medium, BOJ Outlook Report High, BOJ Press Conference Medium → đúng. (4) ZEW EUR forecast 29.2 vs 26.8 và German ZEW 32.1 vs 29.9 đều tăng → candidate không đề cập chi tiết. (5) Empire State forecast 25.0 vs previous 31.9 giảm đáng kể → candidate bỏ qua. Kết luận: candidate mô tả sai hướng thay đổi CPI CAD và khẳng định 'không có thay đổi đáng kể' trong khi snapshot cho thấy nhiều thay đổi rõ ràng. Signal NEUTRAL có thể hợp lý nhưng lý do không chính xác.",
+            "kind": "review_rejected"
+          },
+          {
+            "attempt": 2,
+            "stage": "review",
+            "candidate": {
+              "signal": "NEUTRAL",
+              "confidence": 0.45,
+              "logic_path": "Các chỉ số kinh tế sắp công bố cho thấy sự thay đổi trái chiều: GBP CPI y/y dự báo tăng nhẹ, CAD CPI m/m dự báo giảm, trong khi ZEW và Empire State cho thấy sự suy giảm. Các sự kiện BOJ có tác động cao nhưng không có dự báo rõ ràng, dẫn đến tâm lý tổng thể không chắc chắn.",
+              "sentiment_factors": [
+                {
+                  "factor": "Dự báo GBP CPI tăng nhẹ so với trước đó",
+                  "impact": "bullish"
+                },
+                {
+                  "factor": "Dự báo CAD CPI m/m giảm so với trước đó",
+                  "impact": "bearish"
+                },
+                {
+                  "factor": "Dự báo ZEW và German ZEW tăng nhẹ",
+                  "impact": "bullish"
+                },
+                {
+                  "factor": "Dự báo Empire State Manufacturing giảm mạnh",
+                  "impact": "bearish"
+                }
+              ]
+            },
+            "checks": [
+              {
+                "claim_index": 0,
+                "verdict": "contradicted",
+                "reason": "Candidate logic_path and sentiment_factors contain multiple unsupported or contradicted statements versus snapshot: (1) 'GBP CPI y/y dự báo tăng nhẹ' — snapshot forecast 5.2% vs previous 5.1% is an increase, supported; but impact labeled High and 'bullish' for GBP CPI rise is questionable since higher inflation is not unambiguously bullish for GBP without rate-hike evidence, and no such evidence is supplied. (2) 'CAD CPI m/m dự báo giảm' — forecast -0.1% vs previous 0.2% is a decrease, supported; but candidate omits CAD Median CPI y/y forecast 2.9% vs 2.8% (increase) and Trimmed CPI y/y 3.4% vs 3.4% (unchanged), presenting an incomplete CAD picture. (3) 'ZEW và Empire State cho thấy sự suy giảm' — snapshot shows ZEW forecast 29.2 vs 26.8 and German ZEW 32.1 vs 29.9, both increases; only Empire State forecast 25.0 vs 31.9 is a decrease. Thus claiming ZEW shows decline is contradicted. (4) 'Các sự kiện BOJ có tác động cao nhưng không có dự báo rõ ràng' — snapshot lists BOJ Monetary Policy Statement impact Medium, BOJ Outlook Report impact High, BOJ Press Conference impact Medium; not all 'High', and empty forecast/previous fields mean no forecast content — but candidate overstates impact and implies policy uncertainty without supplied communication evidence. (5) sentiment_factors lists 'Dự báo ZEW và German ZEW tăng nhẹ' as bullish — consistent with snapshot, but contradicts logic_path's claim of 'suy giảm'. Overall, the signal NEUTRAL is plausible, but the reasoning contains contradicted facts and unsupported bullish/bearish labels; verdict contradicted due to internal inconsistency and unsupported claims."
+              }
+            ],
+            "error": "Candidate logic_path and sentiment_factors contain multiple unsupported or contradicted statements versus snapshot: (1) 'GBP CPI y/y dự báo tăng nhẹ' — snapshot forecast 5.2% vs previous 5.1% is an increase, supported; but impact labeled High and 'bullish' for GBP CPI rise is questionable since higher inflation is not unambiguously bullish for GBP without rate-hike evidence, and no such evidence is supplied. (2) 'CAD CPI m/m dự báo giảm' — forecast -0.1% vs previous 0.2% is a decrease, supported; but candidate omits CAD Median CPI y/y forecast 2.9% vs 2.8% (increase) and Trimmed CPI y/y 3.4% vs 3.4% (unchanged), presenting an incomplete CAD picture. (3) 'ZEW và Empire State cho thấy sự suy giảm' — snapshot shows ZEW forecast 29.2 vs 26.8 and German ZEW 32.1 vs 29.9, both increases; only Empire State forecast 25.0 vs 31.9 is a decrease. Thus claiming ZEW shows decline is contradicted. (4) 'Các sự kiện BOJ có tác động cao nhưng không có dự báo rõ ràng' — snapshot lists BOJ Monetary Policy Statement impact Medium, BOJ Outlook Report impact High, BOJ Press Conference impact Medium; not all 'High', and empty forecast/previous fields mean no forecast content — but candidate overstates impact and implies policy uncertainty without supplied communication evidence. (5) sentiment_factors lists 'Dự báo ZEW và German ZEW tăng nhẹ' as bullish — consistent with snapshot, but contradicts logic_path's claim of 'suy giảm'. Overall, the signal NEUTRAL is plausible, but the reasoning contains contradicted facts and unsupported bullish/bearish labels; verdict contradicted due to internal inconsistency and unsupported claims.",
+            "kind": "review_rejected"
+          }
+        ],
+        "reason": "review_rejected"
+      }
+    }
+  ],
+  "inputs": {
+    "financial": {
+      "metrics": {
+        "hash-rate": {
+          "value": 212018180.23026645,
+          "pct_change_1d": 5.421686746987953,
+          "observed_at": "2022-01-16T00:00:00+00:00"
+        },
+        "miners-revenue": {
+          "value": 47466219.95913501,
+          "pct_change_1d": 5.396736182425577,
+          "observed_at": "2022-01-16T00:00:00+00:00"
+        },
+        "n-transactions": {
+          "value": 216151.0,
+          "pct_change_1d": -7.774786344843476,
+          "observed_at": "2022-01-16T00:00:00+00:00"
+        },
+        "estimated-transaction-volume-usd": {
+          "value": 1212228816.9349117,
+          "pct_change_1d": -21.500896858705822,
+          "observed_at": "2022-01-16T00:00:00+00:00"
+        }
+      },
+      "fetched_at": "2022-01-16T00:00:00+00:00",
+      "summary_text": "Historical on-chain observations; MVRV, SOPR and whale flows unavailable.\n{\"hash-rate\": {\"value\": 212018180.23026645, \"pct_change_1d\": 5.421686746987953, \"observed_at\": \"2022-01-16T00:00:00+00:00\"}, \"miners-revenue\": {\"value\": 47466219.95913501, \"pct_change_1d\": 5.396736182425577, \"observed_at\": \"2022-01-16T00:00:00+00:00\"}, \"n-transactions\": {\"value\": 216151.0, \"pct_change_1d\": -7.774786344843476, \"observed_at\": \"2022-01-16T00:00:00+00:00\"}, \"estimated-transaction-volume-usd\": {\"value\": 1212228816.9349117, \"pct_change_1d\": -21.500896858705822, \"observed_at\": \"2022-01-16T00:00:00+00:00\"}}"
+    },
+    "market": {
+      "price": 42201.62,
+      "ema20": 44185.94694683411,
+      "ema50": 47973.476750754504,
+      "rsi14": 28.882049383748026,
+      "volume": 27562.08613,
+      "funding_rate": 0.0001,
+      "long_short_ratio": null,
+      "fetched_at": "2022-01-18T00:00:00+00:00",
+      "source_notes": {
+        "funding_rate": {
+          "value": 0.0001,
+          "observed_at": "2022-01-17T16:00:00.012000+00:00",
+          "available_at": "2022-01-17T16:00:00.012000+00:00",
+          "source_url": "https://data.binance.vision/data/futures/um/monthly/fundingRate/BTCUSDT/BTCUSDT-fundingRate-2022-01.zip",
+          "semantics": "last settled funding rate; not an archived premiumIndex snapshot",
+          "availability_assumption": "settlement calc_time; delivery latency not archived"
+        },
+        "long_short_ratio": "Unavailable; do not infer a value."
+      },
+      "summary_text": "Historical closed daily candles with partial derivatives data. Read per-source timestamps and semantics; null means unavailable.\n{\"price\": 42201.62, \"ema20\": 44185.94694683411, \"ema50\": 47973.476750754504, \"rsi14\": 28.882049383748026, \"volume\": 27562.08613, \"funding_rate\": 0.0001, \"long_short_ratio\": null, \"fetched_at\": \"2022-01-18T00:00:00+00:00\", \"source_notes\": {\"funding_rate\": {\"value\": 0.0001, \"observed_at\": \"2022-01-17T16:00:00.012000+00:00\", \"available_at\": \"2022-01-17T16:00:00.012000+00:00\", \"source_url\": \"https://data.binance.vision/data/futures/um/monthly/fundingRate/BTCUSDT/BTCUSDT-fundingRate-2022-01.zip\", \"semantics\": \"last settled funding rate; not an archived premiumIndex snapshot\", \"availability_assumption\": \"settlement calc_time; delivery latency not archived\"}, \"long_short_ratio\": \"Unavailable; do not infer a value.\"}}"
+    },
+    "sentiment": {
+      "fear_greed": {
+        "value": 22.0
+      },
+      "fetched_at": "2022-01-17T00:00:00+00:00",
+      "summary_text": "Historical Fear & Greed Index: 22.0/100.\nForexFactory upcoming events. Historical schedule, forecast and previous values are reconstructed from retrospective pages and assumed available before prediction; historical changes are not verified. Forecast is an expectation, previous refers to the preceding release period, and neither is the actual outcome of the upcoming event. Empty values are unavailable. No actual, revision or release-result annotation is supplied.\nDiscuss pre-release expectations and uncertainty using supplied fields only; do not treat forecast/previous as actual results or invent surprises/outcomes.\n[{\"event_id\": \"127028\", \"title\": \"Monetary Policy Statement\", \"country\": \"JPY\", \"impact\": \"Medium\", \"date\": \"2022-01-18T02:45:00+00:00\", \"source_url\": \"https://www.forexfactory.com/calendar?week=jan16.2022\", \"raw_file\": \"d560cebff928db22a47b4d02fbcbd6ae09907f972106f9144243b986e7ed4b35.body\", \"forecast\": \"\", \"previous\": \"\"}, {\"event_id\": \"127030\", \"title\": \"BOJ Outlook Report\", \"country\": \"JPY\", \"impact\": \"High\", \"date\": \"2022-01-18T02:45:00+00:00\", \"source_url\": \"https://www.forexfactory.com/calendar?week=jan16.2022\", \"raw_file\": \"d560cebff928db22a47b4d02fbcbd6ae09907f972106f9144243b986e7ed4b35.body\", \"forecast\": \"\", \"previous\": \"\"}, {\"event_id\": \"127029\", \"title\": \"BOJ Press Conference\", \"country\": \"JPY\", \"impact\": \"Medium\", \"date\": \"2022-01-18T06:30:00+00:00\", \"source_url\": \"https://www.forexfactory.com/calendar?week=jan16.2022\", \"raw_file\": \"d560cebff928db22a47b4d02fbcbd6ae09907f972106f9144243b986e7ed4b35.body\", \"forecast\": \"\", \"previous\": \"\"}, {\"event_id\": \"125363\", \"title\": \"ZEW Economic Sentiment\", \"country\": \"EUR\", \"impact\": \"Medium\", \"date\": \"2022-01-18T10:00:00+00:00\", \"source_url\": \"https://www.forexfactory.com/calendar?week=jan16.2022\", \"raw_file\": \"d560cebff928db22a47b4d02fbcbd6ae09907f972106f9144243b986e7ed4b35.body\", \"forecast\": \"29.2\", \"previous\": \"26.8\"}, {\"event_id\": \"125370\", \"title\": \"German ZEW Economic Sentiment\", \"country\": \"EUR\", \"impact\": \"Medium\", \"date\": \"2022-01-18T10:00:00+00:00\", \"source_url\": \"https://www.forexfactory.com/calendar?week=jan16.2022\", \"raw_file\": \"d560cebff928db22a47b4d02fbcbd6ae09907f972106f9144243b986e7ed4b35.body\", \"forecast\": \"32.1\", \"previous\": \"29.9\"}, {\"event_id\": \"123933\", \"title\": \"Empire State Manufacturing Index\", \"country\": \"USD\", \"impact\": \"Medium\", \"date\": \"2022-01-18T13:30:00+00:00\", \"source_url\": \"https://www.forexfactory.com/calendar?week=jan16.2022\", \"raw_file\": \"d560cebff928db22a47b4d02fbcbd6ae09907f972106f9144243b986e7ed4b35.body\", \"forecast\": \"25.0\", \"previous\": \"31.9\"}, {\"event_id\": \"123826\", \"title\": \"CPI y/y\", \"country\": \"GBP\", \"impact\": \"High\", \"date\": \"2022-01-19T07:00:00+00:00\", \"source_url\": \"https://www.forexfactory.com/calendar?week=jan16.2022\", \"raw_file\": \"d560cebff928db22a47b4d02fbcbd6ae09907f972106f9144243b986e7ed4b35.body\", \"forecast\": \"5.2%\", \"previous\": \"5.1%\"}, {\"event_id\": \"123328\", \"title\": \"CPI m/m\", \"country\": \"CAD\", \"impact\": \"High\", \"date\": \"2022-01-19T13:30:00+00:00\", \"source_url\": \"https://www.forexfactory.com/calendar?week=jan16.2022\", \"raw_file\": \"d560cebff928db22a47b4d02fbcbd6ae09907f972106f9144243b986e7ed4b35.body\", \"forecast\": \"-0.1%\", \"previous\": \"0.2%\"}, {\"event_id\": \"123340\", \"title\": \"Median CPI y/y\", \"country\": \"CAD\", \"impact\": \"Medium\", \"date\": \"2022-01-19T13:30:00+00:00\", \"source_url\": \"https://www.forexfactory.com/calendar?week=jan16.2022\", \"raw_file\": \"d560cebff928db22a47b4d02fbcbd6ae09907f972106f9144243b986e7ed4b35.body\", \"forecast\": \"2.9%\", \"previous\": \"2.8%\"}, {\"event_id\": \"123341\", \"title\": \"Trimmed CPI y/y\", \"country\": \"CAD\", \"impact\": \"Medium\", \"date\": \"2022-01-19T13:30:00+00:00\", \"source_url\": \"https://www.forexfactory.com/calendar?week=jan16.2022\", \"raw_file\": \"d560cebff928db22a47b4d02fbcbd6ae09907f972106f9144243b986e7ed4b35.body\", \"forecast\": \"3.4%\", \"previous\": \"3.4%\"}]",
+      "upcoming_events": [
+        {
+          "event_id": "127028",
+          "title": "Monetary Policy Statement",
+          "country": "JPY",
+          "impact": "Medium",
+          "date": "2022-01-18T02:45:00+00:00",
+          "source_url": "https://www.forexfactory.com/calendar?week=jan16.2022",
+          "raw_file": "d560cebff928db22a47b4d02fbcbd6ae09907f972106f9144243b986e7ed4b35.body",
+          "forecast": "",
+          "previous": ""
+        },
+        {
+          "event_id": "127030",
+          "title": "BOJ Outlook Report",
+          "country": "JPY",
+          "impact": "High",
+          "date": "2022-01-18T02:45:00+00:00",
+          "source_url": "https://www.forexfactory.com/calendar?week=jan16.2022",
+          "raw_file": "d560cebff928db22a47b4d02fbcbd6ae09907f972106f9144243b986e7ed4b35.body",
+          "forecast": "",
+          "previous": ""
+        },
+        {
+          "event_id": "127029",
+          "title": "BOJ Press Conference",
+          "country": "JPY",
+          "impact": "Medium",
+          "date": "2022-01-18T06:30:00+00:00",
+          "source_url": "https://www.forexfactory.com/calendar?week=jan16.2022",
+          "raw_file": "d560cebff928db22a47b4d02fbcbd6ae09907f972106f9144243b986e7ed4b35.body",
+          "forecast": "",
+          "previous": ""
+        },
+        {
+          "event_id": "125363",
+          "title": "ZEW Economic Sentiment",
+          "country": "EUR",
+          "impact": "Medium",
+          "date": "2022-01-18T10:00:00+00:00",
+          "source_url": "https://www.forexfactory.com/calendar?week=jan16.2022",
+          "raw_file": "d560cebff928db22a47b4d02fbcbd6ae09907f972106f9144243b986e7ed4b35.body",
+          "forecast": "29.2",
+          "previous": "26.8"
+        },
+        {
+          "event_id": "125370",
+          "title": "German ZEW Economic Sentiment",
+          "country": "EUR",
+          "impact": "Medium",
+          "date": "2022-01-18T10:00:00+00:00",
+          "source_url": "https://www.forexfactory.com/calendar?week=jan16.2022",
+          "raw_file": "d560cebff928db22a47b4d02fbcbd6ae09907f972106f9144243b986e7ed4b35.body",
+          "forecast": "32.1",
+          "previous": "29.9"
+        },
+        {
+          "event_id": "123933",
+          "title": "Empire State Manufacturing Index",
+          "country": "USD",
+          "impact": "Medium",
+          "date": "2022-01-18T13:30:00+00:00",
+          "source_url": "https://www.forexfactory.com/calendar?week=jan16.2022",
+          "raw_file": "d560cebff928db22a47b4d02fbcbd6ae09907f972106f9144243b986e7ed4b35.body",
+          "forecast": "25.0",
+          "previous": "31.9"
+        },
+        {
+          "event_id": "123826",
+          "title": "CPI y/y",
+          "country": "GBP",
+          "impact": "High",
+          "date": "2022-01-19T07:00:00+00:00",
+          "source_url": "https://www.forexfactory.com/calendar?week=jan16.2022",
+          "raw_file": "d560cebff928db22a47b4d02fbcbd6ae09907f972106f9144243b986e7ed4b35.body",
+          "forecast": "5.2%",
+          "previous": "5.1%"
+        },
+        {
+          "event_id": "123328",
+          "title": "CPI m/m",
+          "country": "CAD",
+          "impact": "High",
+          "date": "2022-01-19T13:30:00+00:00",
+          "source_url": "https://www.forexfactory.com/calendar?week=jan16.2022",
+          "raw_file": "d560cebff928db22a47b4d02fbcbd6ae09907f972106f9144243b986e7ed4b35.body",
+          "forecast": "-0.1%",
+          "previous": "0.2%"
+        },
+        {
+          "event_id": "123340",
+          "title": "Median CPI y/y",
+          "country": "CAD",
+          "impact": "Medium",
+          "date": "2022-01-19T13:30:00+00:00",
+          "source_url": "https://www.forexfactory.com/calendar?week=jan16.2022",
+          "raw_file": "d560cebff928db22a47b4d02fbcbd6ae09907f972106f9144243b986e7ed4b35.body",
+          "forecast": "2.9%",
+          "previous": "2.8%"
+        },
+        {
+          "event_id": "123341",
+          "title": "Trimmed CPI y/y",
+          "country": "CAD",
+          "impact": "Medium",
+          "date": "2022-01-19T13:30:00+00:00",
+          "source_url": "https://www.forexfactory.com/calendar?week=jan16.2022",
+          "raw_file": "d560cebff928db22a47b4d02fbcbd6ae09907f972106f9144243b986e7ed4b35.body",
+          "forecast": "3.4%",
+          "previous": "3.4%"
+        }
+      ],
+      "calendar_mode": "schedule_forecast_previous_assumed"
+    }
+  },
+  "specialists": [
+    {
+      "agent_id": "Financial_Agent",
+      "signal": "NEUTRAL",
+      "confidence": 0.55,
+      "belief_vector": {
+        "direction": 0,
+        "strength": 0.55
+      },
+      "evidence_chunks": [
+        {
+          "id": "financial_chunk_001",
+          "content": "Historical on-chain observations; MVRV, SOPR and whale flows unavailable.\n{\"hash-rate\": {\"value\": 212018180.23026645, \"pct_change_1d\": 5.421686746987953, \"observed_at\": \"2022-01-16T00:00:00+00:00\"}, \"miners-revenue\": {\"value\": 47466219.95913501, \"pct_change_1d\": 5.396736182425577, \"observed_at\": \"2022-01-16T00:00:00+00:00\"}, \"n-transactions\": {\"value\": 216151.0, \"pct_change_1d\": -7.774786344843476, \"observed_at\": \"2022-01-16T00:00:00+00:00\"}, \"estimated-transaction-volume-usd\": {\"value\": 1212228816.9349117, \"pct_change_1d\": -21.500896858705822, \"observed_at\": \"2022-01-16T00:00:00+00:00\"}}",
+          "metadata": {
+            "source": "blockchain.info Charts API",
+            "page": 1,
+            "timestamp": "2022-01-16T00:00:00+00:00"
+          }
+        }
+      ],
+      "logic_path": "Hashrate tăng 5.42% cho thấy sức mạnh mạng lưới được cải thiện, đây là tín hiệu bullish. Miner revenue tăng 5.40% phản ánh nhu cầu băm tích cực, cũng bullish. Tuy nhiên, giao dịch on-chain giảm 7.77% và khối lượng giao dịch ước tính giảm 21.50% cho thấy hoạt động sử dụng và thanh khoản suy yếu, đây là tín hiệu bearish. Các chỉ số mâu thuẫn nhau, không đủ bằng chứng để xác định rõ hướng giá trong 24 giờ tới.",
+      "specialist_grounding": {
+        "status": "accepted",
+        "verification": "full_snapshot_llm_review",
+        "attempts": [
+          {
+            "attempt": 1,
+            "stage": "review",
+            "candidate": {
+              "signal": "NEUTRAL",
+              "confidence": 0.55,
+              "logic_path": "Hashrate tăng 5.42% cho thấy sức mạnh mạng lưới được cải thiện, đây là tín hiệu bullish. Miner revenue tăng 5.40% phản ánh nhu cầu băm tích cực, cũng bullish. Tuy nhiên, giao dịch on-chain giảm 7.77% và khối lượng giao dịch ước tính giảm 21.50% cho thấy hoạt động sử dụng và thanh khoản suy yếu, đây là tín hiệu bearish. Các chỉ số mâu thuẫn nhau, không đủ bằng chứng để xác định rõ hướng giá trong 24 giờ tới.",
+              "key_indicators": [
+                {
+                  "indicator": "Hashrate tăng 5.42% trong 1 ngày",
+                  "effect": "bullish"
+                },
+                {
+                  "indicator": "Miner revenue tăng 5.40% trong 1 ngày",
+                  "effect": "bullish"
+                },
+                {
+                  "indicator": "Số giao dịch giảm 7.77% trong 1 ngày",
+                  "effect": "bearish"
+                },
+                {
+                  "indicator": "Khối lượng giao dịch ước tính giảm 21.50% trong 1 ngày",
+                  "effect": "bearish"
+                }
+              ]
+            },
+            "checks": [
+              {
+                "claim_index": 0,
+                "verdict": "supported",
+                "reason": "Candidate's logic_path and key_indicators accurately reflect the snapshot data: hashrate +5.42% (bullish), miner revenue +5.40% (bullish), n-transactions -7.77% (bearish), estimated transaction volume -21.50% (bearish). The neutral signal with conflicting indicators is a reasonable inference from the supplied data. All figures match the snapshot within rounding."
+              }
+            ]
+          }
+        ]
+      },
+      "metadata": {
+        "source_type": "financial_report",
+        "entropy": 0.334,
+        "redundancy_score": 0.1,
+        "recency_weight": 1.0,
+        "timestamp": "2022-01-16T00:00:00+00:00"
+      }
+    },
+    {
+      "agent_id": "Market_Agent",
+      "signal": "NEUTRAL",
+      "confidence": 0.55,
+      "belief_vector": {
+        "direction": 0,
+        "strength": 0.55
+      },
+      "evidence_chunks": [
+        {
+          "id": "market_chunk_001",
+          "content": "Historical closed daily candles with partial derivatives data. Read per-source timestamps and semantics; null means unavailable.\n{\"price\": 42201.62, \"ema20\": 44185.94694683411, \"ema50\": 47973.476750754504, \"rsi14\": 28.882049383748026, \"volume\": 27562.08613, \"funding_rate\": 0.0001, \"long_short_ratio\": null, \"fetched_at\": \"2022-01-18T00:00:00+00:00\", \"source_notes\": {\"funding_rate\": {\"value\": 0.0001, \"observed_at\": \"2022-01-17T16:00:00.012000+00:00\", \"available_at\": \"2022-01-17T16:00:00.012000+00:00\", \"source_url\": \"https://data.binance.vision/data/futures/um/monthly/fundingRate/BTCUSDT/BTCUSDT-fundingRate-2022-01.zip\", \"semantics\": \"last settled funding rate; not an archived premiumIndex snapshot\", \"availability_assumption\": \"settlement calc_time; delivery latency not archived\"}, \"long_short_ratio\": \"Unavailable; do not infer a value.\"}}",
+          "metadata": {
+            "source": "Binance public API",
+            "timestamp": "2022-01-18T00:00:00+00:00"
+          }
+        }
+      ],
+      "logic_path": "Giá BTC ở mức 42201.62 thấp hơn đáng kể so với EMA20 (44185.95) và EMA50 (47973.48), cho thấy xu hướng giảm mạnh. Tuy nhiên, RSI14 ở mức 28.88 cho thấy điều kiện quá bán, có thể báo hiệu hồi phục kỹ thuật ngắn hạn. Sự mâu thuẫn giữa xu hướng giảm và tín hiệu quá bán khiến không thể xác định rõ hướng đi tiếp theo.",
+      "specialist_grounding": {
+        "status": "accepted",
+        "verification": "full_snapshot_llm_review",
+        "attempts": [
+          {
+            "attempt": 1,
+            "stage": "review",
+            "candidate": {
+              "signal": "NEUTRAL",
+              "confidence": 0.55,
+              "logic_path": "Giá BTC ở mức 42201.62 thấp hơn đáng kể so với EMA20 (44185.95) và EMA50 (47973.48), cho thấy xu hướng giảm mạnh. Tuy nhiên, RSI14 ở mức 28.88 cho thấy điều kiện quá bán, có thể báo hiệu hồi phục kỹ thuật ngắn hạn. Sự mâu thuẫn giữa xu hướng giảm và tín hiệu quá bán khiến không thể xác định rõ hướng đi tiếp theo.",
+              "technical_factors": [
+                {
+                  "factor": "Giá dưới EMA20 và EMA50 cho thấy xu hướng giảm",
+                  "impact": "bearish"
+                },
+                {
+                  "factor": "RSI14 ở mức 28.88 cho thấy điều kiện quá bán",
+                  "impact": "bullish"
+                },
+                {
+                  "factor": "Volume giao dịch ở mức 27562.09 cần xác nhận xu hướng",
+                  "impact": "neutral"
+                },
+                {
+                  "factor": "Funding rate ở mức 0.0001 cho thấy thị trường cân bằng",
+                  "impact": "neutral"
+                }
+              ]
+            },
+            "checks": [
+              {
+                "claim_index": 0,
+                "verdict": "supported",
+                "reason": "Toàn bộ dữ liệu trong candidate (price 42201.62, EMA20 44185.95, EMA50 47973.48, RSI14 28.88, volume 27562.09, funding_rate 0.0001) khớp với snapshot. Logic_path mô tả đúng: giá dưới EMA20/EMA50 (bearish), RSI14 28.88 (quá bán/bullish), mâu thuẫn dẫn đến NEUTRAL. Các factor trong technical_factors đều có dữ liệu hỗ trợ từ snapshot. Không có事实 không được hỗ trợ."
+              }
+            ]
+          }
+        ]
+      },
+      "metadata": {
+        "source_type": "market_data",
+        "entropy": 0.578,
+        "redundancy_score": 0.05,
+        "recency_weight": 1.0,
+        "timestamp": "2022-01-18T00:00:00+00:00"
+      }
+    }
+  ],
+  "reason": "review_rejected",
+  "elapsed_seconds": 10.1,
+  "llm_call_errors": [],
+  "previous_status": "api_error"
+}

@@ -1,0 +1,365 @@
+{
+  "sample_id": "2022-01-28",
+  "status": "ok",
+  "errors": [],
+  "inputs": {
+    "financial": {
+      "metrics": {
+        "hash-rate": {
+          "value": 172177189.9762886,
+          "pct_change_1d": -14.473684210526317,
+          "observed_at": "2022-01-26T00:00:00+00:00"
+        },
+        "miners-revenue": {
+          "value": 31353367.591352165,
+          "pct_change_1d": -10.641634699504776,
+          "observed_at": "2022-01-26T00:00:00+00:00"
+        },
+        "n-transactions": {
+          "value": 261070.0,
+          "pct_change_1d": -1.5305814549953278,
+          "observed_at": "2022-01-26T00:00:00+00:00"
+        },
+        "estimated-transaction-volume-usd": {
+          "value": 4724487375.564173,
+          "pct_change_1d": -1.4320893079349584,
+          "observed_at": "2022-01-26T00:00:00+00:00"
+        }
+      },
+      "fetched_at": "2022-01-26T00:00:00+00:00",
+      "summary_text": "Historical on-chain observations; MVRV, SOPR and whale flows unavailable.\n{\"hash-rate\": {\"value\": 172177189.9762886, \"pct_change_1d\": -14.473684210526317, \"observed_at\": \"2022-01-26T00:00:00+00:00\"}, \"miners-revenue\": {\"value\": 31353367.591352165, \"pct_change_1d\": -10.641634699504776, \"observed_at\": \"2022-01-26T00:00:00+00:00\"}, \"n-transactions\": {\"value\": 261070.0, \"pct_change_1d\": -1.5305814549953278, \"observed_at\": \"2022-01-26T00:00:00+00:00\"}, \"estimated-transaction-volume-usd\": {\"value\": 4724487375.564173, \"pct_change_1d\": -1.4320893079349584, \"observed_at\": \"2022-01-26T00:00:00+00:00\"}}"
+    },
+    "market": {
+      "price": 37160.1,
+      "ema20": 40005.88406017654,
+      "ema50": 44428.35545394737,
+      "rsi14": 25.94583903876189,
+      "volume": 53020.87934,
+      "funding_rate": -7.554e-05,
+      "long_short_ratio": 1.2636402604560022,
+      "fetched_at": "2022-01-28T00:00:00+00:00",
+      "source_notes": {
+        "funding_rate": {
+          "value": -7.554e-05,
+          "observed_at": "2022-01-27T16:00:00.019000+00:00",
+          "available_at": "2022-01-27T16:00:00.019000+00:00",
+          "source_url": "https://data.binance.vision/data/futures/um/monthly/fundingRate/BTCUSDT/BTCUSDT-fundingRate-2022-01.zip",
+          "semantics": "last settled funding rate; not an archived premiumIndex snapshot",
+          "availability_assumption": "settlement calc_time; delivery latency not archived"
+        },
+        "long_short_ratio": {
+          "value": 1.2636402604560022,
+          "observed_at": "2022-01-27T23:50:00+00:00",
+          "available_at": "2022-01-27T23:55:00+00:00",
+          "source_url": "https://data.binance.vision/data/futures/um/daily/metrics/BTCUSDT/BTCUSDT-metrics-2022-01-27.zip",
+          "semantics": "global account ratio, 5m archive observation; live query uses period=1d",
+          "availability_assumption": "create_time + 5 minutes; publication vintage unverified",
+          "period": "5m"
+        }
+      },
+      "summary_text": "Historical closed daily candles with partial derivatives data. Read per-source timestamps and semantics; null means unavailable.\n{\"price\": 37160.1, \"ema20\": 40005.88406017654, \"ema50\": 44428.35545394737, \"rsi14\": 25.94583903876189, \"volume\": 53020.87934, \"funding_rate\": -7.554e-05, \"long_short_ratio\": 1.2636402604560022, \"fetched_at\": \"2022-01-28T00:00:00+00:00\", \"source_notes\": {\"funding_rate\": {\"value\": -7.554e-05, \"observed_at\": \"2022-01-27T16:00:00.019000+00:00\", \"available_at\": \"2022-01-27T16:00:00.019000+00:00\", \"source_url\": \"https://data.binance.vision/data/futures/um/monthly/fundingRate/BTCUSDT/BTCUSDT-fundingRate-2022-01.zip\", \"semantics\": \"last settled funding rate; not an archived premiumIndex snapshot\", \"availability_assumption\": \"settlement calc_time; delivery latency not archived\"}, \"long_short_ratio\": {\"value\": 1.2636402604560022, \"observed_at\": \"2022-01-27T23:50:00+00:00\", \"available_at\": \"2022-01-27T23:55:00+00:00\", \"source_url\": \"https://data.binance.vision/data/futures/um/daily/metrics/BTCUSDT/BTCUSDT-metrics-2022-01-27.zip\", \"semantics\": \"global account ratio, 5m archive observation; live query uses period=1d\", \"availability_assumption\": \"create_time + 5 minutes; publication vintage unverified\", \"period\": \"5m\"}}}"
+    },
+    "sentiment": {
+      "fear_greed": {
+        "value": 20.0
+      },
+      "fetched_at": "2022-01-27T00:00:00+00:00",
+      "summary_text": "Historical Fear & Greed Index: 20.0/100.\nForexFactory upcoming events. Historical schedule, forecast and previous values are reconstructed from retrospective pages and assumed available before prediction; historical changes are not verified. Forecast is an expectation, previous refers to the preceding release period, and neither is the actual outcome of the upcoming event. Empty values are unavailable. No actual, revision or release-result annotation is supplied.\nDiscuss pre-release expectations and uncertainty using supplied fields only; do not treat forecast/previous as actual results or invent surprises/outcomes.\n[{\"event_id\": \"125141\", \"title\": \"KOF Economic Barometer\", \"country\": \"CHF\", \"impact\": \"Medium\", \"date\": \"2022-01-28T08:00:00+00:00\", \"source_url\": \"https://www.forexfactory.com/calendar?week=jan23.2022\", \"raw_file\": \"bd72c6f894f5ef9567c747d1fb84e99d306116c8929eafb8b328029c6e852ba9.body\", \"forecast\": \"106.0\", \"previous\": \"107.0\"}, {\"event_id\": \"124344\", \"title\": \"Core PCE Price Index m/m\", \"country\": \"USD\", \"impact\": \"High\", \"date\": \"2022-01-28T13:30:00+00:00\", \"source_url\": \"https://www.forexfactory.com/calendar?week=jan23.2022\", \"raw_file\": \"bd72c6f894f5ef9567c747d1fb84e99d306116c8929eafb8b328029c6e852ba9.body\", \"forecast\": \"0.5%\", \"previous\": \"0.5%\"}, {\"event_id\": \"123175\", \"title\": \"Revised UoM Consumer Sentiment\", \"country\": \"USD\", \"impact\": \"Medium\", \"date\": \"2022-01-28T15:00:00+00:00\", \"source_url\": \"https://www.forexfactory.com/calendar?week=jan23.2022\", \"raw_file\": \"bd72c6f894f5ef9567c747d1fb84e99d306116c8929eafb8b328029c6e852ba9.body\", \"forecast\": \"68.8\", \"previous\": \"68.8\"}]",
+      "upcoming_events": [
+        {
+          "event_id": "125141",
+          "title": "KOF Economic Barometer",
+          "country": "CHF",
+          "impact": "Medium",
+          "date": "2022-01-28T08:00:00+00:00",
+          "source_url": "https://www.forexfactory.com/calendar?week=jan23.2022",
+          "raw_file": "bd72c6f894f5ef9567c747d1fb84e99d306116c8929eafb8b328029c6e852ba9.body",
+          "forecast": "106.0",
+          "previous": "107.0"
+        },
+        {
+          "event_id": "124344",
+          "title": "Core PCE Price Index m/m",
+          "country": "USD",
+          "impact": "High",
+          "date": "2022-01-28T13:30:00+00:00",
+          "source_url": "https://www.forexfactory.com/calendar?week=jan23.2022",
+          "raw_file": "bd72c6f894f5ef9567c747d1fb84e99d306116c8929eafb8b328029c6e852ba9.body",
+          "forecast": "0.5%",
+          "previous": "0.5%"
+        },
+        {
+          "event_id": "123175",
+          "title": "Revised UoM Consumer Sentiment",
+          "country": "USD",
+          "impact": "Medium",
+          "date": "2022-01-28T15:00:00+00:00",
+          "source_url": "https://www.forexfactory.com/calendar?week=jan23.2022",
+          "raw_file": "bd72c6f894f5ef9567c747d1fb84e99d306116c8929eafb8b328029c6e852ba9.body",
+          "forecast": "68.8",
+          "previous": "68.8"
+        }
+      ],
+      "calendar_mode": "schedule_forecast_previous_assumed"
+    }
+  },
+  "specialists": [
+    {
+      "agent_id": "Financial_Agent",
+      "signal": "SELL",
+      "confidence": 0.65,
+      "belief_vector": {
+        "direction": -1,
+        "strength": 0.65
+      },
+      "evidence_chunks": [
+        {
+          "id": "financial_chunk_001",
+          "content": "Historical on-chain observations; MVRV, SOPR and whale flows unavailable.\n{\"hash-rate\": {\"value\": 172177189.9762886, \"pct_change_1d\": -14.473684210526317, \"observed_at\": \"2022-01-26T00:00:00+00:00\"}, \"miners-revenue\": {\"value\": 31353367.591352165, \"pct_change_1d\": -10.641634699504776, \"observed_at\": \"2022-01-26T00:00:00+00:00\"}, \"n-transactions\": {\"value\": 261070.0, \"pct_change_1d\": -1.5305814549953278, \"observed_at\": \"2022-01-26T00:00:00+00:00\"}, \"estimated-transaction-volume-usd\": {\"value\": 4724487375.564173, \"pct_change_1d\": -1.4320893079349584, \"observed_at\": \"2022-01-26T00:00:00+00:00\"}}",
+          "metadata": {
+            "source": "blockchain.info Charts API",
+            "page": 1,
+            "timestamp": "2022-01-26T00:00:00+00:00"
+          }
+        }
+      ],
+      "logic_path": "Hashrate giảm 14.47% cho thấy thợ đào rời đi hoặc ngừng hoạt động, phản ánh sự suy yếu trong bảo mật mạng và niềm tin kinh tế. Doanh thu thợ đào giảm 10.64% cho thấy áp lực lợi nhuận, có thể dẫn đến bán BTC để chi phí vận hành. Giao dịch và khối lượng giảm cho thấy nhu cầu suy yếu. Tổng hợp các yếu tố này tạo ra tín hiệu SELL.",
+      "specialist_grounding": {
+        "status": "accepted",
+        "verification": "full_snapshot_llm_review",
+        "attempts": [
+          {
+            "attempt": 1,
+            "stage": "review",
+            "candidate": {
+              "signal": "SELL",
+              "confidence": 0.65,
+              "logic_path": "Hashrate giảm 14.47% cho thấy thợ đào rời đi hoặc ngừng hoạt động, phản ánh sự suy yếu trong bảo mật mạng và niềm tin kinh tế. Doanh thu thợ đào giảm 10.64% cho thấy áp lực lợi nhuận, có thể dẫn đến bán BTC để chi phí vận hành. Giao dịch và khối lượng giảm cho thấy nhu cầu suy yếu. Tổng hợp các yếu tố này tạo ra tín hiệu SELL.",
+              "key_indicators": [
+                {
+                  "indicator": "Hashrate giảm 14.47%",
+                  "effect": "bearish"
+                },
+                {
+                  "indicator": "Miners revenue giảm 10.64%",
+                  "effect": "bearish"
+                },
+                {
+                  "indicator": "Giao dịch giảm 1.53%",
+                  "effect": "bearish"
+                },
+                {
+                  "indicator": "Khối lượng giao dịch giảm 1.43%",
+                  "effect": "bearish"
+                }
+              ]
+            },
+            "checks": [
+              {
+                "claim_index": 0,
+                "verdict": "supported",
+                "reason": "Candidate's logic_path and key_indicators are fully consistent with the supplied snapshot: hashrate -14.47%, miners revenue -10.64%, transactions -1.53%, volume -1.43% at 2022-01-26; all effects marked bearish match the negative changes. The SELL signal is a reasonable inference from these observed declines, though the snapshot does not independently confirm future price movement."
+              }
+            ]
+          }
+        ]
+      },
+      "metadata": {
+        "source_type": "financial_report",
+        "entropy": 0.234,
+        "redundancy_score": 0.1,
+        "recency_weight": 1.0,
+        "timestamp": "2022-01-26T00:00:00+00:00"
+      }
+    },
+    {
+      "agent_id": "Market_Agent",
+      "signal": "BUY",
+      "confidence": 0.62,
+      "belief_vector": {
+        "direction": 1,
+        "strength": 0.62
+      },
+      "evidence_chunks": [
+        {
+          "id": "market_chunk_001",
+          "content": "Historical closed daily candles with partial derivatives data. Read per-source timestamps and semantics; null means unavailable.\n{\"price\": 37160.1, \"ema20\": 40005.88406017654, \"ema50\": 44428.35545394737, \"rsi14\": 25.94583903876189, \"volume\": 53020.87934, \"funding_rate\": -7.554e-05, \"long_short_ratio\": 1.2636402604560022, \"fetched_at\": \"2022-01-28T00:00:00+00:00\", \"source_notes\": {\"funding_rate\": {\"value\": -7.554e-05, \"observed_at\": \"2022-01-27T16:00:00.019000+00:00\", \"available_at\": \"2022-01-27T16:00:00.019000+00:00\", \"source_url\": \"https://data.binance.vision/data/futures/um/monthly/fundingRate/BTCUSDT/BTCUSDT-fundingRate-2022-01.zip\", \"semantics\": \"last settled funding rate; not an archived premiumIndex snapshot\", \"availability_assumption\": \"settlement calc_time; delivery latency not archived\"}, \"long_short_ratio\": {\"value\": 1.2636402604560022, \"observed_at\": \"2022-01-27T23:50:00+00:00\", \"available_at\": \"2022-01-27T23:55:00+00:00\", \"source_url\": \"https://data.binance.vision/data/futures/um/daily/metrics/BTCUSDT/BTCUSDT-metrics-2022-01-27.zip\", \"semantics\": \"global account ratio, 5m archive observation; live query uses period=1d\", \"availability_assumption\": \"create_time + 5 minutes; publication vintage unverified\", \"period\": \"5m\"}}}",
+          "metadata": {
+            "source": "Binance public API",
+            "timestamp": "2022-01-28T00:00:00+00:00"
+          }
+        }
+      ],
+      "logic_path": "Giá BTC đóng cửa ở 37160.1, thấp hơn đáng kể so với EMA20 (40005.9) và EMA50 (44428.4), cho thấy xu hướng giảm mạnh. Tuy nhiên, RSI14 ở mức 25.95 cho thấy điều kiện quá bán, gợi ý khả năng phục hồi kỹ thuật. Tỷ lệ long/short là 1.26 cho thấy đa số vẫn nắm giữ vị thế mua, và funding rate âm (-0.0076%) phản ánh áp lực bán ngắn hạn. Sự kết hợp giữa quá bán và tỷ lệ long cao hơn gợi ý một cú bật lại kỹ thuật có thể xảy ra, mặc dù xu hướng chính vẫn giảm.",
+      "specialist_grounding": {
+        "status": "accepted",
+        "verification": "full_snapshot_llm_review",
+        "attempts": [
+          {
+            "attempt": 1,
+            "stage": "review",
+            "candidate": {
+              "signal": "BUY",
+              "confidence": 0.62,
+              "logic_path": "Giá BTC đóng cửa ở 37160.1, thấp hơn đáng kể so với EMA20 (40005.9) và EMA50 (44428.4), cho thấy xu hướng giảm mạnh. Tuy nhiên, RSI14 ở mức 25.95 cho thấy điều kiện quá bán, gợi ý khả năng phục hồi kỹ thuật. Tỷ lệ long/short là 1.26 cho thấy đa số vẫn nắm giữ vị thế mua, và funding rate âm (-0.0076%) phản ánh áp lực bán ngắn hạn. Sự kết hợp giữa quá bán và tỷ lệ long cao hơn gợi ý một cú bật lại kỹ thuật có thể xảy ra, mặc dù xu hướng chính vẫn giảm.",
+              "technical_factors": [
+                {
+                  "factor": "RSI14 ở mức 25.95 cho thấy điều kiện quá bán, gợi ý khả năng phục hồi kỹ thuật ngắn hạn",
+                  "impact": "bullish"
+                },
+                {
+                  "factor": "Giá thấp hơn EMA20 và EMA50, xác nhận xu hướng giảm chính",
+                  "impact": "bearish"
+                },
+                {
+                  "factor": "Funding rate âm (-0.0076%) phản ánh áp lực bán ngắn hạn từ các nhà giao dịch tương lai",
+                  "impact": "bearish"
+                },
+                {
+                  "factor": "Tỷ lệ long/short là 1.26 cho thấy đa số nhà giao dịch vẫn nắm giữ vị thế mua",
+                  "impact": "bullish"
+                }
+              ]
+            },
+            "checks": [
+              {
+                "claim_index": 0,
+                "verdict": "supported",
+                "reason": "Toàn bộ dữ liệu trong candidate khớp với snapshot: giá 37160.1, EMA20 40005.9, EMA50 44428.4, RSI14 25.95, funding rate -0.0076% (xấp xỉ -7.554e-05), long/short 1.26 (xấp xỉ 1.2636). Logic_path mô tả đúng xu hướng giảm, quá bán, tỷ lệ long cao, funding âm → tín hiệu BUY hợp lý. Không có事实 mâu thuẫn."
+              }
+            ]
+          }
+        ]
+      },
+      "metadata": {
+        "source_type": "market_data",
+        "entropy": 0.519,
+        "redundancy_score": 0.05,
+        "recency_weight": 1.0,
+        "timestamp": "2022-01-28T00:00:00+00:00"
+      }
+    },
+    {
+      "agent_id": "Sentiment_Agent",
+      "signal": "NEUTRAL",
+      "confidence": 0.25,
+      "belief_vector": {
+        "direction": 0,
+        "strength": 0.25
+      },
+      "evidence_chunks": [
+        {
+          "id": "sentiment_chunk_001",
+          "content": "Historical Fear & Greed Index: 20.0/100.\nForexFactory upcoming events. Historical schedule, forecast and previous values are reconstructed from retrospective pages and assumed available before prediction; historical changes are not verified. Forecast is an expectation, previous refers to the preceding release period, and neither is the actual outcome of the upcoming event. Empty values are unavailable. No actual, revision or release-result annotation is supplied.\nDiscuss pre-release expectations and uncertainty using supplied fields only; do not treat forecast/previous as actual results or invent surprises/outcomes.\n[{\"event_id\": \"125141\", \"title\": \"KOF Economic Barometer\", \"country\": \"CHF\", \"impact\": \"Medium\", \"date\": \"2022-01-28T08:00:00+00:00\", \"source_url\": \"https://www.forexfactory.com/calendar?week=jan23.2022\", \"raw_file\": \"bd72c6f894f5ef9567c747d1fb84e99d306116c8929eafb8b328029c6e852ba9.body\", \"forecast\": \"106.0\", \"previous\": \"107.0\"}, {\"event_id\": \"124344\", \"title\": \"Core PCE Price Index m/m\", \"country\": \"USD\", \"impact\": \"High\", \"date\": \"2022-01-28T13:30:00+00:00\", \"source_url\": \"https://www.forexfactory.com/calendar?week=jan23.2022\", \"raw_file\": \"bd72c6f894f5ef9567c747d1fb84e99d306116c8929eafb8b328029c6e852ba9.body\", \"forecast\": \"0.5%\", \"previous\": \"0.5%\"}, {\"event_id\": \"123175\", \"title\": \"Revised UoM Consumer Sentiment\", \"country\": \"USD\", \"impact\": \"Medium\", \"date\": \"2022-01-28T15:00:00+00:00\", \"source_url\": \"https://www.forexfactory.com/calendar?week=jan23.2022\", \"raw_file\": \"bd72c6f894f5ef9567c747d1fb84e99d306116c8929eafb8b328029c6e852ba9.body\", \"forecast\": \"68.8\", \"previous\": \"68.8\"}]",
+          "metadata": {
+            "source": "Alternative.me + ForexFactory calendar",
+            "timestamp": "2022-01-27T00:00:00+00:00"
+          }
+        }
+      ],
+      "logic_path": "Chỉ số Fear & Greed Index ở mức thấp (20/100) cho thấy tâm lý bi quan. Lịch sự kiện ngày 28/01/2022 bao gồm KOF Economic Barometer (dự báo 106 so với 107 trước đó), Core PCE Price Index m/m (dự báo 0.5% so với 0.5% trước đó) và Revised UoM Consumer Sentiment (dự báo 68.8 so với 68.8 trước đó). Tất cả các chỉ số đều không thay đổi, cho thấy sự thiếu động lực. Không có yếu tố mới nào nổi bật để thúc đẩy sự lạc quan hoặc bi quan, dẫn đến tâm lý trung lập.",
+      "specialist_grounding": {
+        "status": "accepted",
+        "verification": "full_snapshot_llm_review",
+        "attempts": [
+          {
+            "attempt": 1,
+            "stage": "review",
+            "candidate": {
+              "signal": "NEUTRAL",
+              "confidence": 0.25,
+              "logic_path": "Chỉ số Fear & Greed Index ở mức thấp (20/100) cho thấy tâm lý bi quan. Lịch sự kiện ngày 28/01/2022 bao gồm KOF Economic Barometer (dự báo 106 so với 107 trước đó), Core PCE Price Index m/m (dự báo 0.5% so với 0.5% trước đó) và Revised UoM Consumer Sentiment (dự báo 68.8 so với 68.8 trước đó). Tất cả các chỉ số đều không thay đổi, cho thấy sự thiếu động lực. Không có yếu tố mới nào nổi bật để thúc đẩy sự lạc quan hoặc bi quan, dẫn đến tâm lý trung lập.",
+              "sentiment_factors": [
+                {
+                  "factor": "Chỉ số Fear & Greed Index thấp (20/100) cho thấy tâm lý bi quan",
+                  "impact": "bearish"
+                },
+                {
+                  "factor": "Dự báo Core PCE Price Index không thay đổi (0.5% so với 0.5% trước đó) cho thấy áp lực lạm phát ổn định",
+                  "impact": "neutral"
+                },
+                {
+                  "factor": "Dự báo KOF Economic Barometer giảm nhẹ (106 so với 107 trước đó) cho thấy sự suy giảm nhẹ trong đo lường kinh tế",
+                  "impact": "bearish"
+                },
+                {
+                  "factor": "Revised UoM Consumer Sentiment không thay đổi (68.8) cho thấy niềm tin người tiêu dùng ổn định",
+                  "impact": "neutral"
+                }
+              ]
+            },
+            "checks": [
+              {
+                "claim_index": 0,
+                "verdict": "supported",
+                "reason": "Candidate logic_path và sentiment_factors phù hợp với snapshot: Fear & Greed Index 20/100 (bi quan), KOF Barometer forecast 106 vs previous 107 (giảm nhẹ), Core PCE forecast 0.5% vs previous 0.5% (không đổi), Revised UoM Sentiment forecast 68.8 vs previous 68.8 (không đổi). Không có yếu tố mới nổi bật. Kết luận NEUTRAL với confidence 0.25 là hợp lý từ dữ liệu supplied."
+              }
+            ]
+          }
+        ]
+      },
+      "metadata": {
+        "source_type": "social_media",
+        "entropy": 0.4,
+        "redundancy_score": 0.1,
+        "recency_weight": 1.0,
+        "timestamp": "2022-01-27T00:00:00+00:00"
+      }
+    }
+  ],
+  "validation": {
+    "conflict_score": 0.3934,
+    "metrics": {
+      "mean_pairwise_kl": 0.4765,
+      "decision_variance": 0.2689
+    },
+    "conflict_detected": false,
+    "conflict_categories": [
+      "Signal Conflict"
+    ],
+    "root_cause_analysis": "N/A - System in state of consensus.",
+    "trigger_debate_module": false,
+    "debate_updated_outputs": null,
+    "degraded_mode": false,
+    "missing_agents": [],
+    "rca_grounding": {
+      "status": "not_run"
+    },
+    "debate_status": "not_run",
+    "conflict_score_after_debate": null,
+    "explanations_valid": true,
+    "explanation_failure": null
+  },
+  "mediator": {
+    "S_final": 0.203707,
+    "details": [
+      {
+        "agent_id": "Financial_Agent",
+        "direction": -1,
+        "strength": 0.65,
+        "weight": 0.122465,
+        "contribution": -0.079602
+      },
+      {
+        "agent_id": "Market_Agent",
+        "direction": 1,
+        "strength": 0.62,
+        "weight": 0.45695,
+        "contribution": 0.283309
+      },
+      {
+        "agent_id": "Sentiment_Agent",
+        "direction": 0,
+        "strength": 0.25,
+        "weight": 0.227595,
+        "contribution": 0.0
+      }
+    ]
+  },
+  "S_final": 0.203707,
+  "reason": null,
+  "signal": "BUY",
+  "elapsed_seconds": 7.4,
+  "llm_call_errors": [],
+  "previous_status": "not_run_quota"
+}

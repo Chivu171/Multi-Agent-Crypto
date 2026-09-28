@@ -1,0 +1,434 @@
+{
+  "sample_id": "2022-01-25",
+  "status": "ok",
+  "errors": [],
+  "inputs": {
+    "financial": {
+      "metrics": {
+        "hash-rate": {
+          "value": 186746029.1281284,
+          "pct_change_1d": 5.2238805970149516,
+          "observed_at": "2022-01-23T00:00:00+00:00"
+        },
+        "miners-revenue": {
+          "value": 31485076.13631871,
+          "pct_change_1d": 4.565275116432965,
+          "observed_at": "2022-01-23T00:00:00+00:00"
+        },
+        "n-transactions": {
+          "value": 203986.0,
+          "pct_change_1d": -18.501442303850666,
+          "observed_at": "2022-01-23T00:00:00+00:00"
+        },
+        "estimated-transaction-volume-usd": {
+          "value": 2570198094.106021,
+          "pct_change_1d": -51.095290874538016,
+          "observed_at": "2022-01-23T00:00:00+00:00"
+        }
+      },
+      "fetched_at": "2022-01-23T00:00:00+00:00",
+      "summary_text": "Historical on-chain observations; MVRV, SOPR and whale flows unavailable.\n{\"hash-rate\": {\"value\": 186746029.1281284, \"pct_change_1d\": 5.2238805970149516, \"observed_at\": \"2022-01-23T00:00:00+00:00\"}, \"miners-revenue\": {\"value\": 31485076.13631871, \"pct_change_1d\": 4.565275116432965, \"observed_at\": \"2022-01-23T00:00:00+00:00\"}, \"n-transactions\": {\"value\": 203986.0, \"pct_change_1d\": -18.501442303850666, \"observed_at\": \"2022-01-23T00:00:00+00:00\"}, \"estimated-transaction-volume-usd\": {\"value\": 2570198094.106021, \"pct_change_1d\": -51.095290874538016, \"observed_at\": \"2022-01-23T00:00:00+00:00\"}}"
+    },
+    "market": {
+      "price": 36660.35,
+      "ema20": 41063.83793503535,
+      "ema50": 45459.88332624519,
+      "rsi14": 31.36371184935416,
+      "volume": 91904.753211,
+      "funding_rate": 5.009e-05,
+      "long_short_ratio": 1.2991168786301903,
+      "fetched_at": "2022-01-25T00:00:00+00:00",
+      "source_notes": {
+        "funding_rate": {
+          "value": 5.009e-05,
+          "observed_at": "2022-01-24T16:00:00.021000+00:00",
+          "available_at": "2022-01-24T16:00:00.021000+00:00",
+          "source_url": "https://data.binance.vision/data/futures/um/monthly/fundingRate/BTCUSDT/BTCUSDT-fundingRate-2022-01.zip",
+          "semantics": "last settled funding rate; not an archived premiumIndex snapshot",
+          "availability_assumption": "settlement calc_time; delivery latency not archived"
+        },
+        "long_short_ratio": {
+          "value": 1.2991168786301903,
+          "observed_at": "2022-01-24T23:50:00+00:00",
+          "available_at": "2022-01-24T23:55:00+00:00",
+          "source_url": "https://data.binance.vision/data/futures/um/daily/metrics/BTCUSDT/BTCUSDT-metrics-2022-01-24.zip",
+          "semantics": "global account ratio, 5m archive observation; live query uses period=1d",
+          "availability_assumption": "create_time + 5 minutes; publication vintage unverified",
+          "period": "5m"
+        }
+      },
+      "summary_text": "Historical closed daily candles with partial derivatives data. Read per-source timestamps and semantics; null means unavailable.\n{\"price\": 36660.35, \"ema20\": 41063.83793503535, \"ema50\": 45459.88332624519, \"rsi14\": 31.36371184935416, \"volume\": 91904.753211, \"funding_rate\": 5.009e-05, \"long_short_ratio\": 1.2991168786301903, \"fetched_at\": \"2022-01-25T00:00:00+00:00\", \"source_notes\": {\"funding_rate\": {\"value\": 5.009e-05, \"observed_at\": \"2022-01-24T16:00:00.021000+00:00\", \"available_at\": \"2022-01-24T16:00:00.021000+00:00\", \"source_url\": \"https://data.binance.vision/data/futures/um/monthly/fundingRate/BTCUSDT/BTCUSDT-fundingRate-2022-01.zip\", \"semantics\": \"last settled funding rate; not an archived premiumIndex snapshot\", \"availability_assumption\": \"settlement calc_time; delivery latency not archived\"}, \"long_short_ratio\": {\"value\": 1.2991168786301903, \"observed_at\": \"2022-01-24T23:50:00+00:00\", \"available_at\": \"2022-01-24T23:55:00+00:00\", \"source_url\": \"https://data.binance.vision/data/futures/um/daily/metrics/BTCUSDT/BTCUSDT-metrics-2022-01-24.zip\", \"semantics\": \"global account ratio, 5m archive observation; live query uses period=1d\", \"availability_assumption\": \"create_time + 5 minutes; publication vintage unverified\", \"period\": \"5m\"}}}"
+    },
+    "sentiment": {
+      "fear_greed": {
+        "value": 13.0
+      },
+      "fetched_at": "2022-01-24T00:00:00+00:00",
+      "summary_text": "Historical Fear & Greed Index: 13.0/100.\nForexFactory upcoming events. Historical schedule, forecast and previous values are reconstructed from retrospective pages and assumed available before prediction; historical changes are not verified. Forecast is an expectation, previous refers to the preceding release period, and neither is the actual outcome of the upcoming event. Empty values are unavailable. No actual, revision or release-result annotation is supplied.\nDiscuss pre-release expectations and uncertainty using supplied fields only; do not treat forecast/previous as actual results or invent surprises/outcomes.\n[{\"event_id\": \"124922\", \"title\": \"CPI m/m\", \"country\": \"AUD\", \"impact\": \"High\", \"date\": \"2022-01-25T00:30:00+00:00\", \"source_url\": \"https://www.forexfactory.com/calendar?week=jan23.2022\", \"raw_file\": \"bd72c6f894f5ef9567c747d1fb84e99d306116c8929eafb8b328029c6e852ba9.body\", \"forecast\": \"1.0%\", \"previous\": \"0.8%\"}, {\"event_id\": \"124926\", \"title\": \"Trimmed Mean CPI m/m\", \"country\": \"AUD\", \"impact\": \"High\", \"date\": \"2022-01-25T00:30:00+00:00\", \"source_url\": \"https://www.forexfactory.com/calendar?week=jan23.2022\", \"raw_file\": \"bd72c6f894f5ef9567c747d1fb84e99d306116c8929eafb8b328029c6e852ba9.body\", \"forecast\": \"0.7%\", \"previous\": \"0.7%\"}, {\"event_id\": \"125455\", \"title\": \"German ifo Business Climate\", \"country\": \"EUR\", \"impact\": \"Medium\", \"date\": \"2022-01-25T09:00:00+00:00\", \"source_url\": \"https://www.forexfactory.com/calendar?week=jan23.2022\", \"raw_file\": \"bd72c6f894f5ef9567c747d1fb84e99d306116c8929eafb8b328029c6e852ba9.body\", \"forecast\": \"94.6\", \"previous\": \"94.7\"}, {\"event_id\": \"123089\", \"title\": \"CB Consumer Confidence\", \"country\": \"USD\", \"impact\": \"Medium\", \"date\": \"2022-01-25T15:00:00+00:00\", \"source_url\": \"https://www.forexfactory.com/calendar?week=jan23.2022\", \"raw_file\": \"bd72c6f894f5ef9567c747d1fb84e99d306116c8929eafb8b328029c6e852ba9.body\", \"forecast\": \"111.4\", \"previous\": \"115.8\"}, {\"event_id\": \"122692\", \"title\": \"Overnight Rate\", \"country\": \"CAD\", \"impact\": \"High\", \"date\": \"2022-01-26T15:00:00+00:00\", \"source_url\": \"https://www.forexfactory.com/calendar?week=jan23.2022\", \"raw_file\": \"bd72c6f894f5ef9567c747d1fb84e99d306116c8929eafb8b328029c6e852ba9.body\", \"forecast\": \"0.25%\", \"previous\": \"0.25%\"}, {\"event_id\": \"122700\", \"title\": \"BOC Rate Statement\", \"country\": \"CAD\", \"impact\": \"High\", \"date\": \"2022-01-26T15:00:00+00:00\", \"source_url\": \"https://www.forexfactory.com/calendar?week=jan23.2022\", \"raw_file\": \"bd72c6f894f5ef9567c747d1fb84e99d306116c8929eafb8b328029c6e852ba9.body\", \"forecast\": \"\", \"previous\": \"\"}, {\"event_id\": \"122708\", \"title\": \"BOC Monetary Policy Report\", \"country\": \"CAD\", \"impact\": \"High\", \"date\": \"2022-01-26T15:00:00+00:00\", \"source_url\": \"https://www.forexfactory.com/calendar?week=jan23.2022\", \"raw_file\": \"bd72c6f894f5ef9567c747d1fb84e99d306116c8929eafb8b328029c6e852ba9.body\", \"forecast\": \"\", \"previous\": \"\"}, {\"event_id\": \"122186\", \"title\": \"Crude Oil Inventories\", \"country\": \"USD\", \"impact\": \"Medium\", \"date\": \"2022-01-26T15:30:00+00:00\", \"source_url\": \"https://www.forexfactory.com/calendar?week=jan23.2022\", \"raw_file\": \"bd72c6f894f5ef9567c747d1fb84e99d306116c8929eafb8b328029c6e852ba9.body\", \"forecast\": \"1.0M\", \"previous\": \"0.5M\"}, {\"event_id\": \"122712\", \"title\": \"BOC Press Conference\", \"country\": \"CAD\", \"impact\": \"High\", \"date\": \"2022-01-26T16:00:00+00:00\", \"source_url\": \"https://www.forexfactory.com/calendar?week=jan23.2022\", \"raw_file\": \"bd72c6f894f5ef9567c747d1fb84e99d306116c8929eafb8b328029c6e852ba9.body\", \"forecast\": \"\", \"previous\": \"\"}, {\"event_id\": \"123013\", \"title\": \"FOMC Statement\", \"country\": \"USD\", \"impact\": \"High\", \"date\": \"2022-01-26T19:00:00+00:00\", \"source_url\": \"https://www.forexfactory.com/calendar?week=jan23.2022\", \"raw_file\": \"bd72c6f894f5ef9567c747d1fb84e99d306116c8929eafb8b328029c6e852ba9.body\", \"forecast\": \"\", \"previous\": \"\"}]",
+      "upcoming_events": [
+        {
+          "event_id": "124922",
+          "title": "CPI m/m",
+          "country": "AUD",
+          "impact": "High",
+          "date": "2022-01-25T00:30:00+00:00",
+          "source_url": "https://www.forexfactory.com/calendar?week=jan23.2022",
+          "raw_file": "bd72c6f894f5ef9567c747d1fb84e99d306116c8929eafb8b328029c6e852ba9.body",
+          "forecast": "1.0%",
+          "previous": "0.8%"
+        },
+        {
+          "event_id": "124926",
+          "title": "Trimmed Mean CPI m/m",
+          "country": "AUD",
+          "impact": "High",
+          "date": "2022-01-25T00:30:00+00:00",
+          "source_url": "https://www.forexfactory.com/calendar?week=jan23.2022",
+          "raw_file": "bd72c6f894f5ef9567c747d1fb84e99d306116c8929eafb8b328029c6e852ba9.body",
+          "forecast": "0.7%",
+          "previous": "0.7%"
+        },
+        {
+          "event_id": "125455",
+          "title": "German ifo Business Climate",
+          "country": "EUR",
+          "impact": "Medium",
+          "date": "2022-01-25T09:00:00+00:00",
+          "source_url": "https://www.forexfactory.com/calendar?week=jan23.2022",
+          "raw_file": "bd72c6f894f5ef9567c747d1fb84e99d306116c8929eafb8b328029c6e852ba9.body",
+          "forecast": "94.6",
+          "previous": "94.7"
+        },
+        {
+          "event_id": "123089",
+          "title": "CB Consumer Confidence",
+          "country": "USD",
+          "impact": "Medium",
+          "date": "2022-01-25T15:00:00+00:00",
+          "source_url": "https://www.forexfactory.com/calendar?week=jan23.2022",
+          "raw_file": "bd72c6f894f5ef9567c747d1fb84e99d306116c8929eafb8b328029c6e852ba9.body",
+          "forecast": "111.4",
+          "previous": "115.8"
+        },
+        {
+          "event_id": "122692",
+          "title": "Overnight Rate",
+          "country": "CAD",
+          "impact": "High",
+          "date": "2022-01-26T15:00:00+00:00",
+          "source_url": "https://www.forexfactory.com/calendar?week=jan23.2022",
+          "raw_file": "bd72c6f894f5ef9567c747d1fb84e99d306116c8929eafb8b328029c6e852ba9.body",
+          "forecast": "0.25%",
+          "previous": "0.25%"
+        },
+        {
+          "event_id": "122700",
+          "title": "BOC Rate Statement",
+          "country": "CAD",
+          "impact": "High",
+          "date": "2022-01-26T15:00:00+00:00",
+          "source_url": "https://www.forexfactory.com/calendar?week=jan23.2022",
+          "raw_file": "bd72c6f894f5ef9567c747d1fb84e99d306116c8929eafb8b328029c6e852ba9.body",
+          "forecast": "",
+          "previous": ""
+        },
+        {
+          "event_id": "122708",
+          "title": "BOC Monetary Policy Report",
+          "country": "CAD",
+          "impact": "High",
+          "date": "2022-01-26T15:00:00+00:00",
+          "source_url": "https://www.forexfactory.com/calendar?week=jan23.2022",
+          "raw_file": "bd72c6f894f5ef9567c747d1fb84e99d306116c8929eafb8b328029c6e852ba9.body",
+          "forecast": "",
+          "previous": ""
+        },
+        {
+          "event_id": "122186",
+          "title": "Crude Oil Inventories",
+          "country": "USD",
+          "impact": "Medium",
+          "date": "2022-01-26T15:30:00+00:00",
+          "source_url": "https://www.forexfactory.com/calendar?week=jan23.2022",
+          "raw_file": "bd72c6f894f5ef9567c747d1fb84e99d306116c8929eafb8b328029c6e852ba9.body",
+          "forecast": "1.0M",
+          "previous": "0.5M"
+        },
+        {
+          "event_id": "122712",
+          "title": "BOC Press Conference",
+          "country": "CAD",
+          "impact": "High",
+          "date": "2022-01-26T16:00:00+00:00",
+          "source_url": "https://www.forexfactory.com/calendar?week=jan23.2022",
+          "raw_file": "bd72c6f894f5ef9567c747d1fb84e99d306116c8929eafb8b328029c6e852ba9.body",
+          "forecast": "",
+          "previous": ""
+        },
+        {
+          "event_id": "123013",
+          "title": "FOMC Statement",
+          "country": "USD",
+          "impact": "High",
+          "date": "2022-01-26T19:00:00+00:00",
+          "source_url": "https://www.forexfactory.com/calendar?week=jan23.2022",
+          "raw_file": "bd72c6f894f5ef9567c747d1fb84e99d306116c8929eafb8b328029c6e852ba9.body",
+          "forecast": "",
+          "previous": ""
+        }
+      ],
+      "calendar_mode": "schedule_forecast_previous_assumed"
+    }
+  },
+  "specialists": [
+    {
+      "agent_id": "Financial_Agent",
+      "signal": "NEUTRAL",
+      "confidence": 0.55,
+      "belief_vector": {
+        "direction": 0,
+        "strength": 0.55
+      },
+      "evidence_chunks": [
+        {
+          "id": "financial_chunk_001",
+          "content": "Historical on-chain observations; MVRV, SOPR and whale flows unavailable.\n{\"hash-rate\": {\"value\": 186746029.1281284, \"pct_change_1d\": 5.2238805970149516, \"observed_at\": \"2022-01-23T00:00:00+00:00\"}, \"miners-revenue\": {\"value\": 31485076.13631871, \"pct_change_1d\": 4.565275116432965, \"observed_at\": \"2022-01-23T00:00:00+00:00\"}, \"n-transactions\": {\"value\": 203986.0, \"pct_change_1d\": -18.501442303850666, \"observed_at\": \"2022-01-23T00:00:00+00:00\"}, \"estimated-transaction-volume-usd\": {\"value\": 2570198094.106021, \"pct_change_1d\": -51.095290874538016, \"observed_at\": \"2022-01-23T00:00:00+00:00\"}}",
+          "metadata": {
+            "source": "blockchain.info Charts API",
+            "page": 1,
+            "timestamp": "2022-01-23T00:00:00+00:00"
+          }
+        }
+      ],
+      "logic_path": "Khảo sát dữ liệu on-chain tại mốc 2022-01-23. Hash-rate tăng 5.22% cho thấy mạng lưới ổn định, miners-revenue tăng 4.57% phản ánh phí băm tích cực — cả hai đều mang tính tăng giá. Tuy nhiên, n-transactions giảm 18.5% và estimated-transaction-volume-usd giảm 51.1% cho thấy hoạt động giao dịch và thanh khoản suy giảm đáng kể, mang tính giảm giá. Các chỉ số MVRV, SOPR và whale flows không khả dụng, không đủ bằng chứng để xác định xu hướng rõ ràng. Cân bằng giữa tín hiệu tích cực từ hash-rate/miners-revenue và tiêu cực từ khối lượng giao dịch dẫn đến kết luận NEUTRAL.",
+      "specialist_grounding": {
+        "status": "accepted",
+        "verification": "full_snapshot_llm_review",
+        "attempts": [
+          {
+            "attempt": 1,
+            "stage": "review",
+            "candidate": {
+              "signal": "NEUTRAL",
+              "confidence": 0.55,
+              "logic_path": "Khảo sát dữ liệu on-chain tại mốc 2022-01-23. Hash-rate tăng 5.22% cho thấy mạng lưới ổn định, miners-revenue tăng 4.57% phản ánh phí băm tích cực — cả hai đều mang tính tăng giá. Tuy nhiên, n-transactions giảm 18.5% và estimated-transaction-volume-usd giảm 51.1% cho thấy hoạt động giao dịch và thanh khoản suy giảm đáng kể, mang tính giảm giá. Các chỉ số MVRV, SOPR và whale flows không khả dụng, không đủ bằng chứng để xác định xu hướng rõ ràng. Cân bằng giữa tín hiệu tích cực từ hash-rate/miners-revenue và tiêu cực từ khối lượng giao dịch dẫn đến kết luận NEUTRAL.",
+              "key_indicators": [
+                {
+                  "indicator": "Hash-rate tăng 5.22%",
+                  "effect": "bullish"
+                },
+                {
+                  "indicator": "Miners-revenue tăng 4.57%",
+                  "effect": "bullish"
+                },
+                {
+                  "indicator": "Số giao dịch giảm 18.5%",
+                  "effect": "bearish"
+                },
+                {
+                  "indicator": "Khối lượng giao dịch USD giảm 51.1%",
+                  "effect": "bearish"
+                }
+              ]
+            },
+            "checks": [
+              {
+                "claim_index": 0,
+                "verdict": "supported",
+                "reason": "Candidate's logic_path and key_indicators match snapshot data: hash-rate +5.22% (bullish), miners-revenue +4.57% (bullish), n-transactions -18.5% (bearish), estimated-transaction-volume-usd -51.1% (bearish). MVRV/SOPR/whale flows unavailable as stated. Signal NEUTRAL is a reasonable inference from mixed indicators. No unsupported facts."
+              }
+            ]
+          }
+        ]
+      },
+      "metadata": {
+        "source_type": "financial_report",
+        "entropy": 0.662,
+        "redundancy_score": 0.1,
+        "recency_weight": 1.0,
+        "timestamp": "2022-01-23T00:00:00+00:00"
+      }
+    },
+    {
+      "agent_id": "Market_Agent",
+      "signal": "NEUTRAL",
+      "confidence": 0.55,
+      "belief_vector": {
+        "direction": 0,
+        "strength": 0.55
+      },
+      "evidence_chunks": [
+        {
+          "id": "market_chunk_001",
+          "content": "Historical closed daily candles with partial derivatives data. Read per-source timestamps and semantics; null means unavailable.\n{\"price\": 36660.35, \"ema20\": 41063.83793503535, \"ema50\": 45459.88332624519, \"rsi14\": 31.36371184935416, \"volume\": 91904.753211, \"funding_rate\": 5.009e-05, \"long_short_ratio\": 1.2991168786301903, \"fetched_at\": \"2022-01-25T00:00:00+00:00\", \"source_notes\": {\"funding_rate\": {\"value\": 5.009e-05, \"observed_at\": \"2022-01-24T16:00:00.021000+00:00\", \"available_at\": \"2022-01-24T16:00:00.021000+00:00\", \"source_url\": \"https://data.binance.vision/data/futures/um/monthly/fundingRate/BTCUSDT/BTCUSDT-fundingRate-2022-01.zip\", \"semantics\": \"last settled funding rate; not an archived premiumIndex snapshot\", \"availability_assumption\": \"settlement calc_time; delivery latency not archived\"}, \"long_short_ratio\": {\"value\": 1.2991168786301903, \"observed_at\": \"2022-01-24T23:50:00+00:00\", \"available_at\": \"2022-01-24T23:55:00+00:00\", \"source_url\": \"https://data.binance.vision/data/futures/um/daily/metrics/BTCUSDT/BTCUSDT-metrics-2022-01-24.zip\", \"semantics\": \"global account ratio, 5m archive observation; live query uses period=1d\", \"availability_assumption\": \"create_time + 5 minutes; publication vintage unverified\", \"period\": \"5m\"}}}",
+          "metadata": {
+            "source": "Binance public API",
+            "timestamp": "2022-01-25T00:00:00+00:00"
+          }
+        }
+      ],
+      "logic_path": "Giá BTC (36660) nằm dưới cả EMA20 (41064) và EMA50 (45460), xác nhận xu hướng giảm. Tuy nhiên, RSI14 ở mức 31.36 gần vùng quá bán, gợi ý khả năng phục hồi kỹ thuật ngắn hạn. Tỷ lệ long/short là 1.30 cho thấy thị trường nghiêng về mua, nhưng funding rate rất thấp (5e-05) cho thấy thiếu vắng đà đẩy mạnh. Các tín hiệu mâu thuẫn giữa xu hướng giảm và điều kiện quá bán khiến niềm tin định hướng bị chia rẽ.",
+      "specialist_grounding": {
+        "status": "accepted",
+        "verification": "full_snapshot_llm_review",
+        "attempts": [
+          {
+            "attempt": 1,
+            "stage": "review",
+            "candidate": {
+              "signal": "NEUTRAL",
+              "confidence": 0.55,
+              "logic_path": "Giá BTC (36660) nằm dưới cả EMA20 (41064) và EMA50 (45460), xác nhận xu hướng giảm. Tuy nhiên, RSI14 ở mức 31.36 gần vùng quá bán, gợi ý khả năng phục hồi kỹ thuật ngắn hạn. Tỷ lệ long/short là 1.30 cho thấy thị trường nghiêng về mua, nhưng funding rate rất thấp (5e-05) cho thấy thiếu vắng đà đẩy mạnh. Các tín hiệu mâu thuẫn giữa xu hướng giảm và điều kiện quá bán khiến niềm tin định hướng bị chia rẽ.",
+              "technical_factors": [
+                {
+                  "factor": "Giá dưới EMA20 và EMA50, xác nhận xu hướng giảm trung hạn",
+                  "impact": "bearish"
+                },
+                {
+                  "factor": "RSI14 ở mức 31.36, gần vùng quá bán, gợi ý phục hồi kỹ thuật",
+                  "impact": "bullish"
+                },
+                {
+                  "factor": "Tỷ lệ long/short là 1.30, nghiêng về phía mua",
+                  "impact": "bullish"
+                },
+                {
+                  "factor": "Funding rate rất thấp (5e-05), thiếu đà đẩy mạnh từ phía多头",
+                  "impact": "neutral"
+                }
+              ]
+            },
+            "checks": [
+              {
+                "claim_index": 0,
+                "verdict": "supported",
+                "reason": "Toàn bộ dữ liệu trong candidate khớp với snapshot: giá 36660.35 ≈ 36660, EMA20 41063.84 ≈ 41064, EMA50 45459.88 ≈ 45460, RSI14 31.36 ≈ 31.36, funding rate 5.009e-05 ≈ 5e-05, long/short 1.299 ≈ 1.30. Logic_path mô tả đúng: giá dưới EMA20/EMA50 (bearish), RSI gần quá bán (bullish), long/short nghiêng mua (bullish), funding rate thấp (neutral). Không có事实 mâu thuẫn hoặc không được hỗ trợ."
+              }
+            ]
+          }
+        ]
+      },
+      "metadata": {
+        "source_type": "market_data",
+        "entropy": 0.627,
+        "redundancy_score": 0.05,
+        "recency_weight": 1.0,
+        "timestamp": "2022-01-25T00:00:00+00:00"
+      }
+    },
+    {
+      "agent_id": "Sentiment_Agent",
+      "signal": "NEUTRAL",
+      "confidence": 0.45,
+      "belief_vector": {
+        "direction": 0,
+        "strength": 0.45
+      },
+      "evidence_chunks": [
+        {
+          "id": "sentiment_chunk_001",
+          "content": "Historical Fear & Greed Index: 13.0/100.\nForexFactory upcoming events. Historical schedule, forecast and previous values are reconstructed from retrospective pages and assumed available before prediction; historical changes are not verified. Forecast is an expectation, previous refers to the preceding release period, and neither is the actual outcome of the upcoming event. Empty values are unavailable. No actual, revision or release-result annotation is supplied.\nDiscuss pre-release expectations and uncertainty using supplied fields only; do not treat forecast/previous as actual results or invent surprises/outcomes.\n[{\"event_id\": \"124922\", \"title\": \"CPI m/m\", \"country\": \"AUD\", \"impact\": \"High\", \"date\": \"2022-01-25T00:30:00+00:00\", \"source_url\": \"https://www.forexfactory.com/calendar?week=jan23.2022\", \"raw_file\": \"bd72c6f894f5ef9567c747d1fb84e99d306116c8929eafb8b328029c6e852ba9.body\", \"forecast\": \"1.0%\", \"previous\": \"0.8%\"}, {\"event_id\": \"124926\", \"title\": \"Trimmed Mean CPI m/m\", \"country\": \"AUD\", \"impact\": \"High\", \"date\": \"2022-01-25T00:30:00+00:00\", \"source_url\": \"https://www.forexfactory.com/calendar?week=jan23.2022\", \"raw_file\": \"bd72c6f894f5ef9567c747d1fb84e99d306116c8929eafb8b328029c6e852ba9.body\", \"forecast\": \"0.7%\", \"previous\": \"0.7%\"}, {\"event_id\": \"125455\", \"title\": \"German ifo Business Climate\", \"country\": \"EUR\", \"impact\": \"Medium\", \"date\": \"2022-01-25T09:00:00+00:00\", \"source_url\": \"https://www.forexfactory.com/calendar?week=jan23.2022\", \"raw_file\": \"bd72c6f894f5ef9567c747d1fb84e99d306116c8929eafb8b328029c6e852ba9.body\", \"forecast\": \"94.6\", \"previous\": \"94.7\"}, {\"event_id\": \"123089\", \"title\": \"CB Consumer Confidence\", \"country\": \"USD\", \"impact\": \"Medium\", \"date\": \"2022-01-25T15:00:00+00:00\", \"source_url\": \"https://www.forexfactory.com/calendar?week=jan23.2022\", \"raw_file\": \"bd72c6f894f5ef9567c747d1fb84e99d306116c8929eafb8b328029c6e852ba9.body\", \"forecast\": \"111.4\", \"previous\": \"115.8\"}, {\"event_id\": \"122692\", \"title\": \"Overnight Rate\", \"country\": \"CAD\", \"impact\": \"High\", \"date\": \"2022-01-26T15:00:00+00:00\", \"source_url\": \"https://www.forexfactory.com/calendar?week=jan23.2022\", \"raw_file\": \"bd72c6f894f5ef9567c747d1fb84e99d306116c8929eafb8b328029c6e852ba9.body\", \"forecast\": \"0.25%\", \"previous\": \"0.25%\"}, {\"event_id\": \"122700\", \"title\": \"BOC Rate Statement\", \"country\": \"CAD\", \"impact\": \"High\", \"date\": \"2022-01-26T15:00:00+00:00\", \"source_url\": \"https://www.forexfactory.com/calendar?week=jan23.2022\", \"raw_file\": \"bd72c6f894f5ef9567c747d1fb84e99d306116c8929eafb8b328029c6e852ba9.body\", \"forecast\": \"\", \"previous\": \"\"}, {\"event_id\": \"122708\", \"title\": \"BOC Monetary Policy Report\", \"country\": \"CAD\", \"impact\": \"High\", \"date\": \"2022-01-26T15:00:00+00:00\", \"source_url\": \"https://www.forexfactory.com/calendar?week=jan23.2022\", \"raw_file\": \"bd72c6f894f5ef9567c747d1fb84e99d306116c8929eafb8b328029c6e852ba9.body\", \"forecast\": \"\", \"previous\": \"\"}, {\"event_id\": \"122186\", \"title\": \"Crude Oil Inventories\", \"country\": \"USD\", \"impact\": \"Medium\", \"date\": \"2022-01-26T15:30:00+00:00\", \"source_url\": \"https://www.forexfactory.com/calendar?week=jan23.2022\", \"raw_file\": \"bd72c6f894f5ef9567c747d1fb84e99d306116c8929eafb8b328029c6e852ba9.body\", \"forecast\": \"1.0M\", \"previous\": \"0.5M\"}, {\"event_id\": \"122712\", \"title\": \"BOC Press Conference\", \"country\": \"CAD\", \"impact\": \"High\", \"date\": \"2022-01-26T16:00:00+00:00\", \"source_url\": \"https://www.forexfactory.com/calendar?week=jan23.2022\", \"raw_file\": \"bd72c6f894f5ef9567c747d1fb84e99d306116c8929eafb8b328029c6e852ba9.body\", \"forecast\": \"\", \"previous\": \"\"}, {\"event_id\": \"123013\", \"title\": \"FOMC Statement\", \"country\": \"USD\", \"impact\": \"High\", \"date\": \"2022-01-26T19:00:00+00:00\", \"source_url\": \"https://www.forexfactory.com/calendar?week=jan23.2022\", \"raw_file\": \"bd72c6f894f5ef9567c747d1fb84e99d306116c8929eafb8b328029c6e852ba9.body\", \"forecast\": \"\", \"previous\": \"\"}]",
+          "metadata": {
+            "source": "Alternative.me + ForexFactory calendar",
+            "timestamp": "2022-01-24T00:00:00+00:00"
+          }
+        }
+      ],
+      "logic_path": "Chỉ số Fear & Greed Index ở mức thấp (13/100) cho thấy tâm lý sợ hãi. Lịch sự kiện ngày 25-26 tháng 1 năm 2022 bao gồm CPI, chỉ số niềm tin người tiêu dùng và các tuyên bố chính sách, nhưng không có sự kiện nào được xác nhận là có tác động mạnh đến BTC. Sự thiếu vắng các yếu tố tăng hoặc giảm giá rõ ràng dẫn đến dự báo trung lập.",
+      "specialist_grounding": {
+        "status": "accepted",
+        "verification": "full_snapshot_llm_review",
+        "attempts": [
+          {
+            "attempt": 1,
+            "stage": "review",
+            "candidate": {
+              "signal": "NEUTRAL",
+              "confidence": 0.45,
+              "logic_path": "Chỉ số Fear & Greed Index ở mức thấp (13/100) cho thấy tâm lý sợ hãi. Lịch sự kiện ngày 25-26 tháng 1 năm 2022 bao gồm CPI, chỉ số niềm tin người tiêu dùng và các tuyên bố chính sách, nhưng không có sự kiện nào được xác nhận là có tác động mạnh đến BTC. Sự thiếu vắng các yếu tố tăng hoặc giảm giá rõ ràng dẫn đến dự báo trung lập.",
+              "sentiment_factors": [
+                {
+                  "factor": "Chỉ số Fear & Greed Index thấp (13/100) cho thấy sự sợ hãi",
+                  "impact": "bearish"
+                },
+                {
+                  "factor": "Lịch sự kiện kinh tế vĩ mô (CPI, niềm tin người tiêu dùng, tuyên bố chính sách) có tác động không rõ ràng đến BTC",
+                  "impact": "neutral"
+                }
+              ]
+            },
+            "checks": [
+              {
+                "claim_index": 0,
+                "verdict": "supported",
+                "reason": "Fear & Greed Index 13/100 được xác nhận bởi snapshot. Tuy nhiên, candidate khẳng định 'không có sự kiện nào được xác nhận là có tác động mạnh đến BTC' – đây là suy luận hợp lý nhưng không có bằng chứng trực tiếp từ snapshot. Snapshot liệt kê nhiều sự kiện High impact (CPI AUD, Overnight Rate CAD, BOC Rate Statement, BOC Monetary Policy Report, BOC Press Conference, FOMC Statement) nhưng không cung cấp thông tin về tác động cụ thể của chúng lên BTC. Dự báo trung lập là hợp lý dựa trên thiếu vắng yếu tố rõ ràng, nhưng cần lưu ý rằng FOMC Statement (High impact, USD) thường có thể ảnh hưởng mạnh đến BTC – đây là điểm yếu trong lập luận 'không có sự kiện nào có tác động mạnh'."
+              }
+            ]
+          }
+        ]
+      },
+      "metadata": {
+        "source_type": "social_media",
+        "entropy": 0.26,
+        "redundancy_score": 0.1,
+        "recency_weight": 1.0,
+        "timestamp": "2022-01-24T00:00:00+00:00"
+      }
+    }
+  ],
+  "validation": {
+    "conflict_score": 0.0,
+    "metrics": {
+      "mean_pairwise_kl": 0.0,
+      "decision_variance": 0.0
+    },
+    "conflict_detected": false,
+    "conflict_categories": [
+      "No Conflict"
+    ],
+    "root_cause_analysis": "N/A - System in state of consensus.",
+    "trigger_debate_module": false,
+    "debate_updated_outputs": null,
+    "degraded_mode": false,
+    "missing_agents": [],
+    "rca_grounding": {
+      "status": "not_run"
+    },
+    "debate_status": "not_run",
+    "conflict_score_after_debate": null,
+    "explanations_valid": true,
+    "explanation_failure": null
+  },
+  "mediator": {
+    "S_final": 0.0,
+    "details": [
+      {
+        "agent_id": "Financial_Agent",
+        "direction": 0,
+        "strength": 0.55,
+        "weight": 0.054038,
+        "contribution": 0.0
+      },
+      {
+        "agent_id": "Market_Agent",
+        "direction": 0,
+        "strength": 0.55,
+        "weight": 0.35435,
+        "contribution": 0.0
+      },
+      {
+        "agent_id": "Sentiment_Agent",
+        "direction": 0,
+        "strength": 0.45,
+        "weight": 0.280701,
+        "contribution": 0.0
+      }
+    ]
+  },
+  "S_final": 0.0,
+  "reason": null,
+  "signal": "NEUTRAL",
+  "elapsed_seconds": 10.3,
+  "llm_call_errors": [],
+  "previous_status": "not_run_quota"
+}
