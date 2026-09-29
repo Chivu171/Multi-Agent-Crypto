@@ -10,3 +10,28 @@ htmlcov/
 
 *.egg-info/
 /outputs/cache
+
+# ── Run outputs stay local ────────────────────────────────────────────────────
+# Versioned: the test fixture and headline results only. LLM call caches,
+# per-day details, logs and main.py/demo outputs are kept on disk, not in git.
+outputs/*
+!outputs/.gitkeep
+!outputs/direction_pilot_retry/
+!outputs/eval_v0_30d/
+outputs/eval_v0_30d/*
+!outputs/eval_v0_30d/FREEZE.md
+!outputs/eval_v0_30d/run_config.json
+!outputs/eval_v0_30d/summary.json
+!outputs/eval_v0_30d/predictions.csv
+!outputs/eval_v0_30d/REPORT.md
+!outputs/eval_v0_30d/report/
+!outputs/baselines/
+outputs/baselines/*
+!outputs/baselines/cryptotrade/
+outputs/baselines/cryptotrade/*
+!outputs/baselines/cryptotrade/*/
+outputs/baselines/cryptotrade/*/*
+!outputs/baselines/cryptotrade/*/rules.json
+!outputs/baselines/cryptotrade/*/agent_*/
+outputs/baselines/cryptotrade/*/agent_*/*
+!outputs/baselines/cryptotrade/*/agent_*/result.json
