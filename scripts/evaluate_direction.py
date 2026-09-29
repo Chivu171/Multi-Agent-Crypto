@@ -124,7 +124,9 @@ def adapter(snap):
             f"ForexFactory upcoming events. {CALENDAR_ASSUMPTIONS[calendar['mode']]}\n"
             "Discuss pre-release expectations and uncertainty using supplied fields only; "
             "do not treat forecast/previous as actual results or invent surprises/outcomes.\n"
-            + (json.dumps(upcoming, ensure_ascii=False) if upcoming else
+            # One event per line: citations point at lines, so a single-line list
+            # left Debate no valid quote_id for any individual event.
+            + ("\n".join(json.dumps(event, ensure_ascii=False) for event in upcoming) if upcoming else
                "No upcoming High/Medium events with a known time in the selected UTC week. "
                "This does not mean the calendar source is missing."))
     return chain, market, sentiment
