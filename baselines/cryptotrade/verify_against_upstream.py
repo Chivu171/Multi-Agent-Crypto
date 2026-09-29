@@ -8,7 +8,7 @@ over 12 steps. Upstream lists on-chain fields from a set() (order changes per
 process) and parses floats with pandas, so fields are compared unordered and to
 10 significant digits.
 """
-import sys, re, json, ast
+import sys, re, json, ast, types
 from argparse import Namespace
 UP = sys.argv[1]; OURS = sys.argv[2]
 sys.path.insert(0, UP)
@@ -34,7 +34,7 @@ exec(code, g)
 sys.path.insert(0, OURS); os.chdir(OURS)
 from baselines.cryptotrade.rules import run_rule
 from baselines.cryptotrade.env import WINDOWS, TradingEnv
-from baselines.cryptotrade.prompts import History
+from baselines.cryptotrade.prompts import PROFILES, History
 worst = 0
 for w, (a, b) in WINDOWS.items():
     for s, sargs in [("buy_and_hold", {}), ("SMA", {"period": 15}), ("SLMA", {"short": "SMA_15", "long": "SMA_30"}),
@@ -64,7 +64,7 @@ s0, *_ = up_env.reset()
 args = Namespace(price_window=7, reflection_window=3, use_tech=1, use_txnstat=1)
 uh = EnvironmentHistory("", s0, [], [], args)
 os.chdir(OURS)
-my_env = TradingEnv("2023-10-01", "2023-10-20"); m0 = my_env.reset(); mh = History(m0)
+my_env = TradingEnv("2023-10-01", "2023-10-20"); m0 = my_env.reset(); mh = History(m0, **PROFILES["code"])
 mismatch = 0
 for step in range(12):
     os.chdir(UP); up_prompts = uh.get_prompt(); os.chdir(OURS)
@@ -80,4 +80,33 @@ for step in range(12):
         h.add("trader_response", resp); h.add("action", f"{info['actual_action']:.1f}"); h.add("state", st)
 print("prompt mismatches over 12 steps x 4 prompts:", mismatch)
 print("max |diff| return/sharpe:", worst)
-sys.exit(1 if mismatch or worst > 1e-12 else 0)
+
+# Paper profile = upstream with its two commented-out signals enabled and a
+# one-week reflection window, asset wording BTC instead of ETH.
+os.chdir(UP)
+src_env = open("eth_env.py").read()
+for line in ("# 'short_long_ma_signal': slma_signal,", "# 'bollinger_bands_signal': boll_signal,"):
+    assert line in src_env, line
+    src_env = src_env.replace(line, line[2:])
+paper_env_mod = types.ModuleType("paper_env"); exec(compile(src_env, "paper_env", "exec"), paper_env_mod.__dict__)
+def to_btc(p):
+    for a, b in (("You are an ETH cryptocurrency", "You are a BTC cryptocurrency"), ("experienced ETH", "experienced BTC"),
+                 ("trading ETH.", "trading BTC."), ("sell ETH.", "sell BTC.")):
+        p = p.replace(a, b)
+    return p
+pe = paper_env_mod.ETHTradingEnv(Namespace(dataset="btc", starting_date="2023-10-01", ending_date="2023-11-05")); ps, *_ = pe.reset()
+ph = EnvironmentHistory("", ps, [], [], Namespace(price_window=7, reflection_window=7, use_tech=1, use_txnstat=1))
+os.chdir(OURS)
+qe = TradingEnv("2023-10-01", "2023-11-05"); qs = qe.reset(); qh = History(qs, **PROFILES["paper"])
+paper_mismatch = 0
+for step in range(25):
+    os.chdir(UP); up_prompts = [to_btc(x) for x in ph.get_prompt()]; os.chdir(OURS)
+    paper_mismatch += sum(norm(x) != norm(y) for x, y in zip(up_prompts, qh.prompts()))
+    resp = f"reasoning ... action {[0.3,-0.5,1.0,-1.0,0.0][step % 5]:.1f}"
+    os.chdir(UP); us, *_rest = pe.step(resp); os.chdir(OURS)
+    ms, info = qe.step(resp)
+    for h, st in ((ph, us), (qh, ms)):
+        h.add("trader_response", resp); h.add("action", f"{info['actual_action']:.1f}"); h.add("state", st)
+signals = sum("bollinger_bands_signal" in p for p in qh.prompts())
+print("paper-profile prompt mismatches over 25 steps x 4 prompts:", paper_mismatch, "| prompts with all 3 signals:", signals)
+sys.exit(1 if mismatch or paper_mismatch or worst > 1e-12 else 0)

@@ -1,24 +1,36 @@
-"""Prompts copied verbatim from CryptoTrade env_history.py (commit 210da73).
+"""Prompts from CryptoTrade env_history.py (commit 210da73), in two profiles.
 
-The upstream prompts say "ETH" even when trading BTC; kept unchanged so results
-stay comparable with the paper.
+- "code": verbatim released code — MACD only, 3-day reflection, "ETH" wording
+  even for BTC.
+- "paper": the method as written in the paper — MA crossover, MACD and
+  Bollinger signals (Section 2.2, Figure 4; the code has them commented out),
+  reflection over the previous week (Section 2.4), and the traded asset's name.
 """
 DELIM = '\n"""\n'
+ALL_SIGNALS = ("short_long_ma_signal", "macd_signal", "bollinger_bands_signal")
+PROFILES = {
+    "code": dict(signals=("macd_signal",), reflection_window=3, asset="ETH"),
+    "paper": dict(signals=ALL_SIGNALS, reflection_window=7, asset="BTC"),
+}
 
 
 class History:
     """Chronological log of states, trader responses and actions."""
 
-    def __init__(self, start_state, price_window=7, reflection_window=3, use_tech=True, use_txnstat=True):
+    def __init__(self, start_state, price_window=7, reflection_window=3, use_tech=True, use_txnstat=True,
+                 signals=("macd_signal",), asset="ETH"):
         self.items = [{"label": "state", "value": start_state}]
         self.price_window, self.reflection_window = price_window, reflection_window
         self.use_tech, self.use_txnstat = use_tech, use_txnstat
+        self.signals, self.asset = signals, asset
 
     def add(self, label, value):
         self.items.append({"label": label, "value": value})
 
     def prompts(self):
-        price_s = ("You are an ETH cryptocurrency trading analyst. The recent price and auxiliary information "
+        a = self.asset  # only the fixed wording changes; news and model outputs stay verbatim
+        an = "an" if a == "ETH" else "a"
+        price_s = (f"You are {an} {a} cryptocurrency trading analyst. The recent price and auxiliary information "
                    "is given in chronological order below:" + DELIM)
         for item in self.items[-self.price_window * 3:]:
             if item["label"] == "state":
@@ -28,18 +40,18 @@ class History:
                     for k, v in state["txnstat"].items():
                         line += f", {k}: {v}"
                 if self.use_tech:
-                    for k, v in state["technical"].items():
-                        line += f", {k}: {v}"
+                    for k in self.signals:
+                        line += f", {k}: {state['technical'][k]}"
                 price_s += line + "\n"
         price_s += DELIM + ("Write one concise paragraph to analyze the recent information and estimate "
                             "the market trend accordingly.")
 
         state = self.items[-1]["value"]
-        news_s = (f"You are an ETH cryptocurrency trading analyst. You are required to analyze the following "
+        news_s = (f"You are {an} {a} cryptocurrency trading analyst. You are required to analyze the following "
                   f"news articles:{DELIM}{state['news']}{DELIM}Write one concise paragraph to analyze the news "
                   f"and estimate the market trend accordingly.")
 
-        reflection_s = ("You are an ETH cryptocurrency trading analyst. Your analysis and action history is "
+        reflection_s = (f"You are {an} {a} cryptocurrency trading analyst. Your analysis and action history is "
                         "given in chronological order:" + DELIM)
         for item in self.items[-self.reflection_window * 3:]:
             if item["label"] == "trader_response":
@@ -57,8 +69,8 @@ class History:
             "indicators in the current cryptocurrency market that are likely to influence future trades. Also "
             "assess whether a more aggressive or conservative trading approach is warranted.")
 
-        base = ("You are an experienced ETH cryptocurrency trader and you are trying to maximize your overall "
-                "profit by trading ETH. In each day, you will make an action to buy or sell ETH. You are "
+        base = (f"You are an experienced {a} cryptocurrency trader and you are trying to maximize your overall "
+                f"profit by trading {a}. In each day, you will make an action to buy or sell {a}. You are "
                 "assisted by a few analysts below and need to decide the final action.")
         trader_s = (f"{base}\n\nON-CHAIN ANALYST REPORT:{DELIM}{{}}{DELIM}\nNEWS ANALYST REPORT:{DELIM}{{}}"
                     f"{DELIM}\nREFLECTION ANALYST REPORT:{DELIM}{{}}{DELIM}\n")

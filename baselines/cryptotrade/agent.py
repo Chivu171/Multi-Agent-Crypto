@@ -14,7 +14,7 @@ from pathlib import Path
 from openai import OpenAI
 
 from baselines.cryptotrade.env import TradingEnv, sharpe
-from baselines.cryptotrade.prompts import History
+from baselines.cryptotrade.prompts import PROFILES, History
 from utils import llm as llm_utils
 from utils.config import OPENROUTER_API_KEY, OPENROUTER_BASE_URL
 
@@ -74,11 +74,11 @@ class CachedLLM:
         return content
 
 
-def run_agent(starting_date, ending_date, ask, variant="full", out_dir=None):
+def run_agent(starting_date, ending_date, ask, variant="full", out_dir=None, profile="paper"):
     flags = VARIANTS[variant]
     env = TradingEnv(starting_date, ending_date)
     state = env.reset()
-    history = History(state, use_tech=flags["use_tech"], use_txnstat=flags["use_txnstat"])
+    history = History(state, use_tech=flags["use_tech"], use_txnstat=flags["use_txnstat"], **PROFILES[profile])
     returns, steps, correct, directional = [], [], 0, 0
     while not env.done:
         price_s, news_s, reflection_s, trader_s = history.prompts()
@@ -101,7 +101,7 @@ def run_agent(starting_date, ending_date, ask, variant="full", out_dir=None):
             correct += (action > 0) == went_up
         steps.append({"date": info["today"], "action": action, "net_worth": state["net_worth"],
                       "today_roi": state["today_roi"], "trader": trader})
-    result = {"variant": variant, "starting_date": starting_date, "ending_date": ending_date,
+    result = {"variant": variant, "profile": profile, "starting_date": starting_date, "ending_date": ending_date,
               "total_return": state["roi"], "sharpe": sharpe(returns), "days": len(returns),
               "direction_accuracy": correct / directional if directional else None,
               "directional_days": directional}

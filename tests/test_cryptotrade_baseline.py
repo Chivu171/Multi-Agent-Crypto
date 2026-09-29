@@ -98,3 +98,28 @@ def test_cached_llm_never_pays_twice(tmp_path):
     assert all(r["seed"] == 6216 and r["temperature"] == 0.0 for r in calls)
     record = json.loads(next(tmp_path.glob("*.json")).read_text())
     assert record["request"]["model"] == "m"
+
+
+@pytest.mark.parametrize("profile, signals, asset", [
+    ("paper", ("short_long_ma_signal", "macd_signal", "bollinger_bands_signal"), "BTC"),
+    ("code", ("macd_signal",), "ETH"),
+])
+def test_profiles_follow_paper_or_released_code(profile, signals, asset):
+    log = []
+    run_agent("2023-10-01", "2023-10-12", fake_ask(log), "full", profile=profile)
+    onchain = [p for p in log if "recent price and auxiliary" in p]
+    assert all(all(f"{s}:" in p for s in signals) for p in onchain)
+    assert all(("bollinger_bands_signal" in p) == (profile == "paper") for p in onchain)
+    assert all(p.startswith(f"You are a{'n' if asset == 'ETH' else ''} {asset} cryptocurrency") for p in onchain)
+    # Reflection looks back 7 trading days in the paper profile, 3 in the code profile.
+    reflection = [p for p in log if "Your analysis and action history" in p][-1]
+    assert reflection.count("ACTION:") == (7 if profile == "paper" else 3)
+
+
+def test_asset_wording_never_rewrites_news_content():
+    from baselines.cryptotrade.prompts import PROFILES, History
+    state = TradingEnv(*WINDOWS["bull"]).reset()
+    state["news"] = [{"id": "1", "time": "t", "title": "ETH ETF filing", "content": "ETH rallies"}]
+    news_prompt = History(state, **PROFILES["paper"]).prompts()[1]
+    assert "ETH ETF filing" in news_prompt and "ETH rallies" in news_prompt
+    assert news_prompt.startswith("You are a BTC cryptocurrency")

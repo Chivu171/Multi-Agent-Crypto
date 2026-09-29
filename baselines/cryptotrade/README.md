@@ -28,7 +28,7 @@ Không viết lại LSTM, Informer, AutoFormer, TimesNet, PatchTST: dùng số l
 `verify_against_upstream.py` chạy code gốc và bản này trên cùng dữ liệu:
 
 - 6 chiến lược luật × 3 giai đoạn BTC: lợi suất và Sharpe **trùng tuyệt đối** (sai khác 0).
-- 4 prompt × 12 bước với cùng chuỗi hành động: **0 khác biệt** về nội dung.
+- 4 prompt × 12 bước với cùng chuỗi hành động: **0 khác biệt** về nội dung (cấu hình `code`); cấu hình `paper` 0 khác biệt sau 25 bước.
 - Kết quả luật trùng với **Bảng 2 của bài**:
 
 | Chiến lược | Tăng (01/10–01/12/2023) | Đi ngang (17/06–25/08) | Giảm (12/04–16/06) |
@@ -54,6 +54,21 @@ Không viết lại LSTM, Informer, AutoFormer, TimesNet, PatchTST: dùng số l
 6. Bài có bảng ablation (Bảng 5) nhưng **chỉ cho ETH giai đoạn tăng**. Bản "chỉ thị trường" cho BTC phải
    tự chạy.
 
+## Hai cấu hình (`--profile`)
+
+Code công khai không khớp hoàn toàn với mô tả trong bài, nên có hai cấu hình:
+
+| | `paper` (**mặc định, baseline chính**) | `code` |
+|---|---|---|
+| Tín hiệu kỹ thuật trong prompt | MA crossover + MACD + Bollinger (mục 2.2, Hình 4) | Chỉ MACD |
+| Reflection xem lại | 7 ngày ("previous week", mục 2.4) | 3 ngày |
+| Tên tài sản trong prompt | BTC | "ETH" (lỗi của code gốc) |
+
+Bản `paper` không tự chế: hai tín hiệu MA crossover và Bollinger **có sẵn trong `eth_env.py` gốc nhưng bị
+comment**. `verify_against_upstream.py` bật lại hai dòng đó cùng reflection 7 ngày rồi so với bản
+này: 0 khác biệt sau 25 bước. Chỉ phần câu chữ cố định đổi ETH → BTC; nội dung tin tức và câu trả lời
+của model giữ nguyên.
+
 ## Biến thể agent (`--variant`)
 
 | Biến thể | Giá | MACD | On-chain | Tin tức | Reflection | Lượt gọi/ngày |
@@ -73,7 +88,7 @@ Không viết lại LSTM, Informer, AutoFormer, TimesNet, PatchTST: dùng số l
 
 # Agent LLM (tốn phí). Mặc định openai/gpt-4o qua OpenRouter, dùng OPENROUTER_API_KEY.
 # Đổi bằng CRYPTOTRADE_MODEL / CRYPTOTRADE_BASE_URL / CRYPTOTRADE_API_KEY.
-.venv/bin/python -m baselines.cryptotrade.run agent --window bull --variant market_only
+.venv/bin/python -m baselines.cryptotrade.run agent --window bull --variant market_only           # --profile paper (mặc định)
 ```
 
 Mọi lời gọi LLM được lưu ở `outputs/baselines/cryptotrade/calls/`. Chạy lại cùng lệnh sau khi bị

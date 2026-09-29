@@ -99,6 +99,25 @@ def macd_signal(day):
     return "hold"
 
 
+def slma_signal(day):
+    # Upstream eth_env.py (commented out there): SMA15 above SMA20 = sell.
+    if day["SMA_15"] > day["SMA_20"]:
+        return "sell"
+    if day["SMA_15"] < day["SMA_20"]:
+        return "buy"
+    return "hold"
+
+
+def bollinger_signal(day, price):
+    upper = day["SMA_20"] + 2 * day["STD_20"]
+    lower = day["SMA_20"] - 2 * day["STD_20"]
+    if price < lower:
+        return "buy"
+    if price > upper:
+        return "sell"
+    return "hold"
+
+
 def parse_action(action):
     """Upstream parsing: the last 1-decimal number in [-1, 1]; otherwise 0."""
     if isinstance(action, str):
@@ -130,7 +149,10 @@ class TradingEnv:
         return {
             "cash": self.cash, "eth_held": self.coin_held, "open": next_open,
             "net_worth": net_worth, "roi": roi, "today_roi": today_roi,
-            "technical": {"macd_signal": macd_signal(next_day)},
+            # All three upstream signals; the prompt profile decides which are shown.
+            "technical": {"short_long_ma_signal": slma_signal(next_day),
+                          "macd_signal": macd_signal(next_day),
+                          "bollinger_bands_signal": bollinger_signal(next_day, next_open)},
             "txnstat": txn, "news": load_news(key, self.data_dir), "date": today["time_open"],
         }
 
