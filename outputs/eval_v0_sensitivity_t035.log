@@ -1,0 +1,84 @@
+[1/30] 2022-01-01
+  ok  NEUTRAL (0.0s, 0 failed calls)
+[2/30] 2022-01-02
+  ok  NEUTRAL (0.0s, 0 failed calls)
+[3/30] 2022-01-03
+sentiment failed output validation; retrying once: Candidate logic_path khẳng định 'lịch kinh tế sắp tới không có sự kiện nào gây biến động mạnh', nhưng snapshot liệt kê nhiều sự kiện impact High (ISM Manufacturing PMI, JOLTS Job Openings, ADP Non-Farm Employment Change, FOMC Meeting Minutes, ISM Services PMI, Employment Change CAD, Unemployment Rate CAD). Ngoài ra, candidate kết luận 'các chỉ số PMI và việc làm dự kiến duy trì xu hướng ổn định' — tuy forecast và previous gần nhau, nhưng việc dự báo ổn định không phải bằng chứng không có biến động; hơn nữa FOMC Meeting Minutes có forecast/previous trống, candidate kết luận 'không có dự báo rõ ràng' là đúng nhưng không đủ để bác bỏ tác động cao đã ghi nhận. Cụm 'không có dấu hiệu rõ ràng về sự lạc quan hay bi quan cực đoan' cũng không được snapshot hỗ trợ trực tiếp vì snapshot chỉ cung cấp forecast/previous, không phải kỳ vọng tâm lý.
+  ok  NEUTRAL (0.0s, 0 failed calls)
+[4/30] 2022-01-04
+  ok  NEUTRAL (0.0s, 0 failed calls)
+[5/30] 2022-01-05
+  ok  SELL (0.0s, 0 failed calls)
+[6/30] 2022-01-06
+  ok  NEUTRAL (0.0s, 0 failed calls)
+[7/30] 2022-01-07
+  ok  NEUTRAL (0.0s, 0 failed calls)
+[8/30] 2022-01-08
+  ok  NEUTRAL (0.0s, 0 failed calls)
+[9/30] 2022-01-09
+  ok  SELL (0.0s, 0 failed calls)
+[10/30] 2022-01-10
+sentiment failed output validation; retrying once: Candidate khẳng định 'Tất cả các dự báo đều được công bố trước, nhưng không có sự khác biệt đáng kể nào so với dự kiến' — tuy nhiên snapshot cho thấy CPI y/y forecast 7.0% khác previous 6.8%, Core CPI y/y forecast 5.4% khác previous 4.9%, CPI m/m forecast 0.4% khác previous 0.8%, PPI m/m forecast 0.4% khác previous 0.8%, Unemployment Claims forecast 199K khác previous 207K. Chỉ có Core CPI m/m và Crude Oil Inventories là trùng forecast/previous. Như vậy không phải 'không có sự khác biệt đáng kể nào'. Ngoài ra, candidate kết luận 'không có sự thổi phồng rõ ràng' và 'sự lặp lại của các báo cáo trước đó' là không có bằng chứng hỗ trợ từ snapshot. Dù signal NEUTRAL có thể hợp lý do Fear & Greed thấp + lịch sự kiện dày đặc, nhưng lý do đưa ra chứa các sự kiện không được snapshot hỗ trợ.
+  ok  NEUTRAL (0.0s, 0 failed calls)
+[11/30] 2022-01-11
+  ok  SELL (0.0s, 0 failed calls)
+[12/30] 2022-01-12
+sentiment failed output validation; retrying once: Candidate khẳng định 'các dự báo gần như trùng khớp với các con số trước đó' nhưng dữ liệu snapshot cho thấy nhiều dự báo KHÔNG trùng với previous: CPI m/m forecast 0.4% vs previous 0.8%; CPI y/y forecast 7.0% vs previous 6.8%; Core CPI y/y forecast 5.4% vs previous 4.9%; PPI m/m forecast 0.4% vs previous 0.8%; Core PPI m/m forecast 0.5% vs previous 0.7%. Chỉ có Core CPI m/m (0.5% vs 0.5%), Crude Oil Inventories (-2.1M vs -2.1M), và Unemployment Claims (199K vs 207K) là gần trùng hoặc khác biệt. Do đó, lý lẽ 'dự báo trùng khớp với previous' không được hỗ trợ bởi dữ liệu supplied.
+  ok  NEUTRAL (0.0s, 0 failed calls)
+[13/30] 2022-01-13
+
+[Step 3] Khởi chạy Debate Module...
+  [Financial_Agent] Round 1 → confidence: 0.511 (accepted)
+    Logic Path (sau round 1): Dữ kiện từ nguồn: Các chỉ số on-chain ghi nhận tăng trưởng đồng thời: hash-rate tăng 11.27%, miners-revenue tăng 11.11%, estimated-transaction-volume-usd tăng 17.80%, và n-transactions tăng 4.11% vào ngày 2022-01-11. [E001] → Suy luận: Sự tăng trưởng đồng thời across multiple on-chain metrics suggests improving network activity and miner profitability, supporting a constructive on-chain outlook for this period. [E001] → Giả thuyết chưa xác nhận: Thiếu dữ liệu MVRV, SOPR và whale flows làm hạn chế khả năng đánh giá định giá tương đối và dòng tiền lớn, do đó tín hiệu BUY không thể được xác nhận một cách toàn diện. [E001]
+  [Market_Agent] Round 1 → confidence: 0.488 (accepted)
+    Logic Path (sau round 1): Dữ kiện từ nguồn: Giá đóng cửa 43902.66 thấp hơn cả EMA20 (45090.62) và EMA50 (49291.61), xác nhận xu hướng giảm ngắn hạn và trung hạn. [E002] → Dữ kiện từ nguồn: RSI14 ở mức 38.99 cho thấy đà giảm vẫn còn mạnh nhưng chưa vào vùng quá bán sâu. [E002] → Dữ kiện từ nguồn: Funding rate âm (-0.0053%) phản ánh tâm lý bán khống nhẹ trên thị trường phái sinh. [E002]
+  [Sentiment_Agent] Round 1 → confidence: 0.368 (accepted)
+    Logic Path (sau round 1): Dữ kiện từ nguồn: Chỉ số Fear & Greed ở mức 22/100 phản ánh tâm lý bi quan mạnh mẽ từ nhà đầu tư. [E003] → Suy luận: Các sự kiện lạm phát (PPI, Core PPI) và doanh số bán lẻ dự kiến thấp hơn kỳ vọng có thể góp phần làm gia tăng cảm giác bi quan, nhưng cần xác nhận kết quả thực tế. [E003] → Giả thuyết chưa xác nhận: Sự không chắc chắn về các bài phát biểu của FOMC và ECB có thể ảnh hưởng đến tâm lý thị trường, nhưng cần thêm dữ liệu để đánh giá. [E003]
+  [Financial_Agent] Round 2 → confidence: 0.403 (accepted)
+    Logic Path (sau round 2): Dữ kiện từ nguồn: On-chain metrics on 2022-01-11 show hash-rate +11.27%, miners-revenue +11.11%, estimated-transaction-volume-usd +17.80%, and n-transactions +4.11%, indicating rising network activity and miner profitability. [E001] → Suy luận: The simultaneous rise in hash-rate, miner revenue, and transaction volume suggests strengthening network fundamentals and miner profitability, supporting a constructive on-chain outlook for this period. [E001] → Giả thuyết chưa xác nhận: Without MVRV, SOPR, or whale flow data, the current BUY signal remains unconfirmed for valuation or large-money trends, limiting its reliability despite positive on-chain activity. [E001]
+  [Market_Agent] Round 2 → confidence: 0.385 (accepted)
+    Logic Path (sau round 2): Dữ kiện từ nguồn: Giá đóng cửa 43902.66 thấp hơn cả EMA20 (45090.62) và EMA50 (49291.61), xác nhận xu hướng giảm ngắn hạn và trung hạn. [E002] → Dữ kiện từ nguồn: RSI14 ở mức 38.99 cho thấy đà giảm vẫn còn mạnh nhưng chưa vào vùng quá bán sâu. [E002] → Dữ kiện từ nguồn: Funding rate âm (-0.0053%) phản ánh tâm lý bán khống nhẹ trên thị trường phái sinh. [E002]
+  [Sentiment_Agent] Round 2 → confidence: 0.302 (accepted)
+    Logic Path (sau round 2): Dữ kiện từ nguồn: Chỉ số Fear & Greed ở mức 22/100 phản ánh tâm lý bi quan mạnh mẽ từ nhà đầu tư retail, cho thấy thị trường đang ở trạng thái cực kỳ lo lắng. [E003] → Suy luận: Sự hiện diện của các sự kiện lạm phát (PPI, Core PPI) và doanh số bán lẻ dự kiến thấp hơn kỳ vọng có thể góp phần làm gia tăng cảm giác bi quan, nhưng cần xác nhận kết quả thực tế. [E003] → Giả thuyết chưa xác nhận: Sự không chắc chắn về các bài phát biểu của FOMC và ECB có thể ảnh hưởng đến tâm lý thị trường, nhưng cần thêm dữ liệu để đánh giá. [E003]
+  ok  NEUTRAL (55.6s, 0 failed calls)
+[14/30] 2022-01-14
+sentiment failed output validation; retrying once: Candidate logic_path and sentiment_factors claim: 'dữ liệu doanh số bán lẻ cốt lõi và tổng thể dự kiến giảm' (forecast Core Retail Sales and Retail Sales decrease). Snapshot shows forecast Core Retail Sales 0.2% vs previous 0.3% (a decrease), but forecast Retail Sales 0.0% vs previous 0.3% (also a decrease) — so the directional claim is partially supported. However, candidate also claims 'sản xuất công nghiệp dự kiến giảm' (Industrial Production forecast decrease), but snapshot shows forecast 0.2% vs previous 0.5% — this is a decrease, so supported. 'Chỉ số tâm lý người tiêu dùng prelim UoM dự kiến giảm nhẹ' — forecast 70.0 vs previous 70.4, a slight decrease, supported. The unsupported part: candidate concludes 'tâm lý thị trường nhìn chung là trung lập' and signal NEUTRAL with confidence 0.25 based on these bearish factors, but the snapshot data shows all four factors are indeed bearish (forecasts below previous). The logic_path says 'Các dự báo chủ yếu mang tính trung lập hoặc giảm nhẹ, không có yếu tố tăng giá mạnh' — this is a reasonable inference. The main unsupported claim is the overall NEUTRAL signal: having four bearish factors does not logically support a NEUTRAL signal; it would more naturally support a bearish signal. Additionally, the ECB Lagarde speech has empty forecast/previous, so no evidence for or against policy tightening. The candidate does not contradict the snapshot data, but the inference from bearish factors to NEUTRAL signal is unsupported by the supplied snapshot.
+  ok  SELL (0.0s, 0 failed calls)
+[15/30] 2022-01-15
+
+[Step 3] Khởi chạy Debate Module...
+  [Financial_Agent] Round 1: nguồn chưa đạt kiểm tra; giữ trạng thái trước vòng.
+  [Financial_Agent] Round 1 → confidence: 0.600 (rejected)
+    Logic Path (sau round 1): Hash rate tăng 28.78% cho thấy mạng lưới mạnh lên, miner revenue tăng 31.87% phản ánh lợi nhuận khai thác tốt, giao dịch trên mạng tăng nhẹ 0.95%. Tuy nhiên, khối lượng giao dịch USD giảm 1.47% cho thấy thanh khoản suy giảm nhẹ. Tổng thể các chỉ số on-chain chủ yếu tích cực nhưng không quá mạnh, dẫn đến tín hiệu BUY với niềm tin vừa phải.
+  [Market_Agent] Round 1 → confidence: 0.512 (accepted)
+    Logic Path (sau round 1): Dữ kiện từ nguồn: Giá BTC đóng cửa ở 43059.96, thấp hơn EMA20 (44680.21) và EMA50 (48618.58), cho thấy xu hướng giảm rõ ràng theo các đường trung bình động. [E002] → Dữ kiện từ nguồn: RSI14 ở mức 36.76 cho thấy thị trường đang trong vùng quá bán nhưng chưa đạt ngưỡng cực đoan 30, do đó tín hiệu chưa đủ mạnh để đảo chiều. [E002] → Dữ kiện từ nguồn: Funding rate âm (-6.655e-05) phản ánh tâm lý bearish của các nhà giao dịch hợp đồng tương lai, hỗ trợ xu hướng giảm. [E002]
+  [Sentiment_Agent] Round 1 → confidence: 0.123 (accepted)
+    Logic Path (sau round 1): Dữ kiện từ nguồn: Chỉ số Fear & Greed Index ở mức 21/100 phản ánh tâm lý bi quan cực đoan, nhưng không có sự kiện kinh tế quan trọng nào được lên lịch trong tuần. [E003] → Suy luận: Sự thiếu vắng thông tin mới và các sự kiện vĩ mô có thể làm gia tăng sự bất lực của thị trường, làm cho tâm lý đầu tư trở nên thiếu định hướng. [E003] → Giả thuyết chưa xác nhận: Nếu không có dữ liệu cảm xúc mới hoặc tin tức vĩ mô bất ngờ, chỉ số Fear & Greed có thể đi ngang hoặc giảm thêm do thiếu động lực tăng trưởng. [E003]
+  api_error quota  (38.2s, 1 failed calls)
+  Stopping LLM calls: quota. Rerun the same command later to resume.
+{
+  "requested_days": 30,
+  "successful_days": 14,
+  "failed_or_not_run_days": 16,
+  "directional_predictions": 4,
+  "correct": 1,
+  "directional_win_rate": 0.25,
+  "neutral_days": 10,
+  "coverage_over_requested": 0.13333333333333333,
+  "coverage_over_successful": 0.2857142857142857,
+  "status_counts": {
+    "ok": 14,
+    "api_error": 1,
+    "not_run_quota": 15
+  },
+  "BUY": {
+    "count": 0,
+    "correct": 0,
+    "accuracy": null
+  },
+  "SELL": {
+    "count": 4,
+    "correct": 1,
+    "accuracy": 0.25
+  }
+}
