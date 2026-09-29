@@ -43,3 +43,5 @@ chối chạy tiếp vào thư mục này.
 ## Giới hạn
 Đánh giá sơ bộ: không phải tập kiểm tra độc lập; chỉ giai đoạn BTC giảm; mẫu nhỏ; model có thể
 đã biết giá 2022; mô phỏng giao dịch lý tưởng (không trượt giá, funding, chi phí vay short).
+
+> Ghi chú 29/09/2026: `direction_resilience_5d/` và `direction_debate_5d/` đã được xoá khỏi `outputs/` để gọn thư mục. Mọi lời gọi LLM của chúng đã có sẵn trong `eval_v0_30d/calls/`, nên chạy lại lệnh trên không cần `--reuse-calls-from`. Bản gốc lấy lại được từ commit `2f8127f`.
