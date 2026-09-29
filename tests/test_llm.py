@@ -39,3 +39,32 @@ def test_reasoning_setting_reaches_provider_before_budget_is_consumed():
          patch("utils.llm._get_openrouter_client", return_value=object()), \
          patch("utils.llm._create_completion", side_effect=provider):
         assert ask_llm("review the supplied snapshot", agent_name="grounding") == '{"ok":true}'
+
+
+def test_lmstudio_backend_routes_every_role_to_one_local_model(monkeypatch):
+    from utils import config
+    monkeypatch.setattr(config, "LLM_BACKEND", "lmstudio")
+    monkeypatch.setattr(config, "LMSTUDIO_MODEL", "google/gemma-4-26b-a4b-qat")
+    roles = ("financial", "market", "sentiment", "conflict_analyzer", "debate", "grounding")
+    configs = [config.get_agent_config(role) for role in roles]
+    assert {(c["provider"], c["model"]) for c in configs} == {("lmstudio", "google/gemma-4-26b-a4b-qat")}
+    assert all(c["reasoning_effort"] == "none" for c in configs)
+    captured = {}
+    def fake_completion(client, **kwargs):
+        captured["client"] = client
+        captured["reasoning_effort"] = kwargs.get("reasoning_effort")
+        return SimpleNamespace(choices=[SimpleNamespace(finish_reason="stop", message=SimpleNamespace(content="ok"))])
+    with patch("utils.llm.get_agent_config", config.get_agent_config), \
+         patch("utils.llm._create_completion", side_effect=fake_completion):
+        import utils.llm as llm
+        assert llm.ask_llm("p", agent_name="market") == "ok"
+    assert captured["client"] is llm._lmstudio_client
+    assert captured["reasoning_effort"] == "none"
+
+
+def test_lmstudio_backend_requires_model(monkeypatch):
+    from utils import config
+    monkeypatch.setattr(config, "LLM_BACKEND", "lmstudio")
+    monkeypatch.setattr(config, "LMSTUDIO_MODEL", None)
+    with pytest.raises(ValueError, match="LMSTUDIO_MODEL"):
+        config.get_agent_config("market")

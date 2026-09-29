@@ -45,6 +45,14 @@ _OPENROUTER_MODEL_MAP = {
     "grounding": OPENROUTER_MODEL_NAME_GROUNDING or OPENROUTER_MODEL_NAME,
 }
 
+# ── Backend switch ───────────────────────────────────────────────────────────
+# LLM_BACKEND=lmstudio sends every role to the local LM Studio server (BASE_URL)
+# with one model (LMSTUDIO_MODEL), e.g. for runs that must share a single model.
+LLM_BACKEND = os.getenv("LLM_BACKEND", "openrouter").lower()
+LMSTUDIO_MODEL = os.getenv("LMSTUDIO_MODEL")
+# Thinking models (e.g. Gemma 4) spend ~15x longer per call unless this is "none".
+LMSTUDIO_REASONING_EFFORT = os.getenv("LMSTUDIO_REASONING_EFFORT", "none")
+
 # ── LM Studio (fallback local) ──────────────────────────────────────────────────────
 BASE_URL = os.getenv("BASE_URL")
 API_KEY  = os.getenv("API_KEY")
@@ -136,4 +144,13 @@ def get_agent_config(agent_name: str) -> dict:
         if OPENROUTER_REASONING_EFFORT not in {"none", "minimal", "low", "medium", "high", "xhigh", "max"}:
             raise ValueError("Invalid OPENROUTER_REASONING_EFFORT")
         config["reasoning_effort"] = OPENROUTER_REASONING_EFFORT
+    if LLM_BACKEND == "lmstudio":
+        if not LMSTUDIO_MODEL:
+            raise ValueError("LLM_BACKEND=lmstudio requires LMSTUDIO_MODEL")
+        config.update(provider="lmstudio", model=LMSTUDIO_MODEL)
+        config.pop("reasoning_effort", None)
+        if LMSTUDIO_REASONING_EFFORT:
+            config["reasoning_effort"] = LMSTUDIO_REASONING_EFFORT
+    elif LLM_BACKEND != "openrouter":
+        raise ValueError("LLM_BACKEND must be openrouter or lmstudio")
     return config

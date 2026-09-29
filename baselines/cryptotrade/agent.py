@@ -39,6 +39,7 @@ def _save(path, data):
 class CachedLLM:
     def __init__(self, cache_dir, model=None, base_url=None, api_key=None, client=None):
         self.model = model or os.getenv("CRYPTOTRADE_MODEL", "openai/gpt-4o")
+        self.reasoning_effort = os.getenv("CRYPTOTRADE_REASONING_EFFORT")
         self.base_url = base_url or os.getenv("CRYPTOTRADE_BASE_URL", OPENROUTER_BASE_URL)
         self.client = client or OpenAI(base_url=self.base_url,
                                        api_key=api_key or os.getenv("CRYPTOTRADE_API_KEY", OPENROUTER_API_KEY))
@@ -50,6 +51,10 @@ class CachedLLM:
     def __call__(self, prompt):
         request = {"model": self.model, "messages": [{"role": "user", "content": prompt}],
                    "seed": SEED, "temperature": 0.0}
+        # Not in the original (GPT-4o has no thinking mode); set "none" for local
+        # thinking models so both systems run the same model the same way.
+        if self.reasoning_effort:
+            request["reasoning_effort"] = self.reasoning_effort
         path = self.cache_dir / f"{llm_utils.request_key(self.base_url, request)}.json"
         if path.exists():
             self.cached_calls += 1

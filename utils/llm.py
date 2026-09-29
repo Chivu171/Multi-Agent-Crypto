@@ -1,6 +1,7 @@
 # utils/llm.py
 
 import hashlib
+import os
 import json
 import logging
 import threading
@@ -22,7 +23,8 @@ logger = logging.getLogger(__name__)
 # One policy for live and backtest: bounded attempts, bounded per-call timeout,
 # and an optional wall-clock deadline shared by every call of one run/day.
 MAX_ATTEMPTS = 3
-CALL_TIMEOUT_SECONDS = 60
+# Local models can need minutes for a long prompt; override with LLM_CALL_TIMEOUT.
+CALL_TIMEOUT_SECONDS = float(os.getenv("LLM_CALL_TIMEOUT", "60"))
 MAX_RETRY_WAIT_SECONDS = 60
 TRANSIENT_API_ERRORS = {"rate_limit", "timeout", "connection", "provider_5xx"}
 # Retrying cannot fix these; the caller should stop spending calls.
@@ -208,7 +210,9 @@ def ask_llm(prompt: str, agent_name: str = "default", system: str | None = None)
     config = get_agent_config(agent_name)
     provider = config.get("provider", "openrouter")
 
-    if provider == "groq" and _groq_client is not None:
+    if provider == "lmstudio":
+        client = _lmstudio_client
+    elif provider == "groq" and _groq_client is not None:
         client = _groq_client
     else:
         client = _get_openrouter_client(agent_name)
@@ -223,6 +227,8 @@ def ask_llm(prompt: str, agent_name: str = "default", system: str | None = None)
     options = {}
     if provider == "openrouter" and config.get("reasoning_effort"):
         options["extra_body"] = {"reasoning": {"effort": config["reasoning_effort"]}}
+    elif provider == "lmstudio" and config.get("reasoning_effort"):
+        options["reasoning_effort"] = config["reasoning_effort"]
     request = dict(
         model=config["model"],
         temperature=config["temperature"],

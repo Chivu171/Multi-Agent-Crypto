@@ -141,8 +141,8 @@ The system uses **different LLM backends per agent group** to maximize reliabili
 | Agent group | Backend | Keys |
 |---|---|---|
 | Financial, Market, Sentiment | OpenRouter | `OPENROUTER_API_KEY_FINANCIAL` / `_MARKET` / `_SENTIMENT` (fallback: `OPENROUTER_API_KEY`) |
-| Validator, Debate, Mediator | Groq | `GROQ_API_KEY` |
-| All (fallback) | LM Studio | `BASE_URL` + `API_KEY` |
+| Conflict Analyzer, Debate, Grounding reviewer | OpenRouter | `OPENROUTER_API_KEY` |
+| All roles, one local model | LM Studio (`LLM_BACKEND=lmstudio`, `LMSTUDIO_MODEL`) | `BASE_URL` + `API_KEY` |
 
 **Model routing (free tier):**
 
@@ -151,13 +151,13 @@ The system uses **different LLM backends per agent group** to maximize reliabili
 | Financial | `inclusionai/ling-3.0-flash-fin:free` | `OPENROUTER_API_KEY_FINANCIAL` |
 | Market | `nvidia/nemotron-3.5-lightning:free` | `OPENROUTER_API_KEY_MARKET` |
 | Sentiment | `thinking-machines/inkling:free` | `OPENROUTER_API_KEY_SENTIMENT` |
-| Validator / Debate / Mediator | `qwen/qwen3.8-27b` on Groq | `GROQ_API_KEY` |
+| Conflict Analyzer / Debate / Grounding | per `.env.example` | `OPENROUTER_API_KEY` |
 
 **Why this routing:**
 - **3 OpenRouter keys** give 3x the free-tier rate limit for the 3 specialist agents, and isolate 429s so one agent's failure doesn't block the others.
 - **3 different OpenRouter models** avoid shared rate-limit pools on the same provider/model.
-- **Groq** for validator/debate/mediator because those calls are fast, deterministic, and benefit from Groq's LPU speed.
-- **LM Studio** as final fallback if no cloud keys are configured.
+- **Conflict Analyzer/Debate/Grounding** moved from Groq to OpenRouter after Groq's daily token cap aborted evaluation runs.
+- **LM Studio**: set `LLM_BACKEND=lmstudio` to run every role on one local model (used for the CryptoTrade comparison), or leave cloud keys empty to fall back to it.
 
 You can mix and match: set only `OPENROUTER_API_KEY` for simple use, or set per-agent keys + `GROQ_API_KEY` for maximum parallelism.
 
