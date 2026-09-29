@@ -549,7 +549,7 @@ def _fake_run(tmp_path):
                        "validation": {"conflict_score": 0.1, "conflict_detected": False}},
         "2022-01-02": {"status": "rejected_by_reviewer", "reason": "rca:review_rejected", "specialists": three,
                        "validation": {"conflict_score": 0.5, "conflict_detected": True},
-                       "errors": [{"stage": "validator", "status": "rejected_by_reviewer"}]},
+                       "errors": [{"stage": "conflict_analyzer", "status": "rejected_by_reviewer"}]},
         "2022-01-03": {"status": "api_error", "reason": "rate_limit", "specialists": three[:2],
                        "errors": [{"stage": "specialist", "agent": "sentiment", "status": "api_error"}]},
     }

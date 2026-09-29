@@ -302,7 +302,7 @@ def conflict_score_summary(records: Sequence[Record], threshold: float = 0.4) ->
 # Nhóm 3, đợt b — cần tính lại tín hiệu "nếu không có Debate" bằng cách gọi
 # lại Mediator trên đầu ra specialist gốc (day["specialists"] luôn là bản
 # trước Debate — xem scripts/evaluate_direction.py: result["specialists"] =
-# outputs được lưu trước khi Validator/Debate chạy).
+# outputs được lưu trước khi Conflict Analyzer/Debate chạy).
 # ---------------------------------------------------------------------------
 
 def classify_signal(s_final: float, band: float) -> str:

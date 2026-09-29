@@ -247,7 +247,7 @@ def test_corrupt_snapshot_is_data_error_without_calls(provider):
     assert calls == {"debate": 0, "debate_review": 0}
 
 
-def test_conflict_threshold_option_reaches_validator(provider):
+def test_conflict_threshold_option_reaches_conflict_analyzer(provider):
     calls = provider()
     result = run_day(snapshot(), day_budget=300, conflict_threshold=5.0)
     assert result["status"] == "ok"

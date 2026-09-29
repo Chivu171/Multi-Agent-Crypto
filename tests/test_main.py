@@ -130,18 +130,18 @@ def test_rejected_explanation_keeps_previous_results(isolated_cwd):
     with patch("main.financial_run", return_value=make_agent_output("Financial_Agent")), \
          patch("main.market_run", return_value=make_agent_output("Market_Agent")), \
          patch("main.sentiment_run", return_value=make_agent_output("Sentiment_Agent")), \
-         patch("main.ValidatorAgent.evaluate_pipeline", return_value=validation):
+         patch("main.ConflictAnalyzer.evaluate_pipeline", return_value=validation):
         status = main.main()
     assert status == "rejected_by_reviewer"
     assert (outputs_dir / "mediator_result.json").read_text() == '{"S_final": 0.5}'
     assert not (outputs_dir / "logs.json").exists()
 
 
-def test_validator_api_error_exits_with_status(isolated_cwd):
+def test_conflict_analyzer_api_error_exits_with_status(isolated_cwd):
     with patch("main.financial_run", return_value=make_agent_output("Financial_Agent")), \
          patch("main.market_run", return_value=make_agent_output("Market_Agent")), \
          patch("main.sentiment_run", return_value=make_agent_output("Sentiment_Agent")), \
-         patch("main.ValidatorAgent.evaluate_pipeline", side_effect=DeadlineExceeded("budget")):
+         patch("main.ConflictAnalyzer.evaluate_pipeline", side_effect=DeadlineExceeded("budget")):
         status = main.main()
     assert status == "timeout_budget"
     assert not (isolated_cwd / "outputs" / "mediator_result.json").exists()

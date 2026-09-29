@@ -37,7 +37,7 @@ def describe_failure(exc, **context):
 
 
 def explanation_status(validation):
-    """(status, reason) of a validator result whose RCA/Debate explanation failed."""
+    """(status, reason) of a Conflict Analyzer result whose RCA/Debate explanation failed."""
     failure = validation.get("explanation_failure")
     status = "json_invalid" if failure == "json_invalid" else "rejected_by_reviewer"
     audits = [("rca", validation.get("rca_grounding") or {})]

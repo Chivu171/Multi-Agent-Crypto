@@ -1,6 +1,6 @@
 # utils/thresholds.py
 
-"""Các ngưỡng/tham số dùng trong Validator, Debate và quyết định tín hiệu
+"""Các ngưỡng/tham số dùng trong Conflict Analyzer, Debate và quyết định tín hiệu
 cuối cùng (Mediator → main.py).
 
 ⚠️ CHƯA HIỆU CHỈNH BẰNG THỰC NGHIỆM — toàn bộ giá trị dưới đây là số đặt
@@ -13,7 +13,7 @@ Gom về một file duy nhất để minh bạch hoá: người đọc thấy ng
 định có chủ đích, không phải số bị giấu rải rác giữa logic nghiệp vụ.
 """
 
-# ---- ValidatorAgent: cân bằng công thức Hybrid Conflict Score ----
+# ---- ConflictAnalyzer: cân bằng công thức Hybrid Conflict Score ----
 DEFAULT_CONFLICT_ALPHA = 0.6
 """Trọng số giữa KL Divergence (học thuật) và Variance (thực nghiệm) trong
 conflict_score = alpha * mean_kl + (1 - alpha) * variance."""
@@ -21,7 +21,7 @@ conflict_score = alpha * mean_kl + (1 - alpha) * variance."""
 DEFAULT_CONFLICT_THRESHOLD = 0.4
 """conflict_score >= ngưỡng này -> coi là có mâu thuẫn, kích hoạt Debate Module."""
 
-# ---- ValidatorAgent.classify_conflict: quy tắc phân loại mâu thuẫn ----
+# ---- ConflictAnalyzer.classify_conflict: quy tắc phân loại mâu thuẫn ----
 NO_CONFLICT_CEILING = 0.15
 """conflict_score dưới mức này -> phân loại thẳng là "No Conflict", bỏ qua các rule bên dưới."""
 

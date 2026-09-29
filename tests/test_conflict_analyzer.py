@@ -1,11 +1,11 @@
 from unittest.mock import patch
 
-from agents.validator_agent import ValidatorAgent
+from agents.conflict_analyzer import ConflictAnalyzer
 
 
 def test_calculate_conflict_core_returns_bounded_values(sample_agents_output):
-    validator = ValidatorAgent(alpha=0.6, threshold=0.4, use_llm=False)
-    conflict_score, mean_kl, variance = validator.calculate_conflict_core(sample_agents_output)
+    analyzer = ConflictAnalyzer(alpha=0.6, threshold=0.4, use_llm=False)
+    conflict_score, mean_kl, variance = analyzer.calculate_conflict_core(sample_agents_output)
 
     assert isinstance(conflict_score, float)
     assert mean_kl >= 0.0
@@ -13,34 +13,34 @@ def test_calculate_conflict_core_returns_bounded_values(sample_agents_output):
 
 
 def test_single_agent_has_zero_conflict(single_agent_output):
-    validator = ValidatorAgent()
-    conflict_score, mean_kl, variance = validator.calculate_conflict_core(single_agent_output)
+    analyzer = ConflictAnalyzer()
+    conflict_score, mean_kl, variance = analyzer.calculate_conflict_core(single_agent_output)
     assert mean_kl == 0.0
     assert variance == 0.0
     assert conflict_score == 0.0
 
 
 def test_consensus_has_lower_conflict_than_disagreement(consensus_agents_output, extreme_conflict_output):
-    validator = ValidatorAgent()
-    consensus_score, _, _ = validator.calculate_conflict_core(consensus_agents_output)
-    conflict_score, _, _ = validator.calculate_conflict_core(extreme_conflict_output)
+    analyzer = ConflictAnalyzer()
+    consensus_score, _, _ = analyzer.calculate_conflict_core(consensus_agents_output)
+    conflict_score, _, _ = analyzer.calculate_conflict_core(extreme_conflict_output)
     assert consensus_score < conflict_score
 
 
 def test_classify_conflict_below_015_is_no_conflict():
-    validator = ValidatorAgent()
-    assert validator.classify_conflict([], 0.1) == ["No Conflict"]
+    analyzer = ConflictAnalyzer()
+    assert analyzer.classify_conflict([], 0.1) == ["No Conflict"]
 
 
 def test_classify_conflict_detects_signal_conflict(extreme_conflict_output):
-    validator = ValidatorAgent()
-    categories = validator.classify_conflict(extreme_conflict_output, conflict_score=0.5)
+    analyzer = ConflictAnalyzer()
+    categories = analyzer.classify_conflict(extreme_conflict_output, conflict_score=0.5)
     assert "Signal Conflict" in categories
 
 
 def test_classify_conflict_detects_temporal_and_reliability(extreme_conflict_output):
-    validator = ValidatorAgent()
-    categories = validator.classify_conflict(extreme_conflict_output, conflict_score=0.5)
+    analyzer = ConflictAnalyzer()
+    categories = analyzer.classify_conflict(extreme_conflict_output, conflict_score=0.5)
     # recency_weight is now intrinsic (no time decay), so Temporal Conflict
     # is no longer triggered by recency weight spread alone. We still expect
     # signal and reliability conflicts from the extreme fixture.
@@ -49,8 +49,8 @@ def test_classify_conflict_detects_temporal_and_reliability(extreme_conflict_out
 
 
 def test_evaluate_pipeline_no_conflict_skips_debate(consensus_agents_output):
-    validator = ValidatorAgent(threshold=0.8, use_llm=False)
-    result = validator.evaluate_pipeline(consensus_agents_output)
+    analyzer = ConflictAnalyzer(threshold=0.8, use_llm=False)
+    result = analyzer.evaluate_pipeline(consensus_agents_output)
 
     assert result["conflict_detected"] is False
     assert result["debate_updated_outputs"] is None
@@ -61,8 +61,8 @@ def test_evaluate_pipeline_no_conflict_skips_debate(consensus_agents_output):
 def test_evaluate_pipeline_conflict_triggers_debate(mock_ask_llm, extreme_conflict_output):
     mock_ask_llm.return_value = '{"steps": ["a", "b", "c"]}'
 
-    validator = ValidatorAgent(threshold=0.1, use_llm=False)
-    result = validator.evaluate_pipeline(extreme_conflict_output)
+    analyzer = ConflictAnalyzer(threshold=0.1, use_llm=False)
+    result = analyzer.evaluate_pipeline(extreme_conflict_output)
 
     assert result["conflict_detected"] is True
     assert result["trigger_debate_module"] is True
@@ -74,8 +74,8 @@ def test_evaluate_pipeline_conflict_triggers_debate(mock_ask_llm, extreme_confli
 def test_evaluate_pipeline_rca_fallback_without_llm(extreme_conflict_output):
     """use_llm=False must not call the network — it returns a deterministic fallback string."""
     with patch("agents.debate_agent.ask_llm", return_value='{"steps": ["a"]}'):
-        validator = ValidatorAgent(threshold=0.1, use_llm=False)
-        result = validator.evaluate_pipeline(extreme_conflict_output)
+        analyzer = ConflictAnalyzer(threshold=0.1, use_llm=False)
+        result = analyzer.evaluate_pipeline(extreme_conflict_output)
 
     assert "RCA Triggered" in result["root_cause_analysis"]
 
@@ -84,8 +84,8 @@ def test_evaluate_pipeline_single_agent_is_insufficient_data(single_agent_output
     """With only 1 agent output, there is no pair to compare — the pipeline
     must NOT report a numeric conflict_score of 0.0 (which would silently
     read as "consensus"). It must flag the result as insufficient instead."""
-    validator = ValidatorAgent(use_llm=False)
-    result = validator.evaluate_pipeline(single_agent_output, missing_agents=["Market_Agent", "Sentiment_Agent"])
+    analyzer = ConflictAnalyzer(use_llm=False)
+    result = analyzer.evaluate_pipeline(single_agent_output, missing_agents=["Market_Agent", "Sentiment_Agent"])
 
     assert result["conflict_score"] is None
     assert result["conflict_detected"] is False
@@ -97,8 +97,8 @@ def test_evaluate_pipeline_single_agent_is_insufficient_data(single_agent_output
 
 
 def test_evaluate_pipeline_zero_agents_is_insufficient_data():
-    validator = ValidatorAgent(use_llm=False)
-    result = validator.evaluate_pipeline([], missing_agents=["Financial_Agent", "Market_Agent", "Sentiment_Agent"])
+    analyzer = ConflictAnalyzer(use_llm=False)
+    result = analyzer.evaluate_pipeline([], missing_agents=["Financial_Agent", "Market_Agent", "Sentiment_Agent"])
 
     assert result["conflict_score"] is None
     assert result["degraded_mode"] is True
@@ -109,8 +109,8 @@ def test_evaluate_pipeline_two_agents_still_computes_but_flags_degraded(mock_ask
     """With 2/3 agents, the KL/variance comparison is still mathematically
     valid (one pair exists) — the pipeline should keep computing normally,
     just mark the result as degraded_mode with the missing agent named."""
-    validator = ValidatorAgent(threshold=0.1, use_llm=False)
-    result = validator.evaluate_pipeline(extreme_conflict_output, missing_agents=["Sentiment_Agent"])
+    analyzer = ConflictAnalyzer(threshold=0.1, use_llm=False)
+    result = analyzer.evaluate_pipeline(extreme_conflict_output, missing_agents=["Sentiment_Agent"])
 
     assert result["conflict_score"] is not None
     assert result["degraded_mode"] is True
@@ -118,8 +118,8 @@ def test_evaluate_pipeline_two_agents_still_computes_but_flags_degraded(mock_ask
 
 
 def test_evaluate_pipeline_three_agents_not_degraded(consensus_agents_output):
-    validator = ValidatorAgent(use_llm=False)
-    result = validator.evaluate_pipeline(consensus_agents_output)
+    analyzer = ConflictAnalyzer(use_llm=False)
+    result = analyzer.evaluate_pipeline(consensus_agents_output)
 
     assert result["degraded_mode"] is False
     assert result["missing_agents"] == []

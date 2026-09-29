@@ -1,4 +1,4 @@
-"""Run real specialist → validator/debate → mediator on historical snapshots.
+"""Run real specialist → conflict analyzer/debate → mediator on historical snapshots.
 
 python -m scripts.evaluate_direction --output outputs/direction_pilot
 No labels are loaded until all prediction attempts finish. No live market fetches.
@@ -21,7 +21,7 @@ import openai
 from openai.types.chat import ChatCompletion
 
 from agents import financial_agent, market_agent, sentiment_agent
-from agents.validator_agent import ValidatorAgent
+from agents.conflict_analyzer import ConflictAnalyzer
 from agents.mediator_agent import run_mediator
 from utils import llm
 from utils.config import get_agent_config
@@ -257,16 +257,16 @@ def run_day(snap, day_budget, conflict_threshold=DEFAULT_CONFLICT_THRESHOLD):
             result.update(status=first["status"], reason=first["reason"])
             return result
         try:
-            validation = ValidatorAgent(threshold=conflict_threshold).evaluate_pipeline(outputs)
+            validation = ConflictAnalyzer(threshold=conflict_threshold).evaluate_pipeline(outputs)
         except Exception as exc:
-            failure = describe_failure(exc, stage="validator")
+            failure = describe_failure(exc, stage="conflict_analyzer")
             result["errors"].append(failure)
             result.update(status=failure["status"], reason=failure["reason"])
             return result
         result["validation"] = validation
         if not validation.get("explanations_valid", True):
             status, reason = explanation_status(validation)
-            result["errors"].append({"stage": "validator", "status": status, "reason": reason})
+            result["errors"].append({"stage": "conflict_analyzer", "status": status, "reason": reason})
             result.update(status=status, reason=reason)
             return result
         final = validation.get("debate_updated_outputs") or outputs
@@ -305,7 +305,7 @@ def main():
     parser.add_argument("--reuse-calls-from", type=Path, nargs="+", default=[],
                         help="calls/ directories whose successful responses are reused when model, endpoint and request hash match")
     parser.add_argument("--conflict-threshold", type=float, default=DEFAULT_CONFLICT_THRESHOLD,
-                        help="Validator conflict score that triggers RCA/Debate (sensitivity analyses only)")
+                        help="Conflict Analyzer score that triggers RCA/Debate (sensitivity analyses only)")
     parser.add_argument("--day-budget", type=float, default=DAY_BUDGET_SECONDS,
                         help="Wall-clock seconds per day, including retries and Debate")
     parser.add_argument("--retry-rejected", action="store_true",
@@ -328,7 +328,7 @@ def main():
     snapshots = select_snapshots(snapshots, args.sample_ids)
     if args.require_full_live:
         require_full_live(snapshots)
-    configs = {a: get_agent_config(a) for a in ("financial", "market", "sentiment", "validator", "debate", "grounding")}
+    configs = {a: get_agent_config(a) for a in ("financial", "market", "sentiment", "conflict_analyzer", "debate", "grounding")}
     files = [Path(__file__), *Path("agents").glob("*.py"), Path("utils/prompts.py"), Path("utils/thresholds.py"), Path("utils/penalties.py"),
              Path("utils/grounding.py"), Path("utils/specialist_response.py"), Path("utils/llm.py"), Path("utils/parsing.py"),
              Path("utils/failures.py"), Path("utils/historical_calendar.py"), Path("utils/config.py")]

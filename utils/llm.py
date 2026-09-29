@@ -151,7 +151,7 @@ def reject_last_response(reason):
 # LM Studio client (fallback local)
 _lmstudio_client = OpenAI(base_url=BASE_URL, api_key=API_KEY)
 
-# Groq client (preferred for validator/debate/mediator)
+# Groq client (optional; roles use OpenRouter by default)
 _groq_client = None
 if GROQ_API_KEY:
     _groq_client = OpenAI(

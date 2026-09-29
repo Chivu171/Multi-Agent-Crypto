@@ -1,10 +1,10 @@
-# agents/validator_agent.py
+# agents/conflict_analyzer.py
 
 import json
 import numpy as np
 from typing import List, Dict, Any, Tuple
 from utils.llm import ask_llm  # Tận dụng LLM layer đã hoàn thành ở Thứ 3
-from utils.prompts import VALIDATOR_AGENT_PROMPT
+from utils.prompts import CONFLICT_ANALYZER_PROMPT
 from utils.thresholds import (
     DEBATE_CONFIDENCE_DECAY_ALPHA,
     DEBATE_ROUNDS,
@@ -20,7 +20,7 @@ from utils.thresholds import (
 from agents.debate_agent import DebateAgent
 from utils.grounding import build_evidence_registry, request_grounded_claims, render_claims, GroundingError
 
-class ValidatorAgent:
+class ConflictAnalyzer:
     def __init__(self, alpha: float = DEFAULT_CONFLICT_ALPHA, threshold: float = DEFAULT_CONFLICT_THRESHOLD, use_llm: bool = True):
         """
         Alpha: Trọng số cân bằng giữa KL Divergence (Học thuật) và Variance (Thực nghiệm)
@@ -130,7 +130,7 @@ class ValidatorAgent:
                 "note": "Agent opinion; verify against original evidence, not an independent source",
             })
 
-        prompt = VALIDATOR_AGENT_PROMPT.format(
+        prompt = CONFLICT_ANALYZER_PROMPT.format(
             categories=', '.join(categories),
             rca_context=json.dumps(rca_context, indent=2, ensure_ascii=False)
         )
@@ -142,7 +142,7 @@ class ValidatorAgent:
 
         registry = build_evidence_registry(agents_output)
         try:
-            claims, audit = request_grounded_claims(prompt, registry, agent_name="validator", ask=ask_llm)
+            claims, audit = request_grounded_claims(prompt, registry, agent_name="conflict_analyzer", ask=ask_llm)
             self.rca_grounding = {**audit, "claims": claims, "evidence": registry}
             return "\n".join(render_claims(claims))
         except GroundingError as exc:
@@ -155,7 +155,7 @@ class ValidatorAgent:
         missing_agents: List[str] | None = None,
     ) -> Dict[str, Any]:
         """
-        Execution Pipeline chính của Validator Agent
+        Execution Pipeline chính của Conflict Analyzer
 
         missing_agents: tên các specialist agent đã lỗi/không trả được kết quả
         (đã bị loại khỏi agents_output trước khi vào đây). Dùng để phân biệt

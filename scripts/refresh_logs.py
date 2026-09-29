@@ -1,5 +1,5 @@
 """Refresh outputs/logs.json — re-run the 3 specialist agents without
-the full validator/debate/mediator pipeline. Useful for pre-warming the
+the full conflict analyzer/debate/mediator pipeline. Useful for pre-warming the
 fallback cache that main.py uses when the LLM is unreachable.
 
 Usage:

@@ -1,4 +1,4 @@
-from agents.validator_agent import ValidatorAgent
+from agents.conflict_analyzer import ConflictAnalyzer
 
 # Sample agents output list with minimal required fields
 agents_output = [
@@ -22,7 +22,7 @@ agents_output = [
     }
 ]
 
-validator = ValidatorAgent(alpha=0.6, threshold=0.1, use_llm=False)
-result = validator.evaluate_pipeline(agents_output)
+analyzer = ConflictAnalyzer(alpha=0.6, threshold=0.1, use_llm=False)
+result = analyzer.evaluate_pipeline(agents_output)
 print("Result:")
 print(result)

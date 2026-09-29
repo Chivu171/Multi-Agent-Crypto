@@ -26,7 +26,7 @@ import openai
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-from agents.validator_agent import ValidatorAgent
+from agents.conflict_analyzer import ConflictAnalyzer
 from agents.debate_agent import DebateAgent
 from agents.mediator_agent import run_mediator
 from utils import llm
@@ -84,7 +84,7 @@ def _run_pipeline(
     scenario_name: str,
     use_llm: bool = False,
 ) -> dict:
-    """Run validator → optional debate → mediator on mocked agent outputs."""
+    """Run conflict analyzer → optional debate → mediator on mocked agent outputs."""
     print(f"\n{'=' * 60}")
     print(f"  SCENARIO: {scenario_name}")
     print(f"{'=' * 60}")
@@ -98,10 +98,10 @@ def _run_pipeline(
         )
 
     # Step 2: Validate (includes conditional debate if use_llm=True and conflict high)
-    validator = ValidatorAgent(alpha=0.6, threshold=0.4, use_llm=use_llm)
-    validation_result = validator.evaluate_pipeline(agents_output)
+    analyzer = ConflictAnalyzer(alpha=0.6, threshold=0.4, use_llm=use_llm)
+    validation_result = analyzer.evaluate_pipeline(agents_output)
 
-    print("\n[Validator]")
+    print("\n[Conflict Analyzer]")
     print(f"  conflict_score       : {validation_result['conflict_score']:.4f}")
     print(f"  mean_pairwise_kl     : {validation_result['metrics']['mean_pairwise_kl']:.4f}")
     print(f"  decision_variance    : {validation_result['metrics']['decision_variance']:.4f}")
@@ -109,10 +109,10 @@ def _run_pipeline(
     print(f"  conflict_categories  : {validation_result['conflict_categories']}")
     print(f"  trigger_debate_module: {validation_result['trigger_debate_module']}")
 
-    # Step 3: Use debate outputs if validator triggered debate
+    # Step 3: Use debate outputs if the Conflict Analyzer triggered debate
     debate_outputs = validation_result.get("debate_updated_outputs")
     if debate_outputs:
-        print("\n[Debate] Multi-round reconciliation completed (inside Validator).")
+        print("\n[Debate] Multi-round reconciliation completed (inside Conflict Analyzer).")
         final_outputs = debate_outputs
         for out in final_outputs:
             print(

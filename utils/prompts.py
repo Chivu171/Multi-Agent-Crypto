@@ -129,7 +129,7 @@ Quy tắc:
 - ĐẢM BẢO JSON ĐƯỢC ĐÓNG NGOẶC HOÀN CHỈNH, KHÔNG DẤU PHẨM DƯ THỪA.
 """
 
-VALIDATOR_AGENT_PROMPT = """
+CONFLICT_ANALYZER_PROMPT = """
 [VAI TRÒ: Kiểm định viên Nghiên cứu Cấp cao & Kiểm toán viên Hệ thống Tài chính]
 Bạn đang phân tích sự kiện phân kỳ cấu trúc trong Khung tài chính RAG Đa đại lý.
 

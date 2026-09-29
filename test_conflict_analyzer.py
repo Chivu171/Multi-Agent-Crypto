@@ -1,12 +1,12 @@
-# test_validator.py
+# test_conflict_analyzer.py
 
 import json
 import numpy as np
-from agents.validator_agent import ValidatorAgent
+from agents.conflict_analyzer import ConflictAnalyzer
 
 def run_test():
     print("=" * 60)
-    print("🔬 RUNNING SCIENTIFIC VALIDATION ON VALIDATOR AGENT")
+    print("🔬 RUNNING SCIENTIFIC VALIDATION ON CONFLICT ANALYZER")
     print("=" * 60)
 
     # 1. Tải log đã ghi nhận ở ngày Thứ 3 từ outputs/logs.json
@@ -18,12 +18,12 @@ def run_test():
         print(f"  [✗] Lỗi đọc logs.json: {e}")
         return
 
-    # 2. Khởi tạo bộ kiểm định ValidatorAgent offline (không gọi LLM để test toán học thuần túy)
-    validator = ValidatorAgent(alpha=0.6, threshold=0.4, use_llm=False)
+    # 2. Khởi tạo bộ kiểm định ConflictAnalyzer offline (không gọi LLM để test toán học thuần túy)
+    analyzer = ConflictAnalyzer(alpha=0.6, threshold=0.4, use_llm=False)
 
     # 3. Tính toán thủ công để verify độ chính xác
     print("\n[Step 1] Tính toán các đại lượng thành phần...")
-    conflict_score, mean_kl, variance = validator.calculate_conflict_core(logs)
+    conflict_score, mean_kl, variance = analyzer.calculate_conflict_core(logs)
     
     print(f"  - Calculated Mean KL: {mean_kl:.6f}")
     print(f"  - Calculated Variance: {variance:.6f}")
@@ -41,12 +41,12 @@ def run_test():
         print(f"  * {agent['agent_id']}: Vector={d}*{s} = {x:.2f} -> Prob Dist P=[Bear:{p_bear:.3f}, Bull:{p_bull:.3f}]")
 
     # 4. Phân loại loại hình mâu thuẫn hệ thống
-    categories = validator.classify_conflict(logs, conflict_score)
+    categories = analyzer.classify_conflict(logs, conflict_score)
     print(f"\n[Step 3] Loại hình mâu thuẫn được phân loại: {categories}")
 
     # 5. Chạy toàn bộ pipeline kiểm định
     print("\n[Step 4] Chạy toàn bộ evaluate_pipeline offline...")
-    report = validator.evaluate_pipeline(logs)
+    report = analyzer.evaluate_pipeline(logs)
     
     print("\n[BÁO CÁO THỬ NGHIỆM ĐẦU RA]:")
     print(json.dumps(report, indent=2, ensure_ascii=False))

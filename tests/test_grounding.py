@@ -5,7 +5,7 @@ from unittest.mock import Mock, patch
 import pytest
 
 from agents.debate_agent import DebateAgent
-from agents.validator_agent import ValidatorAgent
+from agents.conflict_analyzer import ConflictAnalyzer
 from utils.grounding import (
     GroundingError, build_evidence_registry, request_grounded_claims,
     validate_citations, validate_review,
@@ -75,7 +75,7 @@ def test_news_outside_structured_metrics_is_allowed():
     registry = [{"evidence_id": "E001", "content": content, "metadata": {"source": "news fixture"}}]
     payload = claim(text="Theo thông báo, sàn X tạm dừng rút tiền để bảo trì.", quote=content)
     ask = Mock(side_effect=[json.dumps(payload), json.dumps(review())])
-    claims, audit = request_grounded_claims("test", registry, agent_name="validator", ask=ask)
+    claims, audit = request_grounded_claims("test", registry, agent_name="conflict_analyzer", ask=ask)
     assert audit["status"] == "accepted"
     assert claims[0]["citations"][0]["quote"] == content
 
@@ -170,18 +170,18 @@ def test_accepted_debate_has_full_context_and_updates_only_after_review(extreme_
 
 def test_rca_passes_full_sources_and_flags_rejection(extreme_conflict_output):
     extreme_conflict_output[0]["evidence_chunks"][0]["content"] = "x"*250 + " last source fact"
-    validator = ValidatorAgent()
-    with patch("agents.validator_agent.ask_llm", return_value='{"claims":[]}') as ask:
-        result = validator.run_root_cause_analysis(extreme_conflict_output, ["Signal Conflict"])
+    analyzer = ConflictAnalyzer()
+    with patch("agents.conflict_analyzer.ask_llm", return_value='{"claims":[]}') as ask:
+        result = analyzer.run_root_cause_analysis(extreme_conflict_output, ["Signal Conflict"])
     assert "last source fact" in ask.call_args.args[0]
     assert "chưa có giải thích đạt kiểm tra nguồn" in result
-    assert validator.rca_grounding["status"] == "rejected"
+    assert analyzer.rca_grounding["status"] == "rejected"
 
 
 def test_full_pipeline_reports_grounding_failures(extreme_conflict_output):
-    with patch("agents.validator_agent.ask_llm", return_value='{"claims":[]}'), \
+    with patch("agents.conflict_analyzer.ask_llm", return_value='{"claims":[]}'), \
          patch("agents.debate_agent.ask_llm", return_value='{"claims":[]}'):
-        report = ValidatorAgent(threshold=.1).evaluate_pipeline(extreme_conflict_output)
+        report = ConflictAnalyzer(threshold=.1).evaluate_pipeline(extreme_conflict_output)
     assert report["explanations_valid"] is False
     assert report["debate_status"] == "rejected"
     assert report["conflict_score_after_debate"] == report["conflict_score"]

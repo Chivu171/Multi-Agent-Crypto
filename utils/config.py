@@ -27,9 +27,11 @@ _OPENROUTER_KEY_MAP = {
 OPENROUTER_MODEL_NAME_FINANCIAL = os.getenv("OPENROUTER_MODEL_NAME_FINANCIAL")
 OPENROUTER_MODEL_NAME_MARKET    = os.getenv("OPENROUTER_MODEL_NAME_MARKET")
 OPENROUTER_MODEL_NAME_SENTIMENT = os.getenv("OPENROUTER_MODEL_NAME_SENTIMENT")
-# Free models are rate-limited per model upstream, so validator/debate/grounding
+# Free models are rate-limited per model upstream, so conflict_analyzer/debate/grounding
 # can each be pointed at a different one instead of competing for the same slot.
-OPENROUTER_MODEL_NAME_VALIDATOR = os.getenv("OPENROUTER_MODEL_NAME_VALIDATOR")
+# The Validator was renamed Conflict Analyzer; the old variable is still read as a fallback.
+OPENROUTER_MODEL_NAME_CONFLICT_ANALYZER = (os.getenv("OPENROUTER_MODEL_NAME_CONFLICT_ANALYZER")
+                                           or os.getenv("OPENROUTER_MODEL_NAME_VALIDATOR"))
 OPENROUTER_MODEL_NAME_DEBATE    = os.getenv("OPENROUTER_MODEL_NAME_DEBATE")
 OPENROUTER_MODEL_NAME_GROUNDING = os.getenv("OPENROUTER_MODEL_NAME_GROUNDING")
 OPENROUTER_REASONING_EFFORT = os.getenv("OPENROUTER_REASONING_EFFORT")
@@ -38,7 +40,7 @@ _OPENROUTER_MODEL_MAP = {
     "financial": OPENROUTER_MODEL_NAME_FINANCIAL or OPENROUTER_MODEL_NAME,
     "market":    OPENROUTER_MODEL_NAME_MARKET    or OPENROUTER_MODEL_NAME,
     "sentiment": OPENROUTER_MODEL_NAME_SENTIMENT or OPENROUTER_MODEL_NAME,
-    "validator": OPENROUTER_MODEL_NAME_VALIDATOR or OPENROUTER_MODEL_NAME,
+    "conflict_analyzer": OPENROUTER_MODEL_NAME_CONFLICT_ANALYZER or OPENROUTER_MODEL_NAME,
     "debate":    OPENROUTER_MODEL_NAME_DEBATE    or OPENROUTER_MODEL_NAME,
     "grounding": OPENROUTER_MODEL_NAME_GROUNDING or OPENROUTER_MODEL_NAME,
 }
@@ -47,7 +49,7 @@ _OPENROUTER_MODEL_MAP = {
 BASE_URL = os.getenv("BASE_URL")
 API_KEY  = os.getenv("API_KEY")
 
-# ── Groq (preferred for validator/debate/mediator) ───────────────────────────
+# ── Groq (formerly used for conflict_analyzer/debate/mediator) ───────────────────────────
 GROQ_API_KEY = os.getenv("GROQ_API_KEY")
 GROQ_BASE_URL = os.getenv("GROQ_BASE_URL", "https://api.groq.com/openai/v1")
 GROQ_MODEL_NAME = os.getenv("GROQ_MODEL_NAME", "llama-3.3-70b-versatile")
@@ -66,7 +68,7 @@ EMBEDDING_MODEL = os.getenv("EMBEDDING_MODEL", "models/text-embedding-004")
 
 # ── Agent configs ────────────────────────────────────────────────────────────
 # Specialists → OpenRouter (per-agent keys + models, configurable)
-# Validator/Debate/Mediator → Groq (fast LPU, deterministic)
+# Conflict Analyzer/Debate/grounding → OpenRouter; Mediator → Groq (no LLM call today)
 AGENT_LLM_CONFIGS = {
     "financial": {
         "model": None,  # resolved at runtime from _OPENROUTER_MODEL_MAP
@@ -89,7 +91,7 @@ AGENT_LLM_CONFIGS = {
     # Moved off Groq after the free tier's 200k tokens/day cap started failing
     # the grounding reviewer mid-run (Groq 429 "tokens per day").
     # model=None resolves to OPENROUTER_MODEL_NAME at call time.
-    "validator": {
+    "conflict_analyzer": {
         "model": None,
         "temperature": 0.0,
         "max_tokens": 1500,

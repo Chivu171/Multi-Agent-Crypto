@@ -4,7 +4,7 @@
 ![python](https://img.shields.io/badge/python-3.11%2B-blue)
 ![license](https://img.shields.io/badge/license-unspecified-lightgrey)
 
-A multi-agent LLM pipeline for BTC market analysis, using live data. Three specialist agents (financial/on-chain, market/technical, sentiment) each fetch real data and produce an independent belief vector; a validator agent quantifies disagreement between them (KL-divergence + variance); when conflict is high, a debate agent runs multi-round reconciliation; a mediator agent aggregates everything into a final weighted decision (BUY / SELL / NEUTRAL).
+A multi-agent LLM pipeline for BTC market analysis, using live data. Three specialist agents (financial/on-chain, market/technical, sentiment) each fetch real data and produce an independent belief vector; a Conflict Analyzer quantifies disagreement between them (KL-divergence + variance); when conflict is high, a debate agent runs multi-round reconciliation; a mediator agent aggregates everything into a final weighted decision (BUY / SELL / NEUTRAL).
 
 > **Status: personal reference tool**, run manually (`python main.py`), BTC only. Not a trading bot — it does not place trades. See [Limitations](#limitations) for the known gaps (notably: on-chain data is free-tier only, no MVRV/SOPR/whale-flow).
 
@@ -21,7 +21,7 @@ flowchart LR
         SEN["📰 Sentiment Agent<br/>news / social"]
     end
 
-    VAL{{"⚖️ Validator Agent<br/>conflict score = KL-divergence + variance"}}
+    VAL{{"⚖️ Conflict Analyzer<br/>conflict score = KL-divergence + variance"}}
     DEB(["🗣️ Debate Agent<br/>multi-round rebuttal, confidence decay"])
     MED["🧮 Mediator Agent<br/>S_final = Σ dᵢ·sᵢ·ωᵢ"]
     OUT(["✅ Final signal: BUY / SELL / NEUTRAL"])
@@ -46,7 +46,7 @@ flowchart LR
 | Financial Agent | `agents/financial_agent.py` | Fetches live on-chain data (`data_sources/onchain_data.py`), asks the LLM for a signal + belief vector |
 | Market Agent | `agents/market_agent.py` | Fetches live Binance market data (`data_sources/market_data.py`), asks the LLM for a signal + belief vector |
 | Sentiment Agent | `agents/sentiment_agent.py` | Fetches live Fear&Greed + macro calendar data (`data_sources/sentiment_data.py`), asks the LLM for a signal + belief vector |
-| Validator Agent | `agents/validator_agent.py` | Computes a hybrid conflict score (mean pairwise KL-divergence + decision variance), classifies conflict type, triggers root-cause analysis + debate above threshold |
+| Conflict Analyzer | `agents/conflict_analyzer.py` | Computes a hybrid conflict score (mean pairwise KL-divergence + decision variance), classifies conflict type, triggers root-cause analysis + debate above threshold |
 | Debate Agent | `agents/debate_agent.py` | Multi-round adversarial debate; confidence decays per round based on rebuttal strength (cosine / Jaccard / Levenshtein distance) |
 | Mediator Agent | `agents/mediator_agent.py` | Aggregates final belief vectors into `S_final = Σ dᵢ·sᵢ·ωᵢ` with entropy / redundancy / time-decay penalties (`utils/penalties.py`) |
 | LLM client | `utils/llm.py`, `utils/config.py` | Prefers OpenRouter if `OPENROUTER_API_KEY` is set, otherwise falls back to a local LM Studio server |
@@ -87,7 +87,7 @@ cp .env.example .env
 | Backend | When it's used | What to set |
 |---|---|---|
 | **OpenRouter** (specialist agents) | Always, if any `OPENROUTER_API_KEY*` is set | `OPENROUTER_API_KEY` — global fallback; or `OPENROUTER_API_KEY_FINANCIAL` / `OPENROUTER_API_KEY_MARKET` / `OPENROUTER_API_KEY_SENTIMENT` — per-agent keys for 3x rate limit |
-| **Groq** (validator/debate/mediator) | If `GROQ_API_KEY` is set | `GROQ_API_KEY` — get one at [console.groq.com](https://console.groq.com) |
+| **Groq** (optional, no role uses it by default) | If `GROQ_API_KEY` is set | `GROQ_API_KEY` — get one at [console.groq.com](https://console.groq.com) |
 | **LM Studio** (local fallback) | Both OpenRouter and Groq keys are empty | Run [LM Studio](https://lmstudio.ai) locally, serving on `http://127.0.0.1:1234/v1` |
 | **Gemini** (embeddings, `rag/` only) | Ingesting/querying the retriever | `GEMINI_API_KEY` — get one at [ai.google.dev](https://ai.google.dev). Not needed to run `main.py`. |
 
@@ -99,7 +99,7 @@ cp .env.example .env
 python main.py
 ```
 
-This runs the full pipeline — specialist agents fetch live data → validator → (conditional) debate → mediator — and prints the reasoning steps and final decision to the console. If none of the specialist agents can reach the LLM, `main.py` automatically falls back to the cached output in `outputs/logs.json`.
+This runs the full pipeline — specialist agents fetch live data → Conflict Analyzer → (conditional) debate → mediator — and prints the reasoning steps and final decision to the console. If a step fails, `main.py` stops with an explicit status in `outputs/run_status.json` (never reusing old predictions) and keeps the previous results untouched.
 
 You can also use the Makefile:
 
@@ -115,14 +115,14 @@ Ad-hoc smoke-test scripts (not a real test suite yet — see [Limitations](#limi
 ```bash
 python test.py            # basic LLM connectivity check
 python test_debate.py     # exercises the debate agent
-python test_validator.py  # exercises the validator agent
+python test_conflict_analyzer.py  # exercises the Conflict Analyzer
 ```
 
 ---
 
 ## Testing
 
-An automated pytest suite lives in `tests/` and covers the math-heavy core (validator conflict scoring, mediator aggregation, penalties, confidence decay, debate distance metrics), the three specialist agents, and the `rag/` retrieval pipeline. All LLM and embedding calls are mocked, so the suite runs fully offline — no API key needed.
+An automated pytest suite lives in `tests/` and covers the math-heavy core (Conflict Analyzer scoring, mediator aggregation, penalties, confidence decay, debate distance metrics), the three specialist agents, and the `rag/` retrieval pipeline. All LLM and embedding calls are mocked, so the suite runs fully offline — no API key needed.
 
 ```bash
 pip install -e ".[dev]"   # installs pytest + pytest-cov on top of the runtime deps
@@ -130,7 +130,7 @@ pytest                    # run the suite
 pytest --cov --cov-report=term-missing   # with a coverage report
 ```
 
-The old `test.py` / `test_debate.py` / `test_validator.py` scripts at the repo root are manual, LLM-hitting smoke tests kept for interactive debugging — they are not part of the automated suite (pytest only looks under `tests/`, see `[tool.pytest.ini_options]` in `pyproject.toml`).
+The old `test.py` / `test_debate.py` / `test_conflict_analyzer.py` scripts at the repo root are manual, LLM-hitting smoke tests kept for interactive debugging — they are not part of the automated suite (pytest only looks under `tests/`, see `[tool.pytest.ini_options]` in `pyproject.toml`).
 
 ---
 
@@ -187,7 +187,7 @@ Requires `GEMINI_API_KEY` in `.env` (get one at [ai.google.dev](https://ai.googl
 
 ```text
 Multi-Agent-Crypto/
-├── agents/         agent implementations (financial, market, sentiment, validator, debate, mediator)
+├── agents/         agent implementations (financial, market, sentiment, conflict analyzer, debate, mediator)
 ├── data_sources/   live data fetchers used by the 3 specialist agents (Binance, Alternative.me+ForexFactory, blockchain.info)
 ├── utils/          LLM client, config, prompts, math helpers (penalties, confidence, belief vectors, JSON parsing)
 ├── data/           legacy static text files — no longer read by the agents, kept for reference only
