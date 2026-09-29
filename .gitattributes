@@ -3,3 +3,4 @@
 
 # Dataset files are hashed in dataset_manifest.json; never rewrite line endings.
 data/datasets/** -text
+baselines/cryptotrade/data/** -text
