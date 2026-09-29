@@ -42,6 +42,20 @@ Không viết lại LSTM, Informer, AutoFormer, TimesNet, PatchTST: dùng số l
 
 (lợi suất tổng / Sharpe; Sharpe = trung bình / độ lệch chuẩn lợi suất ngày, lãi phi rủi ro 0.)
 
+### Agent CryptoTrade chạy lại trên model local (29/09/2026)
+
+Cấu hình `paper`, model `google/gemma-4-26b-a4b-qat` (LM Studio, MLX 4-bit, reasoning tắt),
+temperature 0. Kết quả trong `outputs/baselines/cryptotrade/<giai đoạn>/agent_paper_*/result.json`.
+
+| Biến thể | Tăng | Đi ngang | Giảm |
+|---|---|---|---|
+| `full` (Gemma) | **30,47% / 0,23** | −1,63% / −0,01 | **−11,72% / −0,13** |
+| `market_only` (Gemma) | −3,31% / −0,07 | 1,76% / 0,03 | −8,49% / −0,10 |
+| *Bài báo, GPT-4* | *26,35% / 0,23* | *−4,07% / −0,04* | *−11,72% / −0,11* |
+
+Bản `full` trên Gemma bám sát số của bài báo, nên bản viết lại tái hiện đúng hành vi của phương pháp.
+Một giai đoạn khoảng 60–70 ngày mất khoảng 12 phút (`market_only`) và khoảng 50 phút (`full`) trên M1 Pro.
+
 ## Những điểm lạ của code gốc — giữ nguyên để so sánh được
 
 1. Prompt ghi "ETH" dù giao dịch BTC.
