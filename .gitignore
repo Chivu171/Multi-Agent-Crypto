@@ -35,3 +35,6 @@ outputs/baselines/cryptotrade/*/*
 !outputs/baselines/cryptotrade/*/agent_*/
 outputs/baselines/cryptotrade/*/agent_*/*
 !outputs/baselines/cryptotrade/*/agent_*/result.json
+!outputs/baselines/cryptotrade/*/ours*/
+outputs/baselines/cryptotrade/*/ours*/*
+!outputs/baselines/cryptotrade/*/ours*/result.json
