@@ -44,7 +44,7 @@ def run(data=None, reference_time=None):
                 "content": summary,
 
                 "metadata": {
-                    "source": "Binance public API",
+                    "source": market.get("source", "Binance public API"),
                     "timestamp": market["fetched_at"]
                 }
             }

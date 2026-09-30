@@ -2,8 +2,10 @@
 
 Rule baselines (no LLM, free):
     python -m baselines.cryptotrade.run rules --window bull
-LLM agent (paid, cached; rerun the same command to resume):
+LLM agent (cached; rerun the same command to resume):
     python -m baselines.cryptotrade.run agent --window bull --variant market_only
+Our multi-agent system in the same environment (LLM_BACKEND/LMSTUDIO_MODEL select the model):
+    python -m baselines.cryptotrade.run ours --window bull
 Outputs go to outputs/baselines/cryptotrade/<window>/.
 """
 import argparse
@@ -19,12 +21,15 @@ OUT = Path("outputs/baselines/cryptotrade")
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
-    parser.add_argument("mode", choices=("rules", "agent"))
+    parser.add_argument("mode", choices=("rules", "agent", "ours"))
     parser.add_argument("--window", choices=sorted(WINDOWS), required=True)
     parser.add_argument("--variant", choices=sorted(VARIANTS), default="full")
     parser.add_argument("--profile", choices=("paper", "code"), default="paper",
                         help="paper = method as described in the paper (default); code = released code")
     parser.add_argument("--model", help="Default: $CRYPTOTRADE_MODEL or openai/gpt-4o")
+    parser.add_argument("--threshold", type=float, help="ours: Conflict Analyzer threshold (default 0.4)")
+    parser.add_argument("--day-budget", type=float, default=900, help="ours: seconds per trading day")
+    parser.add_argument("--limit-days", type=int, help="ours: only the first N trading days (pilot)")
     args = parser.parse_args()
     start, end = WINDOWS[args.window]
     out = OUT / args.window
@@ -36,6 +41,19 @@ def main():
         print(f"{args.window} {start}..{end}")
         for r in results:
             print(f"  {r['strategy']:15s} return {r['total_return'] * 100:7.2f}%  sharpe {r['sharpe']:.2f}")
+        return
+
+    if args.mode == "ours":
+        from baselines.cryptotrade.ours import run_window
+        from utils.config import get_agent_config
+        from utils.thresholds import DEFAULT_CONFLICT_THRESHOLD
+        model = get_agent_config("market")["model"].replace("/", "_")
+        threshold = DEFAULT_CONFLICT_THRESHOLD if args.threshold is None else args.threshold
+        suffix = "" if threshold == DEFAULT_CONFLICT_THRESHOLD else f"_t{threshold:g}"
+        summary = run_window((start, end), out / f"ours{suffix}__{model}", threshold, args.day_budget,
+                             args.limit_days, log=lambda m: print(m, flush=True))
+        print(json.dumps({k: summary[k] for k in ("status_counts", "debate_days", "explanation_rejected_days",
+                                                   "results")}, indent=2))
         return
 
     days = TradingEnv(start, end).total_steps - 1

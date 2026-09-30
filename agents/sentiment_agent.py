@@ -23,8 +23,9 @@ def run(data=None, reference_time=None):
     confidence = float(parsed["confidence"])
 
     # Entropy proxy: Fear&Greed near 50 = ambiguous/high entropy, near 0/100 = decisive/low entropy.
-    fg_value = sentiment["fear_greed"]["value"]
-    entropy = 1.0 - abs(fg_value - 50.0) / 50.0
+    # Datasets without Fear & Greed (e.g. CryptoTrade news only) get the neutral midpoint.
+    fear_greed = sentiment.get("fear_greed")
+    entropy = 1.0 - abs(fear_greed["value"] - 50.0) / 50.0 if fear_greed else 0.5
 
     output = {
         "agent_id": "Sentiment_Agent",
@@ -45,7 +46,7 @@ def run(data=None, reference_time=None):
                 "content": text,
 
                 "metadata": {
-                    "source": "Alternative.me + ForexFactory calendar",
+                    "source": sentiment.get("source", "Alternative.me + ForexFactory calendar"),
                     "timestamp": sentiment["fetched_at"]
                 }
             }

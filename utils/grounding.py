@@ -20,13 +20,14 @@ Use any relevant supplied source, including news outside structured metrics.
 Agent opinions/history are not independent evidence. A missing measurement is
 unknown, not zero. Distinguish forecasts, rumours, hypotheses and actual events.
 Do not assert MVRV, ETF flows, whale activity or any other fact without support.
-For each claim cite an evidence_id and quote_id from that source's quote_ids.
+Every claim, including inferences and hypotheses, needs at least one citation:
+an evidence_id and a quote_id from that source's quote_ids.
 L1 refers to the first line of content, L2 the second, etc. Choose the line
 containing the evidence for the claim. Code resolves its exact text: do NOT copy
 or round numbers inside quotations. Use several citations when needed.
 Label each claim fact, inference or hypothesis. Inferences/hypotheses must be
 qualified and must not introduce invented facts, figures or causal certainty.
-Prefer 1-3 concise claims; text <= 35 words each. Quotes must retain relevant
+Return 1 to 3 concise claims, never more than 3; text <= 35 words each. Quotes must retain relevant
 negations, signs and conditions. Schema (no extra prose):
 {"claims":[{"type":"fact|inference|hypothesis","text":"...",
 "citations":[{"evidence_id":"E001","quote_id":"L2"}]}]}

@@ -46,7 +46,7 @@ def run(data=None, reference_time=None):
                 "content": text,
 
                 "metadata": {
-                    "source": "blockchain.info Charts API",
+                    "source": onchain.get("source", "blockchain.info Charts API"),
                     "page": 1,
                     "timestamp": onchain["fetched_at"]
                 }
