@@ -1,0 +1,22 @@
+Giao dịch tiền mã hóa đòi hỏi kết hợp nhiều nguồn thông tin có tính chất khác nhau: dữ liệu giá, dữ liệu giao dịch
+trên chuỗi khối (on-chain) và tin tức. Các nguồn này thường đưa ra tín hiệu trái chiều. Các agent giao dịch dựa trên
+mô hình ngôn ngữ lớn (LLM) hiện nay, tiêu biểu là CryptoTrade (EMNLP 2024), gộp các nguồn trong một lời nhắc và để mô
+hình tự xử lý mâu thuẫn một cách ngầm định.
+
+Đề tài xây dựng một hệ thống đa tác tử trong đó mỗi nguồn dữ liệu do một agent chuyên trách phân tích; mâu thuẫn giữa
+các agent được đo tường minh bằng chỉ số kết hợp phân kỳ Kullback--Leibler và phương sai quyết định; khi mâu thuẫn vượt
+ngưỡng, hệ thống phân tích nguyên nhân gốc và tổ chức tranh biện nhiều vòng, trong đó mọi lập luận phải trích dẫn
+bằng chứng gốc và được kiểm tra trước khi được chấp nhận; cuối cùng một Mediator tổng hợp các nhận định thành tín
+hiệu BUY/SELL/NEUTRAL.
+
+Để đánh giá công bằng, đề tài cài đặt lại CryptoTrade và kiểm chứng khớp với mã nguồn gốc của tác giả, rồi chạy cả
+hai hệ thống trên cùng bộ dữ liệu, cùng môi trường giao dịch, cùng mô hình ngôn ngữ chạy cục bộ và cùng ba giai đoạn
+thị trường năm 2023 (tăng giá, đi ngang, giảm giá). Kết quả cho thấy hệ thống đề xuất đạt lợi suất trung bình +0,38\%,
+cao hơn phiên bản CryptoTrade chỉ dùng dữ liệu thị trường ($-$3,35\%) nhưng thấp hơn CryptoTrade đầy đủ (+5,71\%) và
+chiến lược mua và nắm giữ (+7,74\%). Phân tích cho thấy ba phát hiện chính: (i) tranh biện giảm mạnh mức mâu thuẫn
+(từ khoảng 0,61 xuống 0,22) và không làm kết quả xấu đi, nhưng chỉ thay đổi 11 trên 195 quyết định; (ii) giá trị của
+từng nguồn dữ liệu phụ thuộc rõ rệt vào giai đoạn thị trường; (iii) tỷ lệ dự đoán đúng hướng của hệ thống tương đương
+CryptoTrade, phần chênh lệch lợi suất chủ yếu đến từ cách xác định mức vào lệnh. Các phát hiện này định hướng cho
+bước phát triển tiếp theo: điều chỉnh trọng số agent theo xu hướng thị trường.
+
+\paragraph{Từ khóa:} hệ đa tác tử, mô hình ngôn ngữ lớn, tranh biện đa tác tử, phát hiện mâu thuẫn, giao dịch Bitcoin.

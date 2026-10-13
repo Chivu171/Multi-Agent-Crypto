@@ -1,0 +1,128 @@
+% Báo cáo cuối kỳ Project 3 — biên dịch: latexmk -pdf main.tex (pdfLaTeX + BibTeX)
+% Mỗi chương nằm trong chapters/ để bài NCKH dùng lại phần phương pháp và thực nghiệm.
+\documentclass[12pt,a4paper,oneside]{report}
+
+\usepackage[utf8]{vietnam}
+\usepackage{times}
+\usepackage[left=3cm,right=2cm,top=2.5cm,bottom=2.5cm]{geometry}
+\usepackage{setspace}
+\usepackage{amsmath,amssymb}
+\usepackage{booktabs,multirow,array}
+\usepackage{float}
+\usepackage[font=small,labelfont=bf]{caption}
+\usepackage{enumitem}
+\usepackage{xcolor}
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta,positioning,shapes.geometric,fit,backgrounds}
+\usepackage{titlesec}
+\usepackage{fancyhdr}
+\usepackage[numbers,sort&compress]{natbib}
+\usepackage[hidelinks]{hyperref}
+\usepackage{fancyvrb}
+\fvset{fontsize=\footnotesize}
+
+\onehalfspacing
+\setlength{\headheight}{15pt}
+\sloppy
+\setlist{itemsep=2pt,topsep=4pt}
+\renewcommand{\arraystretch}{1.15}
+\titleformat{\chapter}[display]{\bfseries\Large\centering}{\MakeUppercase{\chaptername}~\thechapter}{6pt}{\LARGE}
+\titlespacing*{\chapter}{0pt}{-10pt}{18pt}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[R]{\small\nouppercase{\leftmark}}
+\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{0.4pt}
+\fancypagestyle{plain}{\fancyhf{}\fancyfoot[C]{\thepage}\renewcommand{\headrulewidth}{0pt}}
+
+% Ký hiệu dùng chung
+\newcommand{\Sfinal}{S_{\text{final}}}
+\newcommand{\CT}{CryptoTrade}
+
+\begin{document}
+
+% ------------------------------------------------------------------ Bìa
+\begin{titlepage}
+\begin{center}
+\begin{tikzpicture}[remember picture,overlay]
+  \draw[line width=2pt] ([xshift=2.2cm,yshift=-1.6cm]current page.north west) rectangle
+                        ([xshift=-1.4cm,yshift=1.6cm]current page.south east);
+  \draw[line width=0.6pt] ([xshift=2.35cm,yshift=-1.75cm]current page.north west) rectangle
+                          ([xshift=-1.55cm,yshift=1.75cm]current page.south east);
+\end{tikzpicture}
+{\large\bfseries ĐẠI HỌC BÁCH KHOA HÀ NỘI}\\[2pt]
+{\large\bfseries TRƯỜNG CÔNG NGHỆ THÔNG TIN VÀ TRUYỀN THÔNG}\\[2pt]
+\rule{6cm}{0.6pt}\\[3.2cm]
+{\Large\bfseries BÁO CÁO PROJECT 3}\\[1.2cm]
+{\Large\bfseries HỆ THỐNG ĐA TÁC TỬ LLM\\[6pt]
+CÓ PHÁT HIỆN MÂU THUẪN VÀ TRANH BIỆN\\[6pt]
+CHO TÍN HIỆU GIAO DỊCH BITCOIN}\\[0.8cm]
+{\large Đánh giá đối chứng với CryptoTrade (EMNLP 2024)}\\[3cm]
+\begin{tabular}{>{\bfseries}l l}
+Sinh viên thực hiện: & Trần Chí Vũ \\
+Mã số sinh viên: & [\dots] \\
+Giảng viên hướng dẫn: & [\dots] \\
+\end{tabular}
+\vfill
+{\large Hà Nội, 2026}
+\end{center}
+\end{titlepage}
+
+\pagenumbering{roman}
+
+% ------------------------------------------------------------------ Lời cam đoan
+\chapter*{Lời cam đoan}
+\addcontentsline{toc}{chapter}{Lời cam đoan}
+Em xin cam đoan báo cáo này là kết quả thực hiện của bản thân dưới sự hướng dẫn của giảng viên.
+Các số liệu thực nghiệm trong báo cáo được sinh ra từ mã nguồn của đề tài và có thể tái lập bằng các lệnh
+nêu trong Phụ lục~\ref{app:repro}. Các phương pháp, dữ liệu và kết quả của tác giả khác đều được trích dẫn
+đầy đủ trong danh mục tài liệu tham khảo.
+
+\vspace{1.5cm}
+\hfill\begin{tabular}{c}
+Hà Nội, ngày \dots{} tháng \dots{} năm 2026\\
+Sinh viên\\[2cm]
+Trần Chí Vũ
+\end{tabular}
+
+% ------------------------------------------------------------------ Tóm tắt
+\chapter*{Tóm tắt}
+\addcontentsline{toc}{chapter}{Tóm tắt}
+\input{chapters/tom_tat}
+
+\tableofcontents
+\listoffigures
+\listoftables
+
+\chapter*{Danh mục từ viết tắt}
+\addcontentsline{toc}{chapter}{Danh mục từ viết tắt}
+\begin{tabular}{>{\bfseries}p{3cm} p{11cm}}
+LLM & Large Language Model -- mô hình ngôn ngữ lớn \\
+KL & Kullback--Leibler divergence -- phân kỳ Kullback--Leibler \\
+RCA & Root Cause Analysis -- phân tích nguyên nhân gốc \\
+MA & Moving Average -- đường trung bình động \\
+EMA & Exponential Moving Average -- trung bình động hàm mũ \\
+RSI & Relative Strength Index -- chỉ số sức mạnh tương đối \\
+MACD & Moving Average Convergence Divergence \\
+B\&H & Buy and Hold -- chiến lược mua và nắm giữ \\
+BTC & Bitcoin \\
+\end{tabular}
+
+\cleardoublepage
+\pagenumbering{arabic}
+
+\input{chapters/chuong1_gioi_thieu}
+\input{chapters/chuong2_co_so_ly_thuyet}
+\input{chapters/chuong3_phuong_phap}
+\input{chapters/chuong4_thuc_nghiem}
+\input{chapters/chuong5_ket_luan}
+
+\bibliographystyle{unsrtnat}
+\addcontentsline{toc}{chapter}{Tài liệu tham khảo}
+\renewcommand{\bibname}{Tài liệu tham khảo}
+\bibliography{references}
+
+\appendix
+\input{chapters/phu_luc}
+
+\end{document}

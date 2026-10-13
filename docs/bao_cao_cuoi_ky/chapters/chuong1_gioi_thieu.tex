@@ -1,0 +1,61 @@
+\chapter{Giới thiệu}
+\label{chap:intro}
+
+\section{Đặt vấn đề}
+
+Thị trường tiền mã hóa biến động mạnh và chịu tác động đồng thời của nhiều nhóm yếu tố. Dữ liệu giá và các chỉ báo
+kỹ thuật phản ánh động lượng ngắn hạn; dữ liệu on-chain như số địa chỉ hoạt động, số giao dịch, tổng giá trị chuyển
+phản ánh mức độ sử dụng mạng lưới; tin tức phản ánh tâm lý và sự kiện vĩ mô. Ba nhóm nguồn này khác nhau về tần suất,
+độ nhiễu và tầm nhìn thời gian, nên thường đưa ra tín hiệu trái chiều: chỉ báo kỹ thuật có thể báo quá mua trong khi
+tin tức tích cực và dữ liệu on-chain đi ngang.
+
+Các mô hình ngôn ngữ lớn (LLM) mở ra khả năng đọc hiểu đồng thời dữ liệu số và văn bản, và nhiều agent giao dịch dựa
+trên LLM đã được đề xuất~\cite{yu2023finmem,yu2024fincon,xiao2024tradingagents,li2024cryptotrade}. Tiêu biểu cho thị
+trường tiền mã hóa là CryptoTrade~\cite{li2024cryptotrade}: một agent phân tích dữ liệu giá và on-chain, một agent
+phân tích tin tức, sau đó một agent giao dịch đọc cả hai bản phân tích và ra quyết định. Trong cách tiếp cận này, khi
+các nguồn mâu thuẫn, việc cân nhắc nguồn nào đáng tin hơn diễn ra ngầm trong một lời nhắc duy nhất: hệ thống không đo
+mức mâu thuẫn, không giải thích nguyên nhân và không có cơ chế để các quan điểm đối lập phản biện lẫn nhau.
+
+Song song, các nghiên cứu về tranh biện đa tác tử cho thấy để nhiều phiên bản LLM trao đổi và phản biện qua nhiều vòng
+giúp cải thiện tính đúng đắn của câu trả lời~\cite{du2024debate,liang2024divergent}. MADAM-RAG~\cite{wang2025madamrag}
+đi xa hơn khi giao mỗi tài liệu nguồn cho một agent riêng và cho các agent tranh biện khi các nguồn mâu thuẫn. Tuy
+nhiên các kết quả này chủ yếu ở bài toán hỏi đáp. Câu hỏi đặt ra là: \emph{trong bài toán giao dịch, việc tách mỗi
+nguồn cho một agent và xử lý mâu thuẫn một cách tường minh có mang lại lợi ích so với việc để một LLM tự gộp các nguồn
+hay không?}
+
+\section{Câu hỏi nghiên cứu}
+
+Đề tài trả lời ba câu hỏi, đều trong điều kiện cùng dữ liệu, cùng môi trường giao dịch và cùng mô hình ngôn ngữ:
+\begin{description}[leftmargin=1.2cm,style=nextline]
+  \item[RQ1] Kiến trúc tách agent theo nguồn kèm phát hiện mâu thuẫn và tranh biện so với CryptoTrade như thế nào về
+  lợi suất, Sharpe và tỷ lệ dự đoán đúng hướng?
+  \item[RQ2] Mỗi nguồn dữ liệu (thị trường, on-chain, tin tức) đóng góp gì vào kết quả, và đóng góp đó có thay đổi theo
+  giai đoạn thị trường không?
+  \item[RQ3] Tranh biện có thực sự thay đổi quyết định và cải thiện kết quả không, hay chỉ làm giảm chỉ số mâu thuẫn?
+\end{description}
+
+\section{Đóng góp của đề tài}
+\begin{enumerate}
+  \item \textbf{Hệ thống đa tác tử có xử lý mâu thuẫn tường minh} gồm ba agent chuyên môn, một Conflict Analyzer đo mâu
+  thuẫn bằng chỉ số kết hợp phân kỳ KL và phương sai, phân loại mâu thuẫn và phân tích nguyên nhân gốc, một mô-đun
+  tranh biện nhiều vòng với cập nhật độ tự tin tất định và kiểm tra nguồn trích dẫn, và một Mediator tổng hợp có trọng
+  số (Chương~\ref{chap:method}).
+  \item \textbf{Tái hiện baseline đã công bố}: cài đặt lại CryptoTrade, kiểm chứng trùng khớp với mã nguồn gốc của tác
+  giả và với Bảng 2 của bài báo đối với các chiến lược luật (Mục~\ref{sec:baseline}).
+  \item \textbf{Đánh giá đối chứng có kiểm soát}: hai hệ thống chạy trên cùng dữ liệu, cùng thông tin đầu vào mỗi ngày,
+  cùng môi trường giao dịch và cùng một mô hình chạy cục bộ, kèm các thí nghiệm loại bỏ thành phần (ablation) theo
+  nguồn dữ liệu và theo tranh biện (Chương~\ref{chap:exp}).
+  \item \textbf{Phân tích thực nghiệm}: tranh biện giảm mâu thuẫn nhưng hiếm khi đổi quyết định; giá trị của từng nguồn
+  phụ thuộc giai đoạn thị trường; chênh lệch với CryptoTrade đến chủ yếu từ mức vào lệnh chứ không phải từ chất lượng dự
+  đoán hướng.
+\end{enumerate}
+
+\section{Phạm vi}
+Đề tài giới hạn ở Bitcoin, tần suất quyết định theo ngày và dữ liệu công khai của CryptoTrade (01/2023--01/2024). Hệ
+thống đưa ra tín hiệu và được đánh giá trong môi trường mô phỏng; không thực hiện giao dịch thật. Mọi thí nghiệm dùng
+một mô hình ngôn ngữ mã nguồn mở chạy cục bộ để đảm bảo chi phí bằng không và khả năng tái lập.
+
+\section{Bố cục báo cáo}
+Chương~\ref{chap:background} trình bày cơ sở lý thuyết và các nghiên cứu liên quan. Chương~\ref{chap:method} mô tả
+kiến trúc và các công thức của hệ thống. Chương~\ref{chap:exp} trình bày thiết lập thực nghiệm, kết quả và phân tích.
+Chương~\ref{chap:conclusion} tổng kết và nêu hướng phát triển.

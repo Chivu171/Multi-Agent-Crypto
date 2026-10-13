@@ -1,0 +1,266 @@
+\chapter{Thực nghiệm và đánh giá}
+\label{chap:exp}
+
+\section{Dữ liệu}
+Đề tài dùng nguyên bộ dữ liệu công khai của CryptoTrade~\cite{li2024cryptotrade} cho BTC, giai đoạn 01/01/2023 --
+01/02/2024, gồm:
+\begin{itemize}
+  \item \textbf{Giá}: giá mở, cao, thấp, đóng cửa, khối lượng và vốn hóa theo ngày, nguồn CoinMarketCap.
+  \item \textbf{On-chain}: 6 thống kê giao dịch theo ngày từ Dune: \texttt{unique\_addresses}, \texttt{total\_transactions},
+  \texttt{total\_value\_transferred}, \texttt{average\_fee}, \texttt{total\_size\_used}, \texttt{coinbase\_transactions}.
+  \item \textbf{Tin tức}: bài báo về Bitcoin thu thập qua Google News, lọc theo nguồn uy tín, tối đa 5 bài mỗi ngày.
+\end{itemize}
+Bộ dữ liệu được phát hành theo giấy phép CC BY-NC-SA 4.0 và chỉ được dùng cho mục đích nghiên cứu.
+
+Ba giai đoạn kiểm thử được giữ nguyên như bài báo (Bảng~\ref{tab:windows}).
+
+\begin{table}[H]
+\centering
+\caption{Ba giai đoạn kiểm thử}
+\label{tab:windows}
+\begin{tabular}{lccr}
+\toprule
+Giai đoạn & Thời gian & Số ngày giao dịch & Biến động BTC \\
+\midrule
+Tăng giá & 01/10/2023 -- 01/12/2023 & 61 & +39,66\% \\
+Đi ngang & 17/06/2023 -- 25/08/2023 & 69 & $-$0,83\% \\
+Giảm giá & 12/04/2023 -- 16/06/2023 & 65 & $-$15,61\% \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\section{Tái hiện baseline}
+\label{sec:baseline}
+Đề tài cài đặt lại CryptoTrade gồm môi trường giao dịch, bốn lời nhắc nguyên văn, vòng lặp agent với các biến thể loại
+bỏ thành phần, và các chiến lược luật. Mã nguồn công khai của tác giả không khớp hoàn toàn với mô tả trong bài (bản công
+khai tắt hai trong ba tín hiệu kỹ thuật và chỉ phản tư 3 ngày), nên đề tài dùng cấu hình \emph{theo bài báo}: ba tín hiệu
+kỹ thuật và phản tư 7 ngày. Một số điểm lạ của mã gốc được giữ nguyên để đảm bảo so sánh được, ví dụ phí ``gas'' dùng
+hằng số của ETH cho cả BTC.
+
+\paragraph{Kiểm chứng.} Một kịch bản tự động chạy song song mã gốc và bản cài đặt lại trên cùng dữ liệu. Kết quả:
+(i) 6 chiến lược luật trên 3 giai đoạn có lợi suất và Sharpe trùng tuyệt đối với mã gốc và trùng Bảng 2 của bài báo
+(Bảng~\ref{tab:rules}); (ii) với cùng chuỗi hành động, nội dung bốn lời nhắc qua 12 bước không khác biệt so với mã gốc.
+
+\begin{table}[H]
+\centering
+\caption{Các chiến lược luật: kết quả cài đặt lại trùng với Bảng 2 của bài báo (lợi suất tổng / Sharpe)}
+\label{tab:rules}
+\begin{tabular}{lccc}
+\toprule
+Chiến lược & Tăng giá & Đi ngang & Giảm giá \\
+\midrule
+Buy \& Hold & 39,66\% / 0,25 & $-$0,83\% / 0,00 & $-$15,61\% / $-$0,11 \\
+SMA(15) & 22,58\% / 0,18 & 3,65\% / 0,05 & $-$21,74\% / $-$0,29 \\
+SLMA(15/30) & 38,53\% / 0,25 & $-$3,14\% / $-$0,05 & $-$7,68\% / $-$0,09 \\
+MACD & 13,57\% / 0,15 & $-$6,71\% / $-$0,09 & $-$9,51\% / $-$0,09 \\
+Bollinger(20, 2) & 2,97\% / 0,15 & $-$3,19\% / $-$0,05 & $-$1,17\% / $-$0,03 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\paragraph{Agent CryptoTrade trên mô hình cục bộ.} Bảng~\ref{tab:ct-repro} so sánh agent CryptoTrade chạy trên mô
+hình của đề tài với số liệu GPT-4 trong bài báo. Bản đầy đủ bám sát số liệu gốc (+30,47\% so với +26,35\% khi tăng giá;
+trùng $-$11,72\% khi giảm giá), cho thấy bản cài đặt lại tái hiện đúng hành vi của phương pháp và mô hình cục bộ đủ năng
+lực để làm baseline.
+
+\begin{table}[H]
+\centering
+\caption{Agent CryptoTrade: chạy lại trên Gemma so với số liệu GPT-4 trong bài báo (lợi suất tổng / Sharpe)}
+\label{tab:ct-repro}
+\begin{tabular}{lccc}
+\toprule
+Biến thể & Tăng giá & Đi ngang & Giảm giá \\
+\midrule
+Đầy đủ (Gemma) & 30,47\% / 0,23 & $-$1,63\% / $-$0,01 & $-$11,72\% / $-$0,13 \\
+Chỉ dữ liệu thị trường (Gemma) & $-$3,31\% / $-$0,07 & 1,76\% / 0,03 & $-$8,49\% / $-$0,10 \\
+\textit{Đầy đủ (bài báo, GPT-4)} & \textit{26,35\% / 0,23} & \textit{$-$4,07\% / $-$0,04} & \textit{$-$11,72\% / $-$0,11} \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\section{Thiết lập thực nghiệm}
+\paragraph{Môi trường giao dịch.} Môi trường của CryptoTrade: vốn ban đầu 1 triệu USD chia 50/50 giữa tiền mặt và BTC;
+mỗi ngày một hành động trong $[-1,1]$; chỉ mua hoặc bán, không bán khống; phí 0,4\% giá trị giao dịch cộng phí ``gas''
+cố định; khớp lệnh tại giá mở cửa.
+
+\paragraph{Mô hình ngôn ngữ.} Cả hai hệ thống dùng chung \texttt{google/gemma-4-26b-a4b-qat} (lượng tử hóa 4-bit) chạy
+cục bộ qua LM Studio trên MacBook M1 Pro 32 GB, tắt chế độ suy luận mở rộng, temperature 0. Mọi lời gọi được lưu
+đệm để chạy lại cho kết quả giống hệt.
+
+\paragraph{Các cấu hình so sánh.}
+\begin{itemize}
+  \item \textbf{CryptoTrade đầy đủ}: baseline chính, dùng cả ba nguồn và phản tư.
+  \item \textbf{CryptoTrade chỉ dữ liệu thị trường}: chỉ giữ tín hiệu kỹ thuật, tắt on-chain, tin tức và phản tư.
+  \item \textbf{Đề xuất đầy đủ}: ba agent, Conflict Analyzer, tranh biện, Mediator.
+  \item \textbf{Các biến thể loại bỏ của hệ thống đề xuất}: không tranh biện; chỉ Market; Market + Financial; Market +
+  Sentiment. Các biến thể này được tính lại từ cùng một lượt chạy bằng cách cho Mediator tổng hợp một phần các nhận định
+  đã lưu (bản không tranh biện dùng nhận định trước tranh biện), không gọi thêm LLM.
+  \item \textbf{Chiến lược luật}: Buy \& Hold và các chiến lược ở Bảng~\ref{tab:rules}, làm mốc tham chiếu.
+\end{itemize}
+
+\paragraph{Chỉ số đánh giá.} Lợi suất tổng của danh mục; chỉ số Sharpe theo công thức của bài báo; và tỷ lệ đúng hướng,
+là tỷ lệ các ngày có giao dịch (BUY hoặc SELL) mà hướng giao dịch trùng với hướng biến động giá từ giá mở cửa
+ngày đó tới giá mở cửa ngày hôm sau.
+
+\section{Kết quả tổng hợp (RQ1)}
+Bảng~\ref{tab:main} và Hình~\ref{fig:returns} trình bày kết quả chính.
+
+\begin{table}[H]
+\centering
+\caption{Lợi suất tổng (\%) và Sharpe (trong ngoặc) trên ba giai đoạn}
+\label{tab:main}
+\small
+\begin{tabular}{lrrrr}
+\toprule
+Phương pháp & Tăng giá & Đi ngang & Giảm giá & Trung bình \\
+\midrule
+Buy \& Hold & +39,66 (0,25) & $-$0,83 (0,00) & $-$15,61 ($-$0,11) & +7,74 \\
+SLMA (luật) & +38,53 (0,25) & $-$3,14 ($-$0,05) & $-$7,68 ($-$0,09) & +9,24 \\
+\midrule
+CryptoTrade đầy đủ & +30,47 (0,23) & $-$1,63 ($-$0,01) & $-$11,72 ($-$0,13) & \textbf{+5,71} \\
+CryptoTrade chỉ thị trường & $-$3,31 ($-$0,07) & +1,76 (0,03) & $-$8,49 ($-$0,10) & $-$3,35 \\
+\midrule
+\textbf{Đề xuất đầy đủ} & +16,14 (0,19) & +1,62 (0,03) & $-$16,63 ($-$0,23) & +0,38 \\
+\quad không tranh biện & +13,53 (0,16) & +1,60 (0,03) & $-$18,36 ($-$0,24) & $-$1,08 \\
+\quad Market + Sentiment & +12,00 (0,16) & +2,57 (0,04) & $-$12,55 ($-$0,17) & +0,67 \\
+\quad Market + Financial & +2,12 (0,04) & +6,51 (0,09) & $-$18,62 ($-$0,25) & $-$3,33 \\
+\quad chỉ Market & +3,09 (0,06) & +2,61 (0,04) & $-$10,01 ($-$0,15) & $-$1,44 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}
+\def\barw{0.32}
+\def\unit{0.075}
+\foreach \g/\lab in {0/Tăng giá,1/Đi ngang,2/Giảm giá} {
+  \node[font=\small] at (\g*4.2+1.1, -1.75) {\lab};
+}
+\draw[gray] (-0.4,0) -- (12.2,0);
+\foreach \y in {-15,0,15,30} { \draw[gray!40] (-0.4,\y*\unit) -- (12.2,\y*\unit); \node[font=\scriptsize,left] at (-0.4,\y*\unit) {\y}; }
+\foreach \g/\a/\b/\c/\d in {0/39.66/30.47/-3.31/16.14, 1/-0.83/-1.63/1.76/1.62, 2/-15.61/-11.72/-8.49/-16.63} {
+  \fill[gray!45]   (\g*4.2+0*0.55,0) rectangle ++(\barw,\a*\unit);
+  \fill[blue!55]   (\g*4.2+1*0.55,0) rectangle ++(\barw,\b*\unit);
+  \fill[blue!20]   (\g*4.2+2*0.55,0) rectangle ++(\barw,\c*\unit);
+  \fill[orange!80] (\g*4.2+3*0.55,0) rectangle ++(\barw,\d*\unit);
+}
+\node[font=\scriptsize,rotate=90] at (-1.3,0.6) {Lợi suất (\%)};
+\foreach \x/\col/\lab in {0/gray!45/Buy \& Hold,2.3/blue!55/CryptoTrade đầy đủ,5.5/blue!20/CryptoTrade chỉ thị trường,9.4/orange!80/Đề xuất đầy đủ} {
+  \fill[\col] (\x-0.2,-2.55) rectangle ++(0.25,0.18);
+  \node[font=\scriptsize,anchor=west] at (\x+0.1,-2.46) {\lab};
+}
+\end{tikzpicture}
+\caption{Lợi suất tổng theo giai đoạn}
+\label{fig:returns}
+\end{figure}
+
+\paragraph{So với CryptoTrade đầy đủ.} Trên cùng ba nguồn dữ liệu, hệ thống đề xuất có lợi suất trung bình +0,38\%,
+thấp hơn CryptoTrade đầy đủ (+5,71\%) và Buy \& Hold (+7,74\%). Hệ thống đề xuất chỉ tốt hơn ở giai đoạn đi ngang
+(+1,62\% so với $-$1,63\%). Như vậy, \emph{với câu hỏi RQ1, kiến trúc đề xuất ở dạng hiện tại chưa vượt được cách gộp
+ngầm của CryptoTrade}.
+
+\paragraph{So với CryptoTrade chỉ dùng dữ liệu thị trường.} Hệ thống đề xuất tốt hơn về trung bình (+0,38\% so với
+$-$3,35\%), nhưng lợi thế đến hoàn toàn từ giai đoạn tăng giá (+16,14\% so với $-$3,31\%); ở giai đoạn giảm giá hệ thống
+kém hơn ($-$16,63\% so với $-$8,49\%).
+
+\section{Đóng góp của từng nguồn dữ liệu (RQ2)}
+Bảng~\ref{tab:per-window} trình bày chi tiết theo giai đoạn cho các cấu hình của hệ thống đề xuất.
+
+\begin{table}[H]
+\centering
+\caption{Chi tiết theo giai đoạn: lợi suất (\%) / tỷ lệ đúng hướng (\%) / số ngày có giao dịch}
+\label{tab:per-window}
+\small
+\begin{tabular}{lccc}
+\toprule
+Cấu hình & Tăng giá & Đi ngang & Giảm giá \\
+\midrule
+CryptoTrade đầy đủ & +30,47 / 55,1 / 49 & $-$1,63 / 45,6 / 68 & $-$11,72 / 50,0 / 56 \\
+CryptoTrade chỉ thị trường & $-$3,31 / 48,1 / 52 & +1,76 / 45,2 / 62 & $-$8,49 / 56,9 / 58 \\
+\midrule
+Đề xuất đầy đủ & +16,14 / 55,3 / 47 & +1,62 / 56,0 / 50 & $-$16,63 / 48,0 / 50 \\
+\quad không tranh biện & +13,53 / 55,8 / 52 & +1,60 / 54,7 / 53 & $-$18,36 / 45,3 / 53 \\
+\quad Market + Sentiment & +12,00 / 52,9 / 51 & +2,57 / 51,1 / 47 & $-$12,55 / 49,0 / 51 \\
+\quad Market + Financial & +2,12 / 58,3 / 48 & +6,51 / 63,0 / 54 & $-$18,62 / 45,8 / 48 \\
+\quad chỉ Market & +3,09 / 54,5 / 44 & +2,61 / 54,8 / 42 & $-$10,01 / 50,0 / 40 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\paragraph{Giá trị của từng nguồn phụ thuộc giai đoạn.} So với cấu hình chỉ Market:
+\begin{itemize}
+  \item \textbf{Tin tức} giúp nhiều nhất khi giá tăng (+8,9 điểm), gần như không đổi khi đi ngang và làm kết quả xấu đi
+  khi giá giảm ($-$2,5 điểm).
+  \item \textbf{On-chain} giúp khi đi ngang (+3,9 điểm, tỷ lệ đúng hướng 63,0\%, cao nhất toàn bảng) nhưng làm kết quả
+  xấu đi rõ rệt khi giá giảm ($-$8,6 điểm).
+  \item Khi giá giảm, cấu hình chỉ Market là tốt nhất trong các cấu hình của hệ thống đề xuất: mọi nguồn bổ sung đều làm
+  lỗ nặng hơn.
+\end{itemize}
+Như vậy, \emph{các nguồn bổ sung có giá trị, nhưng giá trị đó đổi dấu theo giai đoạn thị trường}, và một cơ chế tổng hợp
+với trọng số cố định không khai thác được điều này. Đây là căn cứ trực tiếp cho hướng phát triển ở
+Chương~\ref{chap:conclusion}.
+
+\section{Phân tích tranh biện (RQ3)}
+\label{sec:debate-analysis}
+
+\begin{table}[H]
+\centering
+\caption{Thống kê tranh biện và phân bố tín hiệu cuối của hệ thống đề xuất}
+\label{tab:debate}
+\begin{tabular}{lccc}
+\toprule
+ & Tăng giá & Đi ngang & Giảm giá \\
+\midrule
+Số ngày có tranh biện & 36 / 61 & 32 / 69 & 31 / 65 \\
+Mâu thuẫn trung bình: trước $\rightarrow$ sau & 0,63 $\rightarrow$ 0,24 & 0,61 $\rightarrow$ 0,22 & 0,60 $\rightarrow$ 0,22 \\
+Số ngày gắn cờ (cập nhật bị từ chối) & 10 & 6 & 8 \\
+Lợi suất: có $-$ không tranh biện (điểm \%) & +2,6 & +0,0 & +1,7 \\
+Tín hiệu cuối BUY / SELL / NEUTRAL & 19 / 28 / 14 & 27 / 23 / 19 & 26 / 24 / 15 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Tranh biện được kích hoạt ở 99 trên 195 ngày. Bảng~\ref{tab:debate} cho thấy:
+\begin{itemize}
+  \item \textbf{Mâu thuẫn giảm mạnh}: chỉ số mâu thuẫn trung bình giảm từ khoảng 0,61 xuống 0,22 sau tranh biện.
+  \item \textbf{Không làm kết quả xấu đi}: lợi suất luôn bằng hoặc cao hơn bản không tranh biện.
+  \item \textbf{Nhưng hiếm khi thay đổi quyết định}: trên toàn bộ 195 ngày, tranh biện chỉ làm thay đổi tín hiệu cuối ở
+  11 ngày, và tất cả đều là chuyển từ BUY hoặc SELL sang NEUTRAL. Trong 11 ngày này, không có ngày nào chuyển từ dự đoán
+  sai thành đúng hoặc ngược lại; lợi ích đến từ việc đứng ngoài thị trường ở những ngày bất định.
+\end{itemize}
+
+Nguyên nhân nằm ở thiết kế: tranh biện chỉ giảm \emph{cường độ} niềm tin của agent bị phản biện, không bao giờ đổi
+\emph{hướng} (Mục~\ref{sec:debate}). Chỉ số mâu thuẫn giảm vì các niềm tin trái chiều cùng co về 0, chứ không phải vì
+các agent đạt được đồng thuận về hướng. \emph{Với câu hỏi RQ3, tranh biện trong thiết kế hiện tại hoạt động như một cơ chế
+giảm rủi ro, chưa phải một cơ chế sửa sai.}
+
+\section{Thảo luận}
+\paragraph{Vì sao thua CryptoTrade đầy đủ?} Ở giai đoạn tăng giá, tỷ lệ đúng hướng của hai hệ thống gần như bằng nhau
+(55,3\% so với 55,1\%), nhưng lợi suất chỉ bằng khoảng một nửa. Khác biệt nằm ở mức vào lệnh: hệ thống đề xuất mua hoặc
+bán cố định 50\%, còn agent CryptoTrade tự chọn mức trong $[-1,1]$ và thường chọn 0,8--1,0 khi tự tin. Trong một giai
+đoạn tăng mạnh, mua nhiều hơn thì lãi nhiều hơn. Thêm vào đó, môi trường không cho bán khống, nên các tín hiệu SELL khi
+giá tăng làm mất phần lãi mà không bù lại được.
+
+\paragraph{Tín hiệu chưa bám xu hướng.} Ở giai đoạn giá tăng gần 40\%, hệ thống ra SELL 28 lần và BUY 19 lần; ở giai
+đoạn giảm giá lại ra BUY 26 lần và SELL 24 lần. Kết hợp với tỷ lệ đúng hướng 45--63\% của mọi cấu hình, đây là dấu hiệu
+các agent phản ứng với biến động ngắn hạn (RSI, tin tức trong ngày) hơn là với xu hướng.
+
+\paragraph{Ưu thế cấu trúc của Market Agent.} Như phân tích ở Mục~\ref{sec:mediator}, hệ số phạt thời gian làm trọng số
+của Financial và Sentiment chỉ còn khoảng 40\% so với Market. Vì vậy Market Agent chi phối $\Sfinal$, và điểm yếu không
+bám xu hướng của Market Agent truyền thẳng tới quyết định cuối.
+
+\paragraph{Chi phí tính toán.} Mỗi giai đoạn khoảng 65 ngày, CryptoTrade đầy đủ cần khoảng 50 phút, bản chỉ dữ liệu thị
+trường khoảng 12 phút, hệ thống đề xuất khoảng 4,6 giờ do nhiều lời gọi hơn ở các bước RCA, tranh biện và kiểm tra nguồn.
+Chi phí tiền bằng 0 vì mô hình chạy cục bộ.
+
+\section{Các yếu tố ảnh hưởng tới tính hợp lệ}
+\begin{itemize}
+  \item \textbf{Cỡ mẫu nhỏ}: mỗi giai đoạn chỉ 61--69 ngày; chênh lệch vài điểm phần trăm chưa có ý nghĩa thống kê.
+  \item \textbf{Một mô hình, một tài sản}: kết quả có thể khác với mô hình lớn hơn hoặc với ETH, SOL.
+  \item \textbf{Rò rỉ từ dữ liệu huấn luyện}: mô hình có thể đã thấy dữ liệu năm 2023 khi huấn luyện; ảnh hưởng này như
+  nhau với cả hai hệ thống nhưng có thể làm tăng kết quả tuyệt đối.
+  \item \textbf{Quy đổi tín hiệu}: mức $\pm0{,}5$ là một lựa chọn thiết kế; cách quy đổi khác có thể cho thứ hạng khác.
+  \item \textbf{Tham số chưa hiệu chỉnh}: ngưỡng mâu thuẫn 0,4, hệ số $\alpha$, $\beta$, $\gamma$ được đặt theo trực giác
+  thiết kế, chưa được tinh chỉnh trên dữ liệu.
+\end{itemize}

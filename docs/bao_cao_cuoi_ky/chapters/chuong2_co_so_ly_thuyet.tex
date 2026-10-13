@@ -1,0 +1,88 @@
+\chapter{Cơ sở lý thuyết và nghiên cứu liên quan}
+\label{chap:background}
+
+\section{Agent dựa trên mô hình ngôn ngữ lớn}
+Mô hình ngôn ngữ lớn có thể được dùng như một ``agent'' khi nhận đầu vào là quan sát về môi trường, suy luận bằng ngôn
+ngữ tự nhiên và trả về một hành động. Kỹ thuật chuỗi suy luận (chain-of-thought)~\cite{wei2022cot} yêu cầu mô hình
+viết ra các bước trung gian trước khi kết luận, giúp cải thiện khả năng suy luận nhiều bước và cho phép kiểm tra lại
+lập luận. Reflexion~\cite{shinn2023reflexion} bổ sung khả năng tự rút kinh nghiệm: agent đọc lại kết quả các hành động
+trước đó và viết nhận xét bằng ngôn ngữ để điều chỉnh hành vi ở các bước sau. Cơ chế này được CryptoTrade sử dụng dưới
+dạng agent phản tư (reflection) xem lại kết quả giao dịch của 7 ngày trước.
+
+Một hạn chế cố hữu của agent LLM là hiện tượng ``ảo giác'': mô hình có thể đưa ra dữ kiện không có trong đầu vào. Trong
+bài toán tài chính, đây là rủi ro nghiêm trọng, vì một con số bịa đặt có thể dẫn tới quyết định sai. Do đó hệ thống
+trong đề tài yêu cầu mọi lập luận trong giai đoạn tranh biện phải trích dẫn dòng bằng chứng cụ thể và được kiểm tra
+trước khi được chấp nhận (Mục~\ref{sec:debate}).
+
+\section{Hệ đa tác tử và tranh biện}
+\paragraph{Tranh biện đa tác tử.}
+Du và cộng sự~\cite{du2024debate} đề xuất cho nhiều phiên bản LLM cùng trả lời một câu hỏi, sau đó mỗi phiên bản đọc
+câu trả lời của các phiên bản khác và cập nhật câu trả lời của mình qua nhiều vòng. Phương pháp này cải thiện độ chính
+xác trên các bài toán suy luận và giảm dữ kiện sai. Liang và cộng sự~\cite{liang2024divergent} chỉ ra hiện tượng ``thoái hóa
+suy nghĩ'' (Degeneration-of-Thought) khi một LLM tự phản tư, và dùng tranh biện giữa các agent có lập trường đối lập cùng một trọng tài để
+khuyến khích tư duy phân kỳ. ChatEval~\cite{chan2024chateval} áp dụng tranh biện để nhiều agent cùng đánh giá chất
+lượng văn bản, cho thấy việc gán vai trò khác nhau cho các agent là yếu tố quan trọng.
+
+\paragraph{Tranh biện khi các nguồn mâu thuẫn.}
+MADAM-RAG~\cite{wang2025madamrag} xét bài toán hỏi đáp dựa trên truy xuất khi các tài liệu truy xuất được mâu thuẫn
+nhau, chứa thông tin sai hoặc nhiễu. Mỗi tài liệu được giao cho một agent riêng, các agent tranh biện qua nhiều vòng
+và một bộ tổng hợp tóm tắt cuộc tranh biện để đưa ra câu trả lời cuối. Ý tưởng mỗi nguồn một agent, tranh biện khi
+mâu thuẫn và tổng hợp lịch sử tranh biện qua các vòng là nguồn cảm hứng trực tiếp cho kiến trúc của đề tài.
+
+\section{Agent LLM cho giao dịch tài chính}
+FinMem~\cite{yu2023finmem} thiết kế agent giao dịch cổ phiếu có bộ nhớ phân tầng theo tầm thời gian. FinCon~\cite{yu2024fincon}
+tổ chức nhiều agent theo mô hình quản lý -- nhân viên và dùng phản hồi bằng ngôn ngữ để cập nhật niềm tin đầu tư.
+TradingAgents~\cite{xiao2024tradingagents} mô phỏng một công ty giao dịch với các agent phân tích cơ bản, tâm lý, tin
+tức, kỹ thuật và hai nhóm nghiên cứu lạc quan -- bi quan tranh luận trước khi agent giao dịch quyết định.
+
+Với tiền mã hóa, CryptoTrade~\cite{li2024cryptotrade} là agent LLM kết hợp dữ liệu on-chain và tin tức cho giao dịch
+không cần huấn luyện (zero-shot), đánh giá trên BTC, ETH và SOL trong ba giai đoạn thị trường năm 2023. Luo và
+cộng sự~\cite{luo2025cryptomas} xây dựng hệ đa tác tử gồm các nhóm agent chuyên trách dữ liệu thị trường và tin tức cho
+quản lý danh mục 30 đồng tiền mã hóa, có so sánh các cấu trúc giao tiếp phân cấp, cộng tác và tranh biện. Gần đây,
+Market Regime Council~\cite{mrc2026} đề xuất gán trọng số động cho ba agent chuyên môn dựa trên giá trị Shapley tính từ
+lịch sử hiệu quả, kèm hệ số nhân theo trạng thái thị trường.
+
+\section{Baseline CryptoTrade}
+\label{sec:cryptotrade}
+CryptoTrade gồm bốn thành phần LLM chạy mỗi ngày:
+\begin{itemize}
+  \item \textbf{Agent phân tích thị trường và on-chain}: đọc giá mở cửa gần đây, ba tín hiệu kỹ thuật (giao cắt đường
+  trung bình ngắn -- dài, MACD, dải Bollinger) và các thống kê giao dịch on-chain.
+  \item \textbf{Agent phân tích tin tức}: đọc tối đa 5 bài báo về đồng tiền trong ngày trước đó.
+  \item \textbf{Agent phản tư}: xem lại các quyết định và lợi nhuận của 7 ngày trước.
+  \item \textbf{Agent giao dịch}: đọc ba bản phân tích trên và trả về một hành động trong $[-1, 1]$; giá trị dương là
+  tỷ lệ tiền mặt dùng để mua, giá trị âm là tỷ lệ coin đem bán.
+\end{itemize}
+Điểm then chốt là \emph{mọi mâu thuẫn giữa các nguồn được agent giao dịch xử lý ngầm trong một lời nhắc}. Bài báo
+có thí nghiệm loại bỏ từng nguồn, nhưng chỉ báo cáo cho ETH trong giai đoạn tăng giá; phiên bản chỉ dùng dữ liệu thị trường cho BTC trong đề tài
+do đề tài tự chạy.
+
+\section{Các công cụ định lượng}
+\paragraph{Phân kỳ Kullback--Leibler.} Với hai phân phối rời rạc $P$ và $Q$ trên cùng tập kết quả, phân kỳ
+KL~\cite{kullback1951}
+\begin{equation}
+  D_{KL}(P \parallel Q) = \sum_{j} P(j)\log\frac{P(j)}{Q(j)}
+\end{equation}
+đo lượng thông tin mất đi khi dùng $Q$ để xấp xỉ $P$. $D_{KL} \geq 0$, bằng 0 khi và chỉ khi $P = Q$, và không đối
+xứng. Trong đề tài, phân kỳ KL được dùng để đo khoảng cách giữa niềm tin của hai agent.
+
+\paragraph{Phương sai quyết định.} Phương sai của các giá trị niềm tin có dấu của các agent đo độ phân tán trực tiếp của
+quyết định, bổ sung cho phân kỳ KL vốn nhạy với các phân phối gần tất định.
+
+\paragraph{Chỉ báo kỹ thuật.} Đường trung bình động hàm mũ (EMA) làm mượt chuỗi giá với trọng số giảm dần theo thời
+gian. Chỉ số sức mạnh tương đối RSI trong khoảng $[0,100]$ đo tỷ lệ giữa mức tăng và mức giảm trung bình trong 14 phiên;
+RSI gần 70 trở lên thường được xem là quá mua, gần 30 trở xuống là quá bán. MACD là hiệu giữa EMA 12 và EMA 26 so với
+đường tín hiệu EMA 9 của chính nó. Dải Bollinger gồm đường trung bình 20 phiên và hai dải cách nó hai độ lệch chuẩn.
+
+\paragraph{Chỉ số Sharpe.} Chỉ số Sharpe~\cite{sharpe1966} đo lợi suất trên một đơn vị rủi ro. Theo đúng cách tính
+của CryptoTrade, với $r_t$ là lợi suất ngày và lãi suất phi rủi ro bằng 0:
+\begin{equation}
+  \text{Sharpe} = \frac{\overline{r}}{\sigma(r)}.
+\end{equation}
+
+\section{Khoảng trống nghiên cứu}
+Các hệ thống giao dịch đa tác tử hiện có hoặc gộp các nguồn trong một lời nhắc (CryptoTrade), hoặc dùng tranh luận như
+một bước sinh lập luận mà không đo mức mâu thuẫn một cách định lượng (TradingAgents). Các nghiên cứu về tranh
+biện đa tác tử chủ yếu đánh giá trên bài toán hỏi đáp có đáp án đúng xác định. Chưa có đánh giá có kiểm soát nào so
+sánh việc xử lý mâu thuẫn tường minh với cách gộp ngầm của một baseline đã công bố, trên cùng dữ liệu và cùng mô hình
+ngôn ngữ, trong bài toán giao dịch tiền mã hóa. Đề tài hướng tới lấp khoảng trống này.

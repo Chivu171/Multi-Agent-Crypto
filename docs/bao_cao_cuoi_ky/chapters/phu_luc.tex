@@ -1,0 +1,50 @@
+\chapter{Hướng dẫn tái lập kết quả}
+\label{app:repro}
+
+Mã nguồn: \url{https://github.com/Chivu171/Multi-Agent-Crypto} (tag \texttt{eval-v1}, commit \texttt{161da6c}).
+Kết quả gốc nằm tại \texttt{outputs/baselines/cryptotrade/<giai đoạn>/*/result.json}.
+
+\paragraph{Chiến lược luật} (vài giây, không cần mô hình):
+\begin{Verbatim}
+python -m baselines.cryptotrade.run rules --window bull
+\end{Verbatim}
+
+\paragraph{Agent CryptoTrade} (LM Studio chạy ở cổng 1234):
+\begin{Verbatim}
+CRYPTOTRADE_BASE_URL=http://localhost:1234/v1 \
+CRYPTOTRADE_API_KEY=lm-studio \
+CRYPTOTRADE_MODEL=google/gemma-4-26b-a4b-qat \
+CRYPTOTRADE_REASONING_EFFORT=none LLM_CALL_TIMEOUT=300 \
+  python -m baselines.cryptotrade.run agent --window bull --variant full
+\end{Verbatim}
+
+\paragraph{Hệ thống đề xuất:}
+\begin{Verbatim}
+LLM_BACKEND=lmstudio LMSTUDIO_MODEL=google/gemma-4-26b-a4b-qat \
+LLM_CALL_TIMEOUT=300 \
+  python -m baselines.cryptotrade.run ours --window bull
+\end{Verbatim}
+
+Thay \texttt{bull} bằng \texttt{sideways} hoặc \texttt{bear} cho hai giai đoạn còn lại. Mọi lời gọi mô hình được lưu
+đệm, nên chạy lại cho kết quả giống hệt mà không cần gọi lại mô hình.
+
+\chapter{Các tham số của hệ thống}
+\begin{table}[H]
+\centering
+\caption{Giá trị tham số dùng trong mọi thí nghiệm}
+\begin{tabular}{llr}
+\toprule
+Thành phần & Tham số & Giá trị \\
+\midrule
+Conflict Analyzer & Hệ số cân bằng KL -- phương sai $\alpha$ & 0,6 \\
+ & Ngưỡng kích hoạt tranh biện $\tau$ & 0,4 \\
+ & Ngưỡng không mâu thuẫn & 0,15 \\
+Tranh biện & Số vòng & 2 \\
+ & Hệ số giảm độ tự tin $\beta$ & 0,35 \\
+ & Trọng số niềm tin / bằng chứng / lập luận & 1/3 mỗi loại \\
+Mediator & Hệ số phạt thời gian $\gamma$ (mỗi giây) & $10^{-5}$ \\
+ & Ngưỡng tín hiệu $|\Sfinal|$ & 0,05 \\
+Quy đổi hành động & BUY / SELL / NEUTRAL & +0,5 / $-$0,5 / 0 \\
+\bottomrule
+\end{tabular}
+\end{table}

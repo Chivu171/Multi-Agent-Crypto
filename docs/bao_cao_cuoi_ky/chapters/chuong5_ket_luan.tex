@@ -1,0 +1,54 @@
+\chapter{Kết luận và hướng phát triển}
+\label{chap:conclusion}
+
+\section{Kết luận}
+Đề tài đã xây dựng một hệ thống đa tác tử LLM cho tín hiệu giao dịch Bitcoin, trong đó mỗi nguồn dữ liệu do một agent
+chuyên trách phân tích, mâu thuẫn giữa các agent được đo bằng chỉ số kết hợp phân kỳ KL và phương sai, và khi mâu thuẫn
+cao, hệ thống phân tích nguyên nhân gốc và tổ chức tranh biện có kiểm tra nguồn trích dẫn. Hệ thống được đánh giá đối
+chứng với CryptoTrade, một baseline đã công bố tại EMNLP 2024, được cài đặt lại và kiểm chứng khớp với mã nguồn gốc,
+trên cùng dữ liệu, cùng môi trường giao dịch và cùng mô hình ngôn ngữ chạy cục bộ.
+
+Câu trả lời cho ba câu hỏi nghiên cứu:
+\begin{description}[leftmargin=1.2cm,style=nextline]
+  \item[RQ1] Ở dạng hiện tại, hệ thống đề xuất (+0,38\% trung bình) chưa vượt CryptoTrade đầy đủ (+5,71\%), dù vượt
+  phiên bản CryptoTrade chỉ dùng dữ liệu thị trường ($-$3,35\%). Tỷ lệ dự đoán đúng hướng tương đương CryptoTrade; chênh
+  lệch lợi suất chủ yếu đến từ mức vào lệnh cố định.
+  \item[RQ2] Giá trị của từng nguồn đổi dấu theo giai đoạn thị trường: tin tức hữu ích khi giá tăng, on-chain hữu ích
+  khi đi ngang, và cả hai làm kết quả xấu đi khi giá giảm.
+  \item[RQ3] Tranh biện giảm mức mâu thuẫn từ khoảng 0,61 xuống 0,22 và không làm kết quả xấu đi, nhưng chỉ đổi 11
+  trên 195 quyết định và chỉ theo hướng đứng ngoài thị trường, do thiết kế không cho phép agent đổi hướng.
+\end{description}
+
+Các kết quả này cho thấy việc xử lý mâu thuẫn tường minh có tác dụng giảm rủi ro và tăng khả năng giải thích (mỗi lập
+luận đều có nguồn kiểm chứng được), nhưng để cải thiện lợi suất, hệ thống cần biết \emph{khi nào nên tin nguồn nào}
+thay vì dùng trọng số cố định.
+
+\section{Hạn chế}
+\begin{itemize}
+  \item Đánh giá trên một tài sản, một mô hình ngôn ngữ và ba giai đoạn ngắn; chưa có kiểm định ý nghĩa thống kê.
+  \item Các tham số của Conflict Analyzer, tranh biện và Mediator chưa được hiệu chỉnh trên dữ liệu.
+  \item Hệ số phạt thời gian trong Mediator vô tình làm giảm khoảng 60\% trọng số của on-chain và tin tức so với dữ liệu
+  giá (Mục~\ref{sec:mediator}).
+  \item Thời gian chạy của hệ thống đề xuất gấp khoảng 5 lần CryptoTrade đầy đủ.
+\end{itemize}
+
+\section{Hướng phát triển}
+\paragraph{Trong ngắn hạn (đang thực hiện).} Xây dựng một bộ nhận diện xu hướng chỉ dựa trên dữ liệu giá tới ngày $D-1$
+(ví dụ giá so với MA50, lợi suất 20--30 ngày) và dùng cho hai mục đích:
+\begin{enumerate}
+  \item \textbf{Trọng số agent theo xu hướng}: Mediator điều chỉnh mức ảnh hưởng của từng agent theo giai đoạn tăng,
+  giảm hoặc đi ngang, khai thác trực tiếp phát hiện của RQ2. Hướng này gần với Market Regime Council~\cite{mrc2026};
+  điểm khác là đề tài kết hợp trọng số theo xu hướng với cơ chế phát hiện và giải thích mâu thuẫn.
+  \item \textbf{Bộ lọc xu hướng}: chặn tín hiệu đi ngược xu hướng rõ ràng.
+\end{enumerate}
+Để tránh khớp quá mức với tập kiểm thử, tham số sẽ được chọn trên khoảng 150 ngày dữ liệu CryptoTrade chưa sử dụng, sau
+đó mới đánh giá trên ba giai đoạn kiểm thử, và kết quả của mọi biến thể đều được báo cáo. Cả hai hướng có thể thử
+nghiệm trên các nhận định đã lưu mà không cần gọi lại mô hình.
+
+\paragraph{Trong dài hạn.}
+\begin{itemize}
+  \item Xác định mức vào lệnh theo độ tự tin hoặc theo $\Sfinal$ thay vì cố định 50\%.
+  \item Cho phép agent đổi hướng sau tranh biện khi lập luận phản biện đủ mạnh và có nguồn kiểm chứng, để tranh biện trở
+  thành cơ chế sửa sai chứ không chỉ giảm rủi ro.
+  \item Mở rộng đánh giá sang ETH, SOL như bài báo gốc, thêm mô hình ngôn ngữ khác và kiểm định ý nghĩa thống kê.
+\end{itemize}
