@@ -1,0 +1,215 @@
+{
+  "evaluated_on": [
+    "bear",
+    "sideways",
+    "bull"
+  ],
+  "baseline_eval_v1": {
+    "mean_return": 0.003740083534427933,
+    "mean_sharpe": -0.005349253564285829,
+    "windows": {
+      "bear": {
+        "total_return": -0.16630875771735154,
+        "sharpe": -0.22719184507896067,
+        "direction_accuracy": 0.48,
+        "directional_days": 50
+      },
+      "sideways": {
+        "total_return": 0.016161363139436613,
+        "sharpe": 0.02566460070002513,
+        "direction_accuracy": 0.56,
+        "directional_days": 50
+      },
+      "bull": {
+        "total_return": 0.16136764518119873,
+        "sharpe": 0.18547948368607806,
+        "direction_accuracy": 0.5531914893617021,
+        "directional_days": 47
+      }
+    }
+  },
+  "filter": {
+    "trend": {
+      "ma": 50,
+      "lookback": 30,
+      "band": 0.05
+    },
+    "mean_return": 0.09040043752603477,
+    "mean_sharpe": 0.033630652696224055,
+    "windows": {
+      "bear": {
+        "total_return": -0.14606348660642055,
+        "sharpe": -0.2118120756260303,
+        "direction_accuracy": 0.4444444444444444,
+        "directional_days": 36
+      },
+      "sideways": {
+        "total_return": 0.05128446430708333,
+        "sharpe": 0.06052684096121335,
+        "direction_accuracy": 0.6071428571428571,
+        "directional_days": 28
+      },
+      "bull": {
+        "total_return": 0.3659803348774415,
+        "sharpe": 0.2521771927534891,
+        "direction_accuracy": 0.5714285714285714,
+        "directional_days": 21
+      }
+    }
+  },
+  "weights": {
+    "trend": {
+      "ma": 50,
+      "lookback": 20,
+      "band": 0.05
+    },
+    "mult": {
+      "up": {
+        "Financial_Agent": 2.0,
+        "Sentiment_Agent": 2.0
+      },
+      "flat": {
+        "Financial_Agent": 0.0,
+        "Sentiment_Agent": 0.0
+      },
+      "down": {
+        "Financial_Agent": 0.0,
+        "Sentiment_Agent": 0.0
+      }
+    },
+    "mean_return": 4.145552375245387e-05,
+    "mean_sharpe": -0.007040941959232143,
+    "windows": {
+      "bear": {
+        "total_return": -0.14193677691043272,
+        "sharpe": -0.19625976063542416,
+        "direction_accuracy": 0.5,
+        "directional_days": 36
+      },
+      "sideways": {
+        "total_return": 0.01512931055787603,
+        "sharpe": 0.02440748411612849,
+        "direction_accuracy": 0.5227272727272727,
+        "directional_days": 44
+      },
+      "bull": {
+        "total_return": 0.12693183292381405,
+        "sharpe": 0.15072945064159926,
+        "direction_accuracy": 0.5576923076923077,
+        "directional_days": 52
+      }
+    }
+  },
+  "both": {
+    "trend": {
+      "ma": 50,
+      "lookback": 20,
+      "band": 0.05
+    },
+    "mult": {
+      "up": {
+        "Financial_Agent": 0.0,
+        "Sentiment_Agent": 2.0
+      },
+      "flat": {
+        "Financial_Agent": 0.0,
+        "Sentiment_Agent": 0.0
+      },
+      "down": {
+        "Financial_Agent": 0.0,
+        "Sentiment_Agent": 0.0
+      }
+    },
+    "mean_return": 0.026792205574434774,
+    "mean_sharpe": 0.016816219377620557,
+    "windows": {
+      "bear": {
+        "total_return": -0.1496473643521855,
+        "sharpe": -0.188377576518756,
+        "direction_accuracy": 0.5,
+        "directional_days": 28
+      },
+      "sideways": {
+        "total_return": 0.04193202529167728,
+        "sharpe": 0.05146158645896674,
+        "direction_accuracy": 0.5714285714285714,
+        "directional_days": 21
+      },
+      "bull": {
+        "total_return": 0.18809195578381255,
+        "sharpe": 0.18736464819265095,
+        "direction_accuracy": 0.5714285714285714,
+        "directional_days": 28
+      }
+    }
+  },
+  "sizing": {
+    "sizing": 0.5,
+    "mean_return": -0.005474322110802454,
+    "mean_sharpe": -0.010797783619973439,
+    "windows": {
+      "bear": {
+        "total_return": -0.15992507299515912,
+        "sharpe": -0.22512340562182914,
+        "direction_accuracy": 0.48,
+        "directional_days": 50
+      },
+      "sideways": {
+        "total_return": 0.01990231364677819,
+        "sharpe": 0.030920203478595108,
+        "direction_accuracy": 0.56,
+        "directional_days": 50
+      },
+      "bull": {
+        "total_return": 0.12359979301597357,
+        "sharpe": 0.1618098512833137,
+        "direction_accuracy": 0.5531914893617021,
+        "directional_days": 47
+      }
+    }
+  },
+  "both_sizing": {
+    "trend": {
+      "ma": 50,
+      "lookback": 20,
+      "band": 0.05
+    },
+    "mult": {
+      "up": {
+        "Financial_Agent": 0.0,
+        "Sentiment_Agent": 2.0
+      },
+      "flat": {
+        "Financial_Agent": 0.0,
+        "Sentiment_Agent": 0.0
+      },
+      "down": {
+        "Financial_Agent": 0.0,
+        "Sentiment_Agent": 0.0
+      }
+    },
+    "sizing": 0.1,
+    "mean_return": 0.03619501480262144,
+    "mean_sharpe": 0.011731439132983154,
+    "windows": {
+      "bear": {
+        "total_return": -0.1955134112596021,
+        "sharpe": -0.24411772998676404,
+        "direction_accuracy": 0.5,
+        "directional_days": 28
+      },
+      "sideways": {
+        "total_return": 0.09234075357976712,
+        "sharpe": 0.09702221364179064,
+        "direction_accuracy": 0.5714285714285714,
+        "directional_days": 21
+      },
+      "bull": {
+        "total_return": 0.21175770208769928,
+        "sharpe": 0.18228983374392285,
+        "direction_accuracy": 0.5714285714285714,
+        "directional_days": 28
+      }
+    }
+  }
+}

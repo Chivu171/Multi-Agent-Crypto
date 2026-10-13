@@ -1,0 +1,237 @@
+{
+  "selected_on": [
+    "dev_feb_apr",
+    "dev_aug_sep",
+    "dev_dec_jan"
+  ],
+  "not_ok_days": {
+    "dev_feb_apr": 1,
+    "dev_aug_sep": 1,
+    "dev_dec_jan": 0
+  },
+  "baseline_eval_v1": {
+    "mean_return": 0.08596111449510209,
+    "mean_sharpe": 0.062746125096069,
+    "windows": {
+      "dev_feb_apr": {
+        "total_return": 0.22307864605892114,
+        "sharpe": 0.17069743358139414,
+        "direction_accuracy": 0.5,
+        "directional_days": 40
+      },
+      "dev_aug_sep": {
+        "total_return": -0.025341404022818148,
+        "sharpe": -0.04558118872804015,
+        "direction_accuracy": 0.42857142857142855,
+        "directional_days": 21
+      },
+      "dev_dec_jan": {
+        "total_return": 0.06014610144920329,
+        "sharpe": 0.06312213043485301,
+        "direction_accuracy": 0.4166666666666667,
+        "directional_days": 48
+      }
+    }
+  },
+  "filter": {
+    "trend": {
+      "ma": 50,
+      "lookback": 30,
+      "band": 0.05
+    },
+    "mean_return": 0.08486240994145289,
+    "mean_sharpe": 0.05328345030431907,
+    "windows": {
+      "dev_feb_apr": {
+        "total_return": 0.2338897089246632,
+        "sharpe": 0.16239498604844252,
+        "direction_accuracy": 0.43478260869565216,
+        "directional_days": 23
+      },
+      "dev_aug_sep": {
+        "total_return": -0.009720049378445839,
+        "sharpe": -0.03634632298417541,
+        "direction_accuracy": 0.4166666666666667,
+        "directional_days": 12
+      },
+      "dev_dec_jan": {
+        "total_return": 0.030417570278141293,
+        "sharpe": 0.03380168784869011,
+        "direction_accuracy": 0.4375,
+        "directional_days": 32
+      }
+    }
+  },
+  "weights": {
+    "trend": {
+      "ma": 50,
+      "lookback": 20,
+      "band": 0.05
+    },
+    "mult": {
+      "up": {
+        "Financial_Agent": 2.0,
+        "Sentiment_Agent": 2.0
+      },
+      "flat": {
+        "Financial_Agent": 0.0,
+        "Sentiment_Agent": 0.0
+      },
+      "down": {
+        "Financial_Agent": 0.0,
+        "Sentiment_Agent": 0.0
+      }
+    },
+    "mean_return": 0.15968189755198223,
+    "mean_sharpe": 0.11833848929849522,
+    "windows": {
+      "dev_feb_apr": {
+        "total_return": 0.30461039675748425,
+        "sharpe": 0.22048485306172094,
+        "direction_accuracy": 0.5277777777777778,
+        "directional_days": 36
+      },
+      "dev_aug_sep": {
+        "total_return": -0.007384380319745643,
+        "sharpe": -0.008858027302975637,
+        "direction_accuracy": 0.5714285714285714,
+        "directional_days": 14
+      },
+      "dev_dec_jan": {
+        "total_return": 0.18181967621820805,
+        "sharpe": 0.14338864213674038,
+        "direction_accuracy": 0.5294117647058824,
+        "directional_days": 34
+      }
+    }
+  },
+  "both": {
+    "trend": {
+      "ma": 50,
+      "lookback": 20,
+      "band": 0.05
+    },
+    "mult": {
+      "up": {
+        "Financial_Agent": 0.0,
+        "Sentiment_Agent": 2.0
+      },
+      "flat": {
+        "Financial_Agent": 0.0,
+        "Sentiment_Agent": 0.0
+      },
+      "down": {
+        "Financial_Agent": 0.0,
+        "Sentiment_Agent": 0.0
+      }
+    },
+    "mean_return": 0.10835470143335606,
+    "mean_sharpe": 0.08541463906016278,
+    "windows": {
+      "dev_feb_apr": {
+        "total_return": 0.2584797930041942,
+        "sharpe": 0.1990153283329809,
+        "direction_accuracy": 0.55,
+        "directional_days": 20
+      },
+      "dev_aug_sep": {
+        "total_return": -0.0011148730732188916,
+        "sharpe": -0.0007740235618447937,
+        "direction_accuracy": 0.5,
+        "directional_days": 10
+      },
+      "dev_dec_jan": {
+        "total_return": 0.06769918436909284,
+        "sharpe": 0.05800261240935225,
+        "direction_accuracy": 0.5,
+        "directional_days": 24
+      }
+    }
+  },
+  "sizing": {
+    "sizing": 0.5,
+    "mean_return": 0.1091466463706973,
+    "mean_sharpe": 0.08373923008174448,
+    "windows": {
+      "dev_feb_apr": {
+        "total_return": 0.2455216153374189,
+        "sharpe": 0.18716554526557916,
+        "direction_accuracy": 0.5,
+        "directional_days": 40
+      },
+      "dev_aug_sep": {
+        "total_return": -0.01909709130586501,
+        "sharpe": -0.03076191179899739,
+        "direction_accuracy": 0.42857142857142855,
+        "directional_days": 21
+      },
+      "dev_dec_jan": {
+        "total_return": 0.10101541508053802,
+        "sharpe": 0.0948140567786517,
+        "direction_accuracy": 0.4166666666666667,
+        "directional_days": 48
+      }
+    }
+  },
+  "both_sizing": {
+    "trend": {
+      "ma": 50,
+      "lookback": 20,
+      "band": 0.05
+    },
+    "mult": {
+      "up": {
+        "Financial_Agent": 0.0,
+        "Sentiment_Agent": 2.0
+      },
+      "flat": {
+        "Financial_Agent": 0.0,
+        "Sentiment_Agent": 0.0
+      },
+      "down": {
+        "Financial_Agent": 0.0,
+        "Sentiment_Agent": 0.0
+      }
+    },
+    "sizing": 0.1,
+    "mean_return": 0.13147749097436448,
+    "mean_sharpe": 0.10010991057452122,
+    "windows": {
+      "dev_feb_apr": {
+        "total_return": 0.30924700277253736,
+        "sharpe": 0.20365814305179739,
+        "direction_accuracy": 0.55,
+        "directional_days": 20
+      },
+      "dev_aug_sep": {
+        "total_return": 0.008174040901087087,
+        "sharpe": 0.033831367798584824,
+        "direction_accuracy": 0.5,
+        "directional_days": 10
+      },
+      "dev_dec_jan": {
+        "total_return": 0.07701142924946902,
+        "sharpe": 0.06284022087318143,
+        "direction_accuracy": 0.5,
+        "directional_days": 24
+      }
+    }
+  },
+  "regime_counts": {
+    "filter": {
+      "up": 70,
+      "flat": 43,
+      "down": 32
+    },
+    "weights": {
+      "up": 54,
+      "flat": 67,
+      "down": 24
+    },
+    "both": {
+      "up": 54,
+      "flat": 67,
+      "down": 24
+    }
+  }
+}
