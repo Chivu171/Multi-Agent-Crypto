@@ -1,0 +1,19 @@
+{
+  "variant": "full",
+  "profile": "paper",
+  "starting_date": "2023-08-26",
+  "ending_date": "2023-09-30",
+  "total_return": -0.046235790602935145,
+  "sharpe": -0.09276674612570905,
+  "days": 35,
+  "direction_accuracy": 0.38461538461538464,
+  "directional_days": 26,
+  "model": "google/gemma-4-26b-a4b-qat",
+  "reasoning_effort": "none",
+  "new_calls": 0,
+  "cached_calls": 140,
+  "usage": {
+    "prompt_tokens": 0,
+    "completion_tokens": 0
+  }
+}
