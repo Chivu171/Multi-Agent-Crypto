@@ -28,6 +28,11 @@ WINDOWS = {  # BTC test periods from the paper (Table 1)
     "sideways": ("2023-06-17", "2023-08-25"),
     "bull": ("2023-10-01", "2023-12-01"),
 }
+DEV_WINDOWS = {  # dates of the same dataset outside the test periods, for tuning without touching the test set
+    "dev_feb_apr": ("2023-02-20", "2023-04-11"),  # starts once 50 daily opens exist (EMA50 / MA50)
+    "dev_aug_sep": ("2023-08-26", "2023-09-30"),
+    "dev_dec_jan": ("2023-12-02", "2024-01-31"),
+}
 ACTION_PATTERN = re.compile(r"-?(?:0(?:\.\d{1})|1\.0)")
 
 
