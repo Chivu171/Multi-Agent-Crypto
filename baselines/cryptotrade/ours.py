@@ -7,6 +7,9 @@ CryptoTrade env, the agents see:
   three CryptoTrade signals (MA crossover, MACD, Bollinger) computed on D;
 - Financial: the Dune transaction statistics of D-1 with day-over-day change;
 - Sentiment: the news articles of D-1.
+With trend_context (eval-v2-trend) the Market agent also gets the 30-day
+return, the distance of the open from MA50 and how many consecutive opens
+sit on that side of MA50; everything else is unchanged.
 Every item is on its own line so Debate/RCA can cite it. Signals map to
 actions BUY=+0.5, SELL=-0.5, NEUTRAL=0 (the paper's rule-baseline sizing).
 When a Debate/RCA explanation is rejected the rolled-back decision is still
@@ -63,7 +66,23 @@ def signal_of(s_final):
     return "NEUTRAL"
 
 
-def build_inputs(date, prices=None, txn_stats=None, data_dir=DATA_DIR):
+def trend_lines(prices, index):
+    """Longer-horizon trend of the opens up to prices[index] (no later data)."""
+    all_opens = np.array([d["open"] for d in prices[: index + 1]])
+    ma50 = lambda i: all_opens[i - 49: i + 1].mean()  # noqa: E731
+    price, base = all_opens[index], prices[index - 30]
+    above = price > ma50(index)
+    run, i = 0, index
+    while i >= 49 and (all_opens[i] > ma50(i)) == above:
+        run, i = run + 1, i - 1
+    count = f"{run}" if i >= 49 else f"at least {run}"
+    return [f"Return over the last 30 days (open {base['date']} to {prices[index]['date']}): "
+            f"{(price / base['open'] - 1) * 100:+.2f}%",
+            f"MA50 of daily opens: {ma50(index):.2f}; latest open is {(price / ma50(index) - 1) * 100:+.2f}% from MA50",
+            f"Consecutive daily opens {'above' if above else 'below'} MA50: {count}"]
+
+
+def build_inputs(date, prices=None, txn_stats=None, data_dir=DATA_DIR, trend_context=False):
     """Agent inputs for a decision at the open of `date` (YYYY-MM-DD)."""
     prices = prices or load_prices(data_dir)
     txn_stats = txn_stats or load_txn_stats(data_dir)
@@ -80,6 +99,8 @@ def build_inputs(date, prices=None, txn_stats=None, data_dir=DATA_DIR):
     market_lines += [f"Open {d['date']}: {d['open']:.2f}" for d in prices[max(0, index - 6): index + 1]]
     market_lines += [f"EMA20 of daily opens: {_ema(opens, 20):.2f}", f"EMA50 of daily opens: {_ema(opens, 50):.2f}",
                      f"RSI14 of daily opens: {rsi14:.2f}"]
+    if trend_context:
+        market_lines += trend_lines(prices, index)
     market_lines += [f"{k}: {v}" for k, v in signals.items()]
     market = {"summary_text": "\n".join(market_lines), "price": day["open"], "rsi14": rsi14,
               "technical": signals, "fetched_at": _midnight(date).isoformat(), "source": SOURCES["market"]}
@@ -230,7 +251,7 @@ def ablations(days):
 
 
 def run_window(window_dates, out_dir, threshold=DEFAULT_CONFLICT_THRESHOLD, day_budget=900, limit_days=None,
-               log=print):
+               log=print, trend_context=False):
     out_dir = Path(out_dir)
     (out_dir / "days").mkdir(parents=True, exist_ok=True)
     stats = install_call_cache(out_dir / "calls")
@@ -242,7 +263,8 @@ def run_window(window_dates, out_dir, threshold=DEFAULT_CONFLICT_THRESHOLD, day_
             continue
         started = time.monotonic()
         try:
-            day = decide_day(date, build_inputs(date, prices, txn_stats), threshold, day_budget)
+            day = decide_day(date, build_inputs(date, prices, txn_stats, trend_context=trend_context), threshold,
+                             day_budget)
         except ValueError as exc:
             day = {"date": date, "status": "data_error", "reason": str(exc), "action": 0.0}
         day["elapsed_seconds"] = round(time.monotonic() - started, 1)
@@ -261,7 +283,8 @@ def run_window(window_dates, out_dir, threshold=DEFAULT_CONFLICT_THRESHOLD, day_
     statuses = {}
     for day in days.values():
         statuses[day["status"]] = statuses.get(day["status"], 0) + 1
-    summary = {"window": list(window_dates), "threshold": threshold, "trading_days": len(trading_days),
+    summary = {"window": list(window_dates), "threshold": threshold, "trend_context": trend_context,
+               "trading_days": len(trading_days),
                "decided_days": len(days), "status_counts": statuses,
                "debate_days": sum(bool((d.get("validation") or {}).get("conflict_detected")) for d in days.values()),
                "explanation_rejected_days": sum(not d.get("explanations_valid", True) for d in days.values()),

@@ -130,3 +130,23 @@ def test_run_window_resumes_without_new_calls(provider, tmp_path, monkeypatch):
     assert set(summary["results"]) == {"market_only", "market_financial", "market_sentiment", "no_debate", "full"}
     ours.run_window(("2023-10-01", "2023-10-06"), tmp_path, limit_days=2, log=lambda m: None)
     assert calls["n"] == first  # finished days are not recomputed
+
+
+def test_trend_context_adds_only_past_trend_lines_to_market():
+    base = ours.build_inputs("2023-10-10")
+    trend = ours.build_inputs("2023-10-10", trend_context=True)
+    extra = [l for l in trend["market"]["summary_text"].splitlines()
+             if l not in base["market"]["summary_text"].splitlines()]
+    assert [l.split()[0] for l in extra] == ["Return", "MA50", "Consecutive"]
+    assert "2023-10-10" in extra[0] and "2023-10-11" not in trend["market"]["summary_text"]
+    for role in ("financial", "sentiment"):
+        assert trend[role] == base[role]
+
+
+def test_trend_lines_use_opens_up_to_the_decision_day():
+    prices = ours.load_prices()
+    index = next(i for i, d in enumerate(prices) if d["date"] == "2023-10-10")
+    changed = [dict(d) for d in prices]
+    for d in changed[index + 1:]:
+        d["open"] *= 3
+    assert ours.trend_lines(changed, index) == ours.trend_lines(prices, index)
