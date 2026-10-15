@@ -41,6 +41,12 @@ DEBATE_ROUNDS = 2
 DEBATE_CONFIDENCE_DECAY_ALPHA = 0.35
 """Tốc độ suy giảm confidence của agent bị phản bác trong mỗi vòng debate."""
 
+DEBATE_FLIP_MIN_REBUTTAL = 0.65
+"""Chỉ khi bật đổi hướng (eval-v2-debate): agent chỉ được đổi tín hiệu khi cường độ
+phản biện đạt mức này. Trên dev eval-v1 cường độ tụ ở ~0,58 (các agent khác cùng
+phía hoặc trung lập), ~0,69 (một agent ngược phía) và ~0,80 (cả hai ngược phía);
+0,65 loại nhóm thấp nhất. Đặt trước khi chạy, không chọn trên tập kiểm thử."""
+
 # ---- main.py: quyết định tín hiệu cuối cùng từ S_final ----
 SIGNAL_NEUTRAL_BAND = 0.05
 """|S_final| dưới mức này -> NEUTRAL; trên mức -> BUY (dương) / SELL (âm)."""

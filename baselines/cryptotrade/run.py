@@ -34,6 +34,8 @@ def main():
                         help="ours: Market agent also sees 30-day return and MA50 distance/run (eval-v2-trend)")
     parser.add_argument("--debias", action="store_true",
                         help="ours: Sentiment compares with earlier headlines, Market asked not to lean (eval-v2-bias)")
+    parser.add_argument("--debate-flip", action="store_true",
+                        help="ours: agents may change signal in Debate on a strong, verified rebuttal (eval-v2-debate)")
     args = parser.parse_args()
     start, end = {**WINDOWS, **DEV_WINDOWS}[args.window]
     out = OUT / args.window
@@ -56,10 +58,11 @@ def main():
         suffix = "" if threshold == DEFAULT_CONFLICT_THRESHOLD else f"_t{threshold:g}"
         suffix += "_trend" if args.trend_context else ""
         suffix += "_debias" if args.debias else ""
+        suffix += "_flip" if args.debate_flip else ""
         summary = run_window((start, end), out / f"ours{suffix}__{model}", threshold, args.day_budget,
                              args.limit_days, log=lambda m: print(m, flush=True), trend_context=args.trend_context,
-                             debias=args.debias)
-        print(json.dumps({k: summary[k] for k in ("status_counts", "debate_days", "explanation_rejected_days",
+                             debias=args.debias, debate_flip=args.debate_flip)
+        print(json.dumps({k: summary[k] for k in ("status_counts", "debate_days", "debate_flips", "explanation_rejected_days",
                                                    "results")}, indent=2))
         return
 

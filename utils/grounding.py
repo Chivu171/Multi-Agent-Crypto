@@ -159,13 +159,16 @@ def request_grounded_claims(task, registry, *, agent_name, ask):
         prompt = json.dumps({"task": task, "evidence": generation_registry, "retry_feedback": feedback}, ensure_ascii=False)
         raw = ask(prompt, agent_name=agent_name, system=GROUNDING_SYSTEM_PROMPT)
         try:
-            claims = validate_citations(parse_json_response(raw), registry)
+            payload = parse_json_response(raw)
+            claims = validate_citations(payload, registry)
         except ValueError as exc:
             reject_last_response(str(exc))
             feedback = str(exc)
             record.update(error=feedback, kind=response_error_kind(exc) if isinstance(exc, LLMResponseError) else "citation")
             continue
         record.update(claims=claims, stage="review")
+        if "signal" in payload:  # optional stance, only requested by a flip-enabled debate
+            record["signal"] = payload["signal"]
         review_prompt = json.dumps({"claims": claims, "evidence": registry}, ensure_ascii=False)
         checks = request_review(ask, review_prompt, REVIEW_SYSTEM_PROMPT, len(claims), record)
         if checks is None:

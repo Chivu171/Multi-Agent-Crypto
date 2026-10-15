@@ -8,8 +8,18 @@ from typing import List, Dict, Any
 
 from utils.debate_buffer import DebateBuffer
 from utils.confidence import update_confidence
-from utils.thresholds import DEBATE_CONFIDENCE_DECAY_ALPHA, DEBATE_ROUNDS
+from utils.thresholds import DEBATE_CONFIDENCE_DECAY_ALPHA, DEBATE_FLIP_MIN_REBUTTAL, DEBATE_ROUNDS
 from utils.grounding import build_evidence_registry, request_grounded_claims, render_claims, GroundingError
+
+
+SIGNAL_DIRECTION = {"BUY": 1, "SELL": -1, "NEUTRAL": 0}
+
+# The stance goes first: placed after "claims" the model often closed the list twice ("]]").
+FLIP_TASK_NOTE = (
+    'Sau khi cân nhắc phản biện, nêu lập trường của bạn trong trường "signal" (BUY, SELL hoặc NEUTRAL), đặt TRƯỚC '
+    '"claims": {"signal":"BUY|SELL|NEUTRAL","claims":[...]}. Bạn có thể giữ hoặc đổi tín hiệu hiện tại; chỉ đổi khi '
+    'các claims có nguồn của bạn ủng hộ lập trường mới.'
+)
 
 
 def _cosine_distance(v1: np.ndarray, v2: np.ndarray) -> float:
@@ -74,10 +84,16 @@ class DebateAgent:
         Scaling factor used in the confidence update function (passed to utils.update_confidence).
     weights: tuple of three floats
         Weighting for belief divergence, evidence contradiction, and logic‑path distance.
+    allow_flip: bool
+        eval-v2-debate: an agent may change its signal when the rebuttal strength is at least
+        DEBATE_FLIP_MIN_REBUTTAL and its new explanation passes the source check. Off by
+        default, in which case the prompts and the decision are exactly those of eval-v1.
     """
 
-    def __init__(self, rounds: int = DEBATE_ROUNDS, alpha: float = DEBATE_CONFIDENCE_DECAY_ALPHA, weights: tuple = (1/3, 1/3, 1/3)):
+    def __init__(self, rounds: int = DEBATE_ROUNDS, alpha: float = DEBATE_CONFIDENCE_DECAY_ALPHA, weights: tuple = (1/3, 1/3, 1/3),
+                 allow_flip: bool = False):
         self.rounds = rounds
+        self.allow_flip = allow_flip
         self.alpha = alpha
         self.w_belief, self.w_evidence, self.w_logic = weights
         self.buffer = DebateBuffer()
@@ -182,6 +198,8 @@ class DebateAgent:
                     f"Phân biệt dữ kiện, suy luận và giả thuyết. Nêu cả cơ sở và giới hạn của tín hiệu hiện tại. "
                     f"Trả 1-3 claims theo schema, mỗi claim có citations với evidence_id và quote_id do code cung cấp."
                 )
+                if self.allow_flip:
+                    prompt += " " + FLIP_TASK_NOTE
 
                 new_out = deepcopy(out)
                 try:
@@ -192,6 +210,14 @@ class DebateAgent:
                     new_out["logic_path"] = {"steps": render_claims(claims)}
                     new_out["grounded_claims"] = claims
                     new_out["belief_vector"]["strength"] = round(conf, 3)
+                    stance = str(audit["attempts"][-1].get("signal", "")).strip().upper()
+                    if (self.allow_flip and rebuttal >= DEBATE_FLIP_MIN_REBUTTAL
+                            and stance in SIGNAL_DIRECTION and stance != out.get("signal")):
+                        new_out["signal"] = stance
+                        new_out["belief_vector"]["direction"] = SIGNAL_DIRECTION[stance]
+                        new_out.setdefault("debate_flips", []).append(
+                            {"round": rnd, "from": out.get("signal"), "to": stance, "rebuttal": round(rebuttal, 3)})
+                        print(f"  [{agent_id}] Round {rnd}: đổi tín hiệu {out.get('signal')} → {stance}")
                 except GroundingError as exc:
                     audit = exc.audit
                     # Reject the whole update, including confidence and strength.

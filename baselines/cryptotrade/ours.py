@@ -14,6 +14,9 @@ With debias (eval-v2-bias) the Sentiment agent also gets the headlines of
 the EARLIER_NEWS_DAYS days before its news day and is asked whether
 sentiment changed (crypto news is usually upbeat, so the usual upbeat tone
 is not a BUY), and the Market agent is asked not to lean either way.
+With debate_flip (eval-v2-debate) an agent in Debate may change its signal
+when the rebuttal is strong (DEBATE_FLIP_MIN_REBUTTAL) and its new
+explanation passes the source check; otherwise Debate only lowers confidence.
 Every item is on its own line so Debate/RCA can cite it. Signals map to
 actions BUY=+0.5, SELL=-0.5, NEUTRAL=0 (the paper's rule-baseline sizing).
 When a Debate/RCA explanation is rejected the rolled-back decision is still
@@ -160,7 +163,7 @@ def build_inputs(date, prices=None, txn_stats=None, data_dir=DATA_DIR, trend_con
     return {"financial": financial, "market": market, "sentiment": sentiment}
 
 
-def decide_day(date, inputs, threshold=DEFAULT_CONFLICT_THRESHOLD, day_budget=900):
+def decide_day(date, inputs, threshold=DEFAULT_CONFLICT_THRESHOLD, day_budget=900, debate_flip=False):
     """Run specialists -> Conflict Analyzer/Debate -> Mediator for one day."""
     ref = _midnight(date)
     result = {"date": date, "status": "error", "action": 0.0, "errors": [], "explanations_valid": True}
@@ -180,7 +183,7 @@ def decide_day(date, inputs, threshold=DEFAULT_CONFLICT_THRESHOLD, day_budget=90
             result.update(status=first["status"], reason=first["reason"])
             return result
         try:
-            validation = ConflictAnalyzer(threshold=threshold).evaluate_pipeline(outputs)
+            validation = ConflictAnalyzer(threshold=threshold, debate_flip=debate_flip).evaluate_pipeline(outputs)
         except Exception as exc:
             failure = describe_failure(exc, stage="conflict_analyzer")
             result["errors"].append(failure)
@@ -279,7 +282,7 @@ def ablations(days):
 
 
 def run_window(window_dates, out_dir, threshold=DEFAULT_CONFLICT_THRESHOLD, day_budget=900, limit_days=None,
-               log=print, trend_context=False, debias=False):
+               log=print, trend_context=False, debias=False, debate_flip=False):
     out_dir = Path(out_dir)
     (out_dir / "days").mkdir(parents=True, exist_ok=True)
     stats = install_call_cache(out_dir / "calls")
@@ -292,7 +295,7 @@ def run_window(window_dates, out_dir, threshold=DEFAULT_CONFLICT_THRESHOLD, day_
         started = time.monotonic()
         try:
             day = decide_day(date, build_inputs(date, prices, txn_stats, trend_context=trend_context, debias=debias),
-                             threshold, day_budget)
+                             threshold, day_budget, debate_flip)
         except ValueError as exc:
             day = {"date": date, "status": "data_error", "reason": str(exc), "action": 0.0}
         day["elapsed_seconds"] = round(time.monotonic() - started, 1)
@@ -312,9 +315,12 @@ def run_window(window_dates, out_dir, threshold=DEFAULT_CONFLICT_THRESHOLD, day_
     for day in days.values():
         statuses[day["status"]] = statuses.get(day["status"], 0) + 1
     summary = {"window": list(window_dates), "threshold": threshold, "trend_context": trend_context, "debias": debias,
+               "debate_flip": debate_flip,
                "trading_days": len(trading_days),
                "decided_days": len(days), "status_counts": statuses,
                "debate_days": sum(bool((d.get("validation") or {}).get("conflict_detected")) for d in days.values()),
+               "debate_flips": sum(len(o.get("debate_flips", [])) for d in days.values()
+                                   for o in (d.get("validation") or {}).get("debate_updated_outputs") or []),
                "explanation_rejected_days": sum(not d.get("explanations_valid", True) for d in days.values()),
                "models": {role: llm.get_agent_config(role)["model"]
                           for role in ("financial", "market", "sentiment", "conflict_analyzer", "debate", "grounding")},

@@ -190,3 +190,40 @@ def test_full_pipeline_reports_grounding_failures(extreme_conflict_output):
 def test_history_is_not_cut_to_120_characters(extreme_conflict_output):
     extreme_conflict_output[0]["logic_path"] = {"steps": ["x"*200 + " final caveat"]}
     assert "final caveat" in DebateAgent._build_debate_history(1, extreme_conflict_output)
+
+
+def stance_ask(signal):
+    def ask(prompt, *, agent_name, **kwargs):
+        reply = json.loads(supported_ask(prompt, agent_name=agent_name))
+        return json.dumps(reply if agent_name == "grounding" else {**reply, "signal": signal})
+    return ask
+
+
+def test_flip_is_off_by_default_and_prompt_unchanged(extreme_conflict_output):
+    with patch("agents.debate_agent.ask_llm", side_effect=stance_ask("NEUTRAL")) as ask:
+        output = DebateAgent(rounds=2).run_debate(extreme_conflict_output)
+    assert all('"signal"' not in json.loads(c.args[0])["task"] for c in ask.call_args_list
+               if c.kwargs["agent_name"] == "debate")
+    for before, after in zip(extreme_conflict_output, output):
+        assert (after["signal"], after["belief_vector"]["direction"]) == (before["signal"], before["belief_vector"]["direction"])
+        assert "debate_flips" not in after
+
+
+def test_flip_changes_signal_after_strong_verified_rebuttal(extreme_conflict_output):
+    with patch("agents.debate_agent.ask_llm", side_effect=stance_ask("neutral")), \
+         patch.object(DebateAgent, "_rebuttal_strength", return_value=0.8):
+        output = DebateAgent(rounds=2, allow_flip=True).run_debate(extreme_conflict_output)
+    for before, after in zip(extreme_conflict_output, output):
+        assert after["signal"] == "NEUTRAL" and after["belief_vector"]["direction"] == 0
+        assert [(f["round"], f["from"], f["to"]) for f in after["debate_flips"]] == [(1, before["signal"], "NEUTRAL")]
+
+
+def test_no_flip_on_weak_rebuttal_or_rejected_explanation(extreme_conflict_output):
+    with patch("agents.debate_agent.ask_llm", side_effect=stance_ask("SELL")), \
+         patch.object(DebateAgent, "_rebuttal_strength", return_value=0.6):
+        weak = DebateAgent(rounds=1, allow_flip=True).run_debate(extreme_conflict_output)
+    with patch("agents.debate_agent.ask_llm", return_value='{"claims":[],"signal":"SELL"}'):
+        rejected = DebateAgent(rounds=1, allow_flip=True).run_debate(extreme_conflict_output)
+    for before, a, b in zip(extreme_conflict_output, weak, rejected):
+        assert a["signal"] == b["signal"] == before["signal"]
+        assert a["belief_vector"]["direction"] == b["belief_vector"]["direction"] == before["belief_vector"]["direction"]

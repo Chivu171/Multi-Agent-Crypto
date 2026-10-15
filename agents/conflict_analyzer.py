@@ -21,15 +21,18 @@ from agents.debate_agent import DebateAgent
 from utils.grounding import build_evidence_registry, request_grounded_claims, render_claims, GroundingError
 
 class ConflictAnalyzer:
-    def __init__(self, alpha: float = DEFAULT_CONFLICT_ALPHA, threshold: float = DEFAULT_CONFLICT_THRESHOLD, use_llm: bool = True):
+    def __init__(self, alpha: float = DEFAULT_CONFLICT_ALPHA, threshold: float = DEFAULT_CONFLICT_THRESHOLD, use_llm: bool = True,
+                 debate_flip: bool = False):
         """
         Alpha: Trọng số cân bằng giữa KL Divergence (Học thuật) và Variance (Thực nghiệm)
         Threshold: Ngưỡng biên kích hoạt vòng tranh luận (Conditional Debate Trigger)
         use_llm: Cờ cho phép gọi mô hình ngôn ngữ lớn để chạy Root Cause Analysis
+        debate_flip: Cho phép agent đổi tín hiệu trong Debate (eval-v2-debate)
         """
         self.alpha = alpha
         self.threshold = threshold
         self.use_llm = use_llm
+        self.debate_flip = debate_flip
         self.rca_grounding = {"status": "not_run"}
 
     def _kl_divergence(self, p: np.ndarray, q: np.ndarray) -> float:
@@ -210,7 +213,8 @@ class ConflictAnalyzer:
             print("\n[Step 3] Khởi chạy Debate Module...")
 
             # Instantiate DebateAgent — alpha thấp để tránh confidence decay quá mạnh
-            debate_agent = DebateAgent(rounds=DEBATE_ROUNDS, alpha=DEBATE_CONFIDENCE_DECAY_ALPHA)
+            debate_agent = DebateAgent(rounds=DEBATE_ROUNDS, alpha=DEBATE_CONFIDENCE_DECAY_ALPHA,
+                                       allow_flip=self.debate_flip)
             debate_updated_outputs = debate_agent.run_debate(agents_output)
             statuses = [item["status"] for out in debate_updated_outputs for item in out.get("debate_audit", [])]
             debate_status = ("accepted" if statuses and all(s == "accepted" for s in statuses)
