@@ -150,3 +150,33 @@ def test_trend_lines_use_opens_up_to_the_decision_day():
     for d in changed[index + 1:]:
         d["open"] *= 3
     assert ours.trend_lines(changed, index) == ours.trend_lines(prices, index)
+
+
+def test_debias_adds_earlier_headlines_and_notes_only():
+    base = ours.build_inputs("2023-10-10")
+    debiased = ours.build_inputs("2023-10-10", debias=True)
+    base_lines = base["sentiment"]["summary_text"].splitlines()
+    lines = debiased["sentiment"]["summary_text"].splitlines()
+    assert lines[: len(base_lines)] == base_lines
+    earlier = lines[len(base_lines):]
+    assert earlier and all(l.startswith("Earlier | ") for l in earlier)
+    assert {l.split(" | ")[1] for l in earlier} <= {"2023-10-06", "2023-10-07", "2023-10-08"}
+    assert debiased["sentiment"]["task_note"] and debiased["market"]["task_note"]
+    assert "task_note" not in base["sentiment"] and "task_note" not in base["market"]
+    assert debiased["financial"] == base["financial"]
+    assert {k: v for k, v in debiased["market"].items() if k != "task_note"} == base["market"]
+
+
+def test_task_note_goes_before_the_quoted_data(monkeypatch):
+    from agents import sentiment_agent
+    seen = {}
+
+    def fake(prompt, **kwargs):
+        seen["prompt"] = prompt
+        raise RuntimeError("stop")
+
+    monkeypatch.setattr(sentiment_agent, "request_specialist_response", fake)
+    data = ours.build_inputs("2023-10-10", debias=True)["sentiment"]
+    with pytest.raises(RuntimeError):
+        sentiment_agent.run(data)
+    assert seen["prompt"].index(ours.SENTIMENT_DEBIAS_NOTE) < seen["prompt"].index("DỮ LIỆU TRÍCH DẪN")

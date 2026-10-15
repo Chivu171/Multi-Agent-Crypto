@@ -10,6 +10,10 @@ CryptoTrade env, the agents see:
 With trend_context (eval-v2-trend) the Market agent also gets the 30-day
 return, the distance of the open from MA50 and how many consecutive opens
 sit on that side of MA50; everything else is unchanged.
+With debias (eval-v2-bias) the Sentiment agent also gets the headlines of
+the EARLIER_NEWS_DAYS days before its news day and is asked whether
+sentiment changed (crypto news is usually upbeat, so the usual upbeat tone
+is not a BUY), and the Market agent is asked not to lean either way.
 Every item is on its own line so Debate/RCA can cite it. Signals map to
 actions BUY=+0.5, SELL=-0.5, NEUTRAL=0 (the paper's rule-baseline sizing).
 When a Debate/RCA explanation is rejected the rolled-back decision is still
@@ -50,6 +54,19 @@ SOURCES = {
 }
 
 
+EARLIER_NEWS_DAYS = 3
+SENTIMENT_DEBIAS_NOTE = (
+    "Lưu ý về mức nền: tin tức crypto thường mang giọng lạc quan, nên mức lạc quan thông thường KHÔNG phải tín hiệu "
+    "mua. Hãy so tin của ngày trước quyết định với các tiêu đề của những ngày trước đó (dòng 'Earlier'): chọn BUY "
+    "chỉ khi tâm lý tốt lên rõ rệt hoặc có sự kiện tích cực mới; chọn SELL khi tâm lý xấu đi hoặc có sự kiện tiêu "
+    "cực mới; chọn NEUTRAL khi tin chủ yếu lặp lại các câu chuyện đã có."
+)
+MARKET_DEBIAS_NOTE = (
+    "Lưu ý cân bằng: không mặc định thiên về bán hay mua. Chỉ chọn BUY hoặc SELL khi đa số chỉ báo được cung cấp "
+    "cùng chiều; nếu các chỉ báo mâu thuẫn nhau thì chọn NEUTRAL."
+)
+
+
 def _midnight(date):
     return dt.datetime.fromisoformat(date).replace(tzinfo=dt.timezone.utc)
 
@@ -82,7 +99,7 @@ def trend_lines(prices, index):
             f"Consecutive daily opens {'above' if above else 'below'} MA50: {count}"]
 
 
-def build_inputs(date, prices=None, txn_stats=None, data_dir=DATA_DIR, trend_context=False):
+def build_inputs(date, prices=None, txn_stats=None, data_dir=DATA_DIR, trend_context=False, debias=False):
     """Agent inputs for a decision at the open of `date` (YYYY-MM-DD)."""
     prices = prices or load_prices(data_dir)
     txn_stats = txn_stats or load_txn_stats(data_dir)
@@ -127,8 +144,19 @@ def build_inputs(date, prices=None, txn_stats=None, data_dir=DATA_DIR, trend_con
             sentiment_lines.append(f"Article {i} | {_one_line(n['time'])} | {_one_line(n['title'])}")
             sentences = re.split(r"(?<=[.!?])\s+", _one_line(n["content"]))
             sentiment_lines += [s for s in sentences if s]
+    if debias:
+        for back in range(EARLIER_NEWS_DAYS, 0, -1):
+            day_before = (dt.date.fromisoformat(previous) - dt.timedelta(days=back)).isoformat()
+            earlier = load_news(day_before, data_dir)
+            if earlier == "N/A":
+                sentiment_lines.append(f"Earlier | {day_before} | no articles")
+                continue
+            sentiment_lines += [f"Earlier | {day_before} | {_one_line(n['title'])}" for n in earlier]
     sentiment = {"summary_text": "\n".join(sentiment_lines), "fetched_at": _midnight(previous).isoformat(),
                  "source": SOURCES["sentiment"]}
+    if debias:
+        sentiment["task_note"] = SENTIMENT_DEBIAS_NOTE
+        market["task_note"] = MARKET_DEBIAS_NOTE
     return {"financial": financial, "market": market, "sentiment": sentiment}
 
 
@@ -251,7 +279,7 @@ def ablations(days):
 
 
 def run_window(window_dates, out_dir, threshold=DEFAULT_CONFLICT_THRESHOLD, day_budget=900, limit_days=None,
-               log=print, trend_context=False):
+               log=print, trend_context=False, debias=False):
     out_dir = Path(out_dir)
     (out_dir / "days").mkdir(parents=True, exist_ok=True)
     stats = install_call_cache(out_dir / "calls")
@@ -263,8 +291,8 @@ def run_window(window_dates, out_dir, threshold=DEFAULT_CONFLICT_THRESHOLD, day_
             continue
         started = time.monotonic()
         try:
-            day = decide_day(date, build_inputs(date, prices, txn_stats, trend_context=trend_context), threshold,
-                             day_budget)
+            day = decide_day(date, build_inputs(date, prices, txn_stats, trend_context=trend_context, debias=debias),
+                             threshold, day_budget)
         except ValueError as exc:
             day = {"date": date, "status": "data_error", "reason": str(exc), "action": 0.0}
         day["elapsed_seconds"] = round(time.monotonic() - started, 1)
@@ -283,7 +311,7 @@ def run_window(window_dates, out_dir, threshold=DEFAULT_CONFLICT_THRESHOLD, day_
     statuses = {}
     for day in days.values():
         statuses[day["status"]] = statuses.get(day["status"], 0) + 1
-    summary = {"window": list(window_dates), "threshold": threshold, "trend_context": trend_context,
+    summary = {"window": list(window_dates), "threshold": threshold, "trend_context": trend_context, "debias": debias,
                "trading_days": len(trading_days),
                "decided_days": len(days), "status_counts": statuses,
                "debate_days": sum(bool((d.get("validation") or {}).get("conflict_detected")) for d in days.values()),

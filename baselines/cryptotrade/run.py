@@ -32,6 +32,8 @@ def main():
     parser.add_argument("--limit-days", type=int, help="ours: only the first N trading days (pilot)")
     parser.add_argument("--trend-context", action="store_true",
                         help="ours: Market agent also sees 30-day return and MA50 distance/run (eval-v2-trend)")
+    parser.add_argument("--debias", action="store_true",
+                        help="ours: Sentiment compares with earlier headlines, Market asked not to lean (eval-v2-bias)")
     args = parser.parse_args()
     start, end = {**WINDOWS, **DEV_WINDOWS}[args.window]
     out = OUT / args.window
@@ -53,8 +55,10 @@ def main():
         threshold = DEFAULT_CONFLICT_THRESHOLD if args.threshold is None else args.threshold
         suffix = "" if threshold == DEFAULT_CONFLICT_THRESHOLD else f"_t{threshold:g}"
         suffix += "_trend" if args.trend_context else ""
+        suffix += "_debias" if args.debias else ""
         summary = run_window((start, end), out / f"ours{suffix}__{model}", threshold, args.day_budget,
-                             args.limit_days, log=lambda m: print(m, flush=True), trend_context=args.trend_context)
+                             args.limit_days, log=lambda m: print(m, flush=True), trend_context=args.trend_context,
+                             debias=args.debias)
         print(json.dumps({k: summary[k] for k in ("status_counts", "debate_days", "explanation_rejected_days",
                                                    "results")}, indent=2))
         return
