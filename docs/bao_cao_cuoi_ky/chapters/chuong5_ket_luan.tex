@@ -8,24 +8,33 @@ cao, hệ thống phân tích nguyên nhân gốc và tổ chức tranh biện c
 chứng với CryptoTrade, một baseline đã công bố tại EMNLP 2024, được cài đặt lại và kiểm chứng khớp với mã nguồn gốc,
 trên cùng dữ liệu, cùng môi trường giao dịch và cùng mô hình ngôn ngữ chạy cục bộ.
 
-Câu trả lời cho ba câu hỏi nghiên cứu:
+Câu trả lời cho bốn câu hỏi nghiên cứu:
 \begin{description}[leftmargin=1.2cm,style=nextline]
-  \item[RQ1] Ở dạng hiện tại, hệ thống đề xuất (+0,38\% trung bình) chưa vượt CryptoTrade đầy đủ (+5,71\%), dù vượt
-  phiên bản CryptoTrade chỉ dùng dữ liệu thị trường ($-$3,35\%). Tỷ lệ dự đoán đúng hướng tương đương CryptoTrade; chênh
-  lệch lợi suất chủ yếu đến từ mức vào lệnh cố định.
-  \item[RQ2] Giá trị của từng nguồn đổi dấu theo giai đoạn thị trường: tin tức hữu ích khi giá tăng, on-chain hữu ích
-  khi đi ngang, và cả hai làm kết quả xấu đi khi giá giảm.
+  \item[RQ1] Hệ thống đề xuất chưa vượt CryptoTrade đầy đủ, cả trên tập kiểm thử (+0,38\% so với +5,71\%) lẫn trên tập
+  phát triển gồm 145 ngày khác (+8,60\% so với +11,95\%); nó xấp xỉ phiên bản CryptoTrade chỉ dùng dữ liệu thị trường.
+  Thứ hạng lặp lại trên hai tập dữ liệu nên đây là kết luận ổn định.
+  \item[RQ2] Trên tập kiểm thử, giá trị của từng nguồn đổi dấu theo giai đoạn thị trường, nhưng quy luật này không lặp
+  lại trên tập phát triển. Đo trực tiếp, cả ba agent đoán hướng gần như ngẫu nhiên (45--48\%) và bị lệch phe: Sentiment
+  Agent nói BUY khoảng 80\% số lần, Market Agent nghiêng về SELL.
   \item[RQ3] Tranh biện giảm mức mâu thuẫn từ khoảng 0,61 xuống 0,22 và không làm kết quả xấu đi, nhưng chỉ đổi 11
   trên 195 quyết định và chỉ theo hướng đứng ngoài thị trường, do thiết kế không cho phép agent đổi hướng.
+  \item[RQ4] Không cải tiến nào vượt CryptoTrade theo đúng quy trình chọn trên tập phát triển. Trọng số theo xu hướng tốt
+  nhất trên tập phát triển nhưng không giữ được trên tập kiểm thử; bộ lọc xu hướng vượt CryptoTrade trên tập kiểm thử
+  nhưng thua trên tập phát triển với mọi tham số; thông tin xu hướng dài hạn và hiệu chỉnh độ lệch (cả trừ mức nền lẫn sửa lời nhắc)
+  không làm agent đoán đúng hơn; sửa lời nhắc còn làm kết quả trên tập phát triển xấu đi.
 \end{description}
 
 Các kết quả này cho thấy việc xử lý mâu thuẫn tường minh có tác dụng giảm rủi ro và tăng khả năng giải thích (mỗi lập
-luận đều có nguồn kiểm chứng được), nhưng để cải thiện lợi suất, hệ thống cần biết \emph{khi nào nên tin nguồn nào}
-thay vì dùng trọng số cố định.
+luận đều có nguồn kiểm chứng được), nhưng chưa cải thiện được lợi suất. Hạn chế chính không nằm ở cách tổng hợp mà ở chất
+lượng nhận định của từng agent: khi mỗi tín hiệu gần như không chứa thông tin về giá ngày hôm sau, mọi cách điều chỉnh
+trọng số hay mức vào lệnh chỉ thay đổi mức tiếp xúc với thị trường, và kết quả phụ thuộc vào giai đoạn được đánh giá.
 
 \section{Hạn chế}
 \begin{itemize}
-  \item Đánh giá trên một tài sản, một mô hình ngôn ngữ và ba giai đoạn ngắn; chưa có kiểm định ý nghĩa thống kê.
+  \item Đánh giá trên một tài sản, một mô hình ngôn ngữ, ba giai đoạn kiểm thử và ba đoạn phát triển ngắn; chưa có kiểm
+  định ý nghĩa thống kê cho chênh lệch lợi suất.
+  \item Tập kiểm thử được dùng để đánh giá nhiều biến thể; mọi kết quả đều được báo cáo nhưng rủi ro chọn lọc vẫn còn.
+  \item Chưa chứng minh được giá trị của việc dùng ba agent so với chỉ dùng Market Agent.
   \item Các tham số của Conflict Analyzer, tranh biện và Mediator chưa được hiệu chỉnh trên dữ liệu.
   \item Hệ số phạt thời gian trong Mediator vô tình làm giảm khoảng 60\% trọng số của on-chain và tin tức so với dữ liệu
   giá (Mục~\ref{sec:mediator}).
@@ -33,22 +42,19 @@ thay vì dùng trọng số cố định.
 \end{itemize}
 
 \section{Hướng phát triển}
-\paragraph{Trong ngắn hạn (đang thực hiện).} Xây dựng một bộ nhận diện xu hướng chỉ dựa trên dữ liệu giá tới ngày $D-1$
-(ví dụ giá so với MA50, lợi suất 20--30 ngày) và dùng cho hai mục đích:
-\begin{enumerate}
-  \item \textbf{Trọng số agent theo xu hướng}: Mediator điều chỉnh mức ảnh hưởng của từng agent theo giai đoạn tăng,
-  giảm hoặc đi ngang, khai thác trực tiếp phát hiện của RQ2. Hướng này gần với Market Regime Council~\cite{mrc2026};
-  điểm khác là đề tài kết hợp trọng số theo xu hướng với cơ chế phát hiện và giải thích mâu thuẫn.
-  \item \textbf{Bộ lọc xu hướng}: chặn tín hiệu đi ngược xu hướng rõ ràng.
-\end{enumerate}
-Để tránh khớp quá mức với tập kiểm thử, tham số sẽ được chọn trên khoảng 150 ngày dữ liệu CryptoTrade chưa sử dụng, sau
-đó mới đánh giá trên ba giai đoạn kiểm thử, và kết quả của mọi biến thể đều được báo cáo. Cả hai hướng có thể thử
-nghiệm trên các nhận định đã lưu mà không cần gọi lại mô hình.
+\paragraph{Trong ngắn hạn (đang thực hiện).}
+\begin{itemize}
+  \item Cho phép agent đổi hướng sau tranh biện khi lập luận phản biện đủ mạnh và có nguồn kiểm chứng, để tranh biện trở
+  thành cơ chế sửa sai chứ không chỉ giảm rủi ro.
+  \item Bổ sung kiểm định ý nghĩa thống kê (khoảng tin cậy bootstrap cho lợi suất, kiểm định nhị thức cho tỷ lệ đúng
+  hướng).
+\end{itemize}
 
 \paragraph{Trong dài hạn.}
 \begin{itemize}
-  \item Xác định mức vào lệnh theo độ tự tin hoặc theo $\Sfinal$ thay vì cố định 50\%.
-  \item Cho phép agent đổi hướng sau tranh biện khi lập luận phản biện đủ mạnh và có nguồn kiểm chứng, để tranh biện trở
-  thành cơ chế sửa sai chứ không chỉ giảm rủi ro.
-  \item Mở rộng đánh giá sang ETH, SOL như bài báo gốc, thêm mô hình ngôn ngữ khác và kiểm định ý nghĩa thống kê.
+  \item Đánh giá trên khung thời gian dài hơn một ngày, nơi tin tức và on-chain có thể mang nhiều thông tin hơn so với
+  biến động giá ngày hôm sau.
+  \item Thử các mô hình ngôn ngữ lớn hơn để tách hạn chế của kiến trúc khỏi hạn chế của mô hình. Hướng trọng số theo xu
+  hướng của Market Regime Council~\cite{mrc2026} cũng cần được so sánh trực tiếp.
+  \item Mở rộng đánh giá sang ETH, SOL như bài báo gốc.
 \end{itemize}

@@ -12,7 +12,27 @@
 \end{itemize}
 Bộ dữ liệu được phát hành theo giấy phép CC BY-NC-SA 4.0 và chỉ được dùng cho mục đích nghiên cứu.
 
-Ba giai đoạn kiểm thử được giữ nguyên như bài báo (Bảng~\ref{tab:windows}).
+Ba giai đoạn kiểm thử được giữ nguyên như bài báo (Bảng~\ref{tab:windows}). Ngoài ra, đề tài lấy ba đoạn dữ liệu
+\emph{chưa được bài báo sử dụng} trong cùng bộ dữ liệu làm \textbf{tập phát triển} (Bảng~\ref{tab:dev-windows}). Mọi tham
+số của các cải tiến ở Mục~\ref{sec:improve} được chọn trên tập này; ba giai đoạn kiểm thử chỉ dùng để đánh giá sau khi
+đã chốt cấu hình.
+
+\begin{table}[H]
+\centering
+\caption{Ba đoạn của tập phát triển (không trùng với giai đoạn kiểm thử)}
+\label{tab:dev-windows}
+\begin{tabular}{lccr}
+\toprule
+Đoạn & Thời gian & Số ngày giao dịch & Buy \& Hold \\
+\midrule
+Dev 1 & 20/02/2023 -- 11/04/2023 & 50 & +21,64\% \\
+Dev 2 & 26/08/2023 -- 30/09/2023 & 35 & +3,11\% \\
+Dev 3 & 02/12/2023 -- 31/01/2024 & 60 & +10,80\% \\
+\bottomrule
+\end{tabular}
+\end{table}
+Đoạn Dev 1 bắt đầu khi đã có đủ 50 giá mở cửa để tính EMA50. Tập phát triển không có giai đoạn giảm giá kéo dài, nhưng
+có 24 ngày được bộ nhận diện xu hướng (Mục~\ref{sec:improve}) xếp vào loại giảm.
 
 \begin{table}[H]
 \centering
@@ -197,9 +217,10 @@ CryptoTrade chỉ thị trường & $-$3,31 / 48,1 / 52 & +1,76 / 45,2 / 62 & $-
   \item Khi giá giảm, cấu hình chỉ Market là tốt nhất trong các cấu hình của hệ thống đề xuất: mọi nguồn bổ sung đều làm
   lỗ nặng hơn.
 \end{itemize}
-Như vậy, \emph{các nguồn bổ sung có giá trị, nhưng giá trị đó đổi dấu theo giai đoạn thị trường}, và một cơ chế tổng hợp
-với trọng số cố định không khai thác được điều này. Đây là căn cứ trực tiếp cho hướng phát triển ở
-Chương~\ref{chap:conclusion}.
+Trên tập kiểm thử, \emph{giá trị của các nguồn bổ sung đổi dấu theo giai đoạn thị trường}. Nhận xét này là căn cứ để thử
+trọng số agent theo xu hướng ở Mục~\ref{sec:improve}. Tuy nhiên, khi đo tỷ lệ đúng của từng agent theo từng ngày trên
+tập phát triển (Mục~\ref{sec:signal-analysis}), quy luật này không lặp lại; vì vậy nó nên được hiểu là đặc điểm của ba
+giai đoạn kiểm thử hơn là một tính chất chung của các nguồn dữ liệu.
 
 \section{Phân tích tranh biện (RQ3)}
 \label{sec:debate-analysis}
@@ -235,16 +256,212 @@ Nguyên nhân nằm ở thiết kế: tranh biện chỉ giảm \emph{cường �
 các agent đạt được đồng thuận về hướng. \emph{Với câu hỏi RQ3, tranh biện trong thiết kế hiện tại hoạt động như một cơ chế
 giảm rủi ro, chưa phải một cơ chế sửa sai.}
 
+\section{Kết quả trên tập phát triển}
+\label{sec:dev-results}
+Bảng~\ref{tab:dev-main} lặp lại so sánh chính trên ba đoạn của tập phát triển, với cùng cấu hình như trên tập kiểm thử.
+
+\begin{table}[H]
+\centering
+\caption{Tập phát triển: lợi suất tổng (\%) và Sharpe (trong ngoặc)}
+\label{tab:dev-main}
+\small
+\begin{tabular}{lrrrr}
+\toprule
+Phương pháp & Dev 1 & Dev 2 & Dev 3 & Trung bình \\
+\midrule
+Buy \& Hold & +21,64 (0,14) & +3,11 (0,06) & +10,80 (0,08) & +11,85 \\
+MACD (luật) & +12,14 (0,11) & +3,41 (0,10) & +13,11 (0,11) & +9,55 \\
+\midrule
+CryptoTrade đầy đủ & +32,33 (0,26) & $-$4,62 ($-$0,09) & +8,13 (0,07) & \textbf{+11,95} \\
+CryptoTrade chỉ thị trường & +23,51 (0,19) & $-$1,61 ($-$0,03) & +4,59 (0,06) & +8,83 \\
+\midrule
+\textbf{Đề xuất đầy đủ} & +22,31 (0,17) & $-$2,53 ($-$0,05) & +6,01 (0,06) & +8,60 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Thứ hạng lặp lại đúng như trên tập kiểm thử: CryptoTrade đầy đủ đứng đầu, hệ thống đề xuất xấp xỉ CryptoTrade chỉ dùng
+dữ liệu thị trường. Hệ thống đề xuất chạy thành công 143/145 ngày; hai ngày còn lại bị giữ nguyên vị thế do bước kiểm tra
+nguồn của Market Agent nhận JSON không hợp lệ hai lần liên tiếp (chạy lại cho kết quả giống hệt). Vì kết luận của
+RQ1 lặp lại trên một tập dữ liệu khác, có thể coi nó là phát hiện ổn định chứ không phải do may rủi của ba giai đoạn
+kiểm thử.
+
+\section{Phân tích tín hiệu của từng agent}
+\label{sec:signal-analysis}
+Để hiểu vì sao hệ thống chưa vượt baseline, đề tài đo trực tiếp chất lượng nhận định của từng agent. Với mỗi ngày, nhận
+định của một agent được coi là đúng nếu hướng (BUY/SELL, bỏ qua NEUTRAL) trùng với biến động giá mở cửa ngày hôm sau. Mỗi
+ngày cũng được xếp vào một trong ba loại xu hướng bằng giá tới thời điểm quyết định: \emph{tăng} nếu giá nằm trên MA50 và
+lợi suất 20 ngày lớn hơn 5\%, \emph{giảm} nếu giá nằm dưới MA50 và lợi suất 20 ngày nhỏ hơn $-$5\%, còn lại là \emph{đi
+ngang}.
+
+\begin{table}[H]
+\centering
+\caption{Tỷ lệ đúng hướng của từng agent (\%) và tỷ lệ nói BUY trong các nhận định có hướng}
+\label{tab:agent-acc}
+\small
+\begin{tabular}{lccccc}
+\toprule
+ & \multicolumn{3}{c}{Tỷ lệ đúng, tập phát triển} & Tỷ lệ đúng, & Tỷ lệ BUY \\
+\cmidrule(lr){2-4}
+Agent & Tăng & Giảm & Toàn bộ & kiểm thử & (dev / kiểm thử) \\
+\midrule
+Market & 44,1 & 68,8 & 47,6 & 52,4 & 42 / 39 \\
+Financial (on-chain) & 52,3 & 52,6 & 48,3 & 53,9 & 50 / 49 \\
+Sentiment (tin tức) & 48,8 & 41,7 & 45,4 & 45,3 & \textbf{79 / 81} \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Bảng~\ref{tab:agent-acc} cho thấy bốn điểm:
+\begin{itemize}
+  \item \textbf{Các agent đoán hướng gần như ngẫu nhiên.} Trên tập phát triển cả ba agent đúng 45--48\%. Với 84--116 nhận
+  định mỗi agent, khoảng tin cậy 95\% của tỷ lệ đúng rộng khoảng $\pm$9--11 điểm, nên không agent nào khác 50\% một cách
+  có ý nghĩa. CryptoTrade đầy đủ cũng chỉ đúng 38--57\% tùy đoạn.
+  \item \textbf{Không có quy luật ``agent nào giỏi ở giai đoạn nào'' lặp lại.} Market Agent đúng 68,8\% ở các ngày giảm
+  của tập phát triển nhưng chỉ 43,8\% ở các ngày giảm của tập kiểm thử. Nhận xét ở Mục trên (tin tức hữu ích khi giá
+  tăng, on-chain kém khi giá giảm) được rút ra từ lợi suất của các biến thể loại bỏ; khi đo trực tiếp theo từng ngày
+  trên tập phát triển, nhận xét này không lặp lại.
+  \item \textbf{Các agent bị lệch phe.} Sentiment Agent nói BUY khoảng 80\% số lần, trong khi chỉ khoảng 50\% số ngày
+  giá tăng: tin tức về crypto thường mang giọng lạc quan, và agent coi giọng lạc quan đó là tín hiệu mua. Market Agent
+  ngược lại nghiêng về SELL. Nguồn gốc của độ lệch này là cách Market Agent đọc nhãn MACD: khi nhãn là ``sell'',
+  agent nói SELL ở 58\% số ngày; khi nhãn là ``buy'', agent chỉ nói BUY ở 38\% và chọn NEUTRAL ở 50\% số ngày.
+  \item \textbf{Tín hiệu mạnh không đúng hơn tín hiệu yếu.} Chia các ngày theo $|\Sfinal|$ thành năm nhóm, tỷ lệ đúng
+  của mọi nhóm trên tập phát triển đều nằm trong khoảng 41--46\%.
+\end{itemize}
+
+\section{Các cải tiến dựa trên phân tích (RQ4)}
+\label{sec:improve}
+Từ các phát hiện trên, đề tài thử năm hướng cải tiến. Ba hướng đầu chỉ thay đổi bước tổng hợp nên được tính lại từ các
+nhận định đã lưu (không gọi lại mô hình); hai hướng sau thay đổi chính các agent nên phải chạy lại mô hình. Quy trình
+chung: chọn cấu hình tốt nhất trên tập phát triển (theo lợi suất trung bình, Sharpe để phân định), sau đó đánh giá trên
+tập kiểm thử \emph{một lần}.
+
+\subsection{Cải tiến ở bước tổng hợp}
+\begin{itemize}
+  \item \textbf{Bộ lọc xu hướng}: chặn SELL khi xu hướng tăng và chặn BUY khi xu hướng giảm. Xu hướng được xác định như
+  ở Mục~\ref{sec:signal-analysis}, với 18 tổ hợp tham số: MA20 hoặc MA50, lợi suất 10/20/30 ngày, ngưỡng 0/3/5\%.
+  \item \textbf{Trọng số agent theo xu hướng}: nhân đóng góp của Financial và Sentiment với hệ số $\{0, 1, 2\}$ riêng
+  cho từng loại xu hướng (Market giữ hệ số 1), tức $3^6=729$ tổ hợp cho mỗi tham số xu hướng.
+  \item \textbf{Mức vào lệnh theo độ mạnh tín hiệu}: thay mức cố định $\pm0{,}5$ bằng
+  $\mathrm{clip}(\Sfinal/k,-1,1)$ với $k\in\{0{,}1;0{,}2;0{,}3;0{,}5\}$.
+\end{itemize}
+
+\begin{table}[H]
+\centering
+\caption{Các cải tiến ở bước tổng hợp: lợi suất trung bình (\%) trên tập phát triển (dùng để chọn) và tập kiểm thử}
+\label{tab:offline-variants}
+\small
+\begin{tabular}{lrrrrr}
+\toprule
+Biến thể & Dev (chọn) & Kiểm thử & Tăng giá & Đi ngang & Giảm giá \\
+\midrule
+Đề xuất đầy đủ (eval-v1) & +8,60 & +0,37 & +16,14 & +1,62 & $-$16,63 \\
+Bộ lọc xu hướng & +8,49 & \textbf{+9,04} & +36,60 & +5,13 & $-$14,61 \\
+Trọng số theo xu hướng & \textbf{+15,97} & +0,00 & +12,69 & +1,51 & $-$14,19 \\
+Trọng số + bộ lọc & +10,84 & +2,68 & +18,81 & +4,19 & $-$14,96 \\
+Mức vào lệnh theo tín hiệu & +10,91 & $-$0,55 & +12,36 & +1,99 & $-$15,99 \\
+Cả ba & +13,15 & +3,62 & +21,18 & +9,23 & $-$19,55 \\
+\midrule
+CryptoTrade đầy đủ & +11,95 & +5,71 & +30,47 & $-$1,63 & $-$11,72 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Theo đúng quy trình, biến thể tốt nhất trên tập phát triển là \emph{trọng số theo xu hướng} (+15,97\%; cấu hình được
+chọn: nhân đôi Financial và Sentiment khi xu hướng tăng, chỉ dùng Market trong các trường hợp còn lại). Trên tập kiểm
+thử biến thể này chỉ đạt +0,00\%, nghĩa là \textbf{không vượt CryptoTrade}. Hai kiểm tra độ bền giải thích vì sao:
+\begin{itemize}
+  \item \textbf{Bỏ lần lượt một đoạn dev}, chọn cấu hình trên hai đoạn còn lại rồi đánh giá trên đoạn bị bỏ ra: trọng số
+  theo xu hướng thắng eval-v1 ở 2/3 lần, bộ lọc thua eval-v1 ở 2/3 lần. Với hàng nghìn tổ hợp và chỉ 145 ngày, lưới tìm
+  kiếm trọng số học thuộc tập phát triển thay vì một quy luật chung.
+  \item \textbf{Bộ lọc với cả 18 tổ hợp tham số}: mọi tổ hợp đều \emph{thua} eval-v1 trên tập phát triển (+1,1\% đến
+  +8,5\% so với +8,60\%) và đều \emph{thắng} eval-v1 trên tập kiểm thử (+2,6\% đến +10,6\% so với +0,37\%). Hiệu quả
+  của bộ lọc vì vậy phụ thuộc vào giai đoạn thị trường chứ không phải vào tham số: giai đoạn tăng giá của tập kiểm thử
+  là một đợt tăng dài và đều, chặn lệnh bán giúp giữ BTC suốt đợt tăng (+36,60\%, gần với Buy \& Hold +39,66\%); các
+  đoạn dev biến động thất thường hơn nên chặn lệnh bán lại gây lỗ.
+\end{itemize}
+Bộ lọc là biến thể duy nhất vượt CryptoTrade đầy đủ trên tập kiểm thử, nhưng vì nó thua trên tập phát triển và không
+được chọn theo quy trình, đề tài không coi đây là một cải tiến đã được kiểm chứng.
+
+\subsection{Có cần ba agent không?}
+Để kiểm tra phần ``đa tác tử'' có thực sự cần thiết, đề tài so sánh cấu hình chỉ Market với cấu hình ba agent, có và
+không có bộ lọc (Bảng~\ref{tab:market-only}, cùng tham số bộ lọc với Bảng~\ref{tab:offline-variants}).
+
+\begin{table}[H]
+\centering
+\caption{Chỉ Market so với ba agent: lợi suất trung bình (\%)}
+\label{tab:market-only}
+\small
+\begin{tabular}{lrrrr}
+\toprule
+Cấu hình & Dev & Kiểm thử & Cả 6 đoạn & 6 đoạn trừ đoạn tăng giá \\
+\midrule
+Ba agent & +8,60 & +0,37 & +4,49 & +2,15 \\
+Chỉ Market & \textbf{+12,32} & $-$1,59 & +5,36 & \textbf{+5,83} \\
+Ba agent + bộ lọc & +8,49 & \textbf{+9,04} & \textbf{+8,76} & +3,20 \\
+Chỉ Market + bộ lọc & +10,03 & +1,63 & +5,83 & +4,33 \\
+\midrule
+CryptoTrade đầy đủ & +11,95 & +5,71 & +8,83 & +4,50 \\
+Buy \& Hold & +11,85 & +7,74 & +9,80 & +3,82 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Kết quả ngược nhau giữa hai tập: trên tập phát triển chỉ dùng Market lại tốt hơn ba agent, còn trên tập kiểm thử ba agent
+tốt hơn, gần như hoàn toàn nhờ giai đoạn tăng giá. Gộp cả sáu đoạn, ba agent kèm bộ lọc đạt +8,76\%, ngang CryptoTrade
+đầy đủ (+8,83\%) và thấp hơn Buy \& Hold (+9,80\%); bỏ riêng đoạn tăng giá của tập kiểm thử thì cấu hình này thấp hơn cả
+cấu hình chỉ Market. Lời giải thích phù hợp với độ lệch phe ở Mục~\ref{sec:signal-analysis}: Sentiment Agent gần như luôn
+nói BUY nên ``đúng'' trong một đợt tăng dài và kéo kết quả xuống ở những đoạn còn lại. Như vậy, \textbf{đề tài chưa chứng
+minh được giá trị của việc dùng ba agent so với một agent}.
+
+\subsection{Cung cấp xu hướng dài hạn cho Market Agent}
+Giả thuyết: Market Agent chỉ thấy giá 7 ngày gần nhất cùng EMA20/50 và RSI14, nên phản ứng với biến động ngắn hạn. Phiên
+bản \texttt{eval-v2-trend} bổ sung ba dòng dữ liệu chỉ dựa trên giá quá khứ: lợi suất 30 ngày, khoảng cách từ giá tới
+MA50 (\%), và số ngày liên tiếp giá nằm trên hoặc dưới MA50. Các agent khác giữ nguyên.
+
+Trên tập phát triển, lợi suất trung bình đạt +8,67\% (+23,21\%; $-$1,86\%; +4,67\%) so với +8,60\% của eval-v1. Market
+Agent ra nhận định có hướng nhiều hơn (112 so với 84 lần) nhưng tỷ lệ đúng không tăng đáng kể (49,1\% so với 47,6\%) và
+vẫn chỉ nói BUY ở 41\% số lần; tỷ lệ đúng của quyết định cuối giữ nguyên 45,0\%. Vì không đạt tiêu chí trên tập phát
+triển, phiên bản này không được đánh giá trên tập kiểm thử. Kết quả cho thấy hạn chế của Market Agent không nằm ở việc
+thiếu thông tin xu hướng.
+
+\subsection{Hiệu chỉnh độ lệch phe}
+\paragraph{Cách 1: trừ mức nền (không gọi lại mô hình).} Điểm của mỗi agent ($d\cdot s$) được thay bằng độ lệch so với
+điểm trung bình của chính agent đó trong $K$ ngày trước, tức đo nhận định hôm nay ``tốt hơn hay xấu hơn thường lệ''.
+Lưới chọn gồm $K\in\{10,20,30\}$ và ba cách chọn agent được hiệu chỉnh. Hiệu chỉnh đưa tỷ lệ nói BUY về gần 50\% (Sentiment
+từ 79\% xuống 53\%, Market từ 42\% lên 51\%), nhưng tỷ lệ đúng hầu như không đổi (quyết định cuối 45,5\% so với 45,0\%) và
+mọi cấu hình đều có lợi suất trên tập phát triển thấp hơn eval-v1. Cấu hình được chọn ($K=10$, cả ba agent) đạt +8,38\%
+trên tập phát triển và +1,28\% trên tập kiểm thử (so với +0,37\% của eval-v1 và +5,71\% của CryptoTrade đầy đủ). Như vậy
+loại bỏ độ lệch khỏi con số không làm tín hiệu có thêm thông tin.
+
+\paragraph{Cách 2: sửa lời nhắc.} Phiên bản \texttt{eval-v2-bias} cho Sentiment Agent đọc thêm tiêu đề tin của ba ngày
+trước đó và yêu cầu nó đánh giá tâm lý \emph{thay đổi} thế nào thay vì chấm tuyệt đối (giọng lạc quan thông thường không
+phải tín hiệu mua); Market Agent được yêu cầu chỉ chọn BUY hoặc SELL khi đa số chỉ báo cùng chiều. Khác với cách 1, cách
+này có thể tạo thêm thông tin, vì mô hình đọc được nội dung tin cũ để nhận ra đâu là sự kiện mới.
+Trên tập phát triển, lợi suất trung bình giảm còn +2,47\% (+13,86\%; $-$1,63\%; $-$4,82\%) so với +8,60\% của eval-v1.
+Độ lệch có giảm: trong các nhận định có hướng, Sentiment Agent nói BUY 65\% số lần (eval-v1: 79\%). Nhưng tỷ lệ đúng của
+Sentiment giảm từ 45,4\% xuống 39,5\%. Market Agent trở nên quá thận trọng: đứng ngoài 73\% số ngày (eval-v1: 41\%), và
+khi có hướng thì phần lớn là SELL (chỉ 21\% là BUY), với tỷ lệ đúng 44,7\%. Tỷ lệ đúng của quyết định cuối giảm từ 45,0\%
+xuống 39,4\%. Vì kém hơn eval-v1 rõ rệt trên tập phát triển, phiên bản này không được đánh giá trên tập kiểm thử. Kết quả
+cho thấy sửa lời nhắc làm thay đổi \emph{tỷ lệ} các hướng nhưng không làm mô hình nhận ra tin nào thực sự quan trọng.
+
 \section{Thảo luận}
 \paragraph{Vì sao thua CryptoTrade đầy đủ?} Ở giai đoạn tăng giá, tỷ lệ đúng hướng của hai hệ thống gần như bằng nhau
-(55,3\% so với 55,1\%), nhưng lợi suất chỉ bằng khoảng một nửa. Khác biệt nằm ở mức vào lệnh: hệ thống đề xuất mua hoặc
-bán cố định 50\%, còn agent CryptoTrade tự chọn mức trong $[-1,1]$ và thường chọn 0,8--1,0 khi tự tin. Trong một giai
-đoạn tăng mạnh, mua nhiều hơn thì lãi nhiều hơn. Thêm vào đó, môi trường không cho bán khống, nên các tín hiệu SELL khi
-giá tăng làm mất phần lãi mà không bù lại được.
+(55,3\% so với 55,1\%), nhưng lợi suất chỉ bằng khoảng một nửa. Một phần khác biệt nằm ở mức vào lệnh: hệ thống đề xuất
+mua hoặc bán cố định 50\%, còn agent CryptoTrade tự chọn mức trong $[-1,1]$ và thường chọn 0,8--1,0 khi tự tin; môi trường
+không cho bán khống nên các tín hiệu SELL khi giá tăng làm mất phần lãi mà không bù lại được. Tuy nhiên mức vào lệnh theo
+độ mạnh tín hiệu không cải thiện kết quả (Bảng~\ref{tab:offline-variants}), và trên tập phát triển CryptoTrade đúng
+hướng nhiều hơn ở đoạn Dev 1 (57,1\% so với 50,0\%). Nguyên nhân sâu hơn là các tín hiệu của hệ thống đề xuất gần như
+không chứa thông tin về giá ngày hôm sau (Mục~\ref{sec:signal-analysis}).
+
+\paragraph{Các cải tiến ở bước tổng hợp không bù được tín hiệu yếu.} Khi mỗi agent đúng khoảng 45--48\%, thay đổi trọng
+số, lọc tín hiệu hay đổi mức vào lệnh chỉ thay đổi \emph{mức tiếp xúc} với thị trường. Lợi suất khi đó phụ thuộc chủ yếu
+vào việc giai đoạn đánh giá là tăng hay giảm, nên một cấu hình có thể tốt trên tập này và kém trên tập khác. Ba giả thuyết
+đã bị loại: thiếu trọng số theo xu hướng, thiếu thông tin xu hướng dài hạn, và độ lệch phe trong con số của agent.
 
 \paragraph{Tín hiệu chưa bám xu hướng.} Ở giai đoạn giá tăng gần 40\%, hệ thống ra SELL 28 lần và BUY 19 lần; ở giai
-đoạn giảm giá lại ra BUY 26 lần và SELL 24 lần. Kết hợp với tỷ lệ đúng hướng 45--63\% của mọi cấu hình, đây là dấu hiệu
-các agent phản ứng với biến động ngắn hạn (RSI, tin tức trong ngày) hơn là với xu hướng.
+đoạn giảm giá lại ra BUY 26 lần và SELL 24 lần. Điều này phù hợp với độ lệch phe: Sentiment Agent nói BUY bất kể giai
+đoạn, còn Market Agent nghiêng về SELL theo nhãn MACD.
 
 \paragraph{Ưu thế cấu trúc của Market Agent.} Như phân tích ở Mục~\ref{sec:mediator}, hệ số phạt thời gian làm trọng số
 của Financial và Sentiment chỉ còn khoảng 40\% so với Market. Vì vậy Market Agent chi phối $\Sfinal$, và điểm yếu không
@@ -256,11 +473,16 @@ Chi phí tiền bằng 0 vì mô hình chạy cục bộ.
 
 \section{Các yếu tố ảnh hưởng tới tính hợp lệ}
 \begin{itemize}
-  \item \textbf{Cỡ mẫu nhỏ}: mỗi giai đoạn chỉ 61--69 ngày; chênh lệch vài điểm phần trăm chưa có ý nghĩa thống kê.
+  \item \textbf{Cỡ mẫu nhỏ}: mỗi giai đoạn chỉ 35--69 ngày; chênh lệch vài điểm phần trăm chưa có ý nghĩa thống kê.
+  \item \textbf{Tập kiểm thử được xem nhiều lần}: ngoài lần đánh giá chính, tập kiểm thử được dùng cho các biến thể ở
+  Mục~\ref{sec:improve} (mỗi cấu hình đã chọn trên tập phát triển được đánh giá một lần). Mọi kết quả trên tập kiểm thử
+  đều được báo cáo, kể cả các biến thể kém, để người đọc tự đánh giá rủi ro chọn lọc kết quả.
+  \item \textbf{Tập phát triển thiếu giai đoạn giảm giá kéo dài}: các tham số được chọn có thể không phù hợp với thị
+  trường giảm.
   \item \textbf{Một mô hình, một tài sản}: kết quả có thể khác với mô hình lớn hơn hoặc với ETH, SOL.
   \item \textbf{Rò rỉ từ dữ liệu huấn luyện}: mô hình có thể đã thấy dữ liệu năm 2023 khi huấn luyện; ảnh hưởng này như
   nhau với cả hai hệ thống nhưng có thể làm tăng kết quả tuyệt đối.
   \item \textbf{Quy đổi tín hiệu}: mức $\pm0{,}5$ là một lựa chọn thiết kế; cách quy đổi khác có thể cho thứ hạng khác.
-  \item \textbf{Tham số chưa hiệu chỉnh}: ngưỡng mâu thuẫn 0,4, hệ số $\alpha$, $\beta$, $\gamma$ được đặt theo trực giác
-  thiết kế, chưa được tinh chỉnh trên dữ liệu.
+  \item \textbf{Tham số kiến trúc chưa hiệu chỉnh}: ngưỡng mâu thuẫn 0,4, hệ số $\alpha$, $\beta$, $\gamma$ được đặt theo
+  trực giác thiết kế; chỉ các tham số của cải tiến ở Mục~\ref{sec:improve} được chọn trên tập phát triển.
 \end{itemize}

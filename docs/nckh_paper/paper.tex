@@ -37,12 +37,16 @@ assign one specialist agent per source, quantify their disagreement with a KL-di
 when it is high, run a multi-round debate in which every claim must cite a source line and pass a verification step.
 To isolate the effect of the architecture, we reimplement CryptoTrade, verify it against the authors' code, and run
 both systems on the same data, trading environment, information timing and local LLM over the paper's bull,
-sideways and bear Bitcoin periods of 2023. The conflict-aware system averages +0.38\% against +5.71\% for CryptoTrade,
-despite near-identical directional accuracy. Our analysis shows that (i) the value of each source is regime-dependent
-and changes sign, (ii) debate lowers the measured conflict from 0.61 to 0.22 yet changes only 11 of 195 decisions,
-always towards abstention, and (iii) a time-decay penalty silently gives the price agent about 2.5 times the weight of
-the other agents. These findings separate \emph{reducing} disagreement from \emph{resolving} it and motivate
-regime-aware aggregation.\footnote{Code and data: \url{https://github.com/Chivu171/Multi-Agent-Crypto}}
+sideways and bear Bitcoin periods of 2023, plus a development set of 145 unused days. The conflict-aware system trails
+CryptoTrade on both the test periods (+0.38\% vs.\ +5.71\% average return) and the development set (+8.60\% vs.\
++11.95\%). Our analysis shows that (i) debate lowers the measured conflict from 0.61 to 0.22 yet changes only 11 of 195
+decisions, always towards abstention; (ii) each agent's directional accuracy is near chance (45--48\%) and biased, with
+the news agent calling BUY about 80\% of the time; and (iii) five improvements tuned on the development set (regime
+weights, a trend filter, signal-based sizing, longer trend context, bias correction by score or by prompt) do not beat CryptoTrade reliably:
+the best one on development data does not transfer, and the only one that wins on test loses on development data under
+every parameter setting. These findings separate \emph{reducing} disagreement from \emph{resolving} it and locate the
+bottleneck in per-agent signal quality rather than aggregation.\footnote{Code and data:
+\url{https://github.com/Chivu171/Multi-Agent-Crypto}}
 \end{abstract}
 
 % =====================================================================
@@ -62,13 +66,15 @@ assigning one agent per retrieved document and letting them debate helps when do
 from question answering with a single correct answer. Whether they transfer to trading, where ``correctness'' is only
 revealed by the next price move and the sources are structurally different, is open.
 
-We ask three research questions under strictly controlled conditions (same data, environment, information timing and
+We ask four research questions under strictly controlled conditions (same data, environment, information timing and
 LLM):
 \begin{itemize}\setlength\itemsep{1pt}
   \item \textbf{RQ1:} Does explicit conflict handling across source-specialised agents outperform CryptoTrade's
   implicit fusion?
   \item \textbf{RQ2:} What does each source contribute, and does its contribution depend on the market regime?
   \item \textbf{RQ3:} Does debate change decisions, or does it only lower the conflict score?
+  \item \textbf{RQ4:} Can improvements motivated by this analysis close the gap when their parameters are chosen on
+  separate development data?
 \end{itemize}
 
 Our contributions are:
@@ -76,9 +82,10 @@ Our contributions are:
 \emph{grounded} debate in which every claim cites a source line and is verified before it can change the state;
 (2) a faithful reimplementation of CryptoTrade, verified to match the authors' code exactly on rule strategies and
 prompts, which makes a controlled comparison possible with a local open model;
-(3) an empirical study with source and debate ablations showing that explicit conflict handling currently trails
-implicit fusion, that source value flips sign across regimes, and that debate reduces disagreement without resolving
-it.
+(3) an empirical study, replicated on a held-out development set, showing that explicit conflict handling trails
+implicit fusion, that debate reduces disagreement without resolving it, and that individual agents are near chance and
+directionally biased;
+(4) a dev-then-test evaluation of five improvements with all results reported, including the negative ones.
 
 % =====================================================================
 \section{Related Work}
@@ -191,7 +198,11 @@ half the cash, sell half the coins, hold), the sizing CryptoTrade uses for its r
 We use CryptoTrade's public BTC dataset: daily prices (CoinMarketCap), six on-chain statistics (Dune) and up to five
 filtered news articles per day (Google News). We keep the paper's three test periods: bull (2023-10-01 to 12-01,
 61 trading days, BTC +39.7\%), sideways (06-17 to 08-25, 69 days, $-$0.8\%) and bear (04-12 to 06-16, 65 days,
-$-$15.6\%).
+$-$15.6\%) as the \emph{test} set. Three ranges of the same dataset that the paper does not use form a
+\emph{development} set: Dev1 (2023-02-20 to 04-11, 50 days, Buy \& Hold +21.6\%), Dev2 (08-26 to 09-30, 35 days,
++3.1\%) and Dev3 (12-02 to 2024-01-31, 60 days, +10.8\%). Every parameter of the improvements in
+Section~\ref{sec:rq4} is chosen on the development set and the chosen configuration is evaluated once on test. The
+development set has no sustained bear market.
 
 \paragraph{Baseline reproduction.}
 We reimplement CryptoTrade's environment, four prompts, agent loop and rule baselines. The public code differs from
@@ -247,13 +258,16 @@ Ours full & 16.14 & 1.62 & $-$16.63 & 0.38 \\
 
 \subsection{RQ1: explicit versus implicit conflict handling}
 Table~\ref{tab:main} shows that our full system averages +0.38\%, above CryptoTrade market-only ($-$3.35\%) but below
-CryptoTrade full (+5.71\%) and Buy \& Hold (+7.74\%). It wins only in the sideways period. The gap is not explained by
-prediction quality: in the bull period the two systems have almost the same directional accuracy (55.3\% vs.\ 55.1\%),
-yet our return is about half. CryptoTrade chooses its own position size and typically commits 0.8--1.0 of its cash when
-confident, while our system trades a fixed half; with no shorting, every SELL in a rally forfeits gains that cannot be
-recovered. Explicit conflict handling, in its current form, does not beat implicit fusion.
+CryptoTrade full (+5.71\%) and Buy \& Hold (+7.74\%). It wins only in the sideways period. The ranking repeats on the
+development set: CryptoTrade full +11.95\% (Dev1/2/3: +32.33/$-$4.62/+8.13), Buy \& Hold +11.85\%, CryptoTrade
+market-only +8.83\%, ours +8.60\% (+22.31/$-$2.53/+6.01). In the bull period the two systems have almost the same
+directional accuracy (55.3\% vs.\ 55.1\%) yet our return is about half: CryptoTrade chooses its own position size and
+typically commits 0.8--1.0 when confident, while our system trades a fixed half, and with no shorting every SELL in a
+rally forfeits gains. Sizing is not the whole story, however: signal-based sizing does not help
+(Section~\ref{sec:rq4}), and on Dev1 CryptoTrade is also more accurate (57.1\% vs.\ 50.0\%). Explicit conflict handling,
+in its current form, does not beat implicit fusion, and this holds on two disjoint sets of dates.
 
-\subsection{RQ2: source value is regime-dependent}
+\subsection{RQ2: source value and agent signal quality}
 
 \begin{table}[t]
 \centering
@@ -274,8 +288,36 @@ Added to Market only & Bull & Side & Bear \\
 Table~\ref{tab:sources} isolates each source. News helps strongly in the bull period and slightly hurts in the bear
 period. On-chain data helps in the sideways period, where Market+Financial reaches the best directional accuracy of all
 configurations (63.0\%), but costs 8.6 points in the bear period. In the bear period, Market only is our best
-configuration: every added source makes losses worse. The extra sources carry signal, but its sign depends on the regime,
-and a fixed-weight aggregator cannot exploit it.
+configuration: every added source makes losses worse.
+
+\begin{table}[t]
+\centering
+\small
+\setlength{\tabcolsep}{3pt}
+\begin{tabular}{lccccc}
+\toprule
+ & \multicolumn{3}{c}{Accuracy, dev} & Acc., & BUY share \\
+\cmidrule(lr){2-4}
+Agent & Up & Down & All & test & dev / test \\
+\midrule
+Market & 44.1 & 68.8 & 47.6 & 52.4 & 42 / 39 \\
+Financial & 52.3 & 52.6 & 48.3 & 53.9 & 50 / 49 \\
+Sentiment & 48.8 & 41.7 & 45.4 & 45.3 & \textbf{79 / 81} \\
+\bottomrule
+\end{tabular}
+\caption{Per-agent directional accuracy (\%) by trend regime and share of BUY among directional calls. Regime: up if
+the open is above MA50 and the 20-day return exceeds 5\%, down if below MA50 and under $-$5\%, flat otherwise.}
+\label{tab:agents}
+\end{table}
+
+These ablation differences, however, do not survive a direct per-day measurement on the development set
+(Table~\ref{tab:agents}). All three agents are near chance (45--48\%; with 84--116 directional calls per agent the 95\%
+interval is about $\pm$10 points), and no regime pattern repeats: Market is right on 68.8\% of dev down days but 43.8\%
+of test down days. What does repeat is a directional bias. The Sentiment agent calls BUY about 80\% of the time while
+the price rises on about half of the days, because crypto news is upbeat by default. The Market agent leans to SELL: it
+follows CryptoTrade's MACD label asymmetrically, saying SELL on 58\% of days labelled ``sell'' but BUY on only 38\% of
+days labelled ``buy''. Stronger signals are not more accurate either: across five $|\Sfinal|$ buckets, dev accuracy
+stays within 41--46\%.
 
 \subsection{RQ3: debate reduces conflict but rarely resolves it}
 
@@ -307,13 +349,71 @@ towards zero together. The conflict score falls because the agents become less c
 Debate thus acts as a risk filter rather than an error-correction mechanism, a distinction that a lower conflict score
 alone would hide.
 
-\subsection{Analysis: hidden aggregation bias and trend blindness}
-Two further observations explain the weak bear-period results. First, the time-decay penalty treats day-old data as
-stale: on-chain data and news are from $D{-}1$, so their factor is $e^{-0.864}\approx0.42$ against 1 for prices. With
-equal noise, the Market agent therefore carries about 2.5 times the weight of each other agent, and Sentiment's weight
-is fixed near $0.5\times0.9\times0.42\approx0.19$. A design choice intended for live freshness becomes a structural bias
-in a daily backtest. Second, signals do not follow the trend: during a 40\% rally the system issued 28 SELLs against 19
-BUYs, and during the decline 26 BUYs against 24 SELLs, consistent with agents reacting to short-term RSI and daily news.
+\subsection{RQ4: improvements tuned on development data}
+\label{sec:rq4}
+
+\begin{table}[t]
+\centering
+\small
+\setlength{\tabcolsep}{3pt}
+\resizebox{\columnwidth}{!}{%
+\begin{tabular}{lrrrrr}
+\toprule
+Variant & Dev & Test & Bull & Side & Bear \\
+\midrule
+Ours (eval-v1) & 8.60 & 0.37 & 16.14 & 1.62 & $-$16.63 \\
+Trend filter & 8.49 & \textbf{9.04} & 36.60 & 5.13 & $-$14.61 \\
+Regime weights & \textbf{15.97} & 0.00 & 12.69 & 1.51 & $-$14.19 \\
+Weights + filter & 10.84 & 2.68 & 18.81 & 4.19 & $-$14.96 \\
+Signal sizing & 10.91 & $-$0.55 & 12.36 & 1.99 & $-$15.99 \\
+All three & 13.15 & 3.62 & 21.18 & 9.23 & $-$19.55 \\
+Bias correction (offline) & 8.38 & 1.28 & 15.57 & 3.89 & $-$15.63 \\
+Longer trend context & 8.67 & -- & -- & -- & -- \\
+Debiasing prompts & 2.47 & -- & -- & -- & -- \\
+\midrule
+CryptoTrade full & 11.95 & 5.71 & 30.47 & $-$1.63 & $-$11.72 \\
+\bottomrule
+\end{tabular}}
+\caption{Average return (\%) of improvements: each is selected on the development set (Dev) and evaluated once on test.
+The two prompt-level variants were not run on test because they did not improve on dev.}
+\label{tab:improve}
+\end{table}
+
+We test five improvements (Table~\ref{tab:improve}). Three change only aggregation and are recomputed from saved
+opinions: a \emph{trend filter} that blocks SELL in an up-trend and BUY in a down-trend (18 settings: MA20/50,
+10/20/30-day return, 0/3/5\% band); \emph{regime weights} that multiply the Financial and Sentiment contributions by
+$\{0,1,2\}$ per regime (729 combinations per trend setting); and \emph{signal sizing} $\mathrm{clip}(\Sfinal/k,-1,1)$,
+$k\in\{0.1,0.2,0.3,0.5\}$. \emph{Bias correction}, also computed offline, replaces each agent's score $d_i s_i$ by its
+deviation from the agent's own mean over the previous $K\in\{10,20,30\}$ days, i.e.\ whether today's view is better or
+worse than usual. \emph{Longer trend context} changes the Market agent's input and needs a new LLM run: the agent also
+sees the 30-day return, the distance to MA50 and the number of consecutive opens on that side of MA50.
+
+Following the protocol, the dev winner is regime weights (+15.97\%), which falls to +0.00\% on test. Leaving one dev
+range out and selecting on the other two confirms the overfitting risk of a grid of thousands of combinations on 145
+days. The trend filter is the only variant above CryptoTrade on test (+9.04\%), but it was not selected: every one of its
+18 settings is \emph{below} eval-v1 on dev (+1.1 to +8.5\%) and \emph{above} it on test (+2.6 to +10.6\%). Its gain is a
+property of the test bull period, a long steady rally in which blocking SELLs simply holds BTC (+36.6\% vs.\ Buy \& Hold
++39.7\%), not of its parameters. Longer trend context makes the Market agent take more positions (112 vs.\ 84) without
+making it more accurate (49.1\% vs.\ 47.6\%); it still calls BUY only 41\% of the time. Bias correction balances the BUY
+share (Sentiment 79\%$\rightarrow$53\%, Market 42\%$\rightarrow$51\%) but leaves accuracy unchanged (final 45.5\% vs.\
+45.0\%). \emph{Debiasing prompts} attack the bias at its source: the Sentiment agent also reads the headlines of the
+three earlier days and is told that routine optimism is not a buy signal, and the Market agent is told to take a side
+only when most indicators agree. Sentiment's BUY share falls (79\%$\rightarrow$65\%) but so does its accuracy
+(45.4\%$\rightarrow$39.5\%); the Market agent abstains on 73\% of days (was 41\%), and the dev return drops to +2.47\%.
+
+\paragraph{Are three agents needed?} Zeroing the Financial and Sentiment contributions gives a Market-only variant that
+is \emph{better} on dev (+12.32\% vs.\ +8.60\%) and worse on test ($-$1.59\% vs.\ +0.37\%). Pooled over all six ranges,
+three agents with the filter reach +8.76\%, on par with CryptoTrade full (+8.83\%) and below Buy \& Hold (+9.80\%);
+without the test bull period they fall to +3.20\%, below Market only (+5.83\%). The value of the extra agents is
+therefore not established: an always-bullish news agent looks useful only in a long rally.
+
+\subsection{Analysis: hidden aggregation bias}
+The time-decay penalty treats day-old data as stale: on-chain data and news are from $D{-}1$, so their factor is
+$e^{-0.864}\approx0.42$ against 1 for prices. With equal noise, the Market agent therefore carries about 2.5 times the
+weight of each other agent, and Sentiment's weight is fixed near $0.5\times0.9\times0.42\approx0.19$. A design choice
+intended for live freshness becomes a structural bias in a daily backtest. Signals also do not follow the trend: during
+a 40\% rally the system issued 28 SELLs against 19 BUYs, and during the decline 26 BUYs against 24 SELLs, in line with the
+biases of Table~\ref{tab:agents}.
 
 \paragraph{Cost.} Per period, CryptoTrade full needs about 50 minutes and our system about 4.6 hours on the laptop,
 because of the RCA, debate and verification calls; the monetary cost of both is zero with a local model.
@@ -321,20 +421,24 @@ because of the RCA, debate and verification calls; the monetary cost of both is 
 % =====================================================================
 \section{Conclusion}
 Under identical data, environment and model, separating sources into specialised agents and handling their conflict
-explicitly does not yet outperform CryptoTrade's implicit fusion, even though directional accuracy is on par. The
-study yields three lessons for conflict-aware agent design: the value of a source is regime-dependent and can change
-sign; a debate that only decays confidence lowers measured disagreement without resolving it; and aggregation
-penalties can encode unintended biases that dominate the outcome. Our next step is a trend detector computed from past
-prices that both re-weights agents by regime and filters counter-trend signals, tuned on unused dates of the dataset
-before evaluation on the test periods; allowing well-supported direction changes during debate and confidence-based
-position sizing are natural extensions.
+explicitly does not outperform CryptoTrade's implicit fusion, on the paper's test periods or on 145 held-out days. The
+study yields four lessons for conflict-aware agent design. A debate that only decays confidence lowers measured
+disagreement without resolving it. Individual agents can be near chance and systematically biased, the news agent
+mostly by reading upbeat coverage as a buy signal. When agent signals carry little information, aggregation changes such
+as regime weights, trend filters and sizing only change market exposure, so their apparent gains depend on the period
+evaluated; a dev-then-test protocol exposes this where a single test set would not. Finally, aggregation penalties can
+encode unintended biases. Telling the agents about their bias shifts the mix of directions but not their accuracy. Future work should target
+signal quality: debate that may flip a direction when the rebuttal is strong and verified, longer horizons than one day, and larger
+models.
 
 \section*{Limitations}
-Each period has only 61--69 trading days, so differences of a few points are not statistically significant. We study
+Each period has only 35--69 trading days, so differences of a few points are not statistically significant. We study
 one asset and one 26B-parameter model; results may differ for ETH, SOL or larger models. The model may have seen 2023
-market data during pretraining; this affects both systems equally but may inflate absolute returns. The $\pm0.5$
-action mapping and the parameters of the conflict score, debate and Mediator were set by design intuition and not
-tuned. Ablations are re-aggregations of one run rather than independent runs.
+market data during pretraining; this affects both systems equally but may inflate absolute returns. The test set was
+used once per selected improvement; we report every such result, but some selection risk remains. The development set
+lacks a sustained bear market. The $\pm0.5$ action mapping and the parameters of the conflict score, debate and
+Mediator were set by design intuition. Ablations and aggregation variants are re-aggregations of one run rather than
+independent runs.
 
 \section*{Ethics Statement}
 This work studies trading signals in simulation and does not constitute financial advice. The CryptoTrade dataset is used

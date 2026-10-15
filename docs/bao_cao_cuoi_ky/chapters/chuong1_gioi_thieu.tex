@@ -25,13 +25,16 @@ hay không?}
 
 \section{Câu hỏi nghiên cứu}
 
-Đề tài trả lời ba câu hỏi, đều trong điều kiện cùng dữ liệu, cùng môi trường giao dịch và cùng mô hình ngôn ngữ:
+Đề tài trả lời bốn câu hỏi, đều trong điều kiện cùng dữ liệu, cùng môi trường giao dịch và cùng mô hình ngôn ngữ:
 \begin{description}[leftmargin=1.2cm,style=nextline]
   \item[RQ1] Kiến trúc tách agent theo nguồn kèm phát hiện mâu thuẫn và tranh biện so với CryptoTrade như thế nào về
   lợi suất, Sharpe và tỷ lệ dự đoán đúng hướng?
   \item[RQ2] Mỗi nguồn dữ liệu (thị trường, on-chain, tin tức) đóng góp gì vào kết quả, và đóng góp đó có thay đổi theo
   giai đoạn thị trường không?
   \item[RQ3] Tranh biện có thực sự thay đổi quyết định và cải thiện kết quả không, hay chỉ làm giảm chỉ số mâu thuẫn?
+  \item[RQ4] Các cải tiến rút ra từ phân tích (trọng số theo xu hướng, bộ lọc xu hướng, mức vào lệnh theo tín hiệu, thông
+  tin xu hướng dài hạn, hiệu chỉnh độ lệch của agent) có giúp vượt CryptoTrade không, khi tham số được chọn trên một tập
+  phát triển riêng?
 \end{description}
 
 \section{Đóng góp của đề tài}
@@ -45,9 +48,10 @@ hay không?}
   \item \textbf{Đánh giá đối chứng có kiểm soát}: hai hệ thống chạy trên cùng dữ liệu, cùng thông tin đầu vào mỗi ngày,
   cùng môi trường giao dịch và cùng một mô hình chạy cục bộ, kèm các thí nghiệm loại bỏ thành phần (ablation) theo
   nguồn dữ liệu và theo tranh biện (Chương~\ref{chap:exp}).
-  \item \textbf{Phân tích thực nghiệm}: tranh biện giảm mâu thuẫn nhưng hiếm khi đổi quyết định; giá trị của từng nguồn
-  phụ thuộc giai đoạn thị trường; chênh lệch với CryptoTrade đến chủ yếu từ mức vào lệnh chứ không phải từ chất lượng dự
-  đoán hướng.
+  \item \textbf{Phân tích thực nghiệm}: tranh biện giảm mâu thuẫn nhưng hiếm khi đổi quyết định; nhận định của từng agent
+  gần như ngẫu nhiên và bị lệch phe (Sentiment Agent nói BUY khoảng 80\% số lần, Market Agent nghiêng về SELL).
+  \item \textbf{Đánh giá các cải tiến với quy trình chống khớp quá mức}: năm hướng cải tiến được chọn tham số trên tập phát
+  triển gồm 145 ngày chưa dùng, đánh giá một lần trên tập kiểm thử và báo cáo đầy đủ, kể cả các kết quả âm tính.
 \end{enumerate}
 
 \section{Phạm vi}
