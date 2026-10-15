@@ -39,3 +39,4 @@ outputs/baselines/cryptotrade/*/agent_*/*
 outputs/baselines/cryptotrade/*/ours*/*
 !outputs/baselines/cryptotrade/*/ours*/result.json
 !outputs/trend_variants/
+!outputs/bias_correction/

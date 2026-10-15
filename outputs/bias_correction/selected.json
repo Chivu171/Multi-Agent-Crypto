@@ -1,0 +1,555 @@
+{
+  "selected_on": [
+    "dev_feb_apr",
+    "dev_aug_sep",
+    "dev_dec_jan"
+  ],
+  "baseline_eval_v1": {
+    "mean_return": 0.08596111449510209,
+    "mean_sharpe": 0.062746125096069,
+    "windows": {
+      "dev_feb_apr": {
+        "total_return": 0.22307864605892114,
+        "sharpe": 0.17069743358139414,
+        "direction_accuracy": 0.5,
+        "directional_days": 40
+      },
+      "dev_aug_sep": {
+        "total_return": -0.025341404022818148,
+        "sharpe": -0.04558118872804015,
+        "direction_accuracy": 0.42857142857142855,
+        "directional_days": 21
+      },
+      "dev_dec_jan": {
+        "total_return": 0.06014610144920329,
+        "sharpe": 0.06312213043485301,
+        "direction_accuracy": 0.4166666666666667,
+        "directional_days": 48
+      }
+    },
+    "agents_accuracy": {
+      "Market_Agent": {
+        "accuracy": 0.47619047619047616,
+        "calls": 84,
+        "buy_share": 0.4166666666666667
+      },
+      "Financial_Agent": {
+        "accuracy": 0.4827586206896552,
+        "calls": 116,
+        "buy_share": 0.5
+      },
+      "Sentiment_Agent": {
+        "accuracy": 0.4536082474226804,
+        "calls": 97,
+        "buy_share": 0.7938144329896907
+      },
+      "final": {
+        "accuracy": 0.44954128440366975,
+        "calls": 109
+      }
+    }
+  },
+  "grid": [
+    {
+      "k": 10,
+      "agents": [
+        "Market_Agent",
+        "Financial_Agent",
+        "Sentiment_Agent"
+      ],
+      "mean_return": 0.08375932833121642,
+      "mean_sharpe": 0.08095756791181935,
+      "windows": {
+        "dev_feb_apr": {
+          "total_return": 0.2017316561755247,
+          "sharpe": 0.1588005006450269,
+          "direction_accuracy": 0.475,
+          "directional_days": 40
+        },
+        "dev_aug_sep": {
+          "total_return": 0.010548151137831585,
+          "sharpe": 0.030761643694837932,
+          "direction_accuracy": 0.46153846153846156,
+          "directional_days": 26
+        },
+        "dev_dec_jan": {
+          "total_return": 0.03899817768029301,
+          "sharpe": 0.053310559395593204,
+          "direction_accuracy": 0.43478260869565216,
+          "directional_days": 46
+        }
+      },
+      "agents_accuracy": {
+        "Market_Agent": {
+          "accuracy": 0.46099290780141844,
+          "calls": 141,
+          "buy_share": 0.5106382978723404
+        },
+        "Financial_Agent": {
+          "accuracy": 0.5035460992907801,
+          "calls": 141,
+          "buy_share": 0.475177304964539
+        },
+        "Sentiment_Agent": {
+          "accuracy": 0.47101449275362317,
+          "calls": 138,
+          "buy_share": 0.5289855072463768
+        },
+        "final": {
+          "accuracy": 0.45535714285714285,
+          "calls": 112
+        }
+      }
+    },
+    {
+      "k": 10,
+      "agents": [
+        "Sentiment_Agent"
+      ],
+      "mean_return": 0.050357594911151916,
+      "mean_sharpe": 0.030187162581924165,
+      "windows": {
+        "dev_feb_apr": {
+          "total_return": 0.18874038440619745,
+          "sharpe": 0.15017307325639515,
+          "direction_accuracy": 0.475,
+          "directional_days": 40
+        },
+        "dev_aug_sep": {
+          "total_return": -0.030192271119030445,
+          "sharpe": -0.05685095871384378,
+          "direction_accuracy": 0.46153846153846156,
+          "directional_days": 26
+        },
+        "dev_dec_jan": {
+          "total_return": -0.007475328553711247,
+          "sharpe": -0.00276062679677887,
+          "direction_accuracy": 0.40425531914893614,
+          "directional_days": 47
+        }
+      },
+      "agents_accuracy": {
+        "Market_Agent": {
+          "accuracy": 0.47619047619047616,
+          "calls": 84,
+          "buy_share": 0.4166666666666667
+        },
+        "Financial_Agent": {
+          "accuracy": 0.4827586206896552,
+          "calls": 116,
+          "buy_share": 0.5
+        },
+        "Sentiment_Agent": {
+          "accuracy": 0.47101449275362317,
+          "calls": 138,
+          "buy_share": 0.5289855072463768
+        },
+        "final": {
+          "accuracy": 0.4424778761061947,
+          "calls": 113
+        }
+      }
+    },
+    {
+      "k": 10,
+      "agents": [
+        "Market_Agent",
+        "Sentiment_Agent"
+      ],
+      "mean_return": 0.07458030124161989,
+      "mean_sharpe": 0.06687090349521023,
+      "windows": {
+        "dev_feb_apr": {
+          "total_return": 0.2017316561755247,
+          "sharpe": 0.1588005006450269,
+          "direction_accuracy": 0.475,
+          "directional_days": 40
+        },
+        "dev_aug_sep": {
+          "total_return": 0.0022974064670906458,
+          "sharpe": 0.011313646733871608,
+          "direction_accuracy": 0.4444444444444444,
+          "directional_days": 27
+        },
+        "dev_dec_jan": {
+          "total_return": 0.01971184108224433,
+          "sharpe": 0.030498563106732185,
+          "direction_accuracy": 0.4166666666666667,
+          "directional_days": 48
+        }
+      },
+      "agents_accuracy": {
+        "Market_Agent": {
+          "accuracy": 0.46099290780141844,
+          "calls": 141,
+          "buy_share": 0.5106382978723404
+        },
+        "Financial_Agent": {
+          "accuracy": 0.4827586206896552,
+          "calls": 116,
+          "buy_share": 0.5
+        },
+        "Sentiment_Agent": {
+          "accuracy": 0.47101449275362317,
+          "calls": 138,
+          "buy_share": 0.5289855072463768
+        },
+        "final": {
+          "accuracy": 0.4434782608695652,
+          "calls": 115
+        }
+      }
+    },
+    {
+      "k": 20,
+      "agents": [
+        "Market_Agent",
+        "Financial_Agent",
+        "Sentiment_Agent"
+      ],
+      "mean_return": 0.07558102979530097,
+      "mean_sharpe": 0.06356315976371818,
+      "windows": {
+        "dev_feb_apr": {
+          "total_return": 0.19750305434593063,
+          "sharpe": 0.15403875454395918,
+          "direction_accuracy": 0.46511627906976744,
+          "directional_days": 43
+        },
+        "dev_aug_sep": {
+          "total_return": -0.007439129132771671,
+          "sharpe": -0.012305884941240578,
+          "direction_accuracy": 0.4,
+          "directional_days": 25
+        },
+        "dev_dec_jan": {
+          "total_return": 0.03667916417274397,
+          "sharpe": 0.04895660968843592,
+          "direction_accuracy": 0.4222222222222222,
+          "directional_days": 45
+        }
+      },
+      "agents_accuracy": {
+        "Market_Agent": {
+          "accuracy": 0.5035460992907801,
+          "calls": 141,
+          "buy_share": 0.45390070921985815
+        },
+        "Financial_Agent": {
+          "accuracy": 0.48226950354609927,
+          "calls": 141,
+          "buy_share": 0.45390070921985815
+        },
+        "Sentiment_Agent": {
+          "accuracy": 0.4782608695652174,
+          "calls": 138,
+          "buy_share": 0.5072463768115942
+        },
+        "final": {
+          "accuracy": 0.4336283185840708,
+          "calls": 113
+        }
+      }
+    },
+    {
+      "k": 20,
+      "agents": [
+        "Sentiment_Agent"
+      ],
+      "mean_return": 0.048253498641651106,
+      "mean_sharpe": 0.02692481706672362,
+      "windows": {
+        "dev_feb_apr": {
+          "total_return": 0.1879539478602763,
+          "sharpe": 0.14963870676874744,
+          "direction_accuracy": 0.4634146341463415,
+          "directional_days": 41
+        },
+        "dev_aug_sep": {
+          "total_return": -0.03118598956005303,
+          "sharpe": -0.05897647303005357,
+          "direction_accuracy": 0.4166666666666667,
+          "directional_days": 24
+        },
+        "dev_dec_jan": {
+          "total_return": -0.01200746237526995,
+          "sharpe": -0.009887782538523,
+          "direction_accuracy": 0.41304347826086957,
+          "directional_days": 46
+        }
+      },
+      "agents_accuracy": {
+        "Market_Agent": {
+          "accuracy": 0.47619047619047616,
+          "calls": 84,
+          "buy_share": 0.4166666666666667
+        },
+        "Financial_Agent": {
+          "accuracy": 0.4827586206896552,
+          "calls": 116,
+          "buy_share": 0.5
+        },
+        "Sentiment_Agent": {
+          "accuracy": 0.4782608695652174,
+          "calls": 138,
+          "buy_share": 0.5072463768115942
+        },
+        "final": {
+          "accuracy": 0.43243243243243246,
+          "calls": 111
+        }
+      }
+    },
+    {
+      "k": 20,
+      "agents": [
+        "Market_Agent",
+        "Sentiment_Agent"
+      ],
+      "mean_return": 0.07171599797303496,
+      "mean_sharpe": 0.060144216307210424,
+      "windows": {
+        "dev_feb_apr": {
+          "total_return": 0.19750305434593063,
+          "sharpe": 0.15403875454395918,
+          "direction_accuracy": 0.46511627906976744,
+          "directional_days": 43
+        },
+        "dev_aug_sep": {
+          "total_return": -0.005105839650462518,
+          "sharpe": -0.006643397403151122,
+          "direction_accuracy": 0.44,
+          "directional_days": 25
+        },
+        "dev_dec_jan": {
+          "total_return": 0.022750779223636775,
+          "sharpe": 0.033037291780823215,
+          "direction_accuracy": 0.40425531914893614,
+          "directional_days": 47
+        }
+      },
+      "agents_accuracy": {
+        "Market_Agent": {
+          "accuracy": 0.5035460992907801,
+          "calls": 141,
+          "buy_share": 0.45390070921985815
+        },
+        "Financial_Agent": {
+          "accuracy": 0.4827586206896552,
+          "calls": 116,
+          "buy_share": 0.5
+        },
+        "Sentiment_Agent": {
+          "accuracy": 0.4782608695652174,
+          "calls": 138,
+          "buy_share": 0.5072463768115942
+        },
+        "final": {
+          "accuracy": 0.43478260869565216,
+          "calls": 115
+        }
+      }
+    },
+    {
+      "k": 30,
+      "agents": [
+        "Market_Agent",
+        "Financial_Agent",
+        "Sentiment_Agent"
+      ],
+      "mean_return": 0.06947072607654688,
+      "mean_sharpe": 0.06099660644163496,
+      "windows": {
+        "dev_feb_apr": {
+          "total_return": 0.18170153995199279,
+          "sharpe": 0.14404694231880782,
+          "direction_accuracy": 0.4634146341463415,
+          "directional_days": 41
+        },
+        "dev_aug_sep": {
+          "total_return": -0.0043946513268389165,
+          "sharpe": -0.004916912435691294,
+          "direction_accuracy": 0.46153846153846156,
+          "directional_days": 26
+        },
+        "dev_dec_jan": {
+          "total_return": 0.031105289604486774,
+          "sharpe": 0.043859789441788324,
+          "direction_accuracy": 0.40425531914893614,
+          "directional_days": 47
+        }
+      },
+      "agents_accuracy": {
+        "Market_Agent": {
+          "accuracy": 0.524822695035461,
+          "calls": 141,
+          "buy_share": 0.46099290780141844
+        },
+        "Financial_Agent": {
+          "accuracy": 0.46808510638297873,
+          "calls": 141,
+          "buy_share": 0.425531914893617
+        },
+        "Sentiment_Agent": {
+          "accuracy": 0.47101449275362317,
+          "calls": 138,
+          "buy_share": 0.5144927536231884
+        },
+        "final": {
+          "accuracy": 0.43859649122807015,
+          "calls": 114
+        }
+      }
+    },
+    {
+      "k": 30,
+      "agents": [
+        "Sentiment_Agent"
+      ],
+      "mean_return": 0.048218182969565926,
+      "mean_sharpe": 0.02719784614822435,
+      "windows": {
+        "dev_feb_apr": {
+          "total_return": 0.18776114106243091,
+          "sharpe": 0.1491733024822182,
+          "direction_accuracy": 0.4634146341463415,
+          "directional_days": 41
+        },
+        "dev_aug_sep": {
+          "total_return": -0.03015679004542904,
+          "sharpe": -0.05677433903074587,
+          "direction_accuracy": 0.4583333333333333,
+          "directional_days": 24
+        },
+        "dev_dec_jan": {
+          "total_return": -0.012949802108304098,
+          "sharpe": -0.010805425006799263,
+          "direction_accuracy": 0.3958333333333333,
+          "directional_days": 48
+        }
+      },
+      "agents_accuracy": {
+        "Market_Agent": {
+          "accuracy": 0.47619047619047616,
+          "calls": 84,
+          "buy_share": 0.4166666666666667
+        },
+        "Financial_Agent": {
+          "accuracy": 0.4827586206896552,
+          "calls": 116,
+          "buy_share": 0.5
+        },
+        "Sentiment_Agent": {
+          "accuracy": 0.47101449275362317,
+          "calls": 138,
+          "buy_share": 0.5144927536231884
+        },
+        "final": {
+          "accuracy": 0.4336283185840708,
+          "calls": 113
+        }
+      }
+    },
+    {
+      "k": 30,
+      "agents": [
+        "Market_Agent",
+        "Sentiment_Agent"
+      ],
+      "mean_return": 0.0712514322851215,
+      "mean_sharpe": 0.05941593264681903,
+      "windows": {
+        "dev_feb_apr": {
+          "total_return": 0.20089864781130706,
+          "sharpe": 0.15580477254183872,
+          "direction_accuracy": 0.47619047619047616,
+          "directional_days": 42
+        },
+        "dev_aug_sep": {
+          "total_return": -0.0043946513268389165,
+          "sharpe": -0.004916912435691294,
+          "direction_accuracy": 0.46153846153846156,
+          "directional_days": 26
+        },
+        "dev_dec_jan": {
+          "total_return": 0.017250300370896365,
+          "sharpe": 0.02735993783430966,
+          "direction_accuracy": 0.3877551020408163,
+          "directional_days": 49
+        }
+      },
+      "agents_accuracy": {
+        "Market_Agent": {
+          "accuracy": 0.524822695035461,
+          "calls": 141,
+          "buy_share": 0.46099290780141844
+        },
+        "Financial_Agent": {
+          "accuracy": 0.4827586206896552,
+          "calls": 116,
+          "buy_share": 0.5
+        },
+        "Sentiment_Agent": {
+          "accuracy": 0.47101449275362317,
+          "calls": 138,
+          "buy_share": 0.5144927536231884
+        },
+        "final": {
+          "accuracy": 0.4358974358974359,
+          "calls": 117
+        }
+      }
+    }
+  ],
+  "selected": {
+    "k": 10,
+    "agents": [
+      "Market_Agent",
+      "Financial_Agent",
+      "Sentiment_Agent"
+    ],
+    "mean_return": 0.08375932833121642,
+    "mean_sharpe": 0.08095756791181935,
+    "windows": {
+      "dev_feb_apr": {
+        "total_return": 0.2017316561755247,
+        "sharpe": 0.1588005006450269,
+        "direction_accuracy": 0.475,
+        "directional_days": 40
+      },
+      "dev_aug_sep": {
+        "total_return": 0.010548151137831585,
+        "sharpe": 0.030761643694837932,
+        "direction_accuracy": 0.46153846153846156,
+        "directional_days": 26
+      },
+      "dev_dec_jan": {
+        "total_return": 0.03899817768029301,
+        "sharpe": 0.053310559395593204,
+        "direction_accuracy": 0.43478260869565216,
+        "directional_days": 46
+      }
+    },
+    "agents_accuracy": {
+      "Market_Agent": {
+        "accuracy": 0.46099290780141844,
+        "calls": 141,
+        "buy_share": 0.5106382978723404
+      },
+      "Financial_Agent": {
+        "accuracy": 0.5035460992907801,
+        "calls": 141,
+        "buy_share": 0.475177304964539
+      },
+      "Sentiment_Agent": {
+        "accuracy": 0.47101449275362317,
+        "calls": 138,
+        "buy_share": 0.5289855072463768
+      },
+      "final": {
+        "accuracy": 0.45535714285714285,
+        "calls": 112
+      }
+    }
+  }
+}

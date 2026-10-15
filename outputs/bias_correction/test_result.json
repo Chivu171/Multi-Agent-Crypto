@@ -1,0 +1,103 @@
+{
+  "evaluated_on": [
+    "bear",
+    "sideways",
+    "bull"
+  ],
+  "baseline_eval_v1": {
+    "mean_return": 0.003740083534427933,
+    "mean_sharpe": -0.005349253564285829,
+    "windows": {
+      "bear": {
+        "total_return": -0.16630875771735154,
+        "sharpe": -0.22719184507896067,
+        "direction_accuracy": 0.48,
+        "directional_days": 50
+      },
+      "sideways": {
+        "total_return": 0.016161363139436613,
+        "sharpe": 0.02566460070002513,
+        "direction_accuracy": 0.56,
+        "directional_days": 50
+      },
+      "bull": {
+        "total_return": 0.16136764518119873,
+        "sharpe": 0.18547948368607806,
+        "direction_accuracy": 0.5531914893617021,
+        "directional_days": 47
+      }
+    },
+    "agents_accuracy": {
+      "Market_Agent": {
+        "accuracy": 0.5238095238095238,
+        "calls": 147,
+        "buy_share": 0.3877551020408163
+      },
+      "Financial_Agent": {
+        "accuracy": 0.5390070921985816,
+        "calls": 141,
+        "buy_share": 0.48936170212765956
+      },
+      "Sentiment_Agent": {
+        "accuracy": 0.452991452991453,
+        "calls": 117,
+        "buy_share": 0.811965811965812
+      },
+      "final": {
+        "accuracy": 0.5306122448979592,
+        "calls": 147
+      }
+    }
+  },
+  "corrected": {
+    "k": 10,
+    "agents": [
+      "Market_Agent",
+      "Financial_Agent",
+      "Sentiment_Agent"
+    ],
+    "mean_return": 0.012790202477933795,
+    "mean_sharpe": 0.003933247799354565,
+    "windows": {
+      "bear": {
+        "total_return": -0.15626798926007612,
+        "sharpe": -0.2192523313358271,
+        "direction_accuracy": 0.5,
+        "directional_days": 46
+      },
+      "sideways": {
+        "total_return": 0.03892807764596484,
+        "sharpe": 0.05675574401776381,
+        "direction_accuracy": 0.5490196078431373,
+        "directional_days": 51
+      },
+      "bull": {
+        "total_return": 0.15571051904791267,
+        "sharpe": 0.174296330716127,
+        "direction_accuracy": 0.5306122448979592,
+        "directional_days": 49
+      }
+    },
+    "agents_accuracy": {
+      "Market_Agent": {
+        "accuracy": 0.4947916666666667,
+        "calls": 192,
+        "buy_share": 0.5
+      },
+      "Financial_Agent": {
+        "accuracy": 0.5185185185185185,
+        "calls": 189,
+        "buy_share": 0.4656084656084656
+      },
+      "Sentiment_Agent": {
+        "accuracy": 0.4816753926701571,
+        "calls": 191,
+        "buy_share": 0.5078534031413613
+      },
+      "final": {
+        "accuracy": 0.5273972602739726,
+        "calls": 146
+      }
+    }
+  }
+}
