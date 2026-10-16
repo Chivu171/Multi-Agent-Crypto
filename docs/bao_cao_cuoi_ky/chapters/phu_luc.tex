@@ -29,8 +29,9 @@ Thay \texttt{bull} bằng \texttt{sideways} hoặc \texttt{bear} cho hai giai đ
 \texttt{dev\_feb\_apr}, \texttt{dev\_aug\_sep}, \texttt{dev\_dec\_jan} cho tập phát triển (tag \texttt{eval-v1-dev}). Mọi
 lời gọi mô hình được lưu đệm, nên chạy lại cho kết quả giống hệt mà không cần gọi lại mô hình.
 
-\paragraph{Các cải tiến (Mục~\ref{sec:improve}).} Hai phiên bản chạy lại mô hình dùng thêm cờ
-\texttt{--trend-context} (tag \texttt{eval-v2-trend}) hoặc \texttt{--debias} (tag \texttt{eval-v2-bias}):
+\paragraph{Các cải tiến (Mục~\ref{sec:improve}).} Ba phiên bản chạy lại mô hình dùng thêm cờ
+\texttt{--trend-context} (tag \texttt{eval-v2-trend}), \texttt{--debias} (tag \texttt{eval-v2-bias}) hoặc
+\texttt{--debate-flip} (tag \texttt{eval-v2-debate}):
 \begin{Verbatim}
 python -m baselines.cryptotrade.run ours \
   --window dev_feb_apr --trend-context

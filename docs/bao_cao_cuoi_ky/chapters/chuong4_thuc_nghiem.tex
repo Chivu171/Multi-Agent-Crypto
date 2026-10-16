@@ -254,7 +254,8 @@ Tranh biện được kích hoạt ở 99 trên 195 ngày. Bảng~\ref{tab:debat
 Nguyên nhân nằm ở thiết kế: tranh biện chỉ giảm \emph{cường độ} niềm tin của agent bị phản biện, không bao giờ đổi
 \emph{hướng} (Mục~\ref{sec:debate}). Chỉ số mâu thuẫn giảm vì các niềm tin trái chiều cùng co về 0, chứ không phải vì
 các agent đạt được đồng thuận về hướng. \emph{Với câu hỏi RQ3, tranh biện trong thiết kế hiện tại hoạt động như một cơ chế
-giảm rủi ro, chưa phải một cơ chế sửa sai.}
+giảm rủi ro, chưa phải một cơ chế sửa sai.} Mục~\ref{sec:debate-flip} kiểm tra trường hợp ngược lại: khi được phép
+đổi hướng, các agent cũng gần như không đổi.
 
 \section{Kết quả trên tập phát triển}
 \label{sec:dev-results}
@@ -331,8 +332,9 @@ Bảng~\ref{tab:agent-acc} cho thấy bốn điểm:
 
 \section{Các cải tiến dựa trên phân tích (RQ4)}
 \label{sec:improve}
-Từ các phát hiện trên, đề tài thử năm hướng cải tiến. Ba hướng đầu chỉ thay đổi bước tổng hợp nên được tính lại từ các
-nhận định đã lưu (không gọi lại mô hình); hai hướng sau thay đổi chính các agent nên phải chạy lại mô hình. Quy trình
+Từ các phát hiện trên, đề tài thử sáu hướng cải tiến. Ba hướng đầu chỉ thay đổi bước tổng hợp nên được tính lại từ các
+nhận định đã lưu (không gọi lại mô hình); ba hướng sau thay đổi chính các agent hoặc bước tranh biện nên phải chạy lại
+mô hình. Quy trình
 chung: chọn cấu hình tốt nhất trên tập phát triển (theo lợi suất trung bình, Sharpe để phân định), sau đó đánh giá trên
 tập kiểm thử \emph{một lần}.
 
@@ -444,6 +446,26 @@ Sentiment giảm từ 45,4\% xuống 39,5\%. Market Agent trở nên quá thận
 khi có hướng thì phần lớn là SELL (chỉ 21\% là BUY), với tỷ lệ đúng 44,7\%. Tỷ lệ đúng của quyết định cuối giảm từ 45,0\%
 xuống 39,4\%. Vì kém hơn eval-v1 rõ rệt trên tập phát triển, phiên bản này không được đánh giá trên tập kiểm thử. Kết quả
 cho thấy sửa lời nhắc làm thay đổi \emph{tỷ lệ} các hướng nhưng không làm mô hình nhận ra tin nào thực sự quan trọng.
+
+\subsection{Cho phép đổi hướng sau tranh biện}
+\label{sec:debate-flip}
+Giả thuyết: tranh biện chỉ giảm rủi ro vì thiết kế cấm agent đổi hướng (Mục~\ref{sec:debate}); nếu được phép, agent sai
+có thể được thuyết phục và tranh biện trở thành cơ chế sửa sai. Phiên bản \texttt{eval-v2-debate} yêu cầu mỗi agent
+trong mỗi vòng tranh biện nêu thêm lập trường (BUY, SELL hoặc NEUTRAL). Lập trường mới chỉ được áp dụng khi đủ ba điều
+kiện: agent tự nêu lập trường khác; cường độ phản biện $R\ge0{,}65$; và lập luận mới qua kiểm tra nguồn. Ngưỡng
+$0{,}65$ được đặt trước khi chạy từ phân bố của $R$ trên tập phát triển của eval-v1: $R$ tụ quanh 0,58 khi các agent
+khác cùng phía hoặc trung lập, và quanh 0,80 khi cả hai agent khác ngược phía. Nhận định ban đầu của ba agent và bước
+RCA được dùng lại từ eval-v1, nên khác biệt chỉ nằm ở bước tranh biện.
+
+Trên 71 ngày có tranh biện của tập phát triển (426 lượt agent--vòng), agent nêu lập trường ở 330 lượt được chấp nhận,
+nhưng \textbf{chỉ đổi hướng 5 lần}. Cả 5 lần đều là Financial Agent chuyển từ BUY sang NEUTRAL khi đứng một mình trước
+hai agent nói SELL, tức là chạy theo số đông chứ không phải sửa sai: ở 3 trong 5 ngày đó giá thực tế tăng, nghĩa là ý
+kiến thiểu số ban đầu đúng. Không lần đổi nào làm thay đổi quyết định cuối (vẫn là SELL). Hai ngày khác có quyết định
+đổi từ NEUTRAL sang BUY do $\Sfinal$ dao động quanh ngưỡng $\pm0{,}05$ giữa hai lần chạy, một ngày đúng và một ngày sai.
+Lợi suất trung bình +8,56\% (+22,31\%; $-$2,65\%; +6,01\%) so với +8,60\% của eval-v1, tỷ lệ đúng của quyết định cuối
+giữ nguyên 45,0\%; phiên bản này không được đánh giá trên tập kiểm thử. Kết quả cho thấy với mô hình dùng trong đề tài,
+việc tranh biện không sửa được sai không chỉ do thiết kế: khi được phép, agent gần như luôn khẳng định lại lập trường cũ,
+và khi đổi thì là theo đa số.
 
 \section{Thảo luận}
 \paragraph{Vì sao thua CryptoTrade đầy đủ?} Ở giai đoạn tăng giá, tỷ lệ đúng hướng của hai hệ thống gần như bằng nhau

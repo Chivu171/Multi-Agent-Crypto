@@ -17,11 +17,13 @@ Câu trả lời cho bốn câu hỏi nghiên cứu:
   lại trên tập phát triển. Đo trực tiếp, cả ba agent đoán hướng gần như ngẫu nhiên (45--48\%) và bị lệch phe: Sentiment
   Agent nói BUY khoảng 80\% số lần, Market Agent nghiêng về SELL.
   \item[RQ3] Tranh biện giảm mức mâu thuẫn từ khoảng 0,61 xuống 0,22 và không làm kết quả xấu đi, nhưng chỉ đổi 11
-  trên 195 quyết định và chỉ theo hướng đứng ngoài thị trường, do thiết kế không cho phép agent đổi hướng.
+  trên 195 quyết định và chỉ theo hướng đứng ngoài thị trường. Khi được phép đổi hướng, agent chỉ đổi 5 lần trong 426
+  lượt, đều là ý kiến thiểu số chạy theo đa số; tranh biện vì vậy là cơ chế giảm rủi ro chứ chưa phải cơ chế sửa sai.
   \item[RQ4] Không cải tiến nào vượt CryptoTrade theo đúng quy trình chọn trên tập phát triển. Trọng số theo xu hướng tốt
   nhất trên tập phát triển nhưng không giữ được trên tập kiểm thử; bộ lọc xu hướng vượt CryptoTrade trên tập kiểm thử
   nhưng thua trên tập phát triển với mọi tham số; thông tin xu hướng dài hạn và hiệu chỉnh độ lệch (cả trừ mức nền lẫn sửa lời nhắc)
-  không làm agent đoán đúng hơn; sửa lời nhắc còn làm kết quả trên tập phát triển xấu đi.
+  không làm agent đoán đúng hơn; sửa lời nhắc còn làm kết quả trên tập phát triển xấu đi; cho phép
+  đổi hướng sau tranh biện gần như không thay đổi quyết định nào.
 \end{description}
 
 Các kết quả này cho thấy việc xử lý mâu thuẫn tường minh có tác dụng giảm rủi ro và tăng khả năng giải thích (mỗi lập
@@ -44,8 +46,6 @@ trọng số hay mức vào lệnh chỉ thay đổi mức tiếp xúc với th�
 \section{Hướng phát triển}
 \paragraph{Trong ngắn hạn (đang thực hiện).}
 \begin{itemize}
-  \item Cho phép agent đổi hướng sau tranh biện khi lập luận phản biện đủ mạnh và có nguồn kiểm chứng, để tranh biện trở
-  thành cơ chế sửa sai chứ không chỉ giảm rủi ro.
   \item Bổ sung kiểm định ý nghĩa thống kê (khoảng tin cậy bootstrap cho lợi suất, kiểm định nhị thức cho tỷ lệ đúng
   hướng).
 \end{itemize}

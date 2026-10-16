@@ -41,8 +41,8 @@ sideways and bear Bitcoin periods of 2023, plus a development set of 145 unused 
 CryptoTrade on both the test periods (+0.38\% vs.\ +5.71\% average return) and the development set (+8.60\% vs.\
 +11.95\%). Our analysis shows that (i) debate lowers the measured conflict from 0.61 to 0.22 yet changes only 11 of 195
 decisions, always towards abstention; (ii) each agent's directional accuracy is near chance (45--48\%) and biased, with
-the news agent calling BUY about 80\% of the time; and (iii) five improvements tuned on the development set (regime
-weights, a trend filter, signal-based sizing, longer trend context, bias correction by score or by prompt) do not beat CryptoTrade reliably:
+the news agent calling BUY about 80\% of the time; and (iii) six improvements tuned on the development set (regime
+weights, a trend filter, signal-based sizing, longer trend context, bias correction by score or by prompt, debate that may flip a direction) do not beat CryptoTrade reliably:
 the best one on development data does not transfer, and the only one that wins on test loses on development data under
 every parameter setting. These findings separate \emph{reducing} disagreement from \emph{resolving} it and locate the
 bottleneck in per-agent signal quality rather than aggregation.\footnote{Code and data:
@@ -85,7 +85,7 @@ prompts, which makes a controlled comparison possible with a local open model;
 (3) an empirical study, replicated on a held-out development set, showing that explicit conflict handling trails
 implicit fusion, that debate reduces disagreement without resolving it, and that individual agents are near chance and
 directionally biased;
-(4) a dev-then-test evaluation of five improvements with all results reported, including the negative ones.
+(4) a dev-then-test evaluation of six improvements with all results reported, including the negative ones.
 
 % =====================================================================
 \section{Related Work}
@@ -347,7 +347,8 @@ them does a wrong call become right or vice versa: the gain comes from staying o
 design: debate decays the strength of contested opinions but never flips their direction, so opposing beliefs shrink
 towards zero together. The conflict score falls because the agents become less certain, not because they agree.
 Debate thus acts as a risk filter rather than an error-correction mechanism, a distinction that a lower conflict score
-alone would hide.
+alone would hide. Lifting the restriction does not change this (Section~\ref{sec:rq4}): allowed to flip, agents almost
+always restate their position.
 
 \subsection{RQ4: improvements tuned on development data}
 \label{sec:rq4}
@@ -370,16 +371,17 @@ All three & 13.15 & 3.62 & 21.18 & 9.23 & $-$19.55 \\
 Bias correction (offline) & 8.38 & 1.28 & 15.57 & 3.89 & $-$15.63 \\
 Longer trend context & 8.67 & -- & -- & -- & -- \\
 Debiasing prompts & 2.47 & -- & -- & -- & -- \\
+Debate may flip & 8.56 & -- & -- & -- & -- \\
 \midrule
 CryptoTrade full & 11.95 & 5.71 & 30.47 & $-$1.63 & $-$11.72 \\
 \bottomrule
 \end{tabular}}
 \caption{Average return (\%) of improvements: each is selected on the development set (Dev) and evaluated once on test.
-The two prompt-level variants were not run on test because they did not improve on dev.}
+The three variants that need new LLM runs were not run on test because they did not improve on dev.}
 \label{tab:improve}
 \end{table}
 
-We test five improvements (Table~\ref{tab:improve}). Three change only aggregation and are recomputed from saved
+We test six improvements (Table~\ref{tab:improve}). Three change only aggregation and are recomputed from saved
 opinions: a \emph{trend filter} that blocks SELL in an up-trend and BUY in a down-trend (18 settings: MA20/50,
 10/20/30-day return, 0/3/5\% band); \emph{regime weights} that multiply the Financial and Sentiment contributions by
 $\{0,1,2\}$ per regime (729 combinations per trend setting); and \emph{signal sizing} $\mathrm{clip}(\Sfinal/k,-1,1)$,
@@ -400,6 +402,12 @@ share (Sentiment 79\%$\rightarrow$53\%, Market 42\%$\rightarrow$51\%) but leaves
 three earlier days and is told that routine optimism is not a buy signal, and the Market agent is told to take a side
 only when most indicators agree. Sentiment's BUY share falls (79\%$\rightarrow$65\%) but so does its accuracy
 (45.4\%$\rightarrow$39.5\%); the Market agent abstains on 73\% of days (was 41\%), and the dev return drops to +2.47\%.
+\emph{Debate may flip} lets each debating agent state a stance, which replaces its direction when the rebuttal strength
+is at least 0.65 (fixed beforehand from the eval-v1 dev distribution: about 0.58 when the others agree or abstain, 0.80
+when both oppose) and its new explanation passes the source check; specialist opinions and RCA are replayed from eval-v1.
+Over 426 agent-rounds on 71 debate days, agents flip only 5 times, all the Financial agent moving from BUY to NEUTRAL
+when alone against two SELLs. This is conformity, not correction: on 3 of those 5 days the price rose, and no flip
+changes the final decision. Dev return is +8.56\% (eval-v1 +8.60\%), final accuracy 45.0\% in both.
 
 \paragraph{Are three agents needed?} Zeroing the Financial and Sentiment contributions gives a Market-only variant that
 is \emph{better} on dev (+12.32\% vs.\ +8.60\%) and worse on test ($-$1.59\% vs.\ +0.37\%). Pooled over all six ranges,
@@ -423,13 +431,14 @@ because of the RCA, debate and verification calls; the monetary cost of both is 
 Under identical data, environment and model, separating sources into specialised agents and handling their conflict
 explicitly does not outperform CryptoTrade's implicit fusion, on the paper's test periods or on 145 held-out days. The
 study yields four lessons for conflict-aware agent design. A debate that only decays confidence lowers measured
-disagreement without resolving it. Individual agents can be near chance and systematically biased, the news agent
+disagreement without resolving it, and allowing direction changes does not help: the agents almost never change their
+mind, and when they do, the minority joins the majority. Individual agents can be near chance and systematically biased, the news agent
 mostly by reading upbeat coverage as a buy signal. When agent signals carry little information, aggregation changes such
 as regime weights, trend filters and sizing only change market exposure, so their apparent gains depend on the period
 evaluated; a dev-then-test protocol exposes this where a single test set would not. Finally, aggregation penalties can
 encode unintended biases. Telling the agents about their bias shifts the mix of directions but not their accuracy. Future work should target
-signal quality: debate that may flip a direction when the rebuttal is strong and verified, longer horizons than one day, and larger
-models.
+signal quality: longer horizons than one day, and larger models that may weigh opposing evidence rather than restate
+their view.
 
 \section*{Limitations}
 Each period has only 35--69 trading days, so differences of a few points are not statistically significant. We study
