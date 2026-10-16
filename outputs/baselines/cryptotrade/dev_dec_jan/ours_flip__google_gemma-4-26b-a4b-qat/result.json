@@ -1,0 +1,68 @@
+{
+  "window": [
+    "2023-12-02",
+    "2024-01-31"
+  ],
+  "threshold": 0.4,
+  "trend_context": false,
+  "debias": false,
+  "debate_flip": true,
+  "trading_days": 60,
+  "decided_days": 60,
+  "status_counts": {
+    "ok": 60
+  },
+  "debate_days": 34,
+  "debate_flips": 2,
+  "explanation_rejected_days": 4,
+  "models": {
+    "financial": "google/gemma-4-26b-a4b-qat",
+    "market": "google/gemma-4-26b-a4b-qat",
+    "sentiment": "google/gemma-4-26b-a4b-qat",
+    "conflict_analyzer": "google/gemma-4-26b-a4b-qat",
+    "debate": "google/gemma-4-26b-a4b-qat",
+    "grounding": "google/gemma-4-26b-a4b-qat"
+  },
+  "calls": {
+    "new": 421,
+    "cached": 433,
+    "failed": 0
+  },
+  "results": {
+    "market_only": {
+      "total_return": 0.15876466925603872,
+      "sharpe": 0.16567157536789184,
+      "days": 60,
+      "direction_accuracy": 0.5357142857142857,
+      "directional_days": 28
+    },
+    "market_financial": {
+      "total_return": 0.058878013843737476,
+      "sharpe": 0.08398136454344515,
+      "days": 60,
+      "direction_accuracy": 0.4444444444444444,
+      "directional_days": 36
+    },
+    "market_sentiment": {
+      "total_return": 0.11199222352327975,
+      "sharpe": 0.10837976155986132,
+      "days": 60,
+      "direction_accuracy": 0.47058823529411764,
+      "directional_days": 51
+    },
+    "no_debate": {
+      "total_return": 0.07009349350361571,
+      "sharpe": 0.07221871181179756,
+      "days": 60,
+      "direction_accuracy": 0.4230769230769231,
+      "directional_days": 52
+    },
+    "full": {
+      "total_return": 0.06014610144920329,
+      "sharpe": 0.06312213043485301,
+      "days": 60,
+      "direction_accuracy": 0.4166666666666667,
+      "directional_days": 48
+    }
+  }
+}
