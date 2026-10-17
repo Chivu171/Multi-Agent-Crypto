@@ -1,0 +1,337 @@
+{
+  "selected_on": [
+    "dev_feb_apr",
+    "dev_aug_sep",
+    "dev_dec_jan"
+  ],
+  "selected": {
+    "k": null,
+    "m": 0,
+    "mean_return": 0.11219649992174856,
+    "mean_sharpe": 0.09133068552637684,
+    "sells": 0,
+    "windows": {
+      "dev_feb_apr": {
+        "total_return": 0.22212058185200245,
+        "sharpe": 0.14949504596154886,
+        "direction_accuracy": 0.42857142857142855,
+        "directional_days": 21
+      },
+      "dev_aug_sep": {
+        "total_return": 0.029695133834167553,
+        "sharpe": 0.05730774114790491,
+        "direction_accuracy": 0.4,
+        "directional_days": 10
+      },
+      "dev_dec_jan": {
+        "total_return": 0.08477378407907565,
+        "sharpe": 0.06718926946967672,
+        "direction_accuracy": 0.46875,
+        "directional_days": 32
+      }
+    }
+  },
+  "grid": [
+    {
+      "k": 0.05,
+      "m": 0,
+      "mean_return": 0.08596111449510209,
+      "mean_sharpe": 0.062746125096069,
+      "sells": 46,
+      "windows": {
+        "dev_feb_apr": {
+          "total_return": 0.22307864605892114,
+          "sharpe": 0.17069743358139414,
+          "direction_accuracy": 0.5,
+          "directional_days": 40
+        },
+        "dev_aug_sep": {
+          "total_return": -0.025341404022818148,
+          "sharpe": -0.04558118872804015,
+          "direction_accuracy": 0.42857142857142855,
+          "directional_days": 21
+        },
+        "dev_dec_jan": {
+          "total_return": 0.06014610144920329,
+          "sharpe": 0.06312213043485301,
+          "direction_accuracy": 0.4166666666666667,
+          "directional_days": 48
+        }
+      }
+    },
+    {
+      "k": 0.05,
+      "m": 2,
+      "mean_return": 0.10915847353733821,
+      "mean_sharpe": 0.07319998305372077,
+      "sells": 19,
+      "windows": {
+        "dev_feb_apr": {
+          "total_return": 0.2398114191527092,
+          "sharpe": 0.1753182322899412,
+          "direction_accuracy": 0.5,
+          "directional_days": 28
+        },
+        "dev_aug_sep": {
+          "total_return": -0.027866060265430037,
+          "sharpe": -0.049165862444945335,
+          "direction_accuracy": 0.35294117647058826,
+          "directional_days": 17
+        },
+        "dev_dec_jan": {
+          "total_return": 0.11553006172473546,
+          "sharpe": 0.09344757931616644,
+          "direction_accuracy": 0.4594594594594595,
+          "directional_days": 37
+        }
+      }
+    },
+    {
+      "k": 0.1,
+      "m": 0,
+      "mean_return": 0.09620486166326432,
+      "mean_sharpe": 0.07239365966567489,
+      "sells": 34,
+      "windows": {
+        "dev_feb_apr": {
+          "total_return": 0.22349369151629306,
+          "sharpe": 0.17037818615653924,
+          "direction_accuracy": 0.4722222222222222,
+          "directional_days": 36
+        },
+        "dev_aug_sep": {
+          "total_return": -0.01963426825103065,
+          "sharpe": -0.03244598277255622,
+          "direction_accuracy": 0.4117647058823529,
+          "directional_days": 17
+        },
+        "dev_dec_jan": {
+          "total_return": 0.08475516172453057,
+          "sharpe": 0.07924877561304162,
+          "direction_accuracy": 0.4318181818181818,
+          "directional_days": 44
+        }
+      }
+    },
+    {
+      "k": 0.1,
+      "m": 2,
+      "mean_return": 0.09760485492312032,
+      "mean_sharpe": 0.0704402883854963,
+      "sells": 16,
+      "windows": {
+        "dev_feb_apr": {
+          "total_return": 0.2398114191527092,
+          "sharpe": 0.1753182322899412,
+          "direction_accuracy": 0.5,
+          "directional_days": 28
+        },
+        "dev_aug_sep": {
+          "total_return": -0.014770785910685369,
+          "sharpe": -0.02182968741218775,
+          "direction_accuracy": 0.4,
+          "directional_days": 15
+        },
+        "dev_dec_jan": {
+          "total_return": 0.06777393152733713,
+          "sharpe": 0.05783232027873543,
+          "direction_accuracy": 0.4444444444444444,
+          "directional_days": 36
+        }
+      }
+    },
+    {
+      "k": 0.15,
+      "m": 0,
+      "mean_return": 0.11000788061950595,
+      "mean_sharpe": 0.07871249138657065,
+      "sells": 25,
+      "windows": {
+        "dev_feb_apr": {
+          "total_return": 0.24097229009754506,
+          "sharpe": 0.1787681292281011,
+          "direction_accuracy": 0.48484848484848486,
+          "directional_days": 33
+        },
+        "dev_aug_sep": {
+          "total_return": -0.017343622734733444,
+          "sharpe": -0.027629451863362277,
+          "direction_accuracy": 0.375,
+          "directional_days": 16
+        },
+        "dev_dec_jan": {
+          "total_return": 0.10639497449570623,
+          "sharpe": 0.08499879679497313,
+          "direction_accuracy": 0.46153846153846156,
+          "directional_days": 39
+        }
+      }
+    },
+    {
+      "k": 0.15,
+      "m": 2,
+      "mean_return": 0.10161000035827013,
+      "mean_sharpe": 0.07288477386201823,
+      "sells": 14,
+      "windows": {
+        "dev_feb_apr": {
+          "total_return": 0.2398114191527092,
+          "sharpe": 0.1753182322899412,
+          "direction_accuracy": 0.5,
+          "directional_days": 28
+        },
+        "dev_aug_sep": {
+          "total_return": -0.014770785910685369,
+          "sharpe": -0.02182968741218775,
+          "direction_accuracy": 0.4,
+          "directional_days": 15
+        },
+        "dev_dec_jan": {
+          "total_return": 0.07978936783278656,
+          "sharpe": 0.06516577670830123,
+          "direction_accuracy": 0.4411764705882353,
+          "directional_days": 34
+        }
+      }
+    },
+    {
+      "k": 0.2,
+      "m": 0,
+      "mean_return": 0.10307770738575754,
+      "mean_sharpe": 0.07424479028569515,
+      "sells": 15,
+      "windows": {
+        "dev_feb_apr": {
+          "total_return": 0.2156148161887539,
+          "sharpe": 0.1589820745243426,
+          "direction_accuracy": 0.4444444444444444,
+          "directional_days": 27
+        },
+        "dev_aug_sep": {
+          "total_return": -0.014770785910685369,
+          "sharpe": -0.02182968741218775,
+          "direction_accuracy": 0.4,
+          "directional_days": 15
+        },
+        "dev_dec_jan": {
+          "total_return": 0.10838909187920409,
+          "sharpe": 0.08558198374493059,
+          "direction_accuracy": 0.4722222222222222,
+          "directional_days": 36
+        }
+      }
+    },
+    {
+      "k": 0.2,
+      "m": 2,
+      "mean_return": 0.09478818102396369,
+      "mean_sharpe": 0.06552034864477446,
+      "sells": 9,
+      "windows": {
+        "dev_feb_apr": {
+          "total_return": 0.2161693822323374,
+          "sharpe": 0.15153061386000835,
+          "direction_accuracy": 0.4583333333333333,
+          "directional_days": 24
+        },
+        "dev_aug_sep": {
+          "total_return": -0.014770785910685369,
+          "sharpe": -0.02182968741218775,
+          "direction_accuracy": 0.4,
+          "directional_days": 15
+        },
+        "dev_dec_jan": {
+          "total_return": 0.08296594675023905,
+          "sharpe": 0.06686011948650279,
+          "direction_accuracy": 0.45454545454545453,
+          "directional_days": 33
+        }
+      }
+    },
+    {
+      "k": 0.3,
+      "m": 0,
+      "mean_return": 0.10571757984691403,
+      "mean_sharpe": 0.08291341092105825,
+      "sells": 7,
+      "windows": {
+        "dev_feb_apr": {
+          "total_return": 0.2058437076609223,
+          "sharpe": 0.14981609737423365,
+          "direction_accuracy": 0.4166666666666667,
+          "directional_days": 24
+        },
+        "dev_aug_sep": {
+          "total_return": 0.004343123744725785,
+          "sharpe": 0.015691570448802695,
+          "direction_accuracy": 0.4166666666666667,
+          "directional_days": 12
+        },
+        "dev_dec_jan": {
+          "total_return": 0.10696590813509399,
+          "sharpe": 0.08323256494013839,
+          "direction_accuracy": 0.47058823529411764,
+          "directional_days": 34
+        }
+      }
+    },
+    {
+      "k": 0.3,
+      "m": 2,
+      "mean_return": 0.10218753517158456,
+      "mean_sharpe": 0.07825035453765129,
+      "sells": 4,
+      "windows": {
+        "dev_feb_apr": {
+          "total_return": 0.21744569769095223,
+          "sharpe": 0.15187022369447445,
+          "direction_accuracy": 0.43478260869565216,
+          "directional_days": 23
+        },
+        "dev_aug_sep": {
+          "total_return": 0.004343123744725785,
+          "sharpe": 0.015691570448802695,
+          "direction_accuracy": 0.4166666666666667,
+          "directional_days": 12
+        },
+        "dev_dec_jan": {
+          "total_return": 0.08477378407907565,
+          "sharpe": 0.06718926946967672,
+          "direction_accuracy": 0.46875,
+          "directional_days": 32
+        }
+      }
+    },
+    {
+      "k": null,
+      "m": 0,
+      "mean_return": 0.11219649992174856,
+      "mean_sharpe": 0.09133068552637684,
+      "sells": 0,
+      "windows": {
+        "dev_feb_apr": {
+          "total_return": 0.22212058185200245,
+          "sharpe": 0.14949504596154886,
+          "direction_accuracy": 0.42857142857142855,
+          "directional_days": 21
+        },
+        "dev_aug_sep": {
+          "total_return": 0.029695133834167553,
+          "sharpe": 0.05730774114790491,
+          "direction_accuracy": 0.4,
+          "directional_days": 10
+        },
+        "dev_dec_jan": {
+          "total_return": 0.08477378407907565,
+          "sharpe": 0.06718926946967672,
+          "direction_accuracy": 0.46875,
+          "directional_days": 32
+        }
+      }
+    }
+  ],
+  "references": {
+    "ct_full": 0.11947446313959935,
+    "buy_and_hold": 0.11852213313220179
+  }
+}

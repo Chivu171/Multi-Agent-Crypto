@@ -1,0 +1,364 @@
+{
+  "evaluated_on": [
+    "bear",
+    "sideways",
+    "bull"
+  ],
+  "eval_v1": {
+    "k": 0.05,
+    "m": 0,
+    "mean_return": 0.003740083534427933,
+    "mean_sharpe": -0.005349253564285829,
+    "sells": 75,
+    "windows": {
+      "bear": {
+        "total_return": -0.16630875771735154,
+        "sharpe": -0.22719184507896067,
+        "direction_accuracy": 0.48,
+        "directional_days": 50
+      },
+      "sideways": {
+        "total_return": 0.016161363139436613,
+        "sharpe": 0.02566460070002513,
+        "direction_accuracy": 0.56,
+        "directional_days": 50
+      },
+      "bull": {
+        "total_return": 0.16136764518119873,
+        "sharpe": 0.18547948368607806,
+        "direction_accuracy": 0.5531914893617021,
+        "directional_days": 47
+      }
+    }
+  },
+  "selected": {
+    "k": null,
+    "m": 0,
+    "mean_return": 0.07392494994565228,
+    "mean_sharpe": 0.04464508485322205,
+    "sells": 0,
+    "windows": {
+      "bear": {
+        "total_return": -0.14752173925010292,
+        "sharpe": -0.11938776641997569,
+        "direction_accuracy": 0.4230769230769231,
+        "directional_days": 26
+      },
+      "sideways": {
+        "total_return": -0.016212981203527987,
+        "sharpe": -0.005206079576804901,
+        "direction_accuracy": 0.5185185185185185,
+        "directional_days": 27
+      },
+      "bull": {
+        "total_return": 0.38550957029058774,
+        "sharpe": 0.25852910055644673,
+        "direction_accuracy": 0.631578947368421,
+        "directional_days": 19
+      }
+    }
+  },
+  "references": {
+    "ct_full": 0.0570575451164426,
+    "buy_and_hold": 0.0774138277212646
+  },
+  "grid_after_selection": [
+    {
+      "k": 0.05,
+      "m": 0,
+      "mean_return": 0.003740083534427933,
+      "mean_sharpe": -0.005349253564285829,
+      "sells": 75,
+      "windows": {
+        "bear": {
+          "total_return": -0.16630875771735154,
+          "sharpe": -0.22719184507896067,
+          "direction_accuracy": 0.48,
+          "directional_days": 50
+        },
+        "sideways": {
+          "total_return": 0.016161363139436613,
+          "sharpe": 0.02566460070002513,
+          "direction_accuracy": 0.56,
+          "directional_days": 50
+        },
+        "bull": {
+          "total_return": 0.16136764518119873,
+          "sharpe": 0.18547948368607806,
+          "direction_accuracy": 0.5531914893617021,
+          "directional_days": 47
+        }
+      }
+    },
+    {
+      "k": 0.05,
+      "m": 2,
+      "mean_return": 0.005142823094124542,
+      "mean_sharpe": -0.004348512801445455,
+      "sells": 34,
+      "windows": {
+        "bear": {
+          "total_return": -0.17610069910689696,
+          "sharpe": -0.21143674857838105,
+          "direction_accuracy": 0.475,
+          "directional_days": 40
+        },
+        "sideways": {
+          "total_return": 0.021745825042964295,
+          "sharpe": 0.029725656371038883,
+          "direction_accuracy": 0.5945945945945946,
+          "directional_days": 37
+        },
+        "bull": {
+          "total_return": 0.1697833433463063,
+          "sharpe": 0.1686655538030058,
+          "direction_accuracy": 0.5517241379310345,
+          "directional_days": 29
+        }
+      }
+    },
+    {
+      "k": 0.1,
+      "m": 0,
+      "mean_return": 0.014955053166704127,
+      "mean_sharpe": 0.0051617534938021015,
+      "sells": 62,
+      "windows": {
+        "bear": {
+          "total_return": -0.16307803890782258,
+          "sharpe": -0.2207856852629837,
+          "direction_accuracy": 0.4782608695652174,
+          "directional_days": 46
+        },
+        "sideways": {
+          "total_return": 0.02038365309189305,
+          "sharpe": 0.029373698679545736,
+          "direction_accuracy": 0.5555555555555556,
+          "directional_days": 45
+        },
+        "bull": {
+          "total_return": 0.1875595453160419,
+          "sharpe": 0.20689724706484428,
+          "direction_accuracy": 0.5581395348837209,
+          "directional_days": 43
+        }
+      }
+    },
+    {
+      "k": 0.1,
+      "m": 2,
+      "mean_return": 0.01736324414163855,
+      "mean_sharpe": 0.007375828870025673,
+      "sells": 30,
+      "windows": {
+        "bear": {
+          "total_return": -0.16626621619053816,
+          "sharpe": -0.19530496157389826,
+          "direction_accuracy": 0.47368421052631576,
+          "directional_days": 38
+        },
+        "sideways": {
+          "total_return": 0.018486947240477836,
+          "sharpe": 0.026157492249886418,
+          "direction_accuracy": 0.5833333333333334,
+          "directional_days": 36
+        },
+        "bull": {
+          "total_return": 0.19986900137497599,
+          "sharpe": 0.19127495593408886,
+          "direction_accuracy": 0.5714285714285714,
+          "directional_days": 28
+        }
+      }
+    },
+    {
+      "k": 0.15,
+      "m": 0,
+      "mean_return": 0.008676218858782522,
+      "mean_sharpe": 0.006887243423751956,
+      "sells": 48,
+      "windows": {
+        "bear": {
+          "total_return": -0.17802311600308351,
+          "sharpe": -0.2104109542280215,
+          "direction_accuracy": 0.43243243243243246,
+          "directional_days": 37
+        },
+        "sideways": {
+          "total_return": 0.016290911139849484,
+          "sharpe": 0.02402576414345049,
+          "direction_accuracy": 0.5365853658536586,
+          "directional_days": 41
+        },
+        "bull": {
+          "total_return": 0.1877608614395816,
+          "sharpe": 0.2070469203558269,
+          "direction_accuracy": 0.5476190476190477,
+          "directional_days": 42
+        }
+      }
+    },
+    {
+      "k": 0.15,
+      "m": 2,
+      "mean_return": 0.016834235928651336,
+      "mean_sharpe": 0.014049701585566001,
+      "sells": 25,
+      "windows": {
+        "bear": {
+          "total_return": -0.17275069982048008,
+          "sharpe": -0.179839154782029,
+          "direction_accuracy": 0.45714285714285713,
+          "directional_days": 35
+        },
+        "sideways": {
+          "total_return": 0.022697638472067183,
+          "sharpe": 0.03027273302812631,
+          "direction_accuracy": 0.5714285714285714,
+          "directional_days": 35
+        },
+        "bull": {
+          "total_return": 0.2005557691343669,
+          "sharpe": 0.1917155265106007,
+          "direction_accuracy": 0.5555555555555556,
+          "directional_days": 27
+        }
+      }
+    },
+    {
+      "k": 0.2,
+      "m": 0,
+      "mean_return": 0.013969242405817761,
+      "mean_sharpe": 0.014191082411691905,
+      "sells": 35,
+      "windows": {
+        "bear": {
+          "total_return": -0.17056810507603215,
+          "sharpe": -0.1720644939959575,
+          "direction_accuracy": 0.4411764705882353,
+          "directional_days": 34
+        },
+        "sideways": {
+          "total_return": 0.027576727279022384,
+          "sharpe": 0.03522435100810411,
+          "direction_accuracy": 0.5263157894736842,
+          "directional_days": 38
+        },
+        "bull": {
+          "total_return": 0.18489910501446305,
+          "sharpe": 0.1794133902229291,
+          "direction_accuracy": 0.5142857142857142,
+          "directional_days": 35
+        }
+      }
+    },
+    {
+      "k": 0.2,
+      "m": 2,
+      "mean_return": 0.021677458337377036,
+      "mean_sharpe": 0.02042592627992612,
+      "sells": 22,
+      "windows": {
+        "bear": {
+          "total_return": -0.17056810507603215,
+          "sharpe": -0.1720644939959575,
+          "direction_accuracy": 0.4411764705882353,
+          "directional_days": 34
+        },
+        "sideways": {
+          "total_return": 0.03289748551306948,
+          "sharpe": 0.040084380583269096,
+          "direction_accuracy": 0.5588235294117647,
+          "directional_days": 34
+        },
+        "bull": {
+          "total_return": 0.20270299457509378,
+          "sharpe": 0.19325789225246676,
+          "direction_accuracy": 0.5769230769230769,
+          "directional_days": 26
+        }
+      }
+    },
+    {
+      "k": 0.3,
+      "m": 0,
+      "mean_return": 0.03113919163673425,
+      "mean_sharpe": 0.029079518752979344,
+      "sells": 14,
+      "windows": {
+        "bear": {
+          "total_return": -0.1529129425055451,
+          "sharpe": -0.12479136956651189,
+          "direction_accuracy": 0.4444444444444444,
+          "directional_days": 27
+        },
+        "sideways": {
+          "total_return": -0.019121909634944978,
+          "sharpe": -0.00901093731447034,
+          "direction_accuracy": 0.53125,
+          "directional_days": 32
+        },
+        "bull": {
+          "total_return": 0.26545242705069283,
+          "sharpe": 0.22104086313992027,
+          "direction_accuracy": 0.5925925925925926,
+          "directional_days": 27
+        }
+      }
+    },
+    {
+      "k": 0.3,
+      "m": 2,
+      "mean_return": 0.033349200906005426,
+      "mean_sharpe": 0.030159866461289857,
+      "sells": 12,
+      "windows": {
+        "bear": {
+          "total_return": -0.1529129425055451,
+          "sharpe": -0.12479136956651189,
+          "direction_accuracy": 0.4444444444444444,
+          "directional_days": 27
+        },
+        "sideways": {
+          "total_return": -0.019121909634944978,
+          "sharpe": -0.00901093731447034,
+          "direction_accuracy": 0.53125,
+          "directional_days": 32
+        },
+        "bull": {
+          "total_return": 0.27208245485850635,
+          "sharpe": 0.2242819062648518,
+          "direction_accuracy": 0.6,
+          "directional_days": 25
+        }
+      }
+    },
+    {
+      "k": null,
+      "m": 0,
+      "mean_return": 0.07392494994565228,
+      "mean_sharpe": 0.04464508485322205,
+      "sells": 0,
+      "windows": {
+        "bear": {
+          "total_return": -0.14752173925010292,
+          "sharpe": -0.11938776641997569,
+          "direction_accuracy": 0.4230769230769231,
+          "directional_days": 26
+        },
+        "sideways": {
+          "total_return": -0.016212981203527987,
+          "sharpe": -0.005206079576804901,
+          "direction_accuracy": 0.5185185185185185,
+          "directional_days": 27
+        },
+        "bull": {
+          "total_return": 0.38550957029058774,
+          "sharpe": 0.25852910055644673,
+          "direction_accuracy": 0.631578947368421,
+          "directional_days": 19
+        }
+      }
+    }
+  ]
+}
