@@ -69,8 +69,9 @@ def load_window(name, prices):
     return {"name": name, "rows": rows, "opens": opens, "last_open": opens[index[dates[-1]]]}
 
 
-def simulate(window, actions):
-    """Same arithmetic as TradingEnv.step, without loading news each step."""
+def simulate(window, actions, daily=False):
+    """Same arithmetic as TradingEnv.step, without loading news each step.
+    daily=True also returns the daily return series (for the bootstrap in significance.py)."""
     opens, rows = window["opens"], window["rows"]
     cash = STARTING_NET_WORTH * STARTING_CASH_RATIO
     coin = (STARTING_NET_WORTH - cash) / opens[rows[0]["i"]]
@@ -95,8 +96,9 @@ def simulate(window, actions):
         if action:
             directional += 1
             correct += (action > 0) == (next_open > price)
-    return {"total_return": last / STARTING_NET_WORTH - 1, "sharpe": sharpe(returns),
-            "direction_accuracy": correct / directional if directional else None, "directional_days": directional}
+    result = {"total_return": last / STARTING_NET_WORTH - 1, "sharpe": sharpe(returns),
+              "direction_accuracy": correct / directional if directional else None, "directional_days": directional}
+    return {**result, "daily_returns": returns} if daily else result
 
 
 def actions_for(window, trend=None, mult=None, use_filter=False, sizing=None):
