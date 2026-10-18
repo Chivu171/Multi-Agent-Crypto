@@ -1,0 +1,51 @@
+{
+  "prior": 5,
+  "final_record": {
+    "Market_Agent": [
+      65,
+      124
+    ],
+    "Financial_Agent": [
+      58,
+      99
+    ],
+    "Sentiment_Agent": [
+      48,
+      123
+    ]
+  },
+  "dev": {
+    "v1_hits": 0.44954128440366975,
+    "arb_hits": 0.48031496062992124,
+    "conflict_hits": 0.5272727272727272,
+    "v1_conflict_hits": 0.4594594594594595,
+    "v1_hits_n": 109,
+    "arb_hits_n": 127,
+    "conflict_hits_n": 55,
+    "v1_conflict_hits_n": 37,
+    "mean_return": 0.05328699236432407,
+    "v1_mean_return": 0.08596111449510209,
+    "returns": {
+      "dev_feb_apr": 0.0839973678086503,
+      "dev_aug_sep": 0.010921540291443321,
+      "dev_dec_jan": 0.06494206899287858
+    }
+  },
+  "test": {
+    "v1_hits": 0.5306122448979592,
+    "arb_hits": 0.5542857142857143,
+    "conflict_hits": 0.5681818181818182,
+    "v1_conflict_hits": 0.5166666666666667,
+    "v1_hits_n": 147,
+    "arb_hits_n": 175,
+    "conflict_hits_n": 88,
+    "v1_conflict_hits_n": 60,
+    "mean_return": -0.014038871774097425,
+    "v1_mean_return": 0.003740083534427933,
+    "returns": {
+      "bear": -0.18197538585755746,
+      "sideways": 0.04358493944758446,
+      "bull": 0.09627383108768073
+    }
+  }
+}
