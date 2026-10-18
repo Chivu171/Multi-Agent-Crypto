@@ -16,9 +16,13 @@ dụng. Hệ thống đề xuất đạt lợi suất trung bình +0,38\% trên 
 CryptoTrade đầy đủ ở cả hai tập (+5,71\% và +11,95\%) và xấp xỉ phiên bản CryptoTrade chỉ dùng dữ liệu thị trường.
 Phân tích cho thấy: (i) tranh biện giảm mạnh mức mâu thuẫn (từ khoảng 0,61 xuống 0,22) và không làm kết quả xấu đi,
 nhưng chỉ thay đổi 11 trên 195 quyết định; (ii) từng agent đoán hướng gần như ngẫu nhiên (45--48\%) và bị lệch phe,
-Sentiment Agent nói BUY khoảng 80\% số lần; (iii) sáu hướng cải tiến (trọng số theo xu hướng, bộ lọc xu hướng, mức vào
-lệnh theo tín hiệu, thông tin xu hướng dài hạn, hiệu chỉnh độ lệch, cho phép đổi hướng sau tranh biện), được chọn tham số trên tập phát triển và đánh giá
-một lần trên tập kiểm thử, đều không vượt được CryptoTrade một cách ổn định. Kết quả cho thấy hạn chế chính nằm ở chất
-lượng nhận định của từng agent chứ không ở cách tổng hợp chúng.
+Sentiment Agent nói BUY khoảng 80\% số lần, còn Market Agent bị các nhãn chỉ báo đảo chiều trong dữ liệu kéo về SELL
+giữa các đợt tăng; (iii) ở các ngày agent mâu thuẫn, tranh biện phân xử đúng 48,3\%, ngang việc không tranh biện, và một
+trọng tài theo thành tích của agent làm tỷ lệ đúng tăng nhưng lợi suất giảm; (iv) tám hướng cải tiến, được chọn tham số
+trên tập phát triển và đánh giá một lần trên tập kiểm thử, đều không vượt được CryptoTrade một cách ổn định; bỏ các lệnh
+SELL đưa lợi suất lên ngang CryptoTrade, cho thấy khoảng cách giữa hai hệ thống nằm ở mức tiếp xúc thị trường. Kiểm định bootstrap và nhị thức cho thấy
+không chênh lệch lợi suất nào có ý nghĩa thống kê, và tỷ lệ đúng hướng của mọi agent, kể cả CryptoTrade, không khác 50\%
+ở tầm 1 đến 7 ngày. Kết quả cho thấy hạn chế chính nằm ở chất lượng nhận định của từng agent chứ không ở cách tổng hợp
+chúng, và lợi suất của các agent giao dịch LLM trong năm 2023 phản ánh mức tiếp xúc thị trường nhiều hơn khả năng dự đoán.
 
 \paragraph{Từ khóa:} hệ đa tác tử, mô hình ngôn ngữ lớn, tranh biện đa tác tử, phát hiện mâu thuẫn, giao dịch Bitcoin.

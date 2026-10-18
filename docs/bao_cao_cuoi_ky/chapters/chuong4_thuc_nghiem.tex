@@ -254,8 +254,48 @@ Tranh biện được kích hoạt ở 99 trên 195 ngày. Bảng~\ref{tab:debat
 Nguyên nhân nằm ở thiết kế: tranh biện chỉ giảm \emph{cường độ} niềm tin của agent bị phản biện, không bao giờ đổi
 \emph{hướng} (Mục~\ref{sec:debate}). Chỉ số mâu thuẫn giảm vì các niềm tin trái chiều cùng co về 0, chứ không phải vì
 các agent đạt được đồng thuận về hướng. \emph{Với câu hỏi RQ3, tranh biện trong thiết kế hiện tại hoạt động như một cơ chế
-giảm rủi ro, chưa phải một cơ chế sửa sai.} Mục~\ref{sec:debate-flip} kiểm tra trường hợp ngược lại: khi được phép
+giảm rủi ro, chưa phải một cơ chế sửa sai.} Điều này phù hợp với CGX~\cite{bajgora2026cgx}, nơi lợi ích chính của
+tranh biện cũng là giảm sụt giảm vốn. Mục~\ref{sec:debate-flip} kiểm tra trường hợp ngược lại: khi được phép
 đổi hướng, các agent cũng gần như không đổi.
+
+\paragraph{Giải quyết mâu thuẫn có làm đoán đúng hơn không?} Mục tiêu cuối của tranh biện là khi các agent nói ngược
+nhau thì chọn được bên đúng. Gộp cả sáu đoạn, có 170 ngày ít nhất một agent nói BUY và một agent nói SELL (71 ngày trên
+tập phát triển, 99 ngày trên tập kiểm thử). Ở những ngày này luôn có một bên đúng, nên một bộ phân xử hoàn hảo sẽ đúng
+100\%. Bảng~\ref{tab:conflict-rules} so sánh các cách phân xử đơn giản.
+
+\begin{table}[H]
+\centering
+\caption{Tỷ lệ đúng hướng (\%) ở các ngày các agent mâu thuẫn, theo cách phân xử}
+\label{tab:conflict-rules}
+\small
+\begin{tabular}{lrrr}
+\toprule
+Cách phân xử & Phát triển & Kiểm thử & Gộp \\
+\midrule
+Hệ thống hiện tại (có tranh biện) & 46,0 & 50,0 & 48,3 \\
+Mediator, không tranh biện & 46,6 & 48,1 & 47,5 \\
+Đa số thắng & 44,1 & 47,5 & 46,2 \\
+Theo agent tự tin nhất & 47,9 & 56,6 & 52,9 \\
+Luôn theo Market & 50,9 & 50,5 & 50,7 \\
+Luôn theo Financial & 50,8 & 58,8 & 55,4 \\
+Luôn theo Sentiment & 44,8 & 38,3 & 41,0 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Tranh biện hiện tại không phân xử tốt hơn việc bỏ qua tranh biện (48,3\% so với 47,5\%), và đa số thắng còn kém hơn.
+Ngược lại, \emph{ai} đúng khi mâu thuẫn có vẻ có quy luật: Sentiment Agent, vốn nói BUY khoảng 80\% số lần, sai nhiều
+hơn đúng khi đứng ngược các agent khác (41,0\%), và điều này lặp lại trên cả hai tập. Bảng này được tính sau khi đã xem
+tập kiểm thử, nên chỉ dùng để gợi ý; cải tiến dựa trên nó được trình bày ở Mục~\ref{sec:arbiter}.
+
+Để biết tranh biện có căn cứ khách quan nào để chọn bên hay không, đề tài kiểm tra thủ công 30 ngày tranh biện chọn
+ngẫu nhiên trên tập phát triển (90 nhận định), đối chiếu từng nhận định với dữ liệu gốc mà agent được xem (giá và chỉ
+báo, số liệu on-chain, toàn văn bài báo) trước khi xem giá ngày hôm sau. Chỉ có 5 nhận định có lỗi nhỏ (ví dụ nói số
+giao dịch ``giảm hơn 50\%'' khi thực tế giảm 48,99\%), và không lỗi nào là lý do chính tạo ra tín hiệu. Như vậy trong
+hầu hết các mâu thuẫn, cả hai bên đều dựa trên dữ kiện đúng và chỉ khác nhau ở cách diễn giải; một tranh biện chỉ dựa
+vào việc phát hiện dữ kiện sai hầu như không có gì để sửa. Lỗi có hệ thống duy nhất nằm ở cách Market Agent đọc nhãn
+chỉ báo (Mục~\ref{sec:signal-analysis}), và không agent nào phát hiện được lỗi này vì dữ liệu không cho biết nhãn bị
+đảo.
 
 \section{Kết quả trên tập phát triển}
 \label{sec:dev-results}
@@ -330,11 +370,34 @@ Bảng~\ref{tab:agent-acc} cho thấy bốn điểm:
   của mọi nhóm trên tập phát triển đều nằm trong khoảng 41--46\%.
 \end{itemize}
 
+\paragraph{Nhãn chỉ báo bị đảo làm Market Agent giao dịch ngược xu hướng.} Dữ liệu của CryptoTrade gắn nhãn hai chỉ báo
+ngược với quy ước thông thường (đề tài giữ nguyên để trung thành với mã gốc): đường trung bình 15 ngày nằm trên đường 20
+ngày được ghi là ``sell'', và MACD nằm trên đường tín hiệu cũng được ghi là ``sell''. Market Agent đọc các nhãn này theo
+nghĩa đen. Trên toàn bộ 338 ngày, ở 180 ngày giá nằm trên cả EMA20 và EMA50, cả hai nhãn cùng ghi ``sell'' ở 47\% số
+ngày; Market Agent nói SELL ở 49\% và chỉ nói BUY ở 21\% số ngày này, và quyết định cuối là SELL ở 39\%. Ở 91 ngày giá
+nằm dưới cả hai đường, hai nhãn cùng ghi ``buy'' ở 52\% số ngày và Market Agent nói BUY ở 40\%. Trong 30 ngày được kiểm
+tra thủ công, có 12 ngày Market Agent nói SELL giữa một đợt tăng rõ rệt và thường tự viết ``mặc dù giá đang tăng mạnh,
+MACD và đường trung bình đều báo bán''. Đây là nguồn chính của các lệnh SELL giữa đợt tăng ở Mục~\ref{sec:sell-rule}.
+
+\paragraph{Không có thông tin dự đoán ở tầm dài hơn.} Có thể các agent dự đoán xu hướng vài ngày tốt hơn giá ngày hôm
+sau. Khi chấm theo giá sau 1, 3 và 7 ngày và so với mức ngẫu nhiên có cùng tỷ lệ BUY (để loại lợi thế ``luôn nói BUY''
+trong năm tăng giá), gộp cả sáu đoạn, lợi thế của mọi agent, của quyết định cuối và của CryptoTrade đều nằm trong khoảng
+$-$2,3 đến +1,3 điểm. Quyết định cuối trên tập phát triển có lợi thế +13,6 điểm ở tầm 7 ngày (KTC 95\% [+3,9; +21,6])
+nhưng trên tập kiểm thử lại là $-$8,4 điểm, tức là nhiễu theo giai đoạn thị trường.
+
+\paragraph{Thứ tự lệnh vẫn có giá trị.} Để tách phần lợi suất đến từ \emph{thời điểm} vào lệnh khỏi phần đến từ
+\emph{lượng} mua bán, đề tài giữ nguyên các lệnh của mỗi hệ thống và xáo trộn ngẫu nhiên thứ tự của chúng trong từng
+đoạn (5.000 lần). Gộp sáu đoạn, các bản xáo trộn của hệ thống đề xuất lãi trung bình +0,02\%, trong khi bản gốc lãi
++4,49\% và hơn 98,7\% số bản xáo trộn ($p=0{,}013$; tập phát triển $p=0{,}031$, tập kiểm thử $p=0{,}119$). Với
+CryptoTrade đầy đủ, các bản xáo trộn đã lãi +6,32\% nhờ mua nhiều, và bản gốc +8,83\% hơn 94,8\% số bản ($p=0{,}052$).
+Như vậy dù không đoán được hướng giá ở tầm 1--7 ngày, chuỗi lệnh của cả hai hệ thống bám theo các xu hướng kéo dài vài
+tuần tốt hơn ngẫu nhiên; tỷ lệ đúng hướng hằng ngày không đủ để đánh giá một agent giao dịch.
+
 \section{Các cải tiến dựa trên phân tích (RQ4)}
 \label{sec:improve}
-Từ các phát hiện trên, đề tài thử sáu hướng cải tiến. Ba hướng đầu chỉ thay đổi bước tổng hợp nên được tính lại từ các
-nhận định đã lưu (không gọi lại mô hình); ba hướng sau thay đổi chính các agent hoặc bước tranh biện nên phải chạy lại
-mô hình. Quy trình
+Từ các phát hiện trên, đề tài thử tám hướng cải tiến. Năm hướng chỉ thay đổi bước tổng hợp nên được tính lại từ các
+nhận định đã lưu (không gọi lại mô hình): ba hướng ở Bảng~\ref{tab:offline-variants}, luật SELL bất đối xứng và trọng tài
+theo độ tin cậy; ba hướng còn lại thay đổi chính các agent hoặc bước tranh biện nên phải chạy lại mô hình. Quy trình
 chung: chọn cấu hình tốt nhất trên tập phát triển (theo lợi suất trung bình, Sharpe để phân định), sau đó đánh giá trên
 tập kiểm thử \emph{một lần}.
 
@@ -465,25 +528,143 @@ kiến thiểu số ban đầu đúng. Không lần đổi nào làm thay đổi
 Lợi suất trung bình +8,56\% (+22,31\%; $-$2,65\%; +6,01\%) so với +8,60\% của eval-v1, tỷ lệ đúng của quyết định cuối
 giữ nguyên 45,0\%; phiên bản này không được đánh giá trên tập kiểm thử. Kết quả cho thấy với mô hình dùng trong đề tài,
 việc tranh biện không sửa được sai không chỉ do thiết kế: khi được phép, agent gần như luôn khẳng định lại lập trường cũ,
-và khi đổi thì là theo đa số.
+và khi đổi thì là theo đa số. Đây chính là hiện tượng hội tụ xu nịnh mà Huang và cộng sự~\cite{huang2026debate} quan
+sát trên thị trường mô phỏng; đề tài ghi nhận hiện tượng này trên dữ liệu BTC thật và với lập luận có kiểm tra nguồn.
+
+\subsection{SELL cần bằng chứng mạnh hơn BUY}
+\label{sec:sell-rule}
+Môi trường không cho bán khống và có phí giao dịch, nên một lệnh SELL sai giữa đợt tăng làm mất phần lãi của lượng coin
+đã bán, trong khi một lệnh BUY sai chỉ ảnh hưởng tới phần tiền đem mua. Luật bất đối xứng giữ nguyên ngưỡng BUY
+($\Sfinal\ge+0{,}05$) và chỉ cho SELL khi $\Sfinal\le-k$, có thể kèm điều kiện ít nhất hai agent nói SELL. Lưới gồm 11
+cấu hình ($k$ từ 0,05 đến 0,30, có hoặc không có điều kiện hai agent, và ``không bao giờ SELL''). Trên tập phát triển,
+mọi cấu hình siết SELL đều tốt hơn eval-v1, và cấu hình được chọn là \emph{không bao giờ SELL}: +11,22\% (eval-v1
++8,60\%, CryptoTrade đầy đủ +11,95\%, Buy \& Hold +11,85\%). Trên tập kiểm thử, cấu hình này đạt +7,39\% (giảm giá
+$-$14,75\%, đi ngang $-$1,62\%, tăng giá +38,55\%), cao hơn CryptoTrade đầy đủ (+5,71\%) nhưng thấp hơn Buy \& Hold
+(+7,74\%), và lỗ nhiều hơn CryptoTrade ở giai đoạn giảm giá ($-$11,72\%). Gộp sáu đoạn, chênh lệch với CryptoTrade là
++0,48 điểm ($p=0{,}77$).
+
+Kết quả này cho thấy \textbf{toàn bộ khoảng cách lợi suất giữa hệ thống đề xuất và CryptoTrade nằm ở các lệnh SELL}:
+bỏ các lệnh SELL thì hai hệ thống ngang nhau. Nhưng đây không phải là thắng nhờ dự đoán: không bán thì hệ thống chỉ còn
+mua dần và giữ, gần với Buy \& Hold, và CryptoTrade cũng thắng hệ thống đề xuất theo cách này (mua ở 230 trên 253 ngày
+có hướng, tức 91\%).
+
+\subsection{Trọng tài theo độ tin cậy của agent}
+\label{sec:arbiter}
+Từ Bảng~\ref{tab:conflict-rules}, một bộ phân xử biết agent nào thường đúng khi mâu thuẫn có thể tốt hơn đa số thắng.
+Ở mỗi ngày mâu thuẫn, trọng tài tra \emph{thành tích} của từng agent trong các ngày mâu thuẫn \emph{trước đó} (tỷ lệ đúng,
+co về 50\% bằng phân phối tiên nghiệm Beta), rồi bỏ phiếu theo $\sum_i d_i(r_i-0{,}5)$ hoặc nhân trọng số của Mediator
+theo $r_i/0{,}5$. Kết quả của một ngày được biết ở giá mở cửa hôm sau, trước quyết định tiếp theo; các ngày không mâu
+thuẫn giữ quyết định của eval-v1.
+
+\begin{table}[H]
+\centering
+\caption{Trọng tài theo độ tin cậy: lợi suất trung bình và tỷ lệ đúng hướng trên mọi ngày giao dịch (\%)}
+\label{tab:arbiter}
+\small
+\begin{tabular}{lrrrr}
+\toprule
+ & \multicolumn{2}{c}{Phát triển} & \multicolumn{2}{c}{Kiểm thử} \\
+\cmidrule(lr){2-3}\cmidrule(lr){4-5}
+Cấu hình & Lợi suất & Tỷ lệ đúng & Lợi suất & Tỷ lệ đúng \\
+\midrule
+eval-v1 & +8,60 & 45,0 & +0,37 & 53,1 \\
+Trọng tài, thành tích riêng từng đoạn (chọn trên dev) & +9,00 & -- & $-$0,15 & -- \\
+Trọng tài, thành tích cộng dồn cả năm (khám phá) & +5,33 & 48,0 & $-$1,40 & 55,4 \\
+Trọng tài cộng dồn + luật SELL ($k=0{,}10$, chọn trên dev) & +11,26 & 46,7 & +2,47 & 52,3 \\
+Chỉ luật SELL (không bao giờ SELL) & +11,22 & -- & +7,39 & -- \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Theo đúng quy trình (thành tích tính riêng trong từng đoạn, chọn cấu hình trên tập phát triển), trọng tài không cải
+thiện: mỗi đoạn chỉ có khoảng 20 ngày mâu thuẫn, quá ít để học được ai đáng tin. Khi thành tích được cộng dồn qua cả năm
+theo thứ tự thời gian, giống cách hệ thống chạy thật, tỷ lệ đúng tăng trên cả hai tập: ở các ngày mâu thuẫn từ 45,9\%
+lên 52,7\% (phát triển) và từ 51,7\% lên 56,8\% (kiểm thử); trên mọi ngày giao dịch, gộp lại từ 49,6\% (127/256) lên
+52,3\% (158/302). Đây là cách duy nhất trong đề tài làm tỷ lệ đúng tăng trên cả hai tập, dù mức tăng chưa có ý nghĩa
+thống kê ($p\approx0{,}4$) và phiên bản này mang tính khám phá: ý tưởng xuất hiện sau khi đã xem tập kiểm thử, và thành
+tích của các đoạn phát triển muộn có chứa kết quả của các đoạn kiểm thử trước đó. Thành tích cuối năm khi mâu thuẫn là
+Financial 59\%, Market 52\% và Sentiment 39\%.
+
+Tuy vậy lợi suất \emph{giảm}. Trọng tài chủ yếu phân xử ngược Sentiment Agent, mà Sentiment gần như luôn nói BUY, nên
+nó tạo thêm lệnh SELL; trong năm giá tăng, một lệnh SELL dù đúng khoảng 55\% vẫn làm giảm lợi suất vì lệnh đúng chỉ tránh
+được một lần giảm nhỏ còn lệnh sai làm mất phần lãi của cả đợt tăng. Kết hợp trọng tài với luật SELL (không thực hiện
+SELL ở ngày mâu thuẫn) xóa đúng phần giúp trọng tài đoán đúng hơn: tỷ lệ đúng không còn tăng và lợi suất trên tập kiểm
+thử thấp hơn luật SELL đứng riêng. Trong điều kiện thí nghiệm, \textbf{độ chính xác và lợi suất đánh đổi nhau}.
+
+\section{Kiểm định thống kê}
+\label{sec:significance}
+Hai phép kiểm định được tính lại từ kết quả đã lưu (\texttt{scripts/significance.py}, không gọi lại mô hình):
+\begin{itemize}
+  \item \textbf{Chênh lệch lợi suất}: bootstrap theo khối có ghép cặp. Các ngày được lấy mẫu lại theo khối 5 ngày liên
+  tiếp, dùng cùng chỉ số ngày cho cả hai chiến lược; lợi suất ngày được nhân dồn trong từng đoạn, và thống kê là trung
+  bình qua các đoạn của chênh lệch lợi suất (10.000 lần lấy mẫu).
+  \item \textbf{Tỷ lệ đúng hướng}: kiểm định nhị thức chính xác so với 50\%, kèm khoảng tin cậy Wilson 95\%.
+\end{itemize}
+
+\begin{table}[H]
+\centering
+\caption{Chênh lệch lợi suất trung bình (điểm phần trăm), khoảng tin cậy bootstrap 95\% và giá trị $p$ hai phía}
+\label{tab:significance}
+\small
+\begin{tabular}{llrcr}
+\toprule
+So sánh & Tập & Chênh lệch & KTC 95\% & $p$ \\
+\midrule
+Đề xuất $-$ CryptoTrade đầy đủ & Dev & $-$3,35 & [$-$14,00; +9,01] & 0,56 \\
+ & Kiểm thử & $-$5,33 & [$-$18,14; +3,11] & 0,24 \\
+ & Gộp 6 đoạn & $-$4,34 & [$-$12,58; +3,09] & 0,24 \\
+\midrule
+Đề xuất + bộ lọc $-$ CryptoTrade đầy đủ & Dev & $-$3,46 & [$-$11,43; +7,08] & 0,44 \\
+ & Kiểm thử & +3,33 & [$-$2,53; +9,65] & 0,31 \\
+ & Gộp 6 đoạn & $-$0,06 & [$-$5,17; +5,93] & 0,98 \\
+\midrule
+Xu hướng dài hạn $-$ eval-v1 & Dev & +0,08 & [$-$3,22; +3,24] & 0,95 \\
+Sửa lời nhắc $-$ eval-v1 & Dev & $-$6,13 & [$-$22,72; +3,48] & 0,24 \\
+Cho đổi hướng $-$ eval-v1 & Dev & $-$0,04 & [$-$0,20; +0,10] & 0,53 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\textbf{Không chênh lệch lợi suất nào có ý nghĩa thống kê} ở mức 5\% (Bảng~\ref{tab:significance}). Mọi khoảng tin cậy
+đều chứa 0, kể cả hai kết quả nổi bật nhất: hệ thống đề xuất thua CryptoTrade đầy đủ 5,33 điểm trên tập kiểm thử, và
+bộ lọc xu hướng thắng 3,33 điểm trên cùng tập. Khoảng tin cậy rộng (khoảng 20 điểm) phản ánh việc lợi suất của một đoạn
+50--60 ngày phụ thuộc mạnh vào vài ngày biến động lớn.
+
+Về tỷ lệ đúng hướng, gộp cả sáu đoạn: Market Agent 50,6\% ($n=231$, KTC [44,2; 57,0]), Financial Agent 51,4\% ($n=257$),
+Sentiment Agent 45,3\% ($n=214$, $p=0{,}19$), quyết định cuối của hệ thống đề xuất 49,6\% ($n=256$) và của CryptoTrade
+đầy đủ 49,4\% ($n=253$, $p=0{,}90$). \textbf{Không tỷ lệ nào khác 50\% có ý nghĩa thống kê}, kể cả của CryptoTrade.
+Như vậy lợi suất cao hơn của CryptoTrade không đến từ việc đoán hướng tốt hơn mà chủ yếu từ mức tiếp xúc với thị trường
+(mức vào lệnh lớn hơn trong các đợt tăng giá). Để phát hiện tỷ lệ đúng 55\% so với 50\% với độ mạnh kiểm định 80\%
+cần khoảng 780 ngày có hướng, gấp ba lượng dữ liệu hiện có.
+
+Hệ quả cho cách diễn đạt kết luận: hệ thống đề xuất \emph{không vượt} CryptoTrade và \emph{không có bằng chứng} cải
+tiến nào tốt hơn eval-v1, nhưng dữ liệu cũng không đủ để khẳng định hệ thống đề xuất \emph{kém hơn} có ý nghĩa thống kê.
 
 \section{Thảo luận}
-\paragraph{Vì sao thua CryptoTrade đầy đủ?} Ở giai đoạn tăng giá, tỷ lệ đúng hướng của hai hệ thống gần như bằng nhau
-(55,3\% so với 55,1\%), nhưng lợi suất chỉ bằng khoảng một nửa. Một phần khác biệt nằm ở mức vào lệnh: hệ thống đề xuất
-mua hoặc bán cố định 50\%, còn agent CryptoTrade tự chọn mức trong $[-1,1]$ và thường chọn 0,8--1,0 khi tự tin; môi trường
-không cho bán khống nên các tín hiệu SELL khi giá tăng làm mất phần lãi mà không bù lại được. Tuy nhiên mức vào lệnh theo
-độ mạnh tín hiệu không cải thiện kết quả (Bảng~\ref{tab:offline-variants}), và trên tập phát triển CryptoTrade đúng
-hướng nhiều hơn ở đoạn Dev 1 (57,1\% so với 50,0\%). Nguyên nhân sâu hơn là các tín hiệu của hệ thống đề xuất gần như
-không chứa thông tin về giá ngày hôm sau (Mục~\ref{sec:signal-analysis}).
+\paragraph{Vì sao thua CryptoTrade đầy đủ?} Hai hệ thống đoán hướng đúng như nhau (gộp sáu đoạn: 49,6\% và 49,4\%), và
+không hệ thống nào có thông tin dự đoán ở tầm 1--7 ngày. Khác biệt nằm ở \emph{mức tiếp xúc}: agent giao dịch của
+CryptoTrade mua ở 91\% số ngày có hướng (230 BUY, 23 SELL), với mức mua trung bình khoảng 0,5 và chỉ mua mạnh (0,8--1,0)
+trong các đợt tăng, nên gần như giữ BTC suốt năm 2023; lợi suất của nó bám sát Buy \& Hold. Hệ thống đề xuất ra SELL ở
+khoảng một phần ba số ngày có hướng, phần lớn do Market Agent đọc nhãn chỉ báo bị đảo, và môi trường không cho bán khống
+nên mỗi lệnh SELL giữa đợt tăng làm mất phần lãi mà không bù lại được. Bỏ các lệnh SELL thì hai hệ thống ngang nhau
+(Mục~\ref{sec:sell-rule}).
 
 \paragraph{Các cải tiến ở bước tổng hợp không bù được tín hiệu yếu.} Khi mỗi agent đúng khoảng 45--48\%, thay đổi trọng
 số, lọc tín hiệu hay đổi mức vào lệnh chỉ thay đổi \emph{mức tiếp xúc} với thị trường. Lợi suất khi đó phụ thuộc chủ yếu
-vào việc giai đoạn đánh giá là tăng hay giảm, nên một cấu hình có thể tốt trên tập này và kém trên tập khác. Ba giả thuyết
-đã bị loại: thiếu trọng số theo xu hướng, thiếu thông tin xu hướng dài hạn, và độ lệch phe trong con số của agent.
+vào việc giai đoạn đánh giá là tăng hay giảm, nên một cấu hình có thể tốt trên tập này và kém trên tập khác. Bốn giả
+thuyết đã bị loại: thiếu trọng số theo xu hướng, thiếu thông tin xu hướng dài hạn, độ lệch phe trong con số của agent, và
+việc agent đúng ở tầm dự báo dài hơn một ngày.
+
+\paragraph{Độ chính xác và lợi suất có thể đi ngược nhau.} Trọng tài theo độ tin cậy là cách duy nhất làm tỷ lệ đúng
+tăng trên cả hai tập, nhưng làm lợi suất giảm; ngược lại, bỏ các lệnh SELL làm lợi suất tăng mà không cần đoán đúng hơn.
+Phép xáo trộn thứ tự lệnh cho thấy chuỗi lệnh của hệ thống đề xuất vẫn có giá trị dù tỷ lệ đúng hằng ngày ngang ngẫu
+nhiên. Vì vậy đánh giá một agent giao dịch chỉ bằng tỷ lệ đúng hướng, hoặc chỉ bằng lợi suất trên một năm tăng giá, đều
+có thể dẫn tới kết luận sai; cần tách phần đến từ mức tiếp xúc khỏi phần đến từ thời điểm vào lệnh.
 
 \paragraph{Tín hiệu chưa bám xu hướng.} Ở giai đoạn giá tăng gần 40\%, hệ thống ra SELL 28 lần và BUY 19 lần; ở giai
-đoạn giảm giá lại ra BUY 26 lần và SELL 24 lần. Điều này phù hợp với độ lệch phe: Sentiment Agent nói BUY bất kể giai
-đoạn, còn Market Agent nghiêng về SELL theo nhãn MACD.
+đoạn giảm giá lại ra BUY 26 lần và SELL 24 lần. Nguyên nhân là nhãn chỉ báo bị đảo: khi giá tăng, nhãn đường trung bình
+và MACD ghi ``sell'' nên Market Agent nói SELL, còn khi giá giảm chúng ghi ``buy''. Sentiment Agent thì nói BUY bất kể
+giai đoạn. Sửa cách trình bày nhãn (dùng quy ước chuẩn hoặc giá trị thô) là hướng cải tiến có cơ sở nhất còn lại.
 
 \paragraph{Ưu thế cấu trúc của Market Agent.} Như phân tích ở Mục~\ref{sec:mediator}, hệ số phạt thời gian làm trọng số
 của Financial và Sentiment chỉ còn khoảng 40\% so với Market. Vì vậy Market Agent chi phối $\Sfinal$, và điểm yếu không
@@ -495,10 +676,14 @@ Chi phí tiền bằng 0 vì mô hình chạy cục bộ.
 
 \section{Các yếu tố ảnh hưởng tới tính hợp lệ}
 \begin{itemize}
-  \item \textbf{Cỡ mẫu nhỏ}: mỗi giai đoạn chỉ 35--69 ngày; chênh lệch vài điểm phần trăm chưa có ý nghĩa thống kê.
+  \item \textbf{Cỡ mẫu nhỏ}: mỗi giai đoạn chỉ 35--69 ngày; không chênh lệch lợi suất hay tỷ lệ đúng hướng nào có ý nghĩa
+  thống kê (Mục~\ref{sec:significance}).
   \item \textbf{Tập kiểm thử được xem nhiều lần}: ngoài lần đánh giá chính, tập kiểm thử được dùng cho các biến thể ở
   Mục~\ref{sec:improve} (mỗi cấu hình đã chọn trên tập phát triển được đánh giá một lần). Mọi kết quả trên tập kiểm thử
   đều được báo cáo, kể cả các biến thể kém, để người đọc tự đánh giá rủi ro chọn lọc kết quả.
+  \item \textbf{Các phân tích khám phá}: bảng phân xử mâu thuẫn (Bảng~\ref{tab:conflict-rules}), trọng tài theo thành
+  tích cộng dồn và phép kết hợp với luật SELL được thực hiện sau khi đã xem tập kiểm thử; chúng được báo cáo như phát
+  hiện cần kiểm chứng trên dữ liệu mới, không phải kết quả kiểm thử độc lập.
   \item \textbf{Tập phát triển thiếu giai đoạn giảm giá kéo dài}: các tham số được chọn có thể không phù hợp với thị
   trường giảm.
   \item \textbf{Một mô hình, một tài sản}: kết quả có thể khác với mô hình lớn hơn hoặc với ETH, SOL.

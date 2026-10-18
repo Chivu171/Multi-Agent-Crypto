@@ -12,30 +12,44 @@ Câu trả lời cho bốn câu hỏi nghiên cứu:
 \begin{description}[leftmargin=1.2cm,style=nextline]
   \item[RQ1] Hệ thống đề xuất chưa vượt CryptoTrade đầy đủ, cả trên tập kiểm thử (+0,38\% so với +5,71\%) lẫn trên tập
   phát triển gồm 145 ngày khác (+8,60\% so với +11,95\%); nó xấp xỉ phiên bản CryptoTrade chỉ dùng dữ liệu thị trường.
-  Thứ hạng lặp lại trên hai tập dữ liệu nên đây là kết luận ổn định.
+  Thứ hạng lặp lại trên hai tập dữ liệu, nhưng chênh lệch không có ý nghĩa thống kê (bootstrap, $p=0{,}24$ khi gộp sáu
+  đoạn): kết luận đúng là hệ thống đề xuất không vượt CryptoTrade, chưa thể nói là kém hơn.
   \item[RQ2] Trên tập kiểm thử, giá trị của từng nguồn đổi dấu theo giai đoạn thị trường, nhưng quy luật này không lặp
   lại trên tập phát triển. Đo trực tiếp, cả ba agent đoán hướng gần như ngẫu nhiên (45--48\%) và bị lệch phe: Sentiment
-  Agent nói BUY khoảng 80\% số lần, Market Agent nghiêng về SELL.
+  Agent nói BUY khoảng 80\% số lần, còn Market Agent đọc theo nghĩa đen các nhãn chỉ báo bị đảo trong dữ liệu
+  CryptoTrade nên thường nói SELL giữa các đợt tăng. Ở tầm 3 và 7 ngày cũng không agent nào đoán tốt hơn ngẫu nhiên.
   \item[RQ3] Tranh biện giảm mức mâu thuẫn từ khoảng 0,61 xuống 0,22 và không làm kết quả xấu đi, nhưng chỉ đổi 11
   trên 195 quyết định và chỉ theo hướng đứng ngoài thị trường. Khi được phép đổi hướng, agent chỉ đổi 5 lần trong 426
-  lượt, đều là ý kiến thiểu số chạy theo đa số; tranh biện vì vậy là cơ chế giảm rủi ro chứ chưa phải cơ chế sửa sai.
+  lượt, đều là ý kiến thiểu số chạy theo đa số. Ở 170 ngày các agent mâu thuẫn, tranh biện phân xử đúng 48,3\%, ngang
+  việc không tranh biện. Kiểm tra thủ công cho thấy hầu hết mâu thuẫn là khác biệt diễn giải trên dữ kiện đúng, nên
+  tranh biện không có căn cứ khách quan để chọn bên. Tranh biện vì vậy là cơ chế giảm rủi ro chứ chưa phải cơ chế sửa sai.
   \item[RQ4] Không cải tiến nào vượt CryptoTrade theo đúng quy trình chọn trên tập phát triển. Trọng số theo xu hướng tốt
   nhất trên tập phát triển nhưng không giữ được trên tập kiểm thử; bộ lọc xu hướng vượt CryptoTrade trên tập kiểm thử
   nhưng thua trên tập phát triển với mọi tham số; thông tin xu hướng dài hạn và hiệu chỉnh độ lệch (cả trừ mức nền lẫn sửa lời nhắc)
   không làm agent đoán đúng hơn; sửa lời nhắc còn làm kết quả trên tập phát triển xấu đi; cho phép
-  đổi hướng sau tranh biện gần như không thay đổi quyết định nào.
+  đổi hướng sau tranh biện gần như không thay đổi quyết định nào. Luật ``SELL cần bằng chứng mạnh hơn BUY'' (được
+  chọn: không bao giờ SELL) đạt +7,39\% trên tập kiểm thử, cao hơn CryptoTrade (+5,71\%) nhưng thấp hơn Buy \& Hold
+  (+7,74\%) và không khác CryptoTrade có ý nghĩa thống kê; nó cho thấy khoảng cách giữa hai hệ thống nằm ở các lệnh SELL.
+  Trọng tài theo thành tích của agent khi mâu thuẫn (khám phá) làm tỷ lệ đúng tăng từ 49,6\% lên 52,3\% trên cả hai tập
+  nhưng làm lợi suất giảm.
 \end{description}
 
 Các kết quả này cho thấy việc xử lý mâu thuẫn tường minh có tác dụng giảm rủi ro và tăng khả năng giải thích (mỗi lập
 luận đều có nguồn kiểm chứng được), nhưng chưa cải thiện được lợi suất. Hạn chế chính không nằm ở cách tổng hợp mà ở chất
-lượng nhận định của từng agent: khi mỗi tín hiệu gần như không chứa thông tin về giá ngày hôm sau, mọi cách điều chỉnh
-trọng số hay mức vào lệnh chỉ thay đổi mức tiếp xúc với thị trường, và kết quả phụ thuộc vào giai đoạn được đánh giá.
+lượng nhận định của từng agent: khi mỗi tín hiệu gần như không chứa thông tin về hướng giá, mọi cách điều chỉnh trọng
+số hay mức vào lệnh chỉ thay đổi mức tiếp xúc với thị trường, và kết quả phụ thuộc vào giai đoạn được đánh giá. Cả
+CryptoTrade cũng không đoán hướng tốt hơn ngẫu nhiên; lợi thế của nó đến từ việc mua ở 91\% số ngày có hướng trong một
+năm BTC tăng giá. Ngược lại, chuỗi lệnh của hệ thống đề xuất bám xu hướng tốt hơn thứ tự ngẫu nhiên, và trọng tài theo
+độ tin cậy làm tỷ lệ đúng tăng nhưng lợi suất giảm: độ chính xác và lợi suất có thể đi ngược nhau, nên đánh giá agent
+giao dịch cần tách phần đến từ mức tiếp xúc khỏi phần đến từ dự đoán.
 
 \section{Hạn chế}
 \begin{itemize}
-  \item Đánh giá trên một tài sản, một mô hình ngôn ngữ, ba giai đoạn kiểm thử và ba đoạn phát triển ngắn; chưa có kiểm
-  định ý nghĩa thống kê cho chênh lệch lợi suất.
+  \item Đánh giá trên một tài sản, một mô hình ngôn ngữ, ba giai đoạn kiểm thử và ba đoạn phát triển ngắn; với cỡ mẫu
+  này không chênh lệch nào có ý nghĩa thống kê, và cần khoảng ba lần dữ liệu để phát hiện tỷ lệ đúng 55\%.
   \item Tập kiểm thử được dùng để đánh giá nhiều biến thể; mọi kết quả đều được báo cáo nhưng rủi ro chọn lọc vẫn còn.
+  Phân tích phân xử mâu thuẫn và trọng tài theo thành tích cộng dồn được thực hiện sau khi đã xem tập kiểm thử, nên
+  cần kiểm chứng trên dữ liệu mới. Bộ dữ liệu không còn khoảng thời gian nào chưa dùng.
   \item Chưa chứng minh được giá trị của việc dùng ba agent so với chỉ dùng Market Agent.
   \item Các tham số của Conflict Analyzer, tranh biện và Mediator chưa được hiệu chỉnh trên dữ liệu.
   \item Hệ số phạt thời gian trong Mediator vô tình làm giảm khoảng 60\% trọng số của on-chain và tin tức so với dữ liệu
@@ -44,10 +58,11 @@ trọng số hay mức vào lệnh chỉ thay đổi mức tiếp xúc với th�
 \end{itemize}
 
 \section{Hướng phát triển}
-\paragraph{Trong ngắn hạn (đang thực hiện).}
+\paragraph{Trong ngắn hạn.}
 \begin{itemize}
-  \item Bổ sung kiểm định ý nghĩa thống kê (khoảng tin cậy bootstrap cho lợi suất, kiểm định nhị thức cho tỷ lệ đúng
-  hướng).
+  \item Trình bày nhãn chỉ báo theo quy ước chuẩn (hoặc giá trị thô) cho Market Agent, chạy lại trên tập phát triển và
+  chạy cả CryptoTrade với cùng cách trình bày để so sánh công bằng.
+  \item Kiểm chứng trọng tài theo độ tin cậy với cấu hình đã cố định trên một tài sản chưa dùng (ETH).
 \end{itemize}
 
 \paragraph{Trong dài hạn.}
@@ -57,4 +72,6 @@ trọng số hay mức vào lệnh chỉ thay đổi mức tiếp xúc với th�
   \item Thử các mô hình ngôn ngữ lớn hơn để tách hạn chế của kiến trúc khỏi hạn chế của mô hình. Hướng trọng số theo xu
   hướng của Market Regime Council~\cite{mrc2026} cũng cần được so sánh trực tiếp.
   \item Mở rộng đánh giá sang ETH, SOL như bài báo gốc.
+  \item Giữ lại bất đồng giữa các agent thay vì để tranh biện kéo các ý kiến về đa số, theo hướng của Huang và cộng
+  sự~\cite{huang2026debate}.
 \end{itemize}

@@ -29,6 +29,14 @@ nhau, chứa thông tin sai hoặc nhiễu. Mỗi tài liệu được giao cho 
 và một bộ tổng hợp tóm tắt cuộc tranh biện để đưa ra câu trả lời cuối. Ý tưởng mỗi nguồn một agent, tranh biện khi
 mâu thuẫn và tổng hợp lịch sử tranh biện qua các vòng là nguồn cảm hứng trực tiếp cho kiến trúc của đề tài.
 
+\paragraph{Tranh biện trong quyết định tài chính.}
+Huang và cộng sự~\cite{huang2026debate} cho các agent chuyên môn đề xuất, phản biện và sửa quyết định phân bổ danh mục
+trong 210 lần mô phỏng trên dữ liệu thị trường lịch sử. Chất lượng lập luận của tranh biện (tính hợp lệ, bằng chứng,
+cân nhắc phương án khác) không có quan hệ với chỉ số Sharpe hay lợi suất. Nhóm tác giả chỉ ra lỗi ``hội tụ xu nịnh''
+(sycophantic convergence): qua các vòng phản biện, agent bỏ quan điểm độc lập và hội tụ về cùng một lựa chọn. Một biện
+pháp giữ lại bất đồng giữa các agent (dựa trên phân kỳ Jensen--Shannon) làm tăng Sharpe, cho thấy tranh biện có giá trị
+khi nó \emph{giữ} được các tín hiệu độc lập chứ không phải khi nó làm lập luận đẹp hơn.
+
 \section{Agent LLM cho giao dịch tài chính}
 FinMem~\cite{yu2023finmem} thiết kế agent giao dịch cổ phiếu có bộ nhớ phân tầng theo tầm thời gian. FinCon~\cite{yu2024fincon}
 tổ chức nhiều agent theo mô hình quản lý -- nhân viên và dùng phản hồi bằng ngôn ngữ để cập nhật niềm tin đầu tư.
@@ -41,6 +49,13 @@ cộng sự~\cite{luo2025cryptomas} xây dựng hệ đa tác tử gồm các nh
 quản lý danh mục 30 đồng tiền mã hóa, có so sánh các cấu trúc giao tiếp phân cấp, cộng tác và tranh biện. Gần đây,
 Market Regime Council~\cite{mrc2026} đề xuất gán trọng số động cho ba agent chuyên môn dựa trên giá trị Shapley tính từ
 lịch sử hiệu quả, kèm hệ số nhân theo trạng thái thị trường.
+
+Gần nhất với đề tài là CGX~\cite{bajgora2026cgx} (Consensus-Gated Execution): hai agent Bull và Bear tranh biện ba vòng,
+một Meta-Evaluator chấm mức đồng thuận và chỉ cho phép vào lệnh khi đồng thuận đủ mạnh, mặc định là đứng ngoài thị
+trường. Đánh giá trên tiền mã hóa giai đoạn 2022--2025, lợi ích chính được báo cáo là giảm mức sụt giảm vốn tối đa và độ
+biến động. Khác với đề tài, các agent của CGX được chia theo \emph{phe} (lạc quan -- bi quan) chứ không theo \emph{nguồn
+dữ liệu}, mức đồng thuận do mô hình chấm chứ không đo bằng công thức, lập luận không được kiểm tra nguồn, và baseline là
+các chiến lược đơn giản chứ không phải một agent LLM đã công bố được cài đặt lại.
 
 \section{Baseline CryptoTrade}
 \label{sec:cryptotrade}
@@ -82,7 +97,9 @@ của CryptoTrade, với $r_t$ là lợi suất ngày và lãi suất phi rủi 
 
 \section{Khoảng trống nghiên cứu}
 Các hệ thống giao dịch đa tác tử hiện có hoặc gộp các nguồn trong một lời nhắc (CryptoTrade), hoặc dùng tranh luận như
-một bước sinh lập luận mà không đo mức mâu thuẫn một cách định lượng (TradingAgents). Các nghiên cứu về tranh
-biện đa tác tử chủ yếu đánh giá trên bài toán hỏi đáp có đáp án đúng xác định. Chưa có đánh giá có kiểm soát nào so
-sánh việc xử lý mâu thuẫn tường minh với cách gộp ngầm của một baseline đã công bố, trên cùng dữ liệu và cùng mô hình
-ngôn ngữ, trong bài toán giao dịch tiền mã hóa. Đề tài hướng tới lấp khoảng trống này.
+một bước sinh lập luận mà không đo mức mâu thuẫn một cách định lượng (TradingAgents). CGX dùng mức đồng thuận để chặn
+lệnh, nhưng đồng thuận giữa hai phe chứ không giữa các nguồn dữ liệu; Huang và cộng sự phân tích tranh biện trên thị
+trường mô phỏng. Các nghiên cứu về tranh biện đa tác tử còn lại chủ yếu đánh giá trên bài toán hỏi đáp có đáp án đúng
+xác định. Chưa có đánh giá có kiểm soát nào so sánh việc xử lý mâu thuẫn tường minh \emph{giữa các nguồn dữ liệu} với
+cách gộp ngầm của một baseline đã công bố, trên cùng dữ liệu thật và cùng mô hình ngôn ngữ, trong bài toán giao dịch
+tiền mã hóa. Đề tài hướng tới lấp khoảng trống này.
