@@ -6,9 +6,14 @@ Viết lại trung thành baseline trong bài:
 > Cryptocurrency Trading*. EMNLP 2024, tr. 1094–1106. Code gốc:
 > https://github.com/Xtra-Computing/CryptoTrade (commit `210da73`).
 
-Dữ liệu trong `data/` (giá BTC, thống kê giao dịch on-chain, tin tức đã lọc 01/2023–02/2024) được
-chép nguyên từ repo gốc, giấy phép **CC BY-NC-SA 4.0** (`LICENSE`): chỉ dùng phi thương mại, ghi
-nguồn, và phần phái sinh dùng cùng giấy phép.
+Dữ liệu trong `data/` (giá BTC, thống kê giao dịch on-chain, tin tức đã lọc 01/2023–02/2024; và bộ ETH
+`eth_daily.csv`, `eth_more_transaction_statistics.csv`, `gnews/`) được chép nguyên từ repo gốc, giấy phép
+**CC BY-NC-SA 4.0** (`LICENSE`): chỉ dùng phi thương mại, ghi nguồn, và phần phái sinh dùng cùng giấy phép.
+
+ETH (`--asset eth`, đọc theo `get_paths('eth')` của code gốc) được kiểm chứng như BTC:
+`verify_against_upstream.py <CryptoTrade> <repo> eth` cho 18/18 kết quả luật trùng tuyệt đối và 0 khác
+biệt về prompt; 15 kết quả luật ETH trong Bảng 2 của bài cũng trùng (khung đi ngang của ETH trong bài là
+20/06–31/08/2023, khác BTC).
 
 ## Thành phần
 
