@@ -44,3 +44,6 @@ outputs/baselines/cryptotrade/*/ours*/*
 !outputs/horizon_analysis/
 !outputs/sell_rule/
 !outputs/timing_permutation/
+!outputs/reliability_arbiter/
+!outputs/arbiter_sell_rule/
+!outputs/debate_audit/

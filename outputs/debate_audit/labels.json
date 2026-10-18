@@ -1,0 +1,672 @@
+{
+ "method": "Random 30 of 71 dev debate days (seed 0), labelled blind to the next-day price. Each specialist opinion checked against its snapshot (prices/indicators, on-chain stats, full article text). Labels: ok (facts match; disagreement, if any, is a difference of view), factual_error, unsupported; decisive = the error is a main reason for the signal.",
+ "days": [
+  {
+   "day": 1,
+   "date": "2023-09-07",
+   "opinions": {
+    "Financial_Agent": {
+     "label": "ok",
+     "decisive": false,
+     "note": ""
+    },
+    "Market_Agent": {
+     "label": "ok",
+     "decisive": false,
+     "note": ""
+    },
+    "Sentiment_Agent": {
+     "label": "ok",
+     "decisive": false,
+     "note": ""
+    }
+   },
+   "market_sell_in_uptrend_following_inverted_labels": false
+  },
+  {
+   "day": 2,
+   "date": "2023-09-12",
+   "opinions": {
+    "Financial_Agent": {
+     "label": "ok",
+     "decisive": false,
+     "note": ""
+    },
+    "Market_Agent": {
+     "label": "ok",
+     "decisive": false,
+     "note": ""
+    },
+    "Sentiment_Agent": {
+     "label": "ok",
+     "decisive": false,
+     "note": ""
+    }
+   },
+   "market_sell_in_uptrend_following_inverted_labels": false
+  },
+  {
+   "day": 3,
+   "date": "2023-09-19",
+   "opinions": {
+    "Financial_Agent": {
+     "label": "ok",
+     "decisive": false,
+     "note": ""
+    },
+    "Market_Agent": {
+     "label": "ok",
+     "decisive": false,
+     "note": ""
+    },
+    "Sentiment_Agent": {
+     "label": "ok",
+     "decisive": false,
+     "note": ""
+    }
+   },
+   "market_sell_in_uptrend_following_inverted_labels": false
+  },
+  {
+   "day": 4,
+   "date": "2023-09-21",
+   "opinions": {
+    "Financial_Agent": {
+     "label": "ok",
+     "decisive": false,
+     "note": ""
+    },
+    "Market_Agent": {
+     "label": "ok",
+     "decisive": false,
+     "note": ""
+    },
+    "Sentiment_Agent": {
+     "label": "ok",
+     "decisive": false,
+     "note": ""
+    }
+   },
+   "market_sell_in_uptrend_following_inverted_labels": false
+  },
+  {
+   "day": 5,
+   "date": "2023-09-22",
+   "opinions": {
+    "Financial_Agent": {
+     "label": "ok",
+     "decisive": false,
+     "note": ""
+    },
+    "Market_Agent": {
+     "label": "ok",
+     "decisive": false,
+     "note": ""
+    },
+    "Sentiment_Agent": {
+     "label": "ok",
+     "decisive": false,
+     "note": ""
+    }
+   },
+   "market_sell_in_uptrend_following_inverted_labels": false
+  },
+  {
+   "day": 6,
+   "date": "2023-12-04",
+   "opinions": {
+    "Financial_Agent": {
+     "label": "ok",
+     "decisive": false,
+     "note": ""
+    },
+    "Market_Agent": {
+     "label": "ok",
+     "decisive": false,
+     "note": ""
+    },
+    "Sentiment_Agent": {
+     "label": "ok",
+     "decisive": false,
+     "note": ""
+    }
+   },
+   "market_sell_in_uptrend_following_inverted_labels": true
+  },
+  {
+   "day": 7,
+   "date": "2023-12-07",
+   "opinions": {
+    "Financial_Agent": {
+     "label": "ok",
+     "decisive": false,
+     "note": ""
+    },
+    "Market_Agent": {
+     "label": "ok",
+     "decisive": false,
+     "note": ""
+    },
+    "Sentiment_Agent": {
+     "label": "ok",
+     "decisive": false,
+     "note": ""
+    }
+   },
+   "market_sell_in_uptrend_following_inverted_labels": true
+  },
+  {
+   "day": 8,
+   "date": "2023-12-09",
+   "opinions": {
+    "Financial_Agent": {
+     "label": "ok",
+     "decisive": false,
+     "note": ""
+    },
+    "Market_Agent": {
+     "label": "ok",
+     "decisive": false,
+     "note": ""
+    },
+    "Sentiment_Agent": {
+     "label": "ok",
+     "decisive": false,
+     "note": ""
+    }
+   },
+   "market_sell_in_uptrend_following_inverted_labels": true
+  },
+  {
+   "day": 9,
+   "date": "2023-12-11",
+   "opinions": {
+    "Financial_Agent": {
+     "label": "ok",
+     "decisive": false,
+     "note": ""
+    },
+    "Market_Agent": {
+     "label": "ok",
+     "decisive": false,
+     "note": ""
+    },
+    "Sentiment_Agent": {
+     "label": "ok",
+     "decisive": false,
+     "note": ""
+    }
+   },
+   "market_sell_in_uptrend_following_inverted_labels": true
+  },
+  {
+   "day": 10,
+   "date": "2023-12-13",
+   "opinions": {
+    "Financial_Agent": {
+     "label": "ok",
+     "decisive": false,
+     "note": ""
+    },
+    "Market_Agent": {
+     "label": "ok",
+     "decisive": false,
+     "note": ""
+    },
+    "Sentiment_Agent": {
+     "label": "ok",
+     "decisive": false,
+     "note": ""
+    }
+   },
+   "market_sell_in_uptrend_following_inverted_labels": false
+  },
+  {
+   "day": 11,
+   "date": "2023-12-14",
+   "opinions": {
+    "Financial_Agent": {
+     "label": "ok",
+     "decisive": false,
+     "note": ""
+    },
+    "Market_Agent": {
+     "label": "ok",
+     "decisive": false,
+     "note": ""
+    },
+    "Sentiment_Agent": {
+     "label": "ok",
+     "decisive": false,
+     "note": ""
+    }
+   },
+   "market_sell_in_uptrend_following_inverted_labels": false
+  },
+  {
+   "day": 12,
+   "date": "2023-12-26",
+   "opinions": {
+    "Financial_Agent": {
+     "label": "ok",
+     "decisive": false,
+     "note": ""
+    },
+    "Market_Agent": {
+     "label": "ok",
+     "decisive": false,
+     "note": ""
+    },
+    "Sentiment_Agent": {
+     "label": "factual_error",
+     "decisive": false,
+     "note": "Says SEC approval expected at end of December; the article says Dec. 29 is a deadline for filing updates and approvals are expected in early January."
+    }
+   },
+   "market_sell_in_uptrend_following_inverted_labels": false
+  },
+  {
+   "day": 13,
+   "date": "2024-01-01",
+   "opinions": {
+    "Financial_Agent": {
+     "label": "ok",
+     "decisive": false,
+     "note": ""
+    },
+    "Market_Agent": {
+     "label": "ok",
+     "decisive": false,
+     "note": ""
+    },
+    "Sentiment_Agent": {
+     "label": "ok",
+     "decisive": false,
+     "note": ""
+    }
+   },
+   "market_sell_in_uptrend_following_inverted_labels": false
+  },
+  {
+   "day": 14,
+   "date": "2024-01-04",
+   "opinions": {
+    "Financial_Agent": {
+     "label": "ok",
+     "decisive": false,
+     "note": ""
+    },
+    "Market_Agent": {
+     "label": "ok",
+     "decisive": false,
+     "note": ""
+    },
+    "Sentiment_Agent": {
+     "label": "ok",
+     "decisive": false,
+     "note": ""
+    }
+   },
+   "market_sell_in_uptrend_following_inverted_labels": false
+  },
+  {
+   "day": 15,
+   "date": "2024-01-06",
+   "opinions": {
+    "Financial_Agent": {
+     "label": "ok",
+     "decisive": false,
+     "note": ""
+    },
+    "Market_Agent": {
+     "label": "ok",
+     "decisive": false,
+     "note": ""
+    },
+    "Sentiment_Agent": {
+     "label": "ok",
+     "decisive": false,
+     "note": ""
+    }
+   },
+   "market_sell_in_uptrend_following_inverted_labels": false
+  },
+  {
+   "day": 16,
+   "date": "2024-01-10",
+   "opinions": {
+    "Financial_Agent": {
+     "label": "ok",
+     "decisive": false,
+     "note": ""
+    },
+    "Market_Agent": {
+     "label": "ok",
+     "decisive": false,
+     "note": ""
+    },
+    "Sentiment_Agent": {
+     "label": "ok",
+     "decisive": false,
+     "note": ""
+    }
+   },
+   "market_sell_in_uptrend_following_inverted_labels": true
+  },
+  {
+   "day": 17,
+   "date": "2024-01-11",
+   "opinions": {
+    "Financial_Agent": {
+     "label": "ok",
+     "decisive": false,
+     "note": ""
+    },
+    "Market_Agent": {
+     "label": "ok",
+     "decisive": false,
+     "note": ""
+    },
+    "Sentiment_Agent": {
+     "label": "ok",
+     "decisive": false,
+     "note": ""
+    }
+   },
+   "market_sell_in_uptrend_following_inverted_labels": true
+  },
+  {
+   "day": 18,
+   "date": "2024-01-12",
+   "opinions": {
+    "Financial_Agent": {
+     "label": "ok",
+     "decisive": false,
+     "note": ""
+    },
+    "Market_Agent": {
+     "label": "ok",
+     "decisive": false,
+     "note": ""
+    },
+    "Sentiment_Agent": {
+     "label": "ok",
+     "decisive": false,
+     "note": ""
+    }
+   },
+   "market_sell_in_uptrend_following_inverted_labels": true
+  },
+  {
+   "day": 19,
+   "date": "2024-01-29",
+   "opinions": {
+    "Financial_Agent": {
+     "label": "ok",
+     "decisive": false,
+     "note": ""
+    },
+    "Market_Agent": {
+     "label": "ok",
+     "decisive": false,
+     "note": ""
+    },
+    "Sentiment_Agent": {
+     "label": "ok",
+     "decisive": false,
+     "note": ""
+    }
+   },
+   "market_sell_in_uptrend_following_inverted_labels": false
+  },
+  {
+   "day": 20,
+   "date": "2023-02-24",
+   "opinions": {
+    "Financial_Agent": {
+     "label": "ok",
+     "decisive": false,
+     "note": ""
+    },
+    "Market_Agent": {
+     "label": "unsupported",
+     "decisive": false,
+     "note": "Says RSI14 66.66 is falling; only one RSI value is given."
+    },
+    "Sentiment_Agent": {
+     "label": "ok",
+     "decisive": false,
+     "note": ""
+    }
+   },
+   "market_sell_in_uptrend_following_inverted_labels": false
+  },
+  {
+   "day": 21,
+   "date": "2023-02-28",
+   "opinions": {
+    "Financial_Agent": {
+     "label": "ok",
+     "decisive": false,
+     "note": ""
+    },
+    "Market_Agent": {
+     "label": "ok",
+     "decisive": false,
+     "note": ""
+    },
+    "Sentiment_Agent": {
+     "label": "unsupported",
+     "decisive": false,
+     "note": "Says weaker-than-expected US data adds pressure for rate cuts; no article supports this (they discuss rate increases)."
+    }
+   },
+   "market_sell_in_uptrend_following_inverted_labels": false
+  },
+  {
+   "day": 22,
+   "date": "2023-03-05",
+   "opinions": {
+    "Financial_Agent": {
+     "label": "ok",
+     "decisive": false,
+     "note": ""
+    },
+    "Market_Agent": {
+     "label": "ok",
+     "decisive": false,
+     "note": ""
+    },
+    "Sentiment_Agent": {
+     "label": "ok",
+     "decisive": false,
+     "note": ""
+    }
+   },
+   "market_sell_in_uptrend_following_inverted_labels": false
+  },
+  {
+   "day": 23,
+   "date": "2023-03-07",
+   "opinions": {
+    "Financial_Agent": {
+     "label": "factual_error",
+     "decisive": false,
+     "note": "Says transactions fell more than 50%; they fell 48.99%."
+    },
+    "Market_Agent": {
+     "label": "ok",
+     "decisive": false,
+     "note": ""
+    },
+    "Sentiment_Agent": {
+     "label": "ok",
+     "decisive": false,
+     "note": ""
+    }
+   },
+   "market_sell_in_uptrend_following_inverted_labels": false
+  },
+  {
+   "day": 24,
+   "date": "2023-03-10",
+   "opinions": {
+    "Financial_Agent": {
+     "label": "ok",
+     "decisive": false,
+     "note": ""
+    },
+    "Market_Agent": {
+     "label": "ok",
+     "decisive": false,
+     "note": ""
+    },
+    "Sentiment_Agent": {
+     "label": "ok",
+     "decisive": false,
+     "note": ""
+    }
+   },
+   "market_sell_in_uptrend_following_inverted_labels": false
+  },
+  {
+   "day": 25,
+   "date": "2023-03-13",
+   "opinions": {
+    "Financial_Agent": {
+     "label": "factual_error",
+     "decisive": false,
+     "note": "Says unique addresses, transactions and value all fell more than 20%; unique addresses fell 8.79%."
+    },
+    "Market_Agent": {
+     "label": "ok",
+     "decisive": false,
+     "note": ""
+    },
+    "Sentiment_Agent": {
+     "label": "ok",
+     "decisive": false,
+     "note": ""
+    }
+   },
+   "market_sell_in_uptrend_following_inverted_labels": false
+  },
+  {
+   "day": 26,
+   "date": "2023-03-21",
+   "opinions": {
+    "Financial_Agent": {
+     "label": "ok",
+     "decisive": false,
+     "note": ""
+    },
+    "Market_Agent": {
+     "label": "ok",
+     "decisive": false,
+     "note": ""
+    },
+    "Sentiment_Agent": {
+     "label": "ok",
+     "decisive": false,
+     "note": ""
+    }
+   },
+   "market_sell_in_uptrend_following_inverted_labels": true
+  },
+  {
+   "day": 27,
+   "date": "2023-03-24",
+   "opinions": {
+    "Financial_Agent": {
+     "label": "ok",
+     "decisive": false,
+     "note": ""
+    },
+    "Market_Agent": {
+     "label": "ok",
+     "decisive": false,
+     "note": ""
+    },
+    "Sentiment_Agent": {
+     "label": "ok",
+     "decisive": false,
+     "note": ""
+    }
+   },
+   "market_sell_in_uptrend_following_inverted_labels": true
+  },
+  {
+   "day": 28,
+   "date": "2023-03-25",
+   "opinions": {
+    "Financial_Agent": {
+     "label": "ok",
+     "decisive": false,
+     "note": ""
+    },
+    "Market_Agent": {
+     "label": "ok",
+     "decisive": false,
+     "note": ""
+    },
+    "Sentiment_Agent": {
+     "label": "ok",
+     "decisive": false,
+     "note": ""
+    }
+   },
+   "market_sell_in_uptrend_following_inverted_labels": true
+  },
+  {
+   "day": 29,
+   "date": "2023-03-26",
+   "opinions": {
+    "Financial_Agent": {
+     "label": "ok",
+     "decisive": false,
+     "note": ""
+    },
+    "Market_Agent": {
+     "label": "ok",
+     "decisive": false,
+     "note": ""
+    },
+    "Sentiment_Agent": {
+     "label": "ok",
+     "decisive": false,
+     "note": ""
+    }
+   },
+   "market_sell_in_uptrend_following_inverted_labels": true
+  },
+  {
+   "day": 30,
+   "date": "2023-03-27",
+   "opinions": {
+    "Financial_Agent": {
+     "label": "ok",
+     "decisive": false,
+     "note": ""
+    },
+    "Market_Agent": {
+     "label": "ok",
+     "decisive": false,
+     "note": ""
+    },
+    "Sentiment_Agent": {
+     "label": "ok",
+     "decisive": false,
+     "note": ""
+    }
+   },
+   "market_sell_in_uptrend_following_inverted_labels": true
+  }
+ ],
+ "summary": {
+  "opinions": 90,
+  "errors": 5,
+  "days_with_error": 5,
+  "decisive_errors": 0,
+  "market_sell_in_uptrend_days": 12
+ }
+}
