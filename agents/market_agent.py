@@ -17,7 +17,7 @@ def run(data=None, reference_time=None):
     if market.get("task_note"):  # set by the caller, outside the quoted data
         prompt = market["task_note"] + "\n" + prompt
     if reference_time is not None:
-        prompt = f"Dự báo hướng giá BTC trong 24 giờ sau {reference_time.isoformat()}. Chỉ sử dụng bằng chứng được cung cấp, không dùng kiến thức về diễn biến sau mốc dự báo.\n" + prompt
+        prompt = f"Dự báo hướng giá {market.get('asset', 'BTC')} trong 24 giờ sau {reference_time.isoformat()}. Chỉ sử dụng bằng chứng được cung cấp, không dùng kiến thức về diễn biến sau mốc dự báo.\n" + prompt
 
     parsed = request_specialist_response(prompt, agent_name="market", ask=ask_llm, evidence=market)
 

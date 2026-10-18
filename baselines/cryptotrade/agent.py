@@ -13,7 +13,7 @@ from pathlib import Path
 
 from openai import OpenAI
 
-from baselines.cryptotrade.env import TradingEnv, sharpe
+from baselines.cryptotrade.env import TradingEnv, asset_info, sharpe
 from baselines.cryptotrade.prompts import PROFILES, History
 from utils import llm as llm_utils
 from utils.config import OPENROUTER_API_KEY, OPENROUTER_BASE_URL
@@ -78,7 +78,10 @@ def run_agent(starting_date, ending_date, ask, variant="full", out_dir=None, pro
     flags = VARIANTS[variant]
     env = TradingEnv(starting_date, ending_date)
     state = env.reset()
-    history = History(state, use_tech=flags["use_tech"], use_txnstat=flags["use_txnstat"], **PROFILES[profile])
+    prof = dict(PROFILES[profile])
+    if profile == "paper":  # the paper profile names the traded asset; the code profile always says "ETH"
+        prof["asset"] = asset_info()["label"]
+    history = History(state, use_tech=flags["use_tech"], use_txnstat=flags["use_txnstat"], **prof)
     returns, steps, correct, directional = [], [], 0, 0
     while not env.done:
         price_s, news_s, reflection_s, trader_s = history.prompts()

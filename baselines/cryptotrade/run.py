@@ -6,14 +6,15 @@ LLM agent (cached; rerun the same command to resume):
     python -m baselines.cryptotrade.run agent --window bull --variant market_only
 Our multi-agent system in the same environment (LLM_BACKEND/LMSTUDIO_MODEL select the model):
     python -m baselines.cryptotrade.run ours --window bull
-Outputs go to outputs/baselines/cryptotrade/<window>/.
+Outputs go to outputs/baselines/cryptotrade/<window>/ (BTC) or outputs/baselines/cryptotrade/eth/<window>/
+(--asset eth, CryptoTrade's ETH data: prices, on-chain statistics and news).
 """
 import argparse
 import json
 from pathlib import Path
 
 from baselines.cryptotrade.agent import VARIANTS, CachedLLM, run_agent
-from baselines.cryptotrade.env import DEV_WINDOWS, WINDOWS, TradingEnv
+from baselines.cryptotrade.env import DEV_WINDOWS, WINDOWS, TradingEnv, set_asset
 from baselines.cryptotrade.rules import STRATEGIES, run_rule
 
 OUT = Path("outputs/baselines/cryptotrade")
@@ -23,6 +24,7 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     parser.add_argument("mode", choices=("rules", "agent", "ours"))
     parser.add_argument("--window", choices=sorted({**WINDOWS, **DEV_WINDOWS}), required=True)
+    parser.add_argument("--asset", choices=("btc", "eth"), default="btc")
     parser.add_argument("--variant", choices=sorted(VARIANTS), default="full")
     parser.add_argument("--profile", choices=("paper", "code"), default="paper",
                         help="paper = method as described in the paper (default); code = released code")
@@ -37,8 +39,9 @@ def main():
     parser.add_argument("--debate-flip", action="store_true",
                         help="ours: agents may change signal in Debate on a strong, verified rebuttal (eval-v2-debate)")
     args = parser.parse_args()
+    set_asset(args.asset)
     start, end = {**WINDOWS, **DEV_WINDOWS}[args.window]
-    out = OUT / args.window
+    out = OUT / args.window if args.asset == "btc" else OUT / args.asset / args.window
     out.mkdir(parents=True, exist_ok=True)
 
     if args.mode == "rules":

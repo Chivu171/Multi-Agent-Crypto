@@ -1,4 +1,4 @@
-"""BTC trading environment reimplemented from CryptoTrade (Li et al., EMNLP 2024).
+"""BTC/ETH trading environment reimplemented from CryptoTrade (Li et al., EMNLP 2024).
 
 Mirrors eth_env.py of github.com/Xtra-Computing/CryptoTrade (commit 210da73):
 - starts with 1,000,000 split 50/50 between cash and BTC at the first open;
@@ -8,6 +8,8 @@ Mirrors eth_env.py of github.com/Xtra-Computing/CryptoTrade (commit 210da73):
   valued at the open (the original applies the ETH gas constant to BTC too);
 - net worth is marked at the next day's open.
 Indicators are computed on open prices over the full history, as upstream.
+The asset (BTC by default, or ETH) selects the data files as get_paths() does
+upstream; call set_asset() before loading anything.
 """
 import csv
 import datetime as dt
@@ -18,6 +20,27 @@ from pathlib import Path
 import numpy as np
 
 DATA_DIR = Path(__file__).parent / "data"
+ASSETS = {  # upstream get_paths(); ETH prices are CoinGecko snapshots, ETH on-chain dates are d/m/yy
+    "btc": dict(label="BTC", name="Bitcoin", price="bitcoin_daily_price.csv", time_col="timeOpen",
+                txn="bitcoin_transaction_statistics.csv", txn_date=lambda s: s[:10],
+                news="selected_bitcoin_202301_202401", price_source="CoinMarketCap"),
+    "eth": dict(label="ETH", name="Ethereum", price="eth_daily.csv", time_col="snapped_at",
+                txn="eth_more_transaction_statistics.csv",
+                txn_date=lambda s: dt.datetime.strptime(s, "%d/%m/%y %H:%M").date().isoformat(),
+                news="gnews", price_source="CoinGecko"),
+}
+ASSET = "btc"
+
+
+def set_asset(name):
+    global ASSET
+    if name not in ASSETS:
+        raise ValueError(f"Unknown asset {name}")
+    ASSET = name
+
+
+def asset_info():
+    return ASSETS[ASSET]
 STARTING_NET_WORTH = 1_000_000
 STARTING_CASH_RATIO = 0.5
 GAS_FEE = 21000 * 70 * 1e-9  # coins per trade
@@ -47,12 +70,13 @@ def _ewm(values, span):
 
 def load_prices(data_dir=DATA_DIR):
     """Daily rows sorted by date with SMA/STD/MACD computed on open prices."""
-    with open(data_dir / "bitcoin_daily_price.csv", newline="") as f:
-        rows = sorted(csv.DictReader(f), key=lambda r: r["timeOpen"])
+    info = asset_info()
+    with open(data_dir / info["price"], newline="") as f:
+        rows = sorted(csv.DictReader(f), key=lambda r: r[info["time_col"]])
     opens = np.array([float(r["open"]) for r in rows])
     days = []
     for i, r in enumerate(rows):
-        day = {"date": r["timeOpen"][:10], "time_open": r["timeOpen"], "open": opens[i]}
+        day = {"date": r[info["time_col"]][:10], "time_open": r[info["time_col"]], "open": opens[i]}
         for p in SMA_PERIODS:
             window = opens[max(0, i - p + 1): i + 1]
             full = len(window) == p
@@ -75,12 +99,14 @@ def _number(text):
 def load_txn_stats(data_dir=DATA_DIR):
     """Columns keep CSV order. Upstream iterates a set(), so its prompt order
     changes between Python processes; a fixed order keeps runs reproducible."""
-    with open(data_dir / "bitcoin_transaction_statistics.csv", newline="") as f:
-        return {r["day"][:10]: {k: _number(v) for k, v in r.items() if k != "day"} for r in csv.DictReader(f)}
+    info = asset_info()
+    with open(data_dir / info["txn"], newline="", encoding="utf-8-sig") as f:  # the ETH file starts with a BOM
+        return {info["txn_date"](r["day"]): {k: _number(v) for k, v in r.items() if k != "day"}
+                for r in csv.DictReader(f)}
 
 
 def load_news(date, data_dir=DATA_DIR):
-    path = data_dir / "selected_bitcoin_202301_202401" / f"{date}.json"
+    path = data_dir / asset_info()["news"] / f"{date}.json"
     if not path.exists():
         return "N/A"
     news, seen = [], set()

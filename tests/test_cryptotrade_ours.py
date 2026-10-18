@@ -180,3 +180,47 @@ def test_task_note_goes_before_the_quoted_data(monkeypatch):
     with pytest.raises(RuntimeError):
         sentiment_agent.run(data)
     assert seen["prompt"].index(ours.SENTIMENT_DEBIAS_NOTE) < seen["prompt"].index("DỮ LIỆU TRÍCH DẪN")
+
+
+@pytest.fixture
+def eth():
+    from baselines.cryptotrade import env
+    env.set_asset("eth")
+    yield env
+    env.set_asset("btc")
+
+
+def test_eth_agents_see_what_the_eth_baseline_agent_sees(eth):
+    env = TradingEnv(*WINDOWS["bull"])
+    state = env.reset()
+    prices, txn = ours.load_prices(), ours.load_txn_stats()
+    assert state["open"] == pytest.approx(1670.998956)  # the ETH bull start in the upstream README
+    for _ in range(5):
+        inputs = ours.build_inputs(env.data[env.current_step]["date"], prices, txn)
+        assert inputs["market"]["price"] == state["open"]
+        assert {k: m["value"] for k, m in inputs["financial"]["metrics"].items()} == state["txnstat"]
+        assert inputs["market"]["summary_text"].startswith("ETH daily open prices")
+        assert inputs["sentiment"]["summary_text"].startswith("Ethereum news articles")
+        assert all(inputs[k]["asset"] == "ETH" for k in ("market", "financial", "sentiment"))
+        state, _ = env.step(0)
+
+
+def test_btc_inputs_carry_no_asset_key_so_cached_prompts_still_match():
+    inputs = ours.build_inputs("2023-10-10")
+    assert all("asset" not in inputs[k] for k in inputs)
+    assert inputs["market"]["source"] == "CryptoTrade dataset: CoinMarketCap BTC daily open prices"
+
+
+def test_specialist_prompt_names_the_traded_asset(eth, monkeypatch):
+    import datetime as dt
+    from agents import market_agent
+    seen = {}
+
+    def fake(prompt, **kwargs):
+        seen["prompt"] = prompt
+        raise RuntimeError("stop")
+
+    monkeypatch.setattr(market_agent, "request_specialist_response", fake)
+    with pytest.raises(RuntimeError):
+        market_agent.run(ours.build_inputs("2023-10-10")["market"], dt.datetime(2023, 10, 10, tzinfo=dt.timezone.utc))
+    assert seen["prompt"].startswith("Dự báo hướng giá ETH")

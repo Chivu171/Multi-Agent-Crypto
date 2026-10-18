@@ -2,15 +2,15 @@
 
 Needs a clone of github.com/Xtra-Computing/CryptoTrade (commit 210da73) and an
 environment with pandas (not a project dependency):
-    python baselines/cryptotrade/verify_against_upstream.py <CryptoTrade dir> <this repo dir>
-Compares all rule baselines on the three BTC windows and the four agent prompts
+    python baselines/cryptotrade/verify_against_upstream.py <CryptoTrade dir> <this repo dir> [btc|eth]
+Compares all rule baselines on the three test windows and the four agent prompts
 over 12 steps. Upstream lists on-chain fields from a set() (order changes per
 process) and parses floats with pandas, so fields are compared unordered and to
 10 significant digits.
 """
 import sys, re, json, ast, types
 from argparse import Namespace
-UP = sys.argv[1]; OURS = sys.argv[2]
+UP = sys.argv[1]; OURS = sys.argv[2]; ASSET = sys.argv[3] if len(sys.argv) > 3 else "btc"
 sys.path.insert(0, UP)
 import os; os.chdir(UP)
 import numpy as np, pandas as pd
@@ -21,19 +21,22 @@ src = open("run_baseline.py").read()
 tree = ast.parse(src)
 fn = next(n for n in tree.body if isinstance(n, ast.FunctionDef) and n.name == "run_strategy")
 code = ast.get_source_segment(src, fn).replace("print(result_str)", "return result")
-df = pd.read_csv("data/bitcoin_daily_price.csv"); df = df.sort_values("timeOpen")
-df["date"] = pd.to_datetime(df["timeOpen"], format="%Y-%m-%dT%H:%M:%S.%fZ")
+price_file, time_col, time_fmt = {"btc": ("data/bitcoin_daily_price.csv", "timeOpen", "%Y-%m-%dT%H:%M:%S.%fZ"),
+                                  "eth": ("data/eth_daily.csv", "snapped_at", "%Y-%m-%d %H:%M:%S UTC")}[ASSET]
+df = pd.read_csv(price_file); df = df.sort_values(time_col)
+df["date"] = pd.to_datetime(df[time_col], format=time_fmt)
 for p in [5,10,15,20,30]:
     df[f"SMA_{p}"] = df["open"].rolling(window=p).mean(); df[f"STD_{p}"] = df["open"].rolling(window=p).std()
 df["EMA_12"] = df["open"].ewm(span=12, adjust=False).mean(); df["EMA_26"] = df["open"].ewm(span=26, adjust=False).mean()
 df["MACD"] = df["EMA_12"] - df["EMA_26"]; df["Signal_Line"] = df["MACD"].ewm(span=9, adjust=False).mean()
 class BTCEnv(eth_env.ETHTradingEnv):
-    def __init__(self, args): super().__init__(Namespace(dataset="btc", **vars(args)))
+    def __init__(self, args): super().__init__(Namespace(dataset=ASSET, **vars(args)))
 g = {"ETHTradingEnv": BTCEnv, "Namespace": Namespace, "df": df, "np": np, "BUY": .5, "SELL": -.5, "FULL_BUY": 1, "FULL_SELL": -1}
 exec(code, g)
 sys.path.insert(0, OURS); os.chdir(OURS)
 from baselines.cryptotrade.rules import run_rule
-from baselines.cryptotrade.env import WINDOWS, TradingEnv
+from baselines.cryptotrade.env import WINDOWS, TradingEnv, set_asset
+set_asset(ASSET)
 from baselines.cryptotrade.prompts import PROFILES, History
 worst = 0
 for w, (a, b) in WINDOWS.items():
@@ -59,7 +62,7 @@ def norm(p):
         out.append(line)
     return "\n".join(out)
 os.chdir(UP)
-up_env = eth_env.ETHTradingEnv(Namespace(dataset="btc", starting_date="2023-10-01", ending_date="2023-10-20"))
+up_env = eth_env.ETHTradingEnv(Namespace(dataset=ASSET, starting_date="2023-10-01", ending_date="2023-10-20"))
 s0, *_ = up_env.reset()
 args = Namespace(price_window=7, reflection_window=3, use_tech=1, use_txnstat=1)
 uh = EnvironmentHistory("", s0, [], [], args)
@@ -94,13 +97,13 @@ def to_btc(p):
                  ("trading ETH.", "trading BTC."), ("sell ETH.", "sell BTC.")):
         p = p.replace(a, b)
     return p
-pe = paper_env_mod.ETHTradingEnv(Namespace(dataset="btc", starting_date="2023-10-01", ending_date="2023-11-05")); ps, *_ = pe.reset()
+pe = paper_env_mod.ETHTradingEnv(Namespace(dataset=ASSET, starting_date="2023-10-01", ending_date="2023-11-05")); ps, *_ = pe.reset()
 ph = EnvironmentHistory("", ps, [], [], Namespace(price_window=7, reflection_window=7, use_tech=1, use_txnstat=1))
 os.chdir(OURS)
-qe = TradingEnv("2023-10-01", "2023-11-05"); qs = qe.reset(); qh = History(qs, **PROFILES["paper"])
+qe = TradingEnv("2023-10-01", "2023-11-05"); qs = qe.reset(); qh = History(qs, **{**PROFILES["paper"], "asset": ASSET.upper()})
 paper_mismatch = 0
 for step in range(25):
-    os.chdir(UP); up_prompts = [to_btc(x) for x in ph.get_prompt()]; os.chdir(OURS)
+    os.chdir(UP); up_prompts = [to_btc(x) if ASSET == "btc" else x for x in ph.get_prompt()]; os.chdir(OURS)
     paper_mismatch += sum(norm(x) != norm(y) for x, y in zip(up_prompts, qh.prompts()))
     resp = f"reasoning ... action {[0.3,-0.5,1.0,-1.0,0.0][step % 5]:.1f}"
     os.chdir(UP); us, *_rest = pe.step(resp); os.chdir(OURS)

@@ -40,8 +40,8 @@ from agents import financial_agent, market_agent, sentiment_agent
 from agents.conflict_analyzer import ConflictAnalyzer
 from agents.mediator_agent import run_mediator
 from baselines.cryptotrade.env import (
-    DATA_DIR, TradingEnv, bollinger_signal, load_news, load_prices, load_txn_stats, macd_signal, sharpe,
-    slma_signal,
+    DATA_DIR, TradingEnv, asset_info, bollinger_signal, load_news, load_prices, load_txn_stats, macd_signal,
+    sharpe, slma_signal,
 )
 from data_sources.market_data import _ema, _rsi
 from utils import llm
@@ -50,11 +50,11 @@ from utils.thresholds import DEFAULT_CONFLICT_THRESHOLD, SIGNAL_NEUTRAL_BAND
 
 ACTION = {"BUY": 0.5, "SELL": -0.5, "NEUTRAL": 0.0}
 AGENTS = (("financial", financial_agent), ("market", market_agent), ("sentiment", sentiment_agent))
-SOURCES = {
-    "market": "CryptoTrade dataset: CoinMarketCap BTC daily open prices",
-    "financial": "CryptoTrade dataset: Dune BTC transaction statistics",
-    "sentiment": "CryptoTrade dataset: Google News (Gnews) Bitcoin articles",
-}
+def sources():
+    a = asset_info()
+    return {"market": f"CryptoTrade dataset: {a['price_source']} {a['label']} daily open prices",
+            "financial": f"CryptoTrade dataset: Dune {a['label']} transaction statistics",
+            "sentiment": f"CryptoTrade dataset: Google News (Gnews) {a['name']} articles"}
 
 
 EARLIER_NEWS_DAYS = 3
@@ -104,6 +104,7 @@ def trend_lines(prices, index):
 
 def build_inputs(date, prices=None, txn_stats=None, data_dir=DATA_DIR, trend_context=False, debias=False):
     """Agent inputs for a decision at the open of `date` (YYYY-MM-DD)."""
+    asset, src = asset_info(), sources()
     prices = prices or load_prices(data_dir)
     txn_stats = txn_stats or load_txn_stats(data_dir)
     index = next(i for i, d in enumerate(prices) if d["date"] == date)
@@ -115,7 +116,7 @@ def build_inputs(date, prices=None, txn_stats=None, data_dir=DATA_DIR, trend_con
     signals = {"short_long_ma_signal": slma_signal(day), "macd_signal": macd_signal(day),
                "bollinger_bands_signal": bollinger_signal(day, day["open"])}
     rsi14 = _rsi(opens, 14)
-    market_lines = [f"BTC daily open prices up to the decision time ({date} 00:00 UTC); newest last."]
+    market_lines = [f"{asset['label']} daily open prices up to the decision time ({date} 00:00 UTC); newest last."]
     market_lines += [f"Open {d['date']}: {d['open']:.2f}" for d in prices[max(0, index - 6): index + 1]]
     market_lines += [f"EMA20 of daily opens: {_ema(opens, 20):.2f}", f"EMA50 of daily opens: {_ema(opens, 50):.2f}",
                      f"RSI14 of daily opens: {rsi14:.2f}"]
@@ -123,20 +124,20 @@ def build_inputs(date, prices=None, txn_stats=None, data_dir=DATA_DIR, trend_con
         market_lines += trend_lines(prices, index)
     market_lines += [f"{k}: {v}" for k, v in signals.items()]
     market = {"summary_text": "\n".join(market_lines), "price": day["open"], "rsi14": rsi14,
-              "technical": signals, "fetched_at": _midnight(date).isoformat(), "source": SOURCES["market"]}
+              "technical": signals, "fetched_at": _midnight(date).isoformat(), "source": src["market"]}
 
     today, prior = txn_stats.get(previous), txn_stats.get(before)
     if not today or not prior:
         raise ValueError(f"Missing transaction statistics for {previous} or {before}")
     metrics = {k: {"value": v, "pct_change_1d": (v / prior[k] - 1) * 100 if prior[k] else 0.0}
                for k, v in today.items()}
-    financial_lines = [f"BTC on-chain transaction statistics for {previous} (full UTC day before the decision)."]
+    financial_lines = [f"{asset['label']} on-chain transaction statistics for {previous} (full UTC day before the decision)."]
     financial_lines += [f"{k}: {m['value']} ({m['pct_change_1d']:+.2f}% vs {before})" for k, m in metrics.items()]
     financial = {"summary_text": "\n".join(financial_lines), "metrics": metrics,
-                 "fetched_at": _midnight(previous).isoformat(), "source": SOURCES["financial"]}
+                 "fetched_at": _midnight(previous).isoformat(), "source": src["financial"]}
 
     news = load_news(previous, data_dir)
-    sentiment_lines = [f"Bitcoin news articles dated {previous} (the day before the decision); a title line per article, then one sentence per line."]
+    sentiment_lines = [f"{asset['name']} news articles dated {previous} (the day before the decision); a title line per article, then one sentence per line."]
     if news == "N/A":
         sentiment_lines.append(f"No news articles are available for {previous}.")
     else:
@@ -156,10 +157,13 @@ def build_inputs(date, prices=None, txn_stats=None, data_dir=DATA_DIR, trend_con
                 continue
             sentiment_lines += [f"Earlier | {day_before} | {_one_line(n['title'])}" for n in earlier]
     sentiment = {"summary_text": "\n".join(sentiment_lines), "fetched_at": _midnight(previous).isoformat(),
-                 "source": SOURCES["sentiment"]}
+                 "source": src["sentiment"]}
     if debias:
         sentiment["task_note"] = SENTIMENT_DEBIAS_NOTE
         market["task_note"] = MARKET_DEBIAS_NOTE
+    if asset["label"] != "BTC":  # BTC inputs stay byte-identical, so cached BTC calls still replay
+        for d in (financial, market, sentiment):
+            d["asset"] = asset["label"]
     return {"financial": financial, "market": market, "sentiment": sentiment}
 
 

@@ -15,7 +15,7 @@ def run(data=None, reference_time=None):
 
     prompt = FINANCIAL_AGENT_PROMPT.format(text=strip_instruction_patterns(text))
     if reference_time is not None:
-        prompt = f"Dự báo hướng giá BTC trong 24 giờ sau {reference_time.isoformat()}. Chỉ sử dụng bằng chứng được cung cấp, không dùng kiến thức về diễn biến sau mốc dự báo.\n" + prompt
+        prompt = f"Dự báo hướng giá {onchain.get('asset', 'BTC')} trong 24 giờ sau {reference_time.isoformat()}. Chỉ sử dụng bằng chứng được cung cấp, không dùng kiến thức về diễn biến sau mốc dự báo.\n" + prompt
 
     parsed = request_specialist_response(prompt, agent_name="financial", ask=ask_llm, evidence=onchain)
 
