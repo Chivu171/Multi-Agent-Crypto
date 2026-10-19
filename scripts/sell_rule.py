@@ -20,8 +20,9 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 from baselines.cryptotrade.env import DEV_WINDOWS, WINDOWS, load_prices  # noqa: E402
 from scripts.trend_variants import check_reproduction, load_window, simulate  # noqa: E402
 
-RUNS = Path("outputs/baselines/cryptotrade")
-OUT = Path("outputs/sell_rule")
+from scripts.asset import RUNS, out_dir  # noqa: E402
+
+OUT = out_dir("outputs/sell_rule")
 BAND = 0.05
 GRID = [{"k": k, "m": m} for k in (0.05, 0.10, 0.15, 0.20, 0.30) for m in (0, 2)] + [{"k": None, "m": 0}]
 REFERENCES = {"ct_full": "agent_paper_full__google_gemma-4-26b-a4b-qat"}

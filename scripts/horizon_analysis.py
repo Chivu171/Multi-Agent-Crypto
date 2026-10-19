@@ -19,8 +19,9 @@ import numpy as np
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 from baselines.cryptotrade.env import DEV_WINDOWS, WINDOWS, load_prices  # noqa: E402
 
-RUNS = Path("outputs/baselines/cryptotrade")
-OUT = Path("outputs/horizon_analysis")
+from scripts.asset import RUNS, out_dir  # noqa: E402
+
+OUT = out_dir("outputs/horizon_analysis")
 MODEL = "google_gemma-4-26b-a4b-qat"
 AGENTS = ("Market_Agent", "Financial_Agent", "Sentiment_Agent")
 HORIZONS = (1, 3, 7)

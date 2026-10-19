@@ -25,8 +25,9 @@ from baselines.cryptotrade.env import DEV_WINDOWS, WINDOWS, load_prices  # noqa:
 from scripts.sell_rule import actions as sell_rule_actions  # noqa: E402
 from scripts.trend_variants import load_window, simulate  # noqa: E402
 
-RUNS = Path("outputs/baselines/cryptotrade")
-OUT = Path("outputs/timing_permutation")
+from scripts.asset import RUNS, out_dir  # noqa: E402
+
+OUT = out_dir("outputs/timing_permutation")
 SHUFFLES, SEED = 5_000, 0
 SETS = {"dev": list(DEV_WINDOWS), "test": list(WINDOWS), "pooled": [*DEV_WINDOWS, *WINDOWS]}
 

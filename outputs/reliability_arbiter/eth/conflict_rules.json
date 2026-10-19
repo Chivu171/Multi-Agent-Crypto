@@ -1,0 +1,100 @@
+{
+  "current system (debate)": {
+    "dev": {
+      "accuracy": 0.6666666666666666,
+      "calls": 36
+    },
+    "test": {
+      "accuracy": 0.5531914893617021,
+      "calls": 47
+    },
+    "pooled": {
+      "accuracy": 0.6024096385542169,
+      "calls": 83
+    }
+  },
+  "Mediator without debate": {
+    "dev": {
+      "accuracy": 0.625,
+      "calls": 40
+    },
+    "test": {
+      "accuracy": 0.484375,
+      "calls": 64
+    },
+    "pooled": {
+      "accuracy": 0.5384615384615384,
+      "calls": 104
+    }
+  },
+  "majority vote": {
+    "dev": {
+      "accuracy": 0.5833333333333334,
+      "calls": 24
+    },
+    "test": {
+      "accuracy": 0.4878048780487805,
+      "calls": 41
+    },
+    "pooled": {
+      "accuracy": 0.5230769230769231,
+      "calls": 65
+    }
+  },
+  "most confident agent": {
+    "dev": {
+      "accuracy": 0.5510204081632653,
+      "calls": 49
+    },
+    "test": {
+      "accuracy": 0.5555555555555556,
+      "calls": 90
+    },
+    "pooled": {
+      "accuracy": 0.5539568345323741,
+      "calls": 139
+    }
+  },
+  "follow Market": {
+    "dev": {
+      "accuracy": 0.45454545454545453,
+      "calls": 44
+    },
+    "test": {
+      "accuracy": 0.527027027027027,
+      "calls": 74
+    },
+    "pooled": {
+      "accuracy": 0.5,
+      "calls": 118
+    }
+  },
+  "follow Financial": {
+    "dev": {
+      "accuracy": 0.6097560975609756,
+      "calls": 41
+    },
+    "test": {
+      "accuracy": 0.47435897435897434,
+      "calls": 78
+    },
+    "pooled": {
+      "accuracy": 0.5210084033613446,
+      "calls": 119
+    }
+  },
+  "follow Sentiment": {
+    "dev": {
+      "accuracy": 0.4864864864864865,
+      "calls": 37
+    },
+    "test": {
+      "accuracy": 0.4927536231884058,
+      "calls": 69
+    },
+    "pooled": {
+      "accuracy": 0.49056603773584906,
+      "calls": 106
+    }
+  }
+}

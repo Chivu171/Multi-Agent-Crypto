@@ -26,9 +26,10 @@ from baselines.cryptotrade.env import (  # noqa: E402
 from baselines.cryptotrade.ours import ACTION, signal_of  # noqa: E402
 from utils.thresholds import SIGNAL_STRONG_INTENSITY_FLOOR  # noqa: E402
 
-RUNS = Path("outputs/baselines/cryptotrade")
+from scripts.asset import RUNS, out_dir  # noqa: E402
+
 RUN_NAME = "ours__google_gemma-4-26b-a4b-qat"
-OUT = Path("outputs/trend_variants")
+OUT = out_dir("outputs/trend_variants")
 AGENTS = ("Market_Agent", "Financial_Agent", "Sentiment_Agent")
 REGIMES = ("up", "flat", "down")
 

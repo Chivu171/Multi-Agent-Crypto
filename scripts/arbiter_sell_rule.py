@@ -23,7 +23,9 @@ import scripts.significance as sig  # noqa: E402
 from baselines.cryptotrade.env import DEV_WINDOWS, WINDOWS, load_prices  # noqa: E402
 from scripts.trend_variants import AGENTS, load_window, simulate  # noqa: E402
 
-OUT = Path("outputs/arbiter_sell_rule")
+from scripts.asset import out_dir  # noqa: E402
+
+OUT = out_dir("outputs/arbiter_sell_rule")
 PRIOR, BAND = 5, 0.05
 KS = (0.05, 0.10, 0.15, 0.20, 0.30, None)
 

@@ -21,8 +21,9 @@ import scripts.trend_variants as tv  # noqa: E402
 from baselines.cryptotrade.env import DEV_WINDOWS, WINDOWS, load_prices  # noqa: E402
 from scripts.agent_regime_analysis import day_records  # noqa: E402
 
-RUNS = Path("outputs/baselines/cryptotrade")
-OUT = Path("outputs/significance")
+from scripts.asset import RUNS, out_dir  # noqa: E402
+
+OUT = out_dir("outputs/significance")
 MODEL = "google_gemma-4-26b-a4b-qat"
 CT_FULL = f"agent_paper_full__{MODEL}"
 BLOCK, RESAMPLES, SEED = 5, 10_000, 0

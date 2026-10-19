@@ -24,7 +24,9 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 from baselines.cryptotrade.env import DEV_WINDOWS, WINDOWS, load_prices  # noqa: E402
 from scripts.trend_variants import AGENTS, check_reproduction, load_window, simulate  # noqa: E402
 
-OUT = Path("outputs/reliability_arbiter")
+from scripts.asset import out_dir  # noqa: E402
+
+OUT = out_dir("outputs/reliability_arbiter")
 BAND = 0.05
 GRID = ([{"mode": "vote", "prior": a, "margin": m} for a in (2, 5, 10) for m in (0.0, 0.05)]
         + [{"mode": "reweight", "prior": a, "margin": 0.0} for a in (2, 5, 10)])
