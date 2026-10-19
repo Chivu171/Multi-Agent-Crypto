@@ -47,3 +47,13 @@ outputs/baselines/cryptotrade/*/ours*/*
 !outputs/reliability_arbiter/
 !outputs/arbiter_sell_rule/
 !outputs/debate_audit/
+!outputs/eth_check/
+!outputs/baselines/cryptotrade/eth/*/
+outputs/baselines/cryptotrade/eth/*/*
+!outputs/baselines/cryptotrade/eth/*/rules.json
+!outputs/baselines/cryptotrade/eth/*/agent_*/
+outputs/baselines/cryptotrade/eth/*/agent_*/*
+!outputs/baselines/cryptotrade/eth/*/agent_*/result.json
+!outputs/baselines/cryptotrade/eth/*/ours*/
+outputs/baselines/cryptotrade/eth/*/ours*/*
+!outputs/baselines/cryptotrade/eth/*/ours*/result.json
