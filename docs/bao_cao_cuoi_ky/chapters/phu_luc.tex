@@ -51,6 +51,11 @@ python scripts/reliability_arbiter.py conflicts   # cả select,
 python scripts/reliability_arbiter.py longrun     # evaluate
 python scripts/arbiter_sell_rule.py
 \end{Verbatim}
+Kiểm chứng trên ETH (tag \texttt{eth-prereg} cho kế hoạch, \texttt{eval-v1-eth} cho mã): thêm \texttt{--asset eth} vào
+các lệnh chạy ở trên, rồi chạy phân tích đã đăng ký trước:
+\begin{Verbatim}
+python scripts/eth_check.py
+\end{Verbatim}
 
 \chapter{Các tham số của hệ thống}
 \begin{table}[H]

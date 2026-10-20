@@ -590,6 +590,7 @@ nó tạo thêm lệnh SELL; trong năm giá tăng, một lệnh SELL dù đúng
 được một lần giảm nhỏ còn lệnh sai làm mất phần lãi của cả đợt tăng. Kết hợp trọng tài với luật SELL (không thực hiện
 SELL ở ngày mâu thuẫn) xóa đúng phần giúp trọng tài đoán đúng hơn: tỷ lệ đúng không còn tăng và lợi suất trên tập kiểm
 thử thấp hơn luật SELL đứng riêng. Trong điều kiện thí nghiệm, \textbf{độ chính xác và lợi suất đánh đổi nhau}.
+Kiểm chứng đã đăng ký trước trên ETH (Mục~\ref{sec:eth}) cho thấy mức tăng tỷ lệ đúng này không lặp lại.
 
 \section{Kiểm định thống kê}
 \label{sec:significance}
@@ -640,6 +641,69 @@ cần khoảng 780 ngày có hướng, gấp ba lượng dữ liệu hiện có.
 Hệ quả cho cách diễn đạt kết luận: hệ thống đề xuất \emph{không vượt} CryptoTrade và \emph{không có bằng chứng} cải
 tiến nào tốt hơn eval-v1, nhưng dữ liệu cũng không đủ để khẳng định hệ thống đề xuất \emph{kém hơn} có ý nghĩa thống kê.
 
+\section{Kiểm chứng trên ETH}
+\label{sec:eth}
+Vì trọng tài theo độ tin cậy được nghĩ ra sau khi đã xem tập kiểm thử BTC, và bộ dữ liệu BTC không còn khoảng thời gian
+nào chưa dùng, đề tài kiểm chứng trên một tài sản khác. Trước khi tải dữ liệu, toàn bộ kế hoạch được ghi lại và đánh dấu
+trong kho mã (\texttt{docs/eth\_preregistration.md}, tag \texttt{eth-prereg}): dữ liệu, sáu khung thời gian (cùng ngày với
+BTC), các hệ thống, giả thuyết chính, phép kiểm định và các phân tích phụ. Không tham số nào được chọn trên ETH.
+
+\paragraph{Dữ liệu.} Bộ ETH của CryptoTrade gồm giá ngày (CoinGecko), sáu thống kê on-chain (số địa chỉ, số giao dịch,
+giá trị chuyển, giá gas, lượng gas, số giao dịch thành công) và tin tức Ethereum, đọc đúng như hàm \texttt{get\_paths}
+của mã gốc. Chạy song song với mã gốc trên ETH cho 18/18 kết quả chiến lược luật trùng tuyệt đối và nội dung lời nhắc
+không khác biệt; 15 kết quả luật ETH trong Bảng~2 của bài báo gốc cũng trùng (khung đi ngang của ETH trong bài là
+20/06--31/08/2023, khác BTC; đề tài giữ ngày đã đăng ký và kiểm tra riêng khung của bài). Hệ thống đề xuất chạy đúng mã
+eval-v1, chỉ đổi tên tài sản trong lời nhắc và giữ nguyên nhãn chỉ báo của CryptoTrade; 338/340 ngày thành công.
+
+\begin{table}[H]
+\centering
+\caption{Lợi suất trung bình (\%) trên ETH; trọng tài và luật SELL dùng cấu hình cố định từ BTC}
+\label{tab:eth}
+\small
+\begin{tabular}{lrrr}
+\toprule
+ & Phát triển & Kiểm thử & Gộp 6 đoạn \\
+\midrule
+Hệ thống đề xuất (eval-v1) & +3,73 & $-$0,81 & +1,46 \\
+\quad + trọng tài theo độ tin cậy & $-$0,26 & $-$3,85 & $-$2,06 \\
+\quad + không bao giờ SELL & +8,25 & \textbf{+3,22} & \textbf{+5,73} \\
+CryptoTrade đầy đủ & +7,07 & $-$8,67 & $-$0,80 \\
+Buy \& Hold & \textbf{+8,77} & +2,25 & +5,51 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\paragraph{Giả thuyết chính không đứng vững.} Trọng tài với cấu hình cố định \emph{làm giảm} tỷ lệ đúng hướng trên ETH:
+gộp sáu đoạn từ 52,3\% (eval-v1, 256 ngày có hướng) xuống 46,9\% (307 ngày), chênh lệch $-$5,4 điểm, khoảng tin cậy 95\%
+$[-9{,}5; -1{,}4]$; lợi suất cũng giảm (Bảng~\ref{tab:eth}). Phân tích các ngày mâu thuẫn cho thấy ba nguyên nhân. Thứ
+nhất, trên ETH không agent nào đáng tin hơn khi mâu thuẫn: thành tích cuối năm của Market, Financial và Sentiment lần
+lượt là 51,3\%, 50,0\% và 49,5\%, nên trọng tài phân xử theo nhiễu. Thứ hai, tranh biện hiện tại phân xử tốt trên ETH
+(đúng 61,7\% ở các ngày mâu thuẫn), và ở 27 ngày trọng tài đảo ngược quyết định của nó, trọng tài chỉ đúng 33\% trong khi
+quyết định cũ đúng 67\%. Thứ ba, ở 52 ngày tranh biện để hệ thống đứng ngoài vì các bên đều yếu, trọng tài ép chọn một bên
+và chỉ đúng 38,5\%. Quy luật ``Sentiment hay sai khi mâu thuẫn'' trên BTC (41,0\%) không lặp lại trên ETH (49,1\%), và
+trên ETH tranh biện hiện tại là cách phân xử tốt nhất trong Bảng~\ref{tab:conflict-rules} (60,2\% so với 53,8\% khi
+không tranh biện). Như vậy mức tăng tỷ lệ đúng trên BTC là một quy luật giả xuất hiện do tìm kiếm sau khi đã xem dữ liệu.
+
+\paragraph{Các phát hiện khác lặp lại.}
+\begin{itemize}
+  \item \textbf{Không có khả năng dự đoán}: ở tầm 1, 3 và 7 ngày, khoảng tin cậy lợi thế của mọi agent, của quyết định
+  cuối và của CryptoTrade đều chứa 0.
+  \item \textbf{CryptoTrade thiên về mua}: mua ở 83\% số ngày có hướng (183/220). Thói quen này giúp nó trên BTC nhưng
+  làm nó lỗ nặng trên ETH ở giai đoạn giảm giá ($-$18,34\%) và đi ngang ($-$11,58\%).
+  \item \textbf{Nhãn chỉ báo bị đảo}: ở 160 ngày giá ETH nằm trên cả EMA20 và EMA50, hai nhãn cùng ghi ``sell'' ở 55,6\%
+  số ngày, Market Agent nói SELL ở 55,6\% và BUY ở 19,4\%.
+  \item \textbf{Thứ tự lệnh có giá trị}: chuỗi lệnh của hệ thống đề xuất hơn các bản xáo trộn ($p=0{,}049$); của
+  CryptoTrade thì không ($p=0{,}88$).
+  \item \textbf{Bỏ các lệnh SELL}: luật cố định từ BTC đạt +3,22\% trên tập kiểm thử và +5,73\% khi gộp, cao hơn
+  CryptoTrade đầy đủ có ý nghĩa thống kê (+11,89 điểm, $p=0{,}002$ trên tập kiểm thử; +6,53 điểm, $p=0{,}030$ khi gộp),
+  và ngang Buy \& Hold.
+\end{itemize}
+
+Trên ETH, hệ thống đề xuất (eval-v1) cao hơn CryptoTrade đầy đủ 7,85 điểm trên tập kiểm thử ($p=0{,}072$) và 2,26 điểm
+khi gộp ($p=0{,}59$), ngược với BTC. Cả hai thứ hạng đều chưa có ý nghĩa thống kê, nhưng sự đảo chiều này khớp với lời
+giải thích chung: thứ hạng giữa hai hệ thống được quyết định bởi mức tiếp xúc thị trường trong giai đoạn đánh giá, không
+phải bởi khả năng dự đoán.
+
 \section{Thảo luận}
 \paragraph{Vì sao thua CryptoTrade đầy đủ?} Hai hệ thống đoán hướng đúng như nhau (gộp sáu đoạn: 49,6\% và 49,4\%), và
 không hệ thống nào có thông tin dự đoán ở tầm 1--7 ngày. Khác biệt nằm ở \emph{mức tiếp xúc}: agent giao dịch của
@@ -647,7 +711,8 @@ CryptoTrade mua ở 91\% số ngày có hướng (230 BUY, 23 SELL), với mức
 trong các đợt tăng, nên gần như giữ BTC suốt năm 2023; lợi suất của nó bám sát Buy \& Hold. Hệ thống đề xuất ra SELL ở
 khoảng một phần ba số ngày có hướng, phần lớn do Market Agent đọc nhãn chỉ báo bị đảo, và môi trường không cho bán khống
 nên mỗi lệnh SELL giữa đợt tăng làm mất phần lãi mà không bù lại được. Bỏ các lệnh SELL thì hai hệ thống ngang nhau
-(Mục~\ref{sec:sell-rule}).
+(Mục~\ref{sec:sell-rule}). Trên ETH, nơi giá giảm ở phần lớn các giai đoạn kiểm thử, chính thói quen mua của CryptoTrade
+làm nó thua hệ thống đề xuất (Mục~\ref{sec:eth}).
 
 \paragraph{Các cải tiến ở bước tổng hợp không bù được tín hiệu yếu.} Khi mỗi agent đúng khoảng 45--48\%, thay đổi trọng
 số, lọc tín hiệu hay đổi mức vào lệnh chỉ thay đổi \emph{mức tiếp xúc} với thị trường. Lợi suất khi đó phụ thuộc chủ yếu
@@ -655,8 +720,9 @@ vào việc giai đoạn đánh giá là tăng hay giảm, nên một cấu hìn
 thuyết đã bị loại: thiếu trọng số theo xu hướng, thiếu thông tin xu hướng dài hạn, độ lệch phe trong con số của agent, và
 việc agent đúng ở tầm dự báo dài hơn một ngày.
 
-\paragraph{Độ chính xác và lợi suất có thể đi ngược nhau.} Trọng tài theo độ tin cậy là cách duy nhất làm tỷ lệ đúng
-tăng trên cả hai tập, nhưng làm lợi suất giảm; ngược lại, bỏ các lệnh SELL làm lợi suất tăng mà không cần đoán đúng hơn.
+\paragraph{Độ chính xác và lợi suất có thể đi ngược nhau.} Trên BTC, trọng tài theo độ tin cậy làm tỷ lệ đúng tăng trên
+cả hai tập nhưng làm lợi suất giảm (và trên ETH thì làm cả hai giảm); ngược lại, bỏ các lệnh SELL làm lợi suất tăng mà
+không cần đoán đúng hơn.
 Phép xáo trộn thứ tự lệnh cho thấy chuỗi lệnh của hệ thống đề xuất vẫn có giá trị dù tỷ lệ đúng hằng ngày ngang ngẫu
 nhiên. Vì vậy đánh giá một agent giao dịch chỉ bằng tỷ lệ đúng hướng, hoặc chỉ bằng lợi suất trên một năm tăng giá, đều
 có thể dẫn tới kết luận sai; cần tách phần đến từ mức tiếp xúc khỏi phần đến từ thời điểm vào lệnh.
@@ -682,11 +748,12 @@ Chi phí tiền bằng 0 vì mô hình chạy cục bộ.
   Mục~\ref{sec:improve} (mỗi cấu hình đã chọn trên tập phát triển được đánh giá một lần). Mọi kết quả trên tập kiểm thử
   đều được báo cáo, kể cả các biến thể kém, để người đọc tự đánh giá rủi ro chọn lọc kết quả.
   \item \textbf{Các phân tích khám phá}: bảng phân xử mâu thuẫn (Bảng~\ref{tab:conflict-rules}), trọng tài theo thành
-  tích cộng dồn và phép kết hợp với luật SELL được thực hiện sau khi đã xem tập kiểm thử; chúng được báo cáo như phát
-  hiện cần kiểm chứng trên dữ liệu mới, không phải kết quả kiểm thử độc lập.
+  tích cộng dồn và phép kết hợp với luật SELL được thực hiện sau khi đã xem tập kiểm thử BTC. Trọng tài sau đó được kiểm
+  chứng theo kế hoạch đăng ký trước trên ETH và không đứng vững (Mục~\ref{sec:eth}).
   \item \textbf{Tập phát triển thiếu giai đoạn giảm giá kéo dài}: các tham số được chọn có thể không phù hợp với thị
   trường giảm.
-  \item \textbf{Một mô hình, một tài sản}: kết quả có thể khác với mô hình lớn hơn hoặc với ETH, SOL.
+  \item \textbf{Một mô hình, hai tài sản}: các phát hiện chính lặp lại trên BTC và ETH của cùng năm 2023, nhưng có thể
+  khác với mô hình lớn hơn, với tài sản khác (SOL) hoặc với năm khác.
   \item \textbf{Rò rỉ từ dữ liệu huấn luyện}: mô hình có thể đã thấy dữ liệu năm 2023 khi huấn luyện; ảnh hưởng này như
   nhau với cả hai hệ thống nhưng có thể làm tăng kết quả tuyệt đối.
   \item \textbf{Quy đổi tín hiệu}: mức $\pm0{,}5$ là một lựa chọn thiết kế; cách quy đổi khác có thể cho thứ hạng khác.

@@ -43,10 +43,13 @@ CryptoTrade on both the test periods (+0.38\% vs.\ +5.71\% average return) and t
 decisions, always towards abstention; (ii) each agent's directional accuracy is near chance (45--48\%) and biased, with
 the news agent calling BUY about 80\% of the time and the market agent selling into rallies because CryptoTrade's
 indicator labels are inverted; (iii) on the 170 days the agents conflict, debate resolves the conflict correctly 48\% of
-the time, no better than no debate, and an arbiter that trusts agents by their past record raises accuracy but lowers
-return; and (iv) eight improvements tuned on the development set do not beat CryptoTrade reliably. CryptoTrade itself
-is at chance at 1--7-day horizons; removing our system's SELLs closes the gap. These findings separate \emph{reducing}
-disagreement from \emph{resolving} it, and show that returns here reflect market exposure more than prediction.\footnote{Code and data:
+the time, no better than no debate; and (iv) eight improvements tuned on the development set do not beat CryptoTrade
+reliably. CryptoTrade itself is at chance at 1--7-day horizons and buys on 91\% of its directional days; removing our
+system's SELLs closes the gap. A pre-registered check on ETH confirms these findings, refutes the one improvement found
+after seeing the data (an arbiter that trusts agents by their past record lowers accuracy from 52.3\% to 46.9\%), and
+reverses the ranking: on ETH test periods our system beats CryptoTrade by 7.9 points. These findings separate
+\emph{reducing} disagreement from \emph{resolving} it, and show that returns here reflect market exposure more than
+prediction.\footnote{Code and data:
 \url{https://github.com/Chivu171/Multi-Agent-Crypto}}
 \end{abstract}
 
@@ -86,8 +89,8 @@ prompts, which makes a controlled comparison possible with a local open model;
 (3) an empirical study, replicated on a held-out development set, showing that explicit conflict handling trails
 implicit fusion, that debate reduces disagreement without resolving it, and that individual agents are near chance and
 directionally biased;
-(4) a dev-then-test evaluation of eight improvements with all results reported, including the negative ones, and
-evidence that accuracy and return can move in opposite directions.
+(4) a dev-then-test evaluation of eight improvements with all results reported, including the negative ones, and a
+pre-registered replication on ETH that confirms the main findings and refutes a post-hoc one.
 
 % =====================================================================
 \section{Related Work}
@@ -436,13 +439,51 @@ directional days). The \emph{reliability arbiter} settles conflict days by each 
 Selected on dev with records reset per window it does not help. With records carried across the year (exploratory),
 accuracy on all trading days rises on both splits, from 49.6\% to 52.3\% pooled ($p\approx0.4$), while returns fall
 (dev +5.33\%, test $-$1.40\%): it mostly rules against the BUY-leaning Sentiment agent and so sells more in a rising year.
-Combined with the SELL rule it loses its accuracy gain. Here accuracy and return trade off.
+Combined with the SELL rule it loses its accuracy gain. On BTC accuracy and return trade off; the pre-registered ETH
+check below refutes the accuracy gain itself.
 
 \paragraph{Are three agents needed?} Zeroing the Financial and Sentiment contributions gives a Market-only variant that
 is \emph{better} on dev (+12.32\% vs.\ +8.60\%) and worse on test ($-$1.59\% vs.\ +0.37\%). Pooled over all six ranges,
 three agents with the filter reach +8.76\%, on par with CryptoTrade full (+8.83\%) and below Buy \& Hold (+9.80\%);
 without the test bull period they fall to +3.20\%, below Market only (+5.83\%). The value of the extra agents is
 therefore not established: an always-bullish news agent looks useful only in a long rally.
+
+\subsection{Pre-registered check on ETH}
+\label{sec:eth}
+Because the arbiter was found after the test periods had been seen and no unused BTC dates remain, we fixed a plan before
+downloading any ETH data (data, the same six windows, systems, hypothesis and tests; tag \texttt{eth-prereg}).
+CryptoTrade's ETH files, read as its \texttt{get\_paths('eth')}, reproduce all 15 ETH rule results of its Table~2; both
+systems run unchanged except for the asset name, with the original indicator labels.
+
+\begin{table}[t]
+\centering
+\small
+\setlength{\tabcolsep}{4pt}
+\begin{tabular}{lrrr}
+\toprule
+ETH, mean return (\%) & Dev & Test & Pooled \\
+\midrule
+Ours (eval-v1) & 3.73 & $-$0.81 & 1.46 \\
+\quad + reliability arbiter & $-$0.26 & $-$3.85 & $-$2.06 \\
+\quad + never SELL & 8.25 & \textbf{3.22} & \textbf{5.73} \\
+CryptoTrade full & 7.07 & $-$8.67 & $-$0.80 \\
+Buy \& Hold & \textbf{8.77} & 2.25 & 5.51 \\
+\bottomrule
+\end{tabular}
+\caption{Pre-registered ETH check; the arbiter and the SELL rule keep their BTC configuration.}
+\label{tab:eth}
+\end{table}
+
+The primary hypothesis fails: the arbiter \emph{lowers} pooled direction accuracy from 52.3\% to 46.9\% (difference
+$-5.4$ points, 95\% block-bootstrap CI $[-9.5, -1.4]$). On ETH no agent is more reliable in conflicts (51.3\%, 50.0\%,
+49.5\%), the existing debate already resolves conflicts well (61.7\% on conflict days), the 27 decisions the arbiter
+reverses were right 67\% of the time, and on the 52 days debate had left the system out of the market the arbiter's
+forced calls are right 38.5\% of the time. The BTC pattern was a post-hoc artefact. Everything else replicates: no agent
+and not CryptoTrade beats chance at 1, 3 or 7 days; CryptoTrade buys on 83\% of its directional days; on uptrend days
+both inverted labels read ``sell'' 56\% of the time and the Market agent sells on 56\%; our action order beats its shuffles
+($p=0.049$). With falling prices in two of three test periods, CryptoTrade's buying habit now costs it
+(Table~\ref{tab:eth}): our system beats it by 7.85 points on test ($p=0.072$), and never selling beats it by 11.89 points
+($p=0.002$), on par with Buy \& Hold.
 
 \subsection{Analysis: hidden aggregation bias}
 The time-decay penalty treats day-old data as stale: on-chain data and news are from $D{-}1$, so their factor is
@@ -481,18 +522,18 @@ as regime weights, trend filters and sizing only change market exposure, so thei
 evaluated; a dev-then-test protocol exposes this where a single test set would not. Finally, aggregation penalties can
 encode unintended biases, and benchmark label conventions can steer an LLM agent against the trend. Telling the agents
 about their bias shifts the mix of directions but not their accuracy. Finally, CryptoTrade's edge is exposure, not
-prediction, and an arbiter that makes our calls more accurate makes them less profitable: evaluations should separate
-exposure from timing and prediction. Future work should present indicators in a standard convention to both systems,
-test the reliability arbiter on an unseen asset, and try larger models that may weigh opposing evidence rather than
-restate their view.
+prediction: its lead on BTC becomes a loss on ETH, where prices fell. Evaluations should therefore separate exposure from
+timing and prediction, and patterns found after seeing the data need fresh data: our one post-hoc improvement failed a
+pre-registered check. Future work should present indicators in a standard convention to both systems and try larger
+models that may weigh opposing evidence rather than restate their view.
 
 \section*{Limitations}
 Each period has only 35--69 trading days; none of our return or accuracy differences is statistically significant,
 so ``trails CryptoTrade'' means ``does not beat it'', not ``is significantly worse''. We study
-one asset and one 26B-parameter model; results may differ for ETH, SOL or larger models. The model may have seen 2023
+two assets of the same year and one 26B-parameter model; results may differ for SOL, other years or larger models. The model may have seen 2023
 market data during pretraining; this affects both systems equally but may inflate absolute returns. The test set was
 used once per selected improvement; we report every such result, but some selection risk remains, and the conflict
-analysis and long-run arbiter were explored after the test periods had been seen; no unused dates remain in the dataset. The development set
+analysis and long-run arbiter were explored after the BTC test periods had been seen and were then checked on ETH. The development set
 lacks a sustained bear market. The $\pm0.5$ action mapping and the parameters of the conflict score, debate and
 Mediator were set by design intuition. Ablations and aggregation variants are re-aggregations of one run rather than
 independent runs.
