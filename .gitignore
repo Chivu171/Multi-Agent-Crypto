@@ -57,3 +57,16 @@ outputs/baselines/cryptotrade/eth/*/agent_*/*
 !outputs/baselines/cryptotrade/eth/*/ours*/
 outputs/baselines/cryptotrade/eth/*/ours*/*
 !outputs/baselines/cryptotrade/eth/*/ours*/result.json
+
+# ── LaTeX build files (the compiled PDF is versioned) ─────────────────────────
+docs/**/*.aux
+docs/**/*.bbl
+docs/**/*.blg
+docs/**/*.fdb_latexmk
+docs/**/*.fls
+docs/**/*.lof
+docs/**/*.lot
+docs/**/*.log
+docs/**/*.out
+docs/**/*.toc
+docs/**/*.synctex.gz
